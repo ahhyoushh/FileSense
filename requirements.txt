@@ -1,0 +1,9 @@
+faiss-cpu
+sentence-transformers
+numpy
+PyPDF2
+python-docx
+pdfplumber
+pytesseract
+pillow
+opencv-python

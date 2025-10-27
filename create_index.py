@@ -7,7 +7,7 @@ import json
 # --------- Config ---------
 FAISS_INDEX_FILE = "folder_embeddings.faiss"
 LABELS_FILE = "folder_labels.json"
-MODEL_NAME = "all-MiniLM-L6-v2"    # You can change to any SentenceTransformer model
+MODEL_NAME = "all-mpnet-base-v2"    # You can change to any SentenceTransformer model
 
 
 def create_faiss_index():
@@ -16,6 +16,17 @@ def create_faiss_index():
 
     FOLDER_LABELS = list(folder_data.keys())
     FOLDER_DESC = list(folder_data.values())
+    extra_examples = {
+    "Physics": "Keywords: velocity, prism, ohm, current, resistance, focal length, refraction",
+    "Mathematics": "Keywords: calculus, differentiation, trigonometry, probability, matrix",
+    "Chemistry": "Keywords: titration, molarity, acid-base, kinetics, organic, inorganic",
+    "Informatic Practices": "Keywords: python, pandas, matplotlib, sql, database, csv",
+    "English": "Keywords: essay, poem, grammar, literature, asl, comprehension",
+    "Official Document": "Keywords: certificate, resume, transcript, letter, contract",
+}
+    for label in folder_data:
+        folder_data[label] += " " + extra_examples.get(label, "")
+
     combined_desc = [f"{label} {desc}" for label, desc in zip(FOLDER_LABELS, FOLDER_DESC)]
     print(f'Found {len(FOLDER_LABELS)} folder labels for indexing.')
 
