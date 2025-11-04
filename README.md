@@ -9,6 +9,9 @@ It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a
 I found it weirdly satisfying using this script lol.
 I am still working on this project...
 
+### Check out the webpage for example video
+[FileSense](https://ahhyoushh.github.io/FileSense)
+
 ## ⚙️ Core Idea (what makes it smart)
 
 - **Semantic matching**: instead of relying only on filenames or extensions, FileSense encodes folder *descriptions* and file *content* into embeddings and compares them. That means files get grouped by intent: invoices with invoices, lab reports with lab reports, config files with other configs.
