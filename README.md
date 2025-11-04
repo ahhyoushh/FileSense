@@ -107,6 +107,9 @@ Check output folders created in repo root (e.g. Physics/, Invoices/, Unsorted/).
 - MODEL_NAME in create_index.py — change to a different SentenceTransformer if you want a lighter/heavier model.
 
 ## 🔮 Future additions
+- cli arguments for folders
+
+- Perfomance improvement.
 
 - Improve image classification for purely visual docs (screenshots with very little text).
 
