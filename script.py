@@ -1,4 +1,5 @@
 import os, shutil, json, faiss
+import time
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from create_index import FAISS_INDEX_FILE, LABELS_FILE, MODEL_NAME
@@ -123,8 +124,13 @@ def classify_file(text):
     return "Unsorted", round(float(best_sim), 2)
 
 
+Time_total = 0
+
+Time_total = 0
 
 def process_file(file_path):
+    global Time_total  
+    start_time = time.time()
     text = extract_text(file_path)
     if not text.strip():
         print(f"No readable text in {os.path.basename(file_path)} — skipping semantic match.")
@@ -134,11 +140,14 @@ def process_file(file_path):
 
     os.makedirs(predicted_folder, exist_ok=True)
     shutil.move(file_path, os.path.join(predicted_folder, os.path.basename(file_path)))
-
-    print(f"{os.path.basename(file_path)} -> {predicted_folder} (sim={similarity:.2f})")
-
-
+    
+    time_taken = time.time() - start_time   
+    Time_total += time_taken                
+    
+    print(f"{os.path.basename(file_path)} -> {predicted_folder} (sim={similarity:.2f}) in {time_taken:.2f} seconds")
 
 files = [os.path.join(files_dir, f) for f in os.listdir(files_dir) if os.path.isfile(os.path.join(files_dir, f))]
 for file_path in files:
     process_file(file_path)
+
+print(f"All files processed in {Time_total:.2f} seconds.")
