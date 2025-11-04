@@ -2,11 +2,11 @@
 
 ## 🔍 Overview
 
-I got sick of the Downloads chaos — random JSONs, reports, scanned PDFs, and screenshots all mixed up.  
+I got sick of the Downloads chaos: random JSONs, reports, scanned PDFs, and screenshots all mixed up.  
 **FileSense** is a practical Python tool that automatically organizes your files by *meaning*, not just extension.
 
-It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a file’s content to human-readable folder labels. For scanned PDFs it even falls back to OCR. No cloud, no heavy infra — just local, fast, and weirdly satisfying.
-
+It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a file’s content to human-readable folder labels. For scanned PDFs it even falls back to OCR.
+I found it weirdly satisfying using this script lol.
 I am still working on this project...
 
 ## ⚙️ Core Idea (what makes it smart)
@@ -69,3 +69,55 @@ Install example:
 ```bash
 pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx
 # plus system-level: sudo apt install tesseract-ocr
+```
+
+## 🛠️ Quick start
+
+Clone:
+```bash
+git clone https://github.com/ahhyoushh/filesense.git
+cd filesense
+```
+
+
+### Edit folder_labels.json to match the folders you want (labels → descriptions).
+
+### Create FAISS index:
+``` bash 
+python create_index.py
+# outputs folder_embeddings.faiss and updates folder_labels.json
+```
+
+### Drop files into files/ and run:
+```bash
+python script.py
+```
+
+Check output folders created in repo root (e.g. Physics/, Invoices/, Unsorted/).
+
+## ⚙️ Config you should know
+
+- files_dir in script.py — folder to scan.
+
+- THRESHOLD — minimum similarity score to accept a semantic match. Lower = more aggressive sorting; higher = more conservative.
+
+- MODEL_NAME in create_index.py — change to a different SentenceTransformer if you want a lighter/heavier model.
+
+## 🔮 Future additions
+
+- Improve image classification for purely visual docs (screenshots with very little text).
+
+- Add file renaming suggestions using detected metadata (dates, invoice numbers).
+
+- Add a small web UI for preview + undo moves.
+
+- Add incremental indexing so adding a new label doesn’t require rebuilding everything.
+
+## 💡 Notes & design thoughts
+
+- The OCR fallback is intentionally aggressive, many real-world documents are scans or photos. That “extra step” is what makes FileSense actually useful instead of just neat.
+
+- FAISS + SentenceTransformers lets you use meaning rather than brittle filename heuristics. That combination is small and local but powerful.
+
+- Built keeping privacy and speed in mind, you can run this on an old phone via Termux or on a laptop. No cloud required.
+
