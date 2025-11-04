@@ -9,7 +9,6 @@ FAISS_INDEX_FILE = "folder_embeddings.faiss"
 LABELS_FILE = "folder_labels.json"
 MODEL_NAME = "all-mpnet-base-v2"    # You can change to any SentenceTransformer model
 
-
 def create_faiss_index():
     with open(LABELS_FILE, "r", encoding="utf-8") as f:
         folder_data = json.load(f)
