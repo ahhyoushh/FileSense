@@ -3,163 +3,754 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🗂️ FileSense - Smart File Organizer</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>🗂️ FileSense – Smart File Organizer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-secondary: #111111;
+      --text: #e5e7eb;
+      --text-secondary: #9ca3af;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --accent-dark: #1e40af;
+      --success: #10b981;
+      --border: rgba(255, 255, 255, 0.08);
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* GitHub Icon */
+    .github-icon {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      font-size: 2.2rem;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .github-icon:hover {
+      transform: scale(1.15) rotate(10deg);
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      overflow: hidden;
+      padding: 100px 24px 80px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -30px); }
+    }
+
+    header h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1e40af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    header p {
+      position: relative;
+      z-index: 2;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 680px;
+      margin: 0 auto;
+      animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 60px;
+      animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    section:nth-child(1) { animation-delay: 0.2s; }
+    section:nth-child(2) { animation-delay: 0.3s; }
+    section:nth-child(3) { animation-delay: 0.4s; }
+    section:nth-child(4) { animation-delay: 0.5s; }
+    section:nth-child(5) { animation-delay: 0.6s; }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 32px;
+      background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 24px 0 12px 0;
+      color: var(--accent-light);
+    }
+
+    p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+      transform: translateY(-8px);
+      box-shadow: 0 16px 32px rgba(59, 130, 246, 0.15);
+    }
+
+    .feature-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent-light);
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #a1e5ff;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .code-block::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .code-block::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .code-block::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    /* Demo Video */
+    .demo-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      margin: 32px 0;
+      box-shadow: var(--card-shadow);
+    }
+
+    .demo-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Structure Box */
+    .structure-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      overflow-x: auto;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+    }
+
+    li strong {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--border);
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--accent-light);
+    }
+
+    td {
+      border: 1px solid var(--border);
+      padding: 12px;
+      color: var(--text-secondary);
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-light);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent);
+    }
+
+    /* Highlight Box */
+    .highlight {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border-left: 4px solid var(--success);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+      border: 1px solid var(--border);
+    }
+
+    .highlight p {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* Learned Section */
+    .learned-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+
+    .learned-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .learned-card h4 {
+      color: var(--accent-light);
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+
+    .learned-card ul {
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .learned-card li {
+      margin-bottom: 12px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .learned-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      margin-top: 80px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      header {
+        padding: 60px 24px 50px;
+      }
+
+      main {
+        padding: 40px 16px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learned-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .code-block {
+        font-size: 0.85rem;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <main style="max-width:800px;margin:auto;padding:60px 20px;">
-    <a href="ahhyoushh.github.io/" style="color:#00b4d8;text-decoration:none;">← Back to Home</a>
-    <h1>🗂️ FileSense - Smart File Organizer</h1>
-    <p class="project-date">October 29, 2025</p>
+  <a class="github-icon" href="https://github.com/ahhyoushh/filesense" target="_blank" title="View on GitHub">🙂</a>
 
-    <h2>🔍 Overview</h2>
-    <p>
-      I got sick of the Downloads chaos — random JSONs, reports, scanned PDFs, and screenshots all mixed up.  
-      <strong>FileSense</strong> is a practical Python tool that automatically organizes your files by <em>meaning</em>, not just by extension.
-    </p>
-    <p>
-      It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a file’s content to human-readable folder labels.  
-      For scanned PDFs, it even falls back to OCR using <code>pdfplumber</code> + <code>pytesseract</code>.  
-      Weirdly satisfying to watch it clean up your mess. Still a work-in-progress, but already useful.
-    </p>
+  <header>
+    <h1>🗂️ FileSense</h1>
+    <p>AI-powered local file organizer that sorts documents by meaning, not just type. Uses semantic embeddings, FAISS indexing, and OCR to intelligently categorize your chaotic files.</p>
+  </header>
 
-    <h2>🎥 Demo</h2>
-    <p>Note: All files used were around 15-30 pages with around 10 images with no text, which impacted the similarity underperfomance.</p>
-    <P>This usecase is for teachers to sort files submitted by subject name.</P>
-    <div style="text-align:center; margin:30px 0;">
-      <iframe width="560" height="315"
-        src="https://www.youtube.com/embed/1r-2Xm6j_38"
-        title="FileSense Demo Video"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-        style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-      </iframe>
-    </div>
+  <main>
+    <!-- Quick Overview -->
+    <section>
+      <h2>Quick Overview</h2>
+      <p>Tired of your Downloads folder looking like a digital junkyard? FileSense uses advanced AI to understand what each file is about and organizes it automatically.</p>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>🧠 Semantic Understanding</h4>
+          <p>Reads file content and understands meaning using SentenceTransformers embeddings.</p>
+        </div>
+        <div class="feature-card">
+          <h4>⚡ Lightning Fast</h4>
+          <p>FAISS indexing provides fast similarity searches locally on your machine.</p>
+        </div>
+        <div class="feature-card">
+          <h4>👁️ OCR Enabled</h4>
+          <p>Automatically extracts text from scanned PDFs and image-only documents.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🕵️ Fully Offline</h4>
+          <p>Works entirely offline—nothing leaves your device, complete privacy.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔄 Real-time Watch</h4>
+          <p>Detects and organizes new files automatically as they appear.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🖥️ Easy GUI</h4>
+          <p>Desktop launcher with start/stop controls, logs, and system tray support.</p>
+        </div>
+      </div>
 
-    <h2>⚙️ Core Idea</h2>
-    <ul>
-      <li><b>Semantic matching:</b> FileSense reads the content — not just the filename. Files get grouped by intent (lab reports, essays, configs, etc.).</li>
-      <li><b>FAISS index:</b> Pre-builds folder embeddings for ultra-fast semantic lookup.</li>
-      <li><b>OCR fallback:</b> Uses <code>pdfplumber</code> + <code>PIL</code> + <code>pytesseract</code> for scanned PDFs with no text.</li>
-      <li><b>Keyword boosting:</b> Adds small similarity boosts for subject-related keywords (like “python”, “chemistry”, “essay”).</li>
-      <li><b>Local-first:</b> Runs offline — no uploads, no cloud, just local intelligence.</li>
-    </ul>
+      <div class="demo-container">
+        <iframe
+          src="https://www.youtube.com/embed/1r-2Xm6j_38"
+          title="FileSense Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
 
-    <h2>🔧 What’s Inside</h2>
-    <div class="code-snippet">
-    <pre><code>
-filesense/
-├── files/                   # Folder to scan
-├── script.py                # Main processor: extracts, classifies, moves
-├── create_index.py          # Builds FAISS index from folder_labels.json
-├── folder_labels.json       # Folder labels + descriptions
-├── folder_embeddings.faiss  # Generated FAISS index
-└── README.md
-    </code></pre></div>
+    <!-- How It Works -->
+    <section>
+      <h2>How It Works</h2>
+      <p>FileSense follows a four-step pipeline: extract text, generate embeddings, find best match, move file.</p>
 
-    <h2>🔬 How It Works</h2>
-    <h3>1️⃣ Index Creation (<code>create_index.py</code>)</h3>
-    <p>
-      Loads folder descriptions, strengthens them with extra keywords, and generates normalized embeddings using <code>SentenceTransformer</code> 
-      (<code>all-mpnet-base-v2</code> by default).  
-      Then stores them in a FAISS index (<code>folder_embeddings.faiss</code>) for fast similarity lookups.
-    </p>
+      <h3>1️⃣ Create FAISS Index</h3>
+      <p>Build a semantic search index from your folder descriptions:</p>
+      <div class="code-block">python scripts/create_index.py</div>
 
-    <h3>2️⃣ File Processing (<code>script.py</code>)</h3>
-    <p>
-      Scans the <code>files/</code> directory, extracts text, embeds it, compares to folder embeddings, and moves files based on the best semantic match.
-    </p>
-    <ul>
-      <li><b>Text extraction:</b> 
-        - PDFs → text via <code>pdfplumber</code>; OCR if needed.  
-        - DOCX → read with <code>python-docx</code>.  
-        - TXT → plain text.  
-        - Others → fallback to filename.
-      </li>
-      <li><b>Classification:</b> Encodes content, computes cosine similarity, applies keyword boost, and moves files to the best folder (or <code>Unsorted</code>).</li>
-    </ul>
+      <h3>2️⃣ Process Files in Bulk</h3>
+      <p>Scan and classify all files with optional multithreading:</p>
+      <div class="code-block">python scripts/script.py --dir ./files --threads 8</div>
 
-    <h3>3️⃣ Why OCR Matters</h3>
-    <p>
-      Real-world files aren’t always digital — scanned invoices, handwritten notes, or photographed experiments often have no text layer.  
-      Without OCR, they’d stay “Unsorted.”  
-      FileSense converts PDFs to images and runs <code>pytesseract</code> OCR to recognize text, making classification possible even for scanned or image-based documents.
-    </p>
+      <h3>3️⃣ Watch Folder Real-time</h3>
+      <p>Automatically organize new files as they arrive:</p>
+      <div class="code-block">python scripts/watcher_script.py --dir ./files</div>
 
-    <h2>📦 Requirements</h2>
-    <ul>
-      <li>Python 3.8+</li>
-      <li><code>faiss-cpu</code></li>
-      <li><code>sentence-transformers</code></li>
-      <li><code>numpy</code></li>
-      <li><code>pdfplumber</code></li>
-      <li><code>pytesseract</code> + <code>Pillow</code></li>
-      <li><code>python-docx</code></li>
-      <li>System-level: <code>tesseract-ocr</code> installed</li>
-    </ul>
-    <div class="code-snippet">
-    <pre><code>
-    pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx
+      <h3>4️⃣ Launch with GUI</h3>
+      <p>Simple desktop interface with logs and tray control:</p>
+      <div class="code-block">python scripts/launcher.py</div>
+    </section>
 
-    # system: sudo apt install tesseract-ocr
-    </code></pre></div>
+    <!-- Project Structure -->
+    <section>
+      <h2>Project Structure</h2>
+      <div class="structure-box">
+<pre>FileSense/
+├── scripts/
+│   ├── create_index.py      # Build FAISS index from folder labels
+│   ├── process_file.py      # Extract, classify, and move files
+│   ├── script.py            # Bulk organizer with threading
+│   ├── watcher_script.py    # Real-time folder monitoring
+│   ├── launcher.py          # GUI desktop app
+│   └── multhread.py         # Multithreading handler
+├── folder_labels.json       # Folder names and descriptions
+├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
+└── files/                   # Drop unorganized files here</pre>
+      </div>
+    </section>
 
-    <h2>🛠️ Quick Start</h2>
-    <div class="code-snippet">
-    <ol>
-      <li>Clone the repo:
-        <pre><code>git clone https://github.com/ahhyoushh/filesense.git
-cd filesense</code></pre>
-      </li></ol></div>
-      <li>Edit <code>folder_labels.json</code> to define your folders.</li>
-      <li>Build the FAISS index:
-        <pre><code>python create_index.py</code></pre>
-      </li>
-      <li>Drop files into <code>files/</code> and run:
-        <div class="code-snippet">
-        <pre><code>python script.py</code></pre>
-      </li></div>
-      <li>Check your sorted folders (e.g. Physics/, English/, Unsorted/).</li>
-    </ol>
+    <!-- Core Features -->
+    <section>
+      <h2>Core Features</h2>
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><strong>🧠 Semantic Sorting</strong></td>
+          <td>Understands file content using transformer embeddings, not just names.</td>
+        </tr>
+        <tr>
+          <td><strong>⚡ FAISS Indexing</strong></td>
+          <td>Builds a fast semantic search index for folder labels.</td>
+        </tr>
+        <tr>
+          <td><strong>👁️ OCR Fallback</strong></td>
+          <td>Extracts text from scanned/image PDFs using pdfplumber + pytesseract.</td>
+        </tr>
+        <tr>
+          <td><strong>🧩 Keyword Boosting</strong></td>
+          <td>Gives weight bonuses for subject-specific terms.</td>
+        </tr>
+        <tr>
+          <td><strong>🧵 Multithreading</strong></td>
+          <td>Handles multiple files simultaneously for faster processing.</td>
+        </tr>
+        <tr>
+          <td><strong>🕵️ Real-time Watcher</strong></td>
+          <td>Detects and organizes files automatically as they appear.</td>
+        </tr>
+        <tr>
+          <td><strong>🖥️ GUI Launcher</strong></td>
+          <td>Desktop interface with controls, logs, and system tray icon.</td>
+        </tr>
+        <tr>
+          <td><strong>🔐 Offline Privacy</strong></td>
+          <td>Works entirely offline—nothing leaves your device.</td>
+        </tr>
+      </table>
+    </section>
 
-    <h2>⚙️ Config You Should Know</h2>
-    <div class="code-snippet">
-    <ul>
-      <li><b>files_dir:</b> Folder to scan (in <code>script.py</code>).</li>
-      <li><b>THRESHOLD:</b> Similarity cutoff (default 0.45).</li>
-      <li><b>MODEL_NAME:</b> Change SentenceTransformer model (in <code>create_index.py</code>).</li>
-    </ul></div>
+    <!-- Installation & Setup -->
+    <section>
+      <h2>Installation & Setup</h2>
 
-    <h2>🔮 Future Additions</h2>
-    <ul>
-      <li>Cli arguments for file directory.</li>
-      <li>Multithreading for perfomance.</li>
-      <li>much needed perfomance Improvements for large file sets.</li>
-      <li>Improve visual doc recognition (like screenshots).</li>
-      <li>Auto-rename files using extracted metadata (dates, titles, etc.).</li>
-      <li>Add a web UI for preview and undo moves.</li>
-      <li>Incremental indexing — add new folders without full rebuild.</li>
-    </ul>
+      <h3>Requirements</h3>
+      <p>Python 3.8+ with the following libraries:</p>
+      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray</div>
 
-    <h2>💡 Notes & Design Thoughts</h2>
-    <p>
-      The aggressive OCR fallback is intentional — it’s what makes FileSense actually <em>practical</em> for messy, real-life files.  
-      Using FAISS + SentenceTransformers gives it “understanding” of your content, not just filenames.  
-      And since it’s offline, you can run it anywhere.
-    </p>
+      <p>On Linux, also install tesseract:</p>
+      <div class="code-block">sudo apt install tesseract-ocr</div>
 
-    <div style="margin-top:40px;text-align:center;">
-      <a href="https://github.com/ahhyoushh/filesense" target="_blank" 
-         style="color:#00b4d8;border:1px solid #00b4d8;padding:8px 16px;
-                border-radius:6px;text-decoration:none;transition:0.2s;">
-        🔗 View on GitHub
-      </a>
-    </div>
+      <h3>Quick Start</h3>
+      <ol>
+        <li><strong>Clone the repo:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git && cd filesense</code></li>
+        <li><strong>Edit folder_labels.json</strong> with your desired folder names and descriptions</li>
+        <li><strong>Create the index:</strong> <code>python scripts/create_index.py</code></li>
+        <li><strong>Drop files in /files</strong> and run the organizer</li>
+        <li><strong>Choose your method:</strong> bulk process, real-time watch, or GUI launcher</li>
+      </ol>
 
-    <footer style="margin-top:60px;color:#888;text-align:center;">
-      © 2025 Ayush Bhalerao
-    </footer>
+      <div class="highlight">
+        <p>💡 <strong>Pro Tip:</strong> Use the GUI launcher for the easiest experience. It handles everything with a simple interface.</p>
+      </div>
+    </section>
+
+    <!-- Configuration -->
+    <section>
+      <h2>Configuration Options</h2>
+      <table>
+        <tr>
+          <th>Setting</th>
+          <th>File</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code>--dir / -d</code></td>
+          <td>script.py / watcher_script.py</td>
+          <td>Directory to scan or watch</td>
+        </tr>
+        <tr>
+          <td><code>--threads / -t</code></td>
+          <td>script.py</td>
+          <td>Maximum concurrent threads (default: 4)</td>
+        </tr>
+        <tr>
+          <td><code>THRESHOLD</code></td>
+          <td>process_file.py</td>
+          <td>Minimum similarity score to accept match (default: 0.45)</td>
+        </tr>
+        <tr>
+          <td><code>MODEL_NAME</code></td>
+          <td>create_index.py</td>
+          <td>SentenceTransformer model (default: all-mpnet-base-v2)</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- What I Learned -->
+    <section>
+      <h2>What I Learned</h2>
+
+      <div class="learned-grid">
+        <div class="learned-card">
+          <h4>🧠 Embeddings & NLP</h4>
+          <ul>
+            <li>SentenceTransformer embeddings enable semantic matching beyond keywords</li>
+            <li>Embeddings capture meaning and context in high-dimensional space</li>
+            <li>Keyword boosting improves accuracy for domain-specific classification</li>
+          </ul>
+        </div>
+
+        <div class="learned-card">
+          <h4>⚡ Vector Search at Scale</h4>
+          <ul>
+            <li>FAISS provides fast nearest-neighbor searches locally</li>
+            <li>Building indexes scales better than brute-force similarity</li>
+            <li>Indexing trades memory for speed—perfect for real-time processing</li>
+          </ul>
+        </div>
+
+        <div class="learned-card">
+          <h4>🎯 OCR & Document Processing</h4>
+          <ul>
+            <li>Combining pdfplumber + pytesseract handles varied PDF formats</li>
+            <li>Fallback strategies are critical for messy real-world data</li>
+            <li>OCR preprocessing (contrast, rotation) significantly improves accuracy</li>
+          </ul>
+        </div>
+
+        <div class="learned-card">
+          <h4>⚙️ Concurrent Processing</h4>
+          <ul>
+            <li>Multithreading improves throughput for I/O-bound file operations</li>
+            <li>Thread pools prevent resource exhaustion and improve stability</li>
+            <li>Race conditions require careful synchronization in file operations</li>
+          </ul>
+        </div>
+
+        <div class="learned-card">
+          <h4>🔐 Privacy-First Design</h4>
+          <ul>
+            <li>Offline-first architecture eliminates data transmission risks</li>
+            <li>Users value speed and control over cloud convenience</li>
+            <li>Local processing builds trust with your users</li>
+          </ul>
+        </div>
+
+        <div class="learned-card">
+          <h4>🎨 UX & Product Design</h4>
+          <ul>
+            <li>Non-technical users need simple GUI controls</li>
+            <li>Fallback mechanisms (keywords, filename matching) improve reliability</li>
+            <li>Real-time feedback and logs reduce user uncertainty</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Future Enhancements</h3>
+      <ul>
+        <li>🚀 Incremental FAISS updates (no full rebuilds needed)</li>
+        <li>📸 Better image-only classification using vision models</li>
+        <li>↩️ Undo/recovery feature to relocate moved files</li>
+        <li>🏷️ Auto-renaming using extracted metadata</li>
+        <li>📊 Web dashboard for previews and remote control</li>
+        <li>💾 Embedding caching for faster reprocessing</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section style="text-align: center; margin-top: 80px;">
+      <h2 style="justify-content: center;">Ready to Get Started?</h2>
+      <p style="margin-bottom: 32px;">Bring order to your digital chaos with FileSense.</p>
+      <div class="btn-group" style="justify-content: center;">
+        <a href="https://github.com/ahhyoushh/filesense" class="btn btn-primary">View on GitHub</a>
+        <a href="https://ahhyoushh.github.io/FileSense" class="btn btn-secondary">Demo Page</a>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <p>© 2025 Ayush Bhalerao • Built for chaos — made it make sense. ✨</p>
+  </footer>
 </body>
 </html>
