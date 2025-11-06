@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🗂️ FileSense - Smart File Organizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main style="max-width:800px;margin:auto;padding:60px 20px;">
+    <a href="index.html" style="color:#00b4d8;text-decoration:none;">← Back to Home</a>
+    <h1>🗂️ FileSense - Smart File Organizer</h1>
+    <p class="project-date">October 29, 2025</p>
+
+    <h2>🔍 Overview</h2>
+    <p>
+      I got sick of the Downloads chaos — random JSONs, reports, scanned PDFs, and screenshots all mixed up.  
+      <strong>FileSense</strong> is a practical Python tool that automatically organizes your files by <em>meaning</em>, not just by extension.
+    </p>
+    <p>
+      It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a file’s content to human-readable folder labels.  
+      For scanned PDFs, it even falls back to OCR using <code>pdfplumber</code> + <code>pytesseract</code>.  
+      Weirdly satisfying to watch it clean up your mess. Still a work-in-progress, but already useful.
+    </p>
+
+    <h2>🎥 Demo</h2>
+    <p>Note: All files used were around 15-30 pages with around 10 images with no text, which impacted the similarity underperfomance.</p>
+    <P>This usecase is for teachers to sort files submitted by subject name.</P>
+    <div style="text-align:center; margin:30px 0;">
+      <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/1r-2Xm6j_38"
+        title="FileSense Demo Video"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+      </iframe>
+    </div>
+
+    <h2>⚙️ Core Idea</h2>
+    <ul>
+      <li><b>Semantic matching:</b> FileSense reads the content — not just the filename. Files get grouped by intent (lab reports, essays, configs, etc.).</li>
+      <li><b>FAISS index:</b> Pre-builds folder embeddings for ultra-fast semantic lookup.</li>
+      <li><b>OCR fallback:</b> Uses <code>pdfplumber</code> + <code>PIL</code> + <code>pytesseract</code> for scanned PDFs with no text.</li>
+      <li><b>Keyword boosting:</b> Adds small similarity boosts for subject-related keywords (like “python”, “chemistry”, “essay”).</li>
+      <li><b>Local-first:</b> Runs offline — no uploads, no cloud, just local intelligence.</li>
+    </ul>
+
+    <h2>🔧 What’s Inside</h2>
+    <div class="code-snippet">
+    <pre><code>
+filesense/
+├── files/                   # Folder to scan
+├── script.py                # Main processor: extracts, classifies, moves
+├── create_index.py          # Builds FAISS index from folder_labels.json
+├── folder_labels.json       # Folder labels + descriptions
+├── folder_embeddings.faiss  # Generated FAISS index
+└── README.md
+    </code></pre></div>
+
+    <h2>🔬 How It Works</h2>
+    <h3>1️⃣ Index Creation (<code>create_index.py</code>)</h3>
+    <p>
+      Loads folder descriptions, strengthens them with extra keywords, and generates normalized embeddings using <code>SentenceTransformer</code> 
+      (<code>all-mpnet-base-v2</code> by default).  
+      Then stores them in a FAISS index (<code>folder_embeddings.faiss</code>) for fast similarity lookups.
+    </p>
+
+    <h3>2️⃣ File Processing (<code>script.py</code>)</h3>
+    <p>
+      Scans the <code>files/</code> directory, extracts text, embeds it, compares to folder embeddings, and moves files based on the best semantic match.
+    </p>
+    <ul>
+      <li><b>Text extraction:</b> 
+        - PDFs → text via <code>pdfplumber</code>; OCR if needed.  
+        - DOCX → read with <code>python-docx</code>.  
+        - TXT → plain text.  
+        - Others → fallback to filename.
+      </li>
+      <li><b>Classification:</b> Encodes content, computes cosine similarity, applies keyword boost, and moves files to the best folder (or <code>Unsorted</code>).</li>
+    </ul>
+
+    <h3>3️⃣ Why OCR Matters</h3>
+    <p>
+      Real-world files aren’t always digital — scanned invoices, handwritten notes, or photographed experiments often have no text layer.  
+      Without OCR, they’d stay “Unsorted.”  
+      FileSense converts PDFs to images and runs <code>pytesseract</code> OCR to recognize text, making classification possible even for scanned or image-based documents.
+    </p>
+
+    <h2>📦 Requirements</h2>
+    <ul>
+      <li>Python 3.8+</li>
+      <li><code>faiss-cpu</code></li>
+      <li><code>sentence-transformers</code></li>
+      <li><code>numpy</code></li>
+      <li><code>pdfplumber</code></li>
+      <li><code>pytesseract</code> + <code>Pillow</code></li>
+      <li><code>python-docx</code></li>
+      <li>System-level: <code>tesseract-ocr</code> installed</li>
+    </ul>
+    <div class="code-snippet">
+    <pre><code>
+    pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx
+
+    # system: sudo apt install tesseract-ocr
+    </code></pre></div>
+
+    <h2>🛠️ Quick Start</h2>
+    <div class="code-snippet">
+    <ol>
+      <li>Clone the repo:
+        <pre><code>git clone https://github.com/ahhyoushh/filesense.git
+cd filesense</code></pre>
+      </li></ol></div>
+      <li>Edit <code>folder_labels.json</code> to define your folders.</li>
+      <li>Build the FAISS index:
+        <pre><code>python create_index.py</code></pre>
+      </li>
+      <li>Drop files into <code>files/</code> and run:
+        <div class="code-snippet">
+        <pre><code>python script.py</code></pre>
+      </li></div>
+      <li>Check your sorted folders (e.g. Physics/, English/, Unsorted/).</li>
+    </ol>
+
+    <h2>⚙️ Config You Should Know</h2>
+    <div class="code-snippet">
+    <ul>
+      <li><b>files_dir:</b> Folder to scan (in <code>script.py</code>).</li>
+      <li><b>THRESHOLD:</b> Similarity cutoff (default 0.45).</li>
+      <li><b>MODEL_NAME:</b> Change SentenceTransformer model (in <code>create_index.py</code>).</li>
+    </ul></div>
+
+    <h2>🔮 Future Additions</h2>
+    <ul>
+      <li>Cli arguments for file directory.</li>
+      <li>Multithreading for perfomance.</li>
+      <li>much needed perfomance Improvements for large file sets.</li>
+      <li>Improve visual doc recognition (like screenshots).</li>
+      <li>Auto-rename files using extracted metadata (dates, titles, etc.).</li>
+      <li>Add a web UI for preview and undo moves.</li>
+      <li>Incremental indexing — add new folders without full rebuild.</li>
+    </ul>
+
+    <h2>💡 Notes & Design Thoughts</h2>
+    <p>
+      The aggressive OCR fallback is intentional — it’s what makes FileSense actually <em>practical</em> for messy, real-life files.  
+      Using FAISS + SentenceTransformers gives it “understanding” of your content, not just filenames.  
+      And since it’s offline, you can run it anywhere.
+    </p>
+
+    <div style="margin-top:40px;text-align:center;">
+      <a href="https://github.com/ahhyoushh/filesense" target="_blank" 
+         style="color:#00b4d8;border:1px solid #00b4d8;padding:8px 16px;
+                border-radius:6px;text-decoration:none;transition:0.2s;">
+        🔗 View on GitHub
+      </a>
+    </div>
+
+    <footer style="margin-top:60px;color:#888;text-align:center;">
+      © 2025 Ayush Bhalerao
+    </footer>
+  </main>
+</body>
+</html>
