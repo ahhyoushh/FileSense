@@ -109,6 +109,8 @@ Check output folders created in repo root (e.g. Physics/, Invoices/, Unsorted/).
 ## 🔮 Future additions
 - cli arguments for folders
 
+- add multithreading.
+
 - Perfomance improvement.
 
 - Improve image classification for purely visual docs (screenshots with very little text).
