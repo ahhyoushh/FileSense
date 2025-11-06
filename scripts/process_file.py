@@ -2,24 +2,23 @@ import os, shutil, json, faiss
 import time
 from sentence_transformers import SentenceTransformer
 import numpy as np
-from create_index import FAISS_INDEX_FILE, LABELS_FILE, MODEL_NAME
+from create_index import MODEL_NAME
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent  # main FileSense folder
+FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
+LABELS_FILE = BASE_DIR / "folder_labels.json"
 
-# -----------------------
-# CONFIG
-# -----------------------
+THRESHOLD = 0.45  # similarity threshold
 
-THRESHOLD = 0.45  # similarity threshold 
-# load faiss index 
-index = faiss.read_index(FAISS_INDEX_FILE)
+index = faiss.read_index(str(FAISS_INDEX_FILE))
 with open(LABELS_FILE, "r", encoding="utf-8") as f:
     folder_data = json.load(f)
 
 FOLDER_LABELS = list(folder_data.keys())
 FOLDER_DESC = list(folder_data.values())
-
-# load model
 model = SentenceTransformer(MODEL_NAME, device="cpu")
+
 
 
 # -----------------------
@@ -135,8 +134,8 @@ def process_file(file_path):
 
     predicted_folder, similarity = classify_file(text)
 
-    os.makedirs(predicted_folder, exist_ok=True)
-    shutil.move(file_path, os.path.join(predicted_folder, os.path.basename(file_path)))
+    os.makedirs(BASE_DIR / predicted_folder, exist_ok=True)
+    shutil.move(file_path, os.path.join(BASE_DIR / predicted_folder, os.path.basename(file_path)))
     
     time_taken = time.time() - start_time             
     

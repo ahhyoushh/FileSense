@@ -2,130 +2,195 @@
 
 ## 🔍 Overview
 
-I got sick of the Downloads chaos: random JSONs, reports, scanned PDFs, and screenshots all mixed up.  
-**FileSense** is a practical Python tool that automatically organizes your files by *meaning*, not just extension.
+Tired of your Downloads folder looking like a digital junkyard , random PDFs, reports, screenshots, and JSONs all over?  
+**FileSense** is an AI-powered local file organizer that sorts documents **by meaning**, not just by name or type.
 
-It blends semantic embeddings (SentenceTransformers) with a FAISS index to map a file’s content to human-readable folder labels. For scanned PDFs it even falls back to OCR.
-I found it weirdly satisfying using this script lol.
-I am still working on this project...
+It uses **SentenceTransformers** and **FAISS** to understand what each file *means*, then moves it into the right folder automatically.  
+For scanned documents, it even uses **OCR (Optical Character Recognition)** to read text from images and classify them correctly.
 
-### Check out the webpage for example video
-[FileSense](https://ahhyoushh.github.io/FileSense)
+> 🎥 **Demo / Webpage:** [FileSense](https://ahhyoushh.github.io/FileSense)
 
-## ⚙️ Core Idea (what makes it smart)
+---
 
-- **Semantic matching**: instead of relying only on filenames or extensions, FileSense encodes folder *descriptions* and file *content* into embeddings and compares them. That means files get grouped by intent: invoices with invoices, lab reports with lab reports, config files with other configs.
-- **FAISS index**: pre-builds embeddings for your folder labels (fast nearest-neighbour lookups).
-- **OCR fallback for PDFs**: if a PDF has no extracted text, FileSense runs OCR (pdfplumber → PIL → pytesseract) so scanned documents still get classified.
-- **Keyword boosting**: subject-specific keywords (physics, chemistry, python, etc.) give a small similarity boost so short filenames don't get lost.
-- **Local-first**: runs on your machine (desktop or an old phone/Termux if you want), nothing needs to leave your disk.
+## ⚙️ Core Features
 
-## 🔧 What’s inside
+| Feature | Description |
+|----------|-------------|
+| 🧠 **Semantic Sorting** | Understands file content instead of just names using transformer embeddings. |
+| ⚡ **FAISS Indexing** | Builds a fast semantic search index for folder labels. |
+| 👀 **OCR Fallback** | Extracts text from scanned or image-based PDFs using `pdfplumber + pytesseract`. |
+| 🧩 **Keyword Boosting** | Gives small weight bonuses for subject-specific terms (like "newton", "sql", "essay", etc). |
+| 🧵 **Multithreading** | Handles multiple files simultaneously for faster performance. |
+| 🕵️ **Real-time Watcher** | Detects and organizes files automatically as soon as new ones appear. |
+| 🖥️ **GUI Launcher** | Desktop interface with start/stop controls, logs, and tray icon. |
+| 🔒 **Offline Privacy** | Works entirely offline — nothing leaves your device. |
 
-- `files/` — the folder you point FileSense at (configurable).
-- `script.py` — main processor: extracts text, classifies, and moves files.
-- `create_index.py` — builds a FAISS index from `folder_labels.json`.
-- `folder_labels.json` — human-friendly folder labels + descriptions used for semantic indexing.
-- `folder_embeddings.faiss` — (generated) FAISS index file.
+---
 
-## 🔬 How it works (detailed)
+## 📁 Folder Structure
 
-1. **Index creation** (`create_index.py`)
-   - Loads `folder_labels.json` (label → description).
-   - Appends a few extra keyword examples per label to strengthen signal.
-   - Uses `SentenceTransformer` (`all-mpnet-base-v2` by default) to generate normalized embeddings for each folder label description.
-   - Writes a FAISS index (`folder_embeddings.faiss`) for fast dot-product similarity lookups.
-
-2. **Processing files** (`script.py`)
-   - Walk `files/` directory and handle each file:
-     - **Text extraction**:
-       - `.pdf`: try `pdfplumber` text extraction. If a page returns no text, convert page to image and run `pytesseract` OCR on it. If all fails, fallback to filename.
-       - `.docx`: read with `python-docx`.
-       - `.txt`: read as UTF-8 text.
-       - Other file types: fallback to filename (so images or binaries are still handled).
-     - **Embed & classify**:
-       - Clean and normalize text.
-       - Use the same SentenceTransformer model to encode the file text.
-       - Compute cosine similarity between file embedding and precomputed folder description embeddings.
-       - Apply a small boost if keywords (from `keyword_map`) are found in the text.
-       - If the best similarity ≥ `THRESHOLD` (0.45 by default), move the file to that folder. Otherwise, try keyword-only match or move to `Unsorted`.
-     - **Move**: create predicted folder and `shutil.move()` the file.
-
-3. **Why OCR matters**
-   - Many real-world docs (photos of receipts, scanned lab reports) have zero extractable text. Without OCR, a scanned invoice looks like an image and would end up unsorted. The PDF → page image → `pytesseract` flow gives FileSense the ability to classify scanned documents by their actual text — huge win for real downloads.
-
-## 📦 Requirements
-
-- Python 3.8+
-- `faiss` (CPU version)
-- `sentence-transformers`
-- `numpy`
-- `pandas` (optional if you use logging/analysis)
-- `pdfplumber` (for PDFs)
-- `pytesseract` + `Pillow` (OCR)
-- `python-docx` (for .docx)
-- `scikit-learn` (optional; current code uses cosine via numpy but you may want metrics)
-- System: `tesseract-ocr` installed (for `pytesseract` to work)
-
-Install example:
-
-```bash
-pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx
-# plus system-level: sudo apt install tesseract-ocr
+```
+FileSense/
+│
+├── create_index.py          # Builds FAISS index for folder labels
+├── process_file.py          # Extracts, classifies, and moves files
+├── script.py                # CLI runner (bulk organizer)
+├── watcher_script.py        # Watches directory for new files
+├── launcher.py              # GUI app to manage scripts
+├── multhread.py             # Multithreading handler
+├── folder_labels.json       # Folder names and semantic descriptions
+├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
+└── files/                   # Drop unorganized files here
 ```
 
-## 🛠️ Quick start
+---
 
-Clone:
+## 🔬 How It Works
+
+### 1️⃣ Create the FAISS Index (`create_index.py`)
+
+- Reads folder names and descriptions from `folder_labels.json`.
+- Enriches descriptions with extra keywords for better context.
+- Uses **SentenceTransformer (`all-mpnet-base-v2`)** to encode them.
+- Builds a FAISS index for fast similarity lookups.
+
+```bash
+python create_index.py
+```
+> Output: `folder_embeddings.faiss` + updated `folder_labels.json`
+
+---
+
+### 2️⃣ Process Files in Bulk (`script.py`)
+
+- Scans your target folder (default: `./files`)
+- For each file:
+  - Extracts text via PDF/DOCX/TXT/OCR.
+  - Encodes the text and finds the best-matching folder embedding.
+  - If similarity ≥ 0.45 (default threshold), moves it there.
+  - Otherwise, falls back to keyword matches.
+
+**Supports multithreading** via `multhread.py`:
+```bash
+python script.py --dir ./files --threads 8
+```
+
+---
+
+### 3️⃣ Watch Folder in Real-time (`watcher_script.py`)
+
+Automatically monitors a directory and sorts files as soon as they appear.
+
+```bash
+python watcher_script.py --dir ./files
+```
+
+Uses `watchdog` to detect file creation events and passes each new file to `process_file()`.
+
+---
+
+### 4️⃣ Launch with GUI (`launcher.py`)
+
+Tired of the terminal? FileSense includes a full desktop launcher with buttons, logs, and tray control.
+
+- Start/Stop the main processor (`script.py`)
+- Start/Stop the real-time watcher
+- View live logs directly in the window
+- Minimize to system tray and keep running in the background
+
+Run it like this:
+```bash
+python launcher.py
+```
+
+---
+
+## 🧩 Configuration Options
+
+| Setting | File | Description |
+|----------|------|-------------|
+| `--dir` / `-d` | script.py / watcher_script.py | Directory to scan or watch. |
+| `--threads` / `-t` | script.py | Maximum number of concurrent threads. |
+| `THRESHOLD` | process_file.py | Minimum similarity to accept match (default 0.45). |
+| `MODEL_NAME` | create_index.py | SentenceTransformer model (default: `all-mpnet-base-v2`). |
+
+---
+
+## 🛠️ Installation
+
+### Requirements
+- Python 3.8+
+- faiss-cpu
+- sentence-transformers
+- numpy
+- pdfplumber
+- pytesseract + Pillow
+- python-docx
+- watchdog
+- pystray (for launcher GUI)
+
+### Install All
+```bash
+pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray
+sudo apt install tesseract-ocr   # (Linux)
+```
+
+---
+
+## 🚀 Quick Start
+
+1. Clone the repo:
 ```bash
 git clone https://github.com/ahhyoushh/filesense.git
 cd filesense
 ```
 
+2. Edit `folder_labels.json` to define your folder names and descriptions.
 
-### Edit folder_labels.json to match the folders you want (labels → descriptions).
-
-### Create FAISS index:
-``` bash 
+3. Create the FAISS index:
+```bash
 python create_index.py
-# outputs folder_embeddings.faiss and updates folder_labels.json
 ```
 
-### Drop files into files/ and run:
+4. Drop unorganized files into `/files` and run:
 ```bash
 python script.py
 ```
+or
+```bash
+python launcher.py
+```
 
-Check output folders created in repo root (e.g. Physics/, Invoices/, Unsorted/).
+---
 
-## ⚙️ Config you should know
+## 💡 Future Plans
 
-- files_dir in script.py — folder to scan.
+- Faster embedding caching
+- Incremental FAISS updates (no full rebuild needed)
+- Better classification for image-only documents
+- Undo/recovery feature for moved files
+- Auto-renaming using extracted metadata
+- Simple web dashboard for previews and control
 
-- THRESHOLD — minimum similarity score to accept a semantic match. Lower = more aggressive sorting; higher = more conservative.
+---
 
-- MODEL_NAME in create_index.py — change to a different SentenceTransformer if you want a lighter/heavier model.
+## 🧠 What I Learned
 
-## 🔮 Future additions
-- cli arguments for folders
+- **Natural Language Embeddings:** how to use `SentenceTransformer` for semantic similarity tasks.  
+- **FAISS Indexing:** building a local vector database for fast nearest-neighbor searches.  
+- **Threading:** managing concurrent file operations without blocking I/O.  
+- **OCR Processing:** extracting readable text from scanned or image-only PDFs.  
+- **Automation with Watchdog:** event-driven file monitoring in real time.  
+- **GUI Development:** building a full-featured Python launcher with Tkinter and pystray.  
+- **Modular Architecture:** clean separation between data prep, processing, and user interaction layers.
 
-- add multithreading.
+---
 
-- Perfomance improvement.
+## 🧾 License
 
-- Improve image classification for purely visual docs (screenshots with very little text).
+MIT License © 2025 Ayush Bhalerao  
+Feel free to fork, modify, and contribute!
 
-- Add file renaming suggestions using detected metadata (dates, invoice numbers).
+---
 
-- Add a small web UI for preview + undo moves.
-
-- Add incremental indexing so adding a new label doesn’t require rebuilding everything.
-
-## 💡 Notes & design thoughts
-
-- The OCR fallback is intentionally aggressive, many real-world documents are scans or photos. That “extra step” is what makes FileSense actually useful instead of just neat.
-
-- FAISS + SentenceTransformers lets you use meaning rather than brittle filename heuristics. That combination is small and local but powerful.
-
-- Built keeping privacy and speed in mind, you can run this on an old phone via Termux or on a laptop. No cloud required.
-
+> “Built for chaos, made it make sense.” ✨

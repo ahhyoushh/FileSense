@@ -1,6 +1,6 @@
 import threading
 import os
-from process_file import process_file, files_dir 
+from process_file import process_file
 import time
 
 
