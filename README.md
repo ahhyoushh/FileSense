@@ -2,7 +2,7 @@
 
 ## 🔍 Overview
 
-Tired of your Downloads folder looking like a digital junkyard , random PDFs, reports, screenshots, and JSONs all over?  
+Tired of your Downloads folder looking like a digital junkyard — random PDFs, reports, screenshots, and JSONs all over?  
 **FileSense** is an AI-powered local file organizer that sorts documents **by meaning**, not just by name or type.
 
 It uses **SentenceTransformers** and **FAISS** to understand what each file *means*, then moves it into the right folder automatically.  
@@ -32,12 +32,14 @@ For scanned documents, it even uses **OCR (Optical Character Recognition)** to r
 ```
 FileSense/
 │
-├── create_index.py          # Builds FAISS index for folder labels
-├── process_file.py          # Extracts, classifies, and moves files
-├── script.py                # CLI runner (bulk organizer)
-├── watcher_script.py        # Watches directory for new files
-├── launcher.py              # GUI app to manage scripts
-├── multhread.py             # Multithreading handler
+├── scripts/                 # All runnable scripts live here
+│   ├── create_index.py      # Builds FAISS index for folder labels
+│   ├── process_file.py      # Extracts, classifies, and moves files
+│   ├── script.py            # CLI runner (bulk organizer)
+│   ├── watcher_script.py    # Watches directory for new files
+│   ├── launcher.py          # GUI app to manage scripts (optional run from repo root)
+│   └── multhread.py         # Multithreading handler
+│
 ├── folder_labels.json       # Folder names and semantic descriptions
 ├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
 └── files/                   # Drop unorganized files here
@@ -47,7 +49,7 @@ FileSense/
 
 ## 🔬 How It Works
 
-### 1️⃣ Create the FAISS Index (`create_index.py`)
+### 1️⃣ Create the FAISS Index (`scripts/create_index.py`)
 
 - Reads folder names and descriptions from `folder_labels.json`.
 - Enriches descriptions with extra keywords for better context.
@@ -55,13 +57,13 @@ FileSense/
 - Builds a FAISS index for fast similarity lookups.
 
 ```bash
-python create_index.py
+python scripts/create_index.py
 ```
 > Output: `folder_embeddings.faiss` + updated `folder_labels.json`
 
 ---
 
-### 2️⃣ Process Files in Bulk (`script.py`)
+### 2️⃣ Process Files in Bulk (`scripts/script.py`)
 
 - Scans your target folder (default: `./files`)
 - For each file:
@@ -70,37 +72,41 @@ python create_index.py
   - If similarity ≥ 0.45 (default threshold), moves it there.
   - Otherwise, falls back to keyword matches.
 
-**Supports multithreading** via `multhread.py`:
+**Supports multithreading** via `scripts/multhread.py`:
 ```bash
-python script.py --dir ./files --threads 8
+python scripts/script.py --dir ./files --threads 8
 ```
 
 ---
 
-### 3️⃣ Watch Folder in Real-time (`watcher_script.py`)
+### 3️⃣ Watch Folder in Real-time (`scripts/watcher_script.py`)
 
 Automatically monitors a directory and sorts files as soon as they appear.
 
 ```bash
-python watcher_script.py --dir ./files
+python scripts/watcher_script.py --dir ./files
 ```
 
-Uses `watchdog` to detect file creation events and passes each new file to `process_file()`.
+Uses `watchdog` to detect file creation events and passes each new file to `scripts/process_file.py`.
 
 ---
 
-### 4️⃣ Launch with GUI (`launcher.py`)
+### 4️⃣ Launch with GUI (`scripts/launcher.py`)
 
 Tired of the terminal? FileSense includes a full desktop launcher with buttons, logs, and tray control.
 
-- Start/Stop the main processor (`script.py`)
+- Start/Stop the main processor (`scripts/script.py`)
 - Start/Stop the real-time watcher
 - View live logs directly in the window
 - Minimize to system tray and keep running in the background
 
-Run it like this:
+Run it like this from repo root:
 ```bash
-python launcher.py
+python -m scripts.launcher
+```
+or directly:
+```bash
+python scripts/launcher.py
 ```
 
 ---
@@ -109,10 +115,10 @@ python launcher.py
 
 | Setting | File | Description |
 |----------|------|-------------|
-| `--dir` / `-d` | script.py / watcher_script.py | Directory to scan or watch. |
-| `--threads` / `-t` | script.py | Maximum number of concurrent threads. |
-| `THRESHOLD` | process_file.py | Minimum similarity to accept match (default 0.45). |
-| `MODEL_NAME` | create_index.py | SentenceTransformer model (default: `all-mpnet-base-v2`). |
+| `--dir` / `-d` | scripts/script.py / scripts/watcher_script.py | Directory to scan or watch. |
+| `--threads` / `-t` | scripts/script.py | Maximum number of concurrent threads. |
+| `THRESHOLD` | scripts/process_file.py | Minimum similarity to accept match (default 0.45). |
+| `MODEL_NAME` | scripts/create_index.py | SentenceTransformer model (default: `all-mpnet-base-v2`). |
 
 ---
 
@@ -149,16 +155,16 @@ cd filesense
 
 3. Create the FAISS index:
 ```bash
-python create_index.py
+python scripts/create_index.py
 ```
 
 4. Drop unorganized files into `/files` and run:
 ```bash
-python script.py
+python scripts/script.py
 ```
 or
 ```bash
-python launcher.py
+python scripts/launcher.py
 ```
 
 ---
@@ -176,21 +182,20 @@ python launcher.py
 
 ## 🧠 What I Learned
 
-- **Natural Language Embeddings:** how to use `SentenceTransformer` for semantic similarity tasks.  
-- **FAISS Indexing:** building a local vector database for fast nearest-neighbor searches.  
-- **Threading:** managing concurrent file operations without blocking I/O.  
-- **OCR Processing:** extracting readable text from scanned or image-only PDFs.  
-- **Automation with Watchdog:** event-driven file monitoring in real time.  
-- **GUI Development:** building a full-featured Python launcher with Tkinter and pystray.  
+- **Natural Language Embeddings:** how to use `SentenceTransformer` for semantic similarity tasks.
+- **FAISS Indexing:** building a local vector database for fast nearest-neighbor searches.
+- **Threading:** managing concurrent file operations without blocking I/O.
+- **OCR Processing:** extracting readable text from scanned or image-only PDFs.
+- **Automation with Watchdog:** event-driven file monitoring in real time.
+- **GUI Development:** building a full-featured Python launcher with Tkinter and pystray.
 - **Modular Architecture:** clean separation between data prep, processing, and user interaction layers.
 
 ---
 
 ## 🧾 License
 
-MIT License © 2025 Ayush Bhalerao  
-Feel free to fork, modify, and contribute!
+MIT License © 2025 Ayush Bhalerao
 
 ---
 
-> “Built for chaos, made it make sense.” ✨
+> “Built for chaos — made it make sense.” ✨
