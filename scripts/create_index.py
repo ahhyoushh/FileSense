@@ -5,8 +5,8 @@ from sentence_transformers import SentenceTransformer
 import json
 
 # --------- Config ---------
-FAISS_INDEX_FILE = "folder_embeddings.faiss"
-LABELS_FILE = "folder_labels.json"
+FAISS_INDEX_FILE = "./folder_embeddings.faiss"
+LABELS_FILE = "./folder_labels.json"
 MODEL_NAME = "all-mpnet-base-v2"    # You can change to any SentenceTransformer model
 
 def create_faiss_index():
