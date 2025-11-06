@@ -34,8 +34,14 @@ if __name__ == "__main__":
     observer.schedule(event_handler, files_dir, recursive=False)
     observer.start()
     try:
+        ## CREATING stop.flag TO STOP THE SCRIPT ##
+        FLAG_FILE = "stop.flag"
         while True:
-            time.sleep(2)  # keeps the program running
+            if os.path.exists(FLAG_FILE):
+                print("🛑 Stop flag detected, shutting down...")
+                os.remove(FLAG_FILE)
+                break
+            time.sleep(2)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
