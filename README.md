@@ -170,7 +170,7 @@ python scripts/launcher.py
 ---
 
 ## 💡 Future Plans
-
+- Auto generated folder descriptions for folder names
 - Faster embedding caching
 - Incremental FAISS updates (no full rebuild needed)
 - Better classification for image-only documents
