@@ -39,3 +39,14 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
+
+## CREATING stop.flag TO STOP THE SCRIPT ##
+FLAG_FILE = "stop.flag"
+
+while True:
+    if os.path.exists(FLAG_FILE):
+        print("🛑 Stop flag detected, shutting down...")
+        os.remove(FLAG_FILE)
+        break
+    # your normal monitoring logic here
+    time.sleep(2)
