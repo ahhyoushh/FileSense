@@ -8,7 +8,7 @@ from create_index import FAISS_INDEX_FILE, LABELS_FILE, MODEL_NAME
 # -----------------------
 # CONFIG
 # -----------------------
-files_dir = "./files"
+
 THRESHOLD = 0.45  # similarity threshold 
 # load faiss index 
 index = faiss.read_index(FAISS_INDEX_FILE)
