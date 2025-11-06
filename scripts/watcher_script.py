@@ -6,30 +6,75 @@ import time
 import argparse
 from pathlib import Path
 
-
-
 parser = argparse.ArgumentParser(description="Process files in a directory.")
 parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to organise.")
+parser.add_argument("--wait-interval", type=float, default=0.5, help="Seconds between size checks.")
+parser.add_argument("--max-checks", type=int, default=20, help="Max checks to wait for stable size.")
 args = parser.parse_args()
 files_dir = args.dir
+WAIT_INTERVAL = args.wait_interval
+MAX_CHECKS = args.max_checks
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-FLAG_FILE = BASE_DIR / "stop.flag"
+TEMP_SUFFIXES = (".crdownload", ".part", ".tmp", ".partial", ".download", ".~download", ".aria2")
+
+def looks_temporary(name):
+    return name.lower().endswith(TEMP_SUFFIXES)
 
 class Watcher(FileSystemEventHandler):
+    def _wait_and_process(self, path):
+        """Inline simple waiter: block until file size stabilizes or timeout, then process."""
+        name = os.path.basename(path)
+        checks = 0
+        prev_size = -1
+        while checks < MAX_CHECKS:
+            if os.path.exists(path):
+                try:
+                    cur = os.path.getsize(path)
+                except OSError:
+                    cur = -1
+                if cur > 0 and cur == prev_size:
+                    break
+                prev_size = cur
+            else:
+                pass
+            checks += 1
+            time.sleep(WAIT_INTERVAL)
+
+        if not os.path.exists(path):
+            print(f"[!] Not found after wait: {name}")
+            return
+
+        if looks_temporary(name):
+            print(f"[-] Skipping temp-like file name: {name}")
+            return
+
+        try:
+            print(f"[+] Processing: {name}")
+            process_file(path)
+        except Exception as e:
+            print(f"[!] Error processing {path}: {e}")
+
     def on_created(self, event):
         if event.is_directory:
             return
-        file_path = event.src_path
-        print(f"[+] New file detected: {os.path.basename(file_path)}")
-        try:
-            process_file(file_path)
-        except Exception as e:
-            print(f"[!] Error processing {file_path}: {e}")
+        path = event.src_path
+        print(f"[+] Created event: {os.path.basename(path)}")
+        self._wait_and_process(path)
+
+    def on_moved(self, event):
+        if event.is_directory:
+            return
+        dest = getattr(event, "dest_path", None) or getattr(event, "dest_path", None)
+        if dest:
+            print(f"[+] Moved event: {os.path.basename(event.src_path)} -> {os.path.basename(dest)}")
+            self._wait_and_process(dest)
 
 if __name__ == "__main__":
-    print("Starting folder watcher...")
-    print(f"[WATCHING] Folder: {os.path.abspath(files_dir)}")
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    FLAG_FILE = BASE_DIR / "stop.flag"
+
+    print("Starting folder watcher (simple mode)...")
+    print(f"[WATCHING] {os.path.abspath(files_dir)}")
 
     event_handler = Watcher()
     observer = Observer()
@@ -37,7 +82,11 @@ if __name__ == "__main__":
     observer.start()
     try:
         while True:
-            time.sleep(2)
+            if FLAG_FILE.exists():
+                print("[*] stop.flag detected — stopping watcher.")
+                observer.stop()
+                break
+            time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()

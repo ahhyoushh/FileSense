@@ -181,7 +181,7 @@ python scripts/launcher.py
 ---
 
 ## 🧠 What I Learned
-
+- **How web browsers download:** Dealt with practical edge cases like .tmp files, file locks, and renames.
 - **Natural Language Embeddings:** how to use `SentenceTransformer` for semantic similarity tasks.
 - **FAISS Indexing:** building a local vector database for fast nearest-neighbor searches.
 - **Threading:** managing concurrent file operations without blocking I/O.
