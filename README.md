@@ -192,6 +192,7 @@ python scripts/launcher.py
 
 ---
 
+
 ## 🧾 License
 
 MIT License © 2025 Ayush Bhalerao
@@ -199,3 +200,4 @@ MIT License © 2025 Ayush Bhalerao
 ---
 
 > “Built for chaos — made it make sense.” ✨
+> The counter on gtihub.io is fake lmao...
