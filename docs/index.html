@@ -32,9 +32,10 @@
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Smooth scrolling */
     html {
       scroll-behavior: smooth;
     }
@@ -66,6 +67,86 @@
       border-color: var(--accent);
       transform: translateX(-4px);
       box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      right: 24px;
+      top: 120px;
+      width: 250px;
+      max-height: calc(100vh - 150px);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      overflow-y: auto;
+      z-index: 500;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    .sidebar h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .sidebar-tree {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar-tree li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar-tree a {
+      display: block;
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      margin: 4px 0;
+    }
+
+    .sidebar-tree a:hover {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-light);
+      border-left-color: var(--accent);
+      padding-left: 16px;
+    }
+
+    .sidebar-tree a.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-light);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-tree .level-2 {
+      margin-left: 16px;
+      font-size: 0.85rem;
     }
 
     /* Header */
@@ -128,6 +209,27 @@
       animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
     }
 
+    header p:first-of-type {
+      margin-bottom: 16px;
+    }
+
+    .header-date {
+      position: absolute;
+      left: 24px;
+      top: 80px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      backdrop-filter: none;
+      letter-spacing: 0;
+      text-transform: capitalize;
+      animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -141,9 +243,10 @@
 
     /* Main Container */
     main {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 60px 24px;
+      margin-right: 300px;
     }
 
     /* Sections */
@@ -174,6 +277,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      scroll-margin-top: 80px;
     }
 
     h2::before {
@@ -189,6 +293,7 @@
       font-weight: 600;
       margin: 24px 0 12px 0;
       color: var(--accent-light);
+      scroll-margin-top: 80px;
     }
 
     p {
@@ -443,6 +548,7 @@
       border-top: 1px solid var(--border);
       color: var(--text-secondary);
       margin-top: 80px;
+      margin-right: 300px;
     }
 
     footer p {
@@ -451,6 +557,25 @@
     }
 
     /* Responsive */
+    @media (max-width: 1200px) {
+      main {
+        margin-right: 0;
+      }
+
+      footer {
+        margin-right: 0;
+      }
+
+      .sidebar {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        max-height: 400px;
+        margin: 40px 0;
+      }
+    }
+
     @media (max-width: 768px) {
       header h1 {
         font-size: 2.5rem;
@@ -466,6 +591,11 @@
 
       main {
         padding: 40px 16px;
+        margin-right: 0;
+      }
+
+      footer {
+        margin-right: 0;
       }
 
       .feature-grid {
@@ -495,6 +625,15 @@
         left: 16px;
         padding: 10px 14px;
       }
+
+      .sidebar {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        max-height: 300px;
+        margin: 40px 0;
+      }
     }
   </style>
 </head>
@@ -503,14 +642,32 @@
   <a href="https://ahhyoushh.github.io" class="back-button" title="Back to Portfolio">← Back</a>
 
   <header>
+    <div class="header-date">November, 2025</div>
     <h1>🗂️ FileSense</h1>
     <p>AI-powered local file organizer that sorts documents by meaning, not just type. Uses semantic embeddings, FAISS indexing, and OCR to intelligently categorize your chaotic files.</p>
-    <p>November, 2025</p>
   </header>
+
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <h3>📑 Contents</h3>
+    <ul class="sidebar-tree">
+      <li><a href="#overview">Quick Overview</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li class="level-2"><a href="#create-index">Create FAISS Index</a></li>
+      <li class="level-2"><a href="#process-files">Process Files in Bulk</a></li>
+      <li class="level-2"><a href="#watch-folder">Watch Folder</a></li>
+      <li class="level-2"><a href="#launch-gui">Launch GUI</a></li>
+      <li><a href="#structure">Project Structure</a></li>
+      <li><a href="#features">Core Features</a></li>
+      <li><a href="#installation">Installation & Setup</a></li>
+      <li><a href="#configuration">Configuration</a></li>
+      <li><a href="#learned">What I Learned</a></li>
+    </ul>
+  </nav>
 
   <main>
     <!-- Quick Overview -->
-    <section>
+    <section id="overview">
       <h2>Quick Overview</h2>
       <p>Tired of your Downloads folder looking like a digital junkyard? FileSense uses advanced AI to understand what each file is about and organizes it automatically.</p>
       
@@ -542,41 +699,46 @@
       </div>
 
       <div class="demo-container">
-       <iframe width="560" height="315"
-        src="https://www.youtube.com/embed/VixLF9syeCg"
-        title="FileSense Demo Video"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-        style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-      </iframe>
+        <iframe width="560" height="315"
+          src="https://www.youtube.com/embed/f27I2L7uoC8"
+          title="FileSense Demo Video"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        </iframe>
+      </div>
+
+      <div class="btn-group" style="justify-content: center; margin-top: 24px;">
+        <a href="https://youtu.be/VixLF9syeCg" class="btn btn-secondary">📽️ Demo Video</a>
+        <a href="https://deepwiki.com/ahhyoushh/FileSense" class="btn btn-secondary">📖 Deep Wiki</a>
       </div>
     </section>
 
     <!-- How It Works -->
-    <section>
+    <section id="how-it-works">
       <h2>How It Works</h2>
       <p>FileSense follows a four-step pipeline: extract text, generate embeddings, find best match, move file.</p>
 
-      <h3>1️⃣ Create FAISS Index</h3>
+      <h3 id="create-index">1️⃣ Create FAISS Index</h3>
       <p>Build a semantic search index from your folder descriptions:</p>
       <div class="code-block">python scripts/create_index.py</div>
 
-      <h3>2️⃣ Process Files in Bulk</h3>
+      <h3 id="process-files">2️⃣ Process Files in Bulk</h3>
       <p>Scan and classify all files with optional multithreading:</p>
       <div class="code-block">python scripts/script.py --dir ./files --threads 8</div>
 
-      <h3>3️⃣ Watch Folder Real-time</h3>
+      <h3 id="watch-folder">3️⃣ Watch Folder Real-time</h3>
       <p>Automatically organize new files as they arrive:</p>
       <div class="code-block">python scripts/watcher_script.py --dir ./files</div>
 
-      <h3>4️⃣ Launch with GUI</h3>
+      <h3 id="launch-gui">4️⃣ Launch with GUI</h3>
       <p>Simple desktop interface with logs and tray control:</p>
       <div class="code-block">python scripts/launcher.py</div>
     </section>
 
     <!-- Project Structure -->
-    <section>
+    <section id="structure">
       <h2>Project Structure</h2>
       <div class="structure-box">
 <pre>FileSense/
@@ -594,7 +756,7 @@
     </section>
 
     <!-- Core Features -->
-    <section>
+    <section id="features">
       <h2>Core Features</h2>
       <table>
         <tr>
@@ -637,7 +799,7 @@
     </section>
 
     <!-- Installation & Setup -->
-    <section>
+    <section id="installation">
       <h2>Installation & Setup</h2>
 
       <h3>Requirements</h3>
@@ -662,7 +824,7 @@
     </section>
 
     <!-- Configuration -->
-    <section>
+    <section id="configuration">
       <h2>Configuration Options</h2>
       <table>
         <tr>
@@ -694,7 +856,7 @@
     </section>
 
     <!-- What I Learned -->
-    <section>
+    <section id="learned">
       <h2>What I Learned</h2>
 
       <div class="learned-grid">
@@ -778,11 +940,39 @@
   </main>
 
   <footer>
-    <div id="views" style="font-size:18px;font-weight:600;color:#ccc;">✨ Views: <span style="color:#00ff99;">1</span></div>
-
     <p>© 2025 Ayush Bhalerao • ts cool icl</p>
   </footer>
 
+  <script>
+    // Sidebar active link tracking
+    const sidebarLinks = document.querySelectorAll('.sidebar-tree a');
+    
+    function updateActiveLink() {
+      sidebarLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        }
+      });
+    }
 
+    window.addEventListener('scroll', updateActiveLink);
+    
+    // Smooth scroll for sidebar links
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
