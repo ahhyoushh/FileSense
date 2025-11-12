@@ -185,6 +185,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      -webkit-text-fill-color: transparent;
       animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -626,6 +627,13 @@
         padding: 10px 14px;
       }
 
+      /* mobile header date tweak */
+      .header-date {
+        top: 24px; /* Move up from 80px */
+        left: 24px;
+        font-size: 0.75rem; /* Slightly smaller */
+      }
+
       .sidebar {
         position: relative;
         right: auto;
@@ -637,7 +645,6 @@
     }
   </style>
 </head>
-
 <body>
   <a href="https://ahhyoushh.github.io" class="back-button" title="Back to Portfolio">← Back</a>
 
@@ -647,7 +654,6 @@
     <p>AI-powered local file organizer that sorts documents by meaning, not just type. Uses semantic embeddings, FAISS indexing, and OCR to intelligently categorize your chaotic files.</p>
   </header>
 
-  <!-- Sidebar Navigation -->
   <nav class="sidebar">
     <h3>📑 Contents</h3>
     <ul class="sidebar-tree">
@@ -666,11 +672,10 @@
   </nav>
 
   <main>
-    <!-- Quick Overview -->
     <section id="overview">
       <h2>Quick Overview</h2>
       <p>Tired of your Downloads folder looking like a digital junkyard? FileSense uses advanced AI to understand what each file is about and organizes it automatically.</p>
-      
+
       <div class="feature-grid">
         <div class="feature-card">
           <h4>🧠 Semantic Understanding</h4>
@@ -715,7 +720,6 @@
       </div>
     </section>
 
-    <!-- How It Works -->
     <section id="how-it-works">
       <h2>How It Works</h2>
       <p>FileSense follows a four-step pipeline: extract text, generate embeddings, find best match, move file.</p>
@@ -737,11 +741,9 @@
       <div class="code-block">python scripts/launcher.py</div>
     </section>
 
-    <!-- Project Structure -->
     <section id="structure">
       <h2>Project Structure</h2>
-      <div class="structure-box">
-<pre>FileSense/
+      <div class="structure-box"><pre>FileSense/
 ├── scripts/
 │   ├── create_index.py      # Build FAISS index from folder labels
 │   ├── process_file.py      # Extract, classify, and move files
@@ -751,11 +753,9 @@
 │   └── multhread.py         # Multithreading handler
 ├── folder_labels.json       # Folder names and descriptions
 ├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
-└── files/                   # Drop unorganized files here</pre>
-      </div>
+└── files/                   # Drop unorganized files here</pre></div>
     </section>
 
-    <!-- Core Features -->
     <section id="features">
       <h2>Core Features</h2>
       <table>
@@ -798,10 +798,8 @@
       </table>
     </section>
 
-    <!-- Installation & Setup -->
     <section id="installation">
       <h2>Installation & Setup</h2>
-
       <h3>Requirements</h3>
       <p>Python 3.8+ with the following libraries:</p>
       <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray</div>
@@ -811,7 +809,7 @@
 
       <h3>Quick Start</h3>
       <ol>
-        <li><strong>Clone the repo:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git && cd filesense</code></li>
+        <li><strong>Clone the repo:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git &amp;&amp; cd filesense</code></li>
         <li><strong>Edit folder_labels.json</strong> with your desired folder names and descriptions</li>
         <li><strong>Create the index:</strong> <code>python scripts/create_index.py</code></li>
         <li><strong>Drop files in /files</strong> and run the organizer</li>
@@ -823,47 +821,24 @@
       </div>
     </section>
 
-    <!-- Configuration -->
     <section id="configuration">
       <h2>Configuration Options</h2>
       <table>
-        <tr>
-          <th>Setting</th>
-          <th>File</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><code>--dir / -d</code></td>
-          <td>script.py / watcher_script.py</td>
-          <td>Directory to scan or watch</td>
-        </tr>
-        <tr>
-          <td><code>--threads / -t</code></td>
-          <td>script.py</td>
-          <td>Maximum concurrent threads (default: 4)</td>
-        </tr>
-        <tr>
-          <td><code>THRESHOLD</code></td>
-          <td>process_file.py</td>
-          <td>Minimum similarity score to accept match (default: 0.45)</td>
-        </tr>
-        <tr>
-          <td><code>MODEL_NAME</code></td>
-          <td>create_index.py</td>
-          <td>SentenceTransformer model (default: all-mpnet-base-v2)</td>
-        </tr>
+        <tr><th>Setting</th><th>File</th><th>Description</th></tr>
+        <tr><td><code>--dir / -d</code></td><td>script.py / watcher_script.py</td><td>Directory to scan or watch</td></tr>
+        <tr><td><code>--threads / -t</code></td><td>script.py</td><td>Maximum concurrent threads (default: 4)</td></tr>
+        <tr><td><code>THRESHOLD</code></td><td>process_file.py</td><td>Minimum similarity score to accept match (default: 0.45)</td></tr>
+        <tr><td><code>MODEL_NAME</code></td><td>create_index.py</td><td>SentenceTransformer model (default: all-mpnet-base-v2)</td></tr>
       </table>
     </section>
 
-    <!-- What I Learned -->
     <section id="learned">
       <h2>What I Learned</h2>
-
       <div class="learned-grid">
         <div class="learned-card">
           <h4>🧠 Embeddings & NLP</h4>
           <ul>
-            <li>Web browsers download process, handling .tmp files,etc.</li>
+            <li>Web browsers download process, handling .tmp files, etc.</li>
             <li>SentenceTransformer embeddings enable semantic matching beyond keywords</li>
             <li>Embeddings capture meaning and context in high-dimensional space</li>
             <li>Keyword boosting improves accuracy for domain-specific classification</li>
@@ -929,7 +904,6 @@
       </ul>
     </section>
 
-    <!-- CTA -->
     <section style="text-align: center; margin-top: 80px;">
       <h2 style="justify-content: center;">Ready to Get Started?</h2>
       <p style="margin-bottom: 32px;">Bring order to your digital chaos with FileSense.</p>
@@ -946,7 +920,7 @@
   <script>
     // Sidebar active link tracking
     const sidebarLinks = document.querySelectorAll('.sidebar-tree a');
-    
+
     function updateActiveLink() {
       sidebarLinks.forEach(link => {
         const section = document.querySelector(link.getAttribute('href'));
@@ -961,7 +935,7 @@
     }
 
     window.addEventListener('scroll', updateActiveLink);
-    
+
     // Smooth scroll for sidebar links
     sidebarLinks.forEach(link => {
       link.addEventListener('click', (e) => {
