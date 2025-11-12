@@ -19,7 +19,7 @@ For scanned documents, it even uses **OCR (Optical Character Recognition)** to r
 | 🧠 **Semantic Sorting** | Understands file content instead of just names using transformer embeddings. |
 | ⚡ **FAISS Indexing** | Builds a fast semantic search index for folder labels. |
 | 👀 **OCR Fallback** | Extracts text from scanned or image-based PDFs using `pdfplumber + pytesseract`. |
-| 🧩 **Keyword Boosting** | Gives small weight bonuses for subject-specific terms (like "newton", "sql", "essay", etc). |
+| 🧩 **Keyword Boosting** | Gives small weight bonuses for subject-specific terms (like "newton" for folder label "physics", "sql" for folder label Informatic Practices, etc). |
 | 🧵 **Multithreading** | Handles multiple files simultaneously for faster performance. |
 | 🕵️ **Real-time Watcher** | Detects and organizes files automatically as soon as new ones appear. |
 | 🖥️ **GUI Launcher** | Desktop interface with start/stop controls, logs, and tray icon. |
