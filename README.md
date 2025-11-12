@@ -8,7 +8,12 @@ Tired of your Downloads folder looking like a digital junkyard — random PDFs, 
 It uses **SentenceTransformers** and **FAISS** to understand what each file *means*, then moves it into the right folder automatically.  
 For scanned documents, it even uses **OCR (Optical Character Recognition)** to read text from images and classify them correctly.
 
-> 🎥 **Demo / Webpage:** [FileSense](https://ahhyoushh.github.io/FileSense)
+> 📺 **Overview Video**: [FileSense](https://youtu.be/f27I2L7uoC8)
+>
+> 🎥 **Demo / Webpage:** [ahhyoush.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
+>
+> 🌴 **Dive Deeper in the code:** [DeepWiki](https://deepwiki.com/ahhyoushh/FileSense)
+
 
 ---
 
