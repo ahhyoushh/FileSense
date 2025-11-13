@@ -134,8 +134,8 @@ def process_file(file_path):
 
     predicted_folder, similarity = classify_file(text)
 
-    #os.makedirs(BASE_DIR / predicted_folder, exist_ok=True)
-    #shutil.move(file_path, os.path.join(BASE_DIR / predicted_folder, os.path.basename(file_path)))
+    os.makedirs(BASE_DIR / predicted_folder, exist_ok=True)
+    shutil.move(file_path, os.path.join(BASE_DIR / predicted_folder, os.path.basename(file_path)))
     
     time_taken = time.time() - start_time             
     
