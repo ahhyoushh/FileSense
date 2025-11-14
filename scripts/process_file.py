@@ -65,12 +65,33 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
 
 
 def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
-    # examine first 3 pages with higher tolerance for short headings
-    for page_txt in enumerate(pages_text[:3]):
-        if not page_txt:
+    for pi, page_txt in enumerate(pages_text[:3]):  # check first 3 pages first
+        try:
+            # Defensive coercion: make sure page_txt is a string
+            if page_txt is None:
+                continue
+            if not isinstance(page_txt, str):
+                # If it's a tuple/list, try to extract the first string-like element
+                if isinstance(page_txt, (tuple, list)):
+                    found = None
+                    for el in page_txt:
+                        if isinstance(el, str) and el.strip():
+                            found = el
+                            break
+                    if found is not None:
+                        page_txt = found
+                    else:
+                        # fallback: join any elements as strings
+                        page_txt = " ".join(map(str, page_txt))
+                else:
+                    # fallback: convert to string
+                    page_txt = str(page_txt)
+            # now split into lines safely
+            lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
+        except Exception:
+            # If anything weird happens, skip this page
             continue
-        # split into non-empty lines
-        lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
+
         for i, ln in enumerate(lines):
             if KEYWORD_RE.search(ln):
                 start = max(0, i - lookbehind)
@@ -80,7 +101,6 @@ def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
                 if ctx:
                     return ctx
     return None
-
 
 # -----------------------
 # TEXT EXTRACTION
@@ -103,20 +123,32 @@ def extract_text(file_path):
             with pdfplumber.open(file_path) as pdf:
                 for page in pdf.pages:
                     try:
-                        pt = page.extract_text() or ""
+                        pt = page.extract_text()
                     except Exception:
-                        pt = ""
-                    pages.append(pt)
+                        pt = None
+                    # If pt is not a plain string, try to coerce gracefully
+                    if pt is None:
+                        # leave as empty string (we'll try OCR later)
+                        pages.append("")
+                        continue
 
-                # try to read metadata/title
-                try:
-                    meta = pdf.metadata if hasattr(pdf, "metadata") else {}
-                    if meta:
-                        title = meta.get("Title") or meta.get("title") or meta.get("Author")
-                        if title and isinstance(title, str) and len(title.strip()) > 5:
-                            pdf_meta_title = title.strip()
-                except Exception:
-                    pdf_meta_title = None
+                    if not isinstance(pt, str):
+                        # if pdfplumber returned weird object (tuple/list), grab first str part
+                        if isinstance(pt, (tuple, list)):
+                            chosen = None
+                            for el in pt:
+                                if isinstance(el, str) and el.strip():
+                                    chosen = el
+                                    break
+                            if chosen is not None:
+                                pt = chosen
+                            else:
+                                pt = " ".join(map(str, pt))
+                        else:
+                            pt = str(pt)
+
+                    pages.append(pt or "")
+
 
         except Exception as e:
             print(f"Failed to open/read PDF {os.path.basename(file_path)} — {e}")
