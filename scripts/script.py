@@ -1,8 +1,6 @@
 from multhread import process_multiple
 import argparse
 
-
-
 parser = argparse.ArgumentParser(description="Process files in a directory concurrently.")
 parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to organise.")
 parser.add_argument("--threads", "-t", type=int, default=6, help="Maximum number of concurrent threads.")
