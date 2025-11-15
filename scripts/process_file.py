@@ -15,7 +15,7 @@ LABELS_FILE = BASE_DIR / "folder_labels.json"
 
 THRESHOLD = 0.45  # similarity threshold
 
-# load faiss index and folder labels (kept from your original file)
+
 index = faiss.read_index(str(FAISS_INDEX_FILE))
 with open(LABELS_FILE, "r", encoding="utf-8") as f:
     folder_data = json.load(f)
@@ -27,7 +27,7 @@ model = SentenceTransformer(MODEL_NAME, device="cpu")
 
 # ---- extractor / cleaning settings ----
 MAX_INPUT_CHARS = 1500  # ideal range for SFT
-MIN_LINE_LENGTH = 25    # avoid junk lines (OCR garbage etc) for normal pages
+MIN_LINE_LENGTH = 25    # avoid junk lines for normal pages
 MIN_TITLE_LINE_LENGTH = 4  # allow short headings on first pages
 KEYWORD_RE = re.compile(r'\b(ray|optics|refraction|reflection|chapter|contents|index|table of contents|lens|prism)\b', flags=re.I)
 
@@ -43,10 +43,10 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
         l = line.strip()
         if not l:
             continue
-        # skip lines that are purely punctuation or symbols
+
         if re.match(r'^[\W_]+$', l):
             continue
-        # skip page numbers alone
+
         if re.match(r'^\s*\d+\s*$', l):
             continue
         if len(l) < MIN_LINE_LENGTH:
@@ -67,11 +67,9 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
 def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
     for pi, page_txt in enumerate(pages_text[:3]):  # check first 3 pages first
         try:
-            # Defensive coercion: make sure page_txt is a string
             if page_txt is None:
                 continue
             if not isinstance(page_txt, str):
-                # If it's a tuple/list, try to extract the first string-like element
                 if isinstance(page_txt, (tuple, list)):
                     found = None
                     for el in page_txt:
@@ -81,15 +79,11 @@ def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
                     if found is not None:
                         page_txt = found
                     else:
-                        # fallback: join any elements as strings
                         page_txt = " ".join(map(str, page_txt))
                 else:
-                    # fallback: convert to string
                     page_txt = str(page_txt)
-            # now split into lines safely
             lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
         except Exception:
-            # If anything weird happens, skip this page
             continue
 
         for i, ln in enumerate(lines):
@@ -126,14 +120,11 @@ def extract_text(file_path):
                         pt = page.extract_text()
                     except Exception:
                         pt = None
-                    # If pt is not a plain string, try to coerce gracefully
                     if pt is None:
-                        # leave as empty string (we'll try OCR later)
                         pages.append("")
                         continue
 
                     if not isinstance(pt, str):
-                        # if pdfplumber returned weird object (tuple/list), grab first str part
                         if isinstance(pt, (tuple, list)):
                             chosen = None
                             for el in pt:
@@ -152,7 +143,6 @@ def extract_text(file_path):
 
         except Exception as e:
             print(f"Failed to open/read PDF {os.path.basename(file_path)} — {e}")
-            # try a fallback: attempt OCR over the first page image if pdfplumber failed to open pages
             try:
                 from pdf2image import convert_from_path
                 pages = []
@@ -164,9 +154,7 @@ def extract_text(file_path):
                 print("Fallback OCR failed:", ex)
                 return os.path.basename(file_path)
 
-        # if no pages text and scanned PDF, try OCR per page
         if not any(pages):
-            # attempt OCR on first 3 pages as images
             try:
                 with pdfplumber.open(file_path) as pdf:
                     for page in pdf.pages[:3]:
@@ -179,7 +167,6 @@ def extract_text(file_path):
             except Exception:
                 pass
 
-        #look for key context in first few pages
         key_ctx = extract_key_context_from_pages(pages)
         if key_ctx:
             combined = (pdf_meta_title + "\n" if pdf_meta_title else "") + key_ctx
@@ -231,7 +218,6 @@ def extract_text(file_path):
 
     # ---- Other formats ----
     else:
-        # For unknown formats, return filename as fallback so classifier can still use that
         return os.path.basename(file_path)
 
 
