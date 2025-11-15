@@ -31,7 +31,7 @@ MIN_LINE_LENGTH = 25    # avoid junk lines for normal pages
 MIN_TITLE_LINE_LENGTH = 4  # allow short headings on first pages
 KEYWORD_RE = re.compile(r'\b(ray|optics|refraction|reflection|chapter|contents|index|table of contents|lens|prism)\b', flags=re.I)
 
-def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
+def clean_and_trim(text, max_chars=MAX_INPUT_CHARS):
     # normalize whitespace
     text = text.replace("\r", "").strip()
     if not text:
