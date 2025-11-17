@@ -1,6 +1,6 @@
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from process_file import process_file
+from classify_process_file import process_file
 import os
 import time
 import argparse
