@@ -22,11 +22,37 @@ except ImportError:
 
 
 MAX_INPUT_CHARS = 1500
-MIN_LINE_LENGTH = 25
+MIN_LINE_LENGTH = 15  
 MIN_TITLE_LINE_LENGTH = 4
-KEYWORD_RE = re.compile(r'\b(ray|optics|refraction|reflection|chapter|contents|index|table of contents|lens|prism)\b', flags=re.I)
 
-def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
+# Keywords to identify and DISCARD irrelevant pages
+JUNK_PAGE_KEYWORDS = re.compile(
+    r'\b(certificate|acknowledgement|declaration|submitted by|roll no|index|table of contents|bonafide)\b',
+    flags=re.I
+)
+
+def is_junk_page(page_text):
+    """
+    Determines if a page is likely a certificate, TOC, or other non-content page.
+    """
+    if not page_text or not page_text.strip():
+        return True # Skip empty pages
+
+    # Rule 1: Check for keywords
+    if JUNK_PAGE_KEYWORDS.search(page_text):
+        return True
+
+    # Rule 2: Check for low text density 
+    if len(page_text.strip()) < 200:
+        return True
+
+    return False
+
+
+def clean_and_trim(text, max_chars=MAX_INPUT_CHARS):
+    """
+    Cleans the final combined text and trims it to the desired length.
+    """
     text = text.replace("\r", "").strip()
     if not text:
         return ""
@@ -37,38 +63,23 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
         l = line.strip()
         if not l:
             continue
-        if re.match(r'^[\W_]+$', l): #symbols and white spaces
+        # Remove lines that are just symbols or numbers
+        if re.match(r'^[\W_]+$', l) or re.match(r'^\s*\d+\s*$', l):
             continue
-        if re.match(r'^\s*\d+\s*$', l): #line with only a number
-            continue
-        if len(l) < MIN_LINE_LENGTH:
-            if len(l) >= MIN_TITLE_LINE_LENGTH and re.search(r'[A-Za-z0-9]', l): # short but looks like a title
-                good.append(l)
-            else:
-                continue
-        else:
+        # Keep lines that have a decent length
+        if len(l) >= MIN_LINE_LENGTH:
             good.append(l)
+        # Keep shorter lines if they look like headings
+        elif len(l) >= MIN_TITLE_LINE_LENGTH and re.search(r'[A-Za-z]', l):
+             good.append(l)
 
     cleaned = "\n".join(good).strip()
-    if not cleaned and aggressive:
-        return text[:max_chars].strip()
-    return cleaned[:max_chars].strip()
 
+    # If cleaning results in an empty string, fallback to a simpler clean
+    if not cleaned:
+        cleaned = re.sub(r'\n\s*\n', '\n', text).strip()
 
-def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
-    for page_txt in pages_text[:3]:
-        if not page_txt:
-            continue
-        lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
-        for i, ln in enumerate(lines):
-            if KEYWORD_RE.search(ln):
-                start = max(0, i - lookbehind)
-                end = min(len(lines), i + lookahead + 1)
-                ctx_lines = lines[start:end]
-                ctx = "\n".join(ctx_lines).strip()
-                if ctx:
-                    return ctx
-    return None
+    return cleaned[:max_chars]
 
 
 # -----------------------
@@ -80,72 +91,56 @@ def extract_text(file_path):
 
     # ---- PDF ----
     if ext.endswith(".pdf"):
-        if not PDFPLUMBER_AVAILABLE and not OCR_AVAILABLE:
-            print("Required PDF/OCR libraries missing. Please install pdfplumber, pytesseract, and pdf2image.")
+        if not PDFPLUMBER_AVAILABLE:
+            print("pdfplumber library not found. Please install it for PDF processing.")
             return filename
 
-        pages = []
+        all_pages_text = []
         pdf_meta_title = None
-        # First attempt with pdfplumber
-        if PDFPLUMBER_AVAILABLE:
-            try:
-                with pdfplumber.open(file_path) as pdf:
-                    for page in pdf.pages:
-                        pages.append(page.extract_text() or "")
-                    # try to read metadata/title
-                    try:
-                        meta = pdf.metadata if hasattr(pdf, "metadata") else {}
-                        if meta:
-                            title = meta.get("Title") or meta.get("title") or meta.get("Author")
-                            if title and isinstance(title, str) and len(title.strip()) > 5:
-                                pdf_meta_title = title.strip()
-                    except Exception:
-                        pdf_meta_title = None
-            except Exception as e:
-                print(f"pdfplumber failed to read {filename} — {e}")
-                pages = [] # Reset pages if pdfplumber fails
-
-        # Fallback to OCR if pdfplumber failed or text is empty
-        if not any(p.strip() for p in pages) and OCR_AVAILABLE:
-            print(f"No text from pdfplumber, attempting OCR for {filename}...")
-            try:
-                # Try direct OCR on images first
-                with pdfplumber.open(file_path) as pdf:
-                    for page in pdf.pages[:3]:
-                        img = page.to_image(resolution=300).original
-                        ocr_text = pytesseract.image_to_string(img, config="--psm 1", lang="eng")
-                        pages.append(ocr_text or "")
-            except Exception:
-                # Fallback to pdf2image if direct imaging fails
+        try:
+            with pdfplumber.open(file_path) as pdf:
+                # Step 1: Extract text from ALL pages and metadata
+                for page in pdf.pages:
+                    all_pages_text.append(page.extract_text(x_tolerance=2) or "")
                 try:
-                    imgs = convert_from_path(file_path, first_page=1, last_page=3)
-                    for img in imgs:
-                        txt = pytesseract.image_to_string(img, config="--psm 1", lang="eng")
-                        pages.append(txt)
-                except Exception as ex:
-                    print("Fallback OCR failed:", ex)
+                    meta = pdf.metadata if hasattr(pdf, "metadata") else {}
+                    if meta:
+                        title = meta.get("Title") or meta.get("title") or meta.get("Author")
+                        if title and isinstance(title, str) and len(title.strip()) > 5:
+                            pdf_meta_title = title.strip()
+                except Exception:
+                    pass
+        except Exception as e:
+            print(f"Error reading PDF {filename}: {e}")
+            return filename
 
-        key_ctx = extract_key_context_from_pages(pages)
-        if key_ctx:
-            combined = (pdf_meta_title + "\n" if pdf_meta_title else "") + key_ctx
-            return clean_and_trim(combined)
+        if not any(p.strip() for p in all_pages_text):
+             print(f"No text could be extracted from {filename}.")
+             return filename
 
-        first_pages_text = "\n\n".join([p or "" for p in pages[:3]])
-        cleaned_first = clean_and_trim(first_pages_text, aggressive=False)
-        if cleaned_first and len(cleaned_first) > 40:
-            if pdf_meta_title:
-                combined = pdf_meta_title + "\n" + cleaned_first
-                return clean_and_trim(combined)
-            return cleaned_first
+        # Step 2: Filter out junk pages
+        good_pages_text = [text for text in all_pages_text if not is_junk_page(text)]
 
-        whole_text = "\n\n".join([p or "" for p in pages])
-        cleaned_whole = clean_and_trim(whole_text)
-        if cleaned_whole:
-            if pdf_meta_title:
-                return clean_and_trim(pdf_meta_title + "\n" + cleaned_whole)
-            return cleaned_whole
+        # Step 3: Combine text from the good pages
+        # If filtering removed everything, fallback to using all pages to get some content
+        pages_to_use = good_pages_text if good_pages_text else all_pages_text
+        print(f"Using {len(pages_to_use)}/{len(all_pages_text)} content pages from {filename}.")
+        combined_text = "\n\n".join(pages_to_use)
 
-        return filename
+        # Prepend metadata title if available
+        if pdf_meta_title:
+            combined_text = pdf_meta_title + "\n" + combined_text
+
+        # Step 4: Clean the final combined text and return it
+        final_text = clean_and_trim(combined_text)
+
+        # If the final text is too short, it means cleaning was too aggressive
+        # Fallback to a less aggressive combination of the first few good pages
+        if len(final_text) < 100 and pages_to_use:
+             return "\n".join(pages_to_use[:5])[:MAX_INPUT_CHARS]
+
+        return final_text if final_text else filename
+
 
     # ---- DOCX ----
     elif ext.endswith(".docx"):
@@ -155,9 +150,7 @@ def extract_text(file_path):
         try:
             doc = docx.Document(file_path)
             raw = "\n".join([p.text for p in doc.paragraphs if p.text])
-            if not raw.strip():
-                return filename
-            return clean_and_trim(raw)
+            return clean_and_trim(raw) if raw.strip() else filename
         except Exception as e:
             print(f"Failed to read DOCX {filename} — {e}")
             return filename
@@ -167,9 +160,7 @@ def extract_text(file_path):
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 raw = f.read()
-                if not raw.strip():
-                    return filename
-                return clean_and_trim(raw)
+                return clean_and_trim(raw) if raw.strip() else filename
         except Exception as e:
             print(f"Failed to read TXT {filename} — {e}")
             return filename
@@ -177,3 +168,32 @@ def extract_text(file_path):
     # ---- Other formats ----
     else:
         return filename
+
+# ==============================================================================
+# for testing
+# ==============================================================================
+if __name__ == "__main__":
+    files_dir = "./files/"
+    if not os.path.exists(files_dir):
+        print(f"Creating directory '{files_dir}' for testing.")
+        os.makedirs(files_dir)
+
+    files_to_process = [
+        os.path.join(files_dir, f)
+        for f in os.listdir(files_dir)
+        if os.path.isfile(os.path.join(files_dir, f))
+    ]
+
+    if not files_to_process:
+        print(f"The '{files_dir}' directory is empty. Please add some files to test the script.")
+
+    for file_path in files_to_process:
+        print("-" * 50)
+        print(f"Processing: {os.path.basename(file_path)}")
+        extracted_text = extract_text(file_path)
+
+        output_filename = file_path + ".extracted.txt"
+        with open(output_filename, "w", encoding="utf-8") as out_f:
+            out_f.write(extracted_text)
+        print(f"Extracted text saved to: {output_filename}")
+        print(f"Character count: {len(extracted_text)}")

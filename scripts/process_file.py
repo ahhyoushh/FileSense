@@ -74,7 +74,7 @@ def classify_file(text):
     return "Unsorted", round(float(best_sim), 2)
 
 
-def process_file(file_path):
+def process_file(file_path, testing=False):
     start_time = time.time()
     text = extract_text(file_path)
     if not text.strip():
@@ -84,10 +84,11 @@ def process_file(file_path):
     predicted_folder, similarity = classify_file(text)
 
     os.makedirs(BASE_DIR / "sorted" / predicted_folder, exist_ok=True)
-    try:
-        shutil.move(file_path, os.path.join(BASE_DIR / "sorted" / predicted_folder, os.path.basename(file_path)))
-    except Exception as e:
-        print(f"Error moving file {file_path} -> {predicted_folder}: {e}")
+    if not testing:
+        try:
+            shutil.move(file_path, os.path.join(BASE_DIR / "sorted" / predicted_folder, os.path.basename(file_path)))
+        except Exception as e:
+            print(f"Error moving file {file_path} -> {predicted_folder}: {e}")
 
     time_taken = time.time() - start_time
 

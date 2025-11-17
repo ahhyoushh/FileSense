@@ -11,4 +11,4 @@ MAX_THREADS = args.threads
 
 if __name__ == "__main__":
     print(f"Processing files in directory: {files_dir} with {MAX_THREADS} threads.")
-    process_multiple(files_dir, MAX_THREADS)
+    process_multiple(files_dir, MAX_THREADS, testing=True)

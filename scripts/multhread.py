@@ -4,7 +4,7 @@ from process_file import process_file
 import time
 
 
-def process_multiple(files_dir, MAX_THREADS):
+def process_multiple(files_dir, MAX_THREADS, testing=False):
     files = [
         os.path.join(files_dir, f)
         for f in os.listdir(files_dir)
@@ -18,7 +18,7 @@ def process_multiple(files_dir, MAX_THREADS):
         while threading.active_count() > MAX_THREADS:
             time.sleep(0.1)
 
-        t = threading.Thread(target=process_file, args=(file_path,))
+        t = threading.Thread(target=process_file, args=(file_path,testing))
         t.start()
         threads.append(t)
 
