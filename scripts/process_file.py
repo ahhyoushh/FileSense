@@ -1,19 +1,23 @@
 import os
+import re
 import shutil
 import json
-import faiss
-import re
 import time
-from sentence_transformers import SentenceTransformer
-import numpy as np
-from create_index import MODEL_NAME
 from pathlib import Path
+
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+from create_index import MODEL_NAME
 from extract_text import extract_text
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent  # main FileSense folder
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
 
-THRESHOLD = 0.45  
+THRESHOLD = 0.45
 
 index = faiss.read_index(str(FAISS_INDEX_FILE))
 with open(LABELS_FILE, "r", encoding="utf-8") as f:
@@ -24,10 +28,9 @@ FOLDER_DESC = list(folder_data.values())
 model = SentenceTransformer(MODEL_NAME, device="cpu")
 
 # -----------------------
-# CLASSIFIER (unchanged mostly)
+# CLASSIFIER 
 # -----------------------
 def classify_file(text):
-    import re
 
     text_clean = re.sub(r"\s+", " ", text.strip().lower())
 
