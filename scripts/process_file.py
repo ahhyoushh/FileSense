@@ -13,8 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # main FileSense folder
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
 
-THRESHOLD = 0.45  # similarity threshold
-
+THRESHOLD = 0.45  
 
 index = faiss.read_index(str(FAISS_INDEX_FILE))
 with open(LABELS_FILE, "r", encoding="utf-8") as f:
@@ -24,15 +23,12 @@ FOLDER_LABELS = list(folder_data.keys())
 FOLDER_DESC = list(folder_data.values())
 model = SentenceTransformer(MODEL_NAME, device="cpu")
 
-
-# ---- extractor / cleaning settings ----
-MAX_INPUT_CHARS = 1500  # ideal range for SFT
-MIN_LINE_LENGTH = 25    # avoid junk lines for normal pages
-MIN_TITLE_LINE_LENGTH = 4  # allow short headings on first pages
+MAX_INPUT_CHARS = 1500  
+MIN_LINE_LENGTH = 25   
+MIN_TITLE_LINE_LENGTH = 4
 KEYWORD_RE = re.compile(r'\b(ray|optics|refraction|reflection|chapter|contents|index|table of contents|lens|prism)\b', flags=re.I)
 
-def clean_and_trim(text, max_chars=MAX_INPUT_CHARS):
-    # normalize whitespace
+def clean_and_trim(text, max_chars=MAX_INPUT_CHARS, aggressive=True):
     text = text.replace("\r", "").strip()
     if not text:
         return ""
@@ -43,10 +39,8 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS):
         l = line.strip()
         if not l:
             continue
-
         if re.match(r'^[\W_]+$', l):
             continue
-
         if re.match(r'^\s*\d+\s*$', l):
             continue
         if len(l) < MIN_LINE_LENGTH:
@@ -58,34 +52,16 @@ def clean_and_trim(text, max_chars=MAX_INPUT_CHARS):
             good.append(l)
 
     cleaned = "\n".join(good).strip()
-    # fallback: if cleaned is empty and aggressive is True, return raw prefix
     if not cleaned and aggressive:
         return text[:max_chars].strip()
     return cleaned[:max_chars].strip()
 
 
 def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
-    for pi, page_txt in enumerate(pages_text[:3]):  # check first 3 pages first
-        try:
-            if page_txt is None:
-                continue
-            if not isinstance(page_txt, str):
-                if isinstance(page_txt, (tuple, list)):
-                    found = None
-                    for el in page_txt:
-                        if isinstance(el, str) and el.strip():
-                            found = el
-                            break
-                    if found is not None:
-                        page_txt = found
-                    else:
-                        page_txt = " ".join(map(str, page_txt))
-                else:
-                    page_txt = str(page_txt)
-            lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
-        except Exception:
+    for page_txt in enumerate(pages_text[:3]):
+        if not page_txt:
             continue
-
+        lines = [ln.strip() for ln in page_txt.splitlines() if ln.strip()]
         for i, ln in enumerate(lines):
             if KEYWORD_RE.search(ln):
                 start = max(0, i - lookbehind)
@@ -95,6 +71,7 @@ def extract_key_context_from_pages(pages_text, lookahead=2, lookbehind=1):
                 if ctx:
                     return ctx
     return None
+
 
 # -----------------------
 # TEXT EXTRACTION
@@ -117,29 +94,20 @@ def extract_text(file_path):
             with pdfplumber.open(file_path) as pdf:
                 for page in pdf.pages:
                     try:
-                        pt = page.extract_text()
+                        pt = page.extract_text() or ""
                     except Exception:
-                        pt = None
-                    if pt is None:
-                        pages.append("")
-                        continue
+                        pt = ""
+                    pages.append(pt)
 
-                    if not isinstance(pt, str):
-                        if isinstance(pt, (tuple, list)):
-                            chosen = None
-                            for el in pt:
-                                if isinstance(el, str) and el.strip():
-                                    chosen = el
-                                    break
-                            if chosen is not None:
-                                pt = chosen
-                            else:
-                                pt = " ".join(map(str, pt))
-                        else:
-                            pt = str(pt)
-
-                    pages.append(pt or "")
-
+                # try to read metadata/title
+                try:
+                    meta = pdf.metadata if hasattr(pdf, "metadata") else {}
+                    if meta:
+                        title = meta.get("Title") or meta.get("title") or meta.get("Author")
+                        if title and isinstance(title, str) and len(title.strip()) > 5:
+                            pdf_meta_title = title.strip()
+                except Exception:
+                    pdf_meta_title = None
 
         except Exception as e:
             print(f"Failed to open/read PDF {os.path.basename(file_path)} — {e}")
@@ -175,7 +143,6 @@ def extract_text(file_path):
         first_pages_text = "\n\n".join([p or "" for p in pages[:3]])
         cleaned_first = clean_and_trim(first_pages_text, aggressive=False)
         if cleaned_first and len(cleaned_first) > 40:
-            # include metadata/title if available
             if pdf_meta_title:
                 combined = pdf_meta_title + "\n" + cleaned_first
                 return clean_and_trim(combined)
