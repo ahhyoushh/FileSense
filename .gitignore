@@ -5,5 +5,3 @@ folder_label_generator/clean_generated_data.py
 folder_label_generator/data_cleaned.jsonl
 folder_label_generator/data_fixedcommas.jsonl
 .env
-sorted/
-files/
