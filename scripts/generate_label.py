@@ -1,7 +1,11 @@
 from google import genai
 from google.genai.errors import APIError
 import json
-client = genai.Client(api_key="AIzaSyDv9H4uiK7OZm7s0yxlMnNkqcqnU5tNG84")
+
+from dotenv import load_dotenv
+import os
+load_dotenv()
+client = genai.Client(api_key=os.getenv("API_KEY"))
 
 schema = {
     "type": "object",
