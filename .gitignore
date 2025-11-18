@@ -2,3 +2,8 @@ folder_label_generator/data_cleaned.jsonl
 folder_label_generator/clean_generated_data.py
 folder_label_generator/data_fixedcommas.jsonl
 sorted/Unsorted/PeriodicTable.png
+folder_label_generator/data_withlabels.jsonl
+folder_label_generator/validate_generated_data.py
+folder_label_generator/__pycache__/
+scripts/__pycache__
+folder_label_generator/data.jsonl

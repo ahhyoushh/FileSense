@@ -5,8 +5,8 @@ from sentence_transformers import SentenceTransformer
 import json
 from pathlib import Path
 
-# --------- Config ---------
-BASE_DIR = Path(__file__).resolve().parent.parent  # parent of /scripts
+# --- Config ---
+BASE_DIR = Path(__file__).resolve().parent.parent 
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
 MODEL_NAME = "all-mpnet-base-v2"
@@ -17,27 +17,22 @@ def create_faiss_index():
             folder_data = json.load(f)
 
         FOLDER_LABELS = list(folder_data.keys())
-        FOLDER_DESC = list(folder_data.values())
-        extra_examples = {
-            "Physics": "Keywords: velocity, prism, ohm, current, resistance, focal length, refraction",
-            "Mathematics": "Keywords: calculus, differentiation, trigonometry, probability, matrix",
-            "Chemistry": "Keywords: titration, molarity, acid-base, kinetics, organic, inorganic",
-            "Informatic Practices": "Keywords: python, pandas, matplotlib, sql, database, csv",
-            "English": "Keywords: essay, poem, grammar, literature, asl, comprehension",
-            "Official Document": "Keywords: certificate, resume, transcript, letter, contract",
-        }
-        for label in folder_data:
-            folder_data[label] += " " + extra_examples.get(label, "")
+        if not FOLDER_LABELS:
+            print("[!] No folder labels found in the JSON file. Cannot create index.")
+            return False
 
-        combined_desc = [f"{label} {desc}" for label, desc in zip(FOLDER_LABELS, FOLDER_DESC)]
+        combined_desc = [f"{label}: {full_text}" for label, full_text in folder_data.items()]
+        
         print(f'Found {len(FOLDER_LABELS)} folder labels for indexing.')
 
         model = SentenceTransformer(MODEL_NAME, device="cpu")
         print(f"Generating Embeddings with {MODEL_NAME} model...")
         start = time.time()
-        folder_embeddings = model.encode(combined_desc, normalize_embeddings=True, show_progress_bar=True).astype(np.float32)
-        folder_embeddings = folder_embeddings / np.linalg.norm(folder_embeddings, axis=1, keepdims=True)
-
+        
+        folder_embeddings = model.encode(
+            combined_desc, normalize_embeddings=True, show_progress_bar=True
+        ).astype(np.float32)
+        
         end = time.time()
         print(f'Embeddings generated in {end - start:.2f} seconds.')
 
@@ -47,13 +42,17 @@ def create_faiss_index():
         index.add(folder_embeddings)
 
         faiss.write_index(index, str(FAISS_INDEX_FILE))
-        with open(LABELS_FILE, "w", encoding="utf-8") as f:
-            json.dump(folder_data, f, indent=2)
 
-        print(f"✅ FAISS index saved to {FAISS_INDEX_FILE} for labels: {FOLDER_LABELS}")
+        print(f"[1] FAISS index saved to {FAISS_INDEX_FILE}")
+        return True
+    except FileNotFoundError:
+        print(f"[!] Error: The file '{LABELS_FILE}' was not found.")
+        return False
     except Exception as e:
         print(f"[!] Error creating FAISS index: {e}")
+        return False
 
 if __name__ == "__main__":
     print("Creating FAISS index with model:", MODEL_NAME)
     create_faiss_index()
+
