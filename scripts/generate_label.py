@@ -150,11 +150,7 @@ def generate_folder_label(target_text: str):
                 f.truncate()
                 print(f"Generated new folder label: {folder_label}")
             else:
-                folder_data[folder_label] = description + " Keywords: " + keywords
-                f.seek(0)
-                json.dump(folder_data, f, indent=2)
-                f.truncate()
-                print(f"Edited folder label: {folder_label}")
+                print(f"Folder label '{folder_label}' already exists. Skipping addition.")
         
         return response
     except APIError as e:

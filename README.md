@@ -19,6 +19,8 @@ For scanned documents, it even uses **OCR (Optical Character Recognition)** to r
 
 ## ⚙️ Core Features
 
+
+### Launcher and docx are not currently up to date. 
 | Feature | Description |
 |----------|-------------|
 | 🧠 **Semantic Sorting** | Understands file content instead of just names using transformer embeddings. |
