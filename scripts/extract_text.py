@@ -29,9 +29,15 @@ JUNK_PAGE_KEYWORDS = re.compile(
     r'\b(certificate|acknowledgement|declaration|submitted by|roll no|index|table of contents|bonafide|bibliography)\b',
     flags=re.I
 )
+RE_TABS_FF = re.compile(r'[\t\f]')
+RE_BROKEN_LINES = re.compile(r'([a-z])\n([a-z])')
+RE_UPPERCASE = re.compile(r'[A-Z]')
 
 def score_page_quality(page_text):
-    if not page_text or not page_text.strip():
+    if not page_text:
+        return 0.0
+
+    if len(page_text) < 50: 
         return 0.0
 
     if JUNK_PAGE_KEYWORDS.search(page_text):
@@ -41,21 +47,19 @@ def score_page_quality(page_text):
     if not lines:
         return 0.0
 
-    # Penalize pages with very few lines
-    if len(lines) < 5:
+    len_lines = len(lines)
+    if len_lines < 5:
         return 0.1
 
     # Calculate metrics
-    total_chars = len("".join(lines))
-    avg_line_length = total_chars / len(lines)
+    total_chars = sum(len(l) for l in lines)
+    avg_line_length = total_chars / len_lines
     
     # Reward long, paragraph-like lines
     long_lines = sum(1 for line in lines if len(line) > 50)
-    long_line_ratio = long_lines / len(lines)
+    long_line_ratio = long_lines / len_lines
 
-    # Calculate a score. This heuristic rewards pages that resemble paragraphs.
     score = (avg_line_length / 40) + (long_line_ratio * 1.5)
-
     return score
 
 
@@ -63,18 +67,19 @@ def clean_text_block(text):
     if not text:
         return ""
 
-    text = re.sub(r'[\t\f]', ' ', text)
-    
-    # This heuristic looks for a lowercase letter followed by a newline and then another lowercase letter.
-    text = re.sub(r'([a-z])\n([a-z])', r'\1 \2', text)
+    # Use pre-compiled regex
+    text = RE_TABS_FF.sub(' ', text)
+    text = RE_BROKEN_LINES.sub(r'\1 \2', text)
     
     lines = text.split('\n')
     good_lines = []
+    
     for line in lines:
         stripped = line.strip()
         if not stripped:
             continue
-        if len(stripped) < PDF_CONFIG['MIN_LINE_LENGTH'] and not re.search(r'[A-Z]', stripped):
+        # Optimization: Combine checks
+        if len(stripped) < PDF_CONFIG['MIN_LINE_LENGTH'] and not RE_UPPERCASE.search(stripped):
             continue
         good_lines.append(stripped)
     
@@ -92,27 +97,30 @@ def extract_text_from_pdf(file_path, filename):
 
     try:
         with pdfplumber.open(file_path) as pdf:
-            # Attempt to get metadata title first
-            try:
-                meta = pdf.metadata or {}
-                title = meta.get("Title") or meta.get("title")
+            # Metadata extraction
+            if pdf.metadata:
+                title = pdf.metadata.get("Title") or pdf.metadata.get("title")
                 if title and isinstance(title, str) and len(title.strip()) > 5:
                     pdf_meta_title = title.strip()
-            except Exception:
-                pass
 
             total_pages = len(pdf.pages)
+            
+            # Logic to check middle pages first (likely content), then start pages
             start_page_index = min(PDF_CONFIG['START_PAGE_ASSUMPTION'], total_pages - 1)
             
-            page_indices_pass1 = range(start_page_index, total_pages)
-            page_indices_pass2 = range(0, start_page_index)
+            # Create iterator order
+            page_order = list(range(start_page_index, total_pages)) + list(range(0, start_page_index))
 
-            for page_index in list(page_indices_pass1) + list(page_indices_pass2):
+            for page_index in page_order:
                 page = pdf.pages[page_index]
                 
-                core_page = page.crop((0, PDF_CONFIG['HEADER_FOOTER_MARGIN'], page.width, page.height - PDF_CONFIG['HEADER_FOOTER_MARGIN']))
-                
-                page_text = core_page.extract_text(x_tolerance=2) or ""
+                # Crop header/footer
+                try:
+                    core_page = page.crop((0, PDF_CONFIG['HEADER_FOOTER_MARGIN'], page.width, page.height - PDF_CONFIG['HEADER_FOOTER_MARGIN']))
+                    page_text = core_page.extract_text(x_tolerance=2) or ""
+                except ValueError:
+                    # Fallback if cropping fails (e.g., page too small)
+                    page_text = page.extract_text() or ""
                 
                 quality = score_page_quality(page_text)
                 
@@ -122,7 +130,6 @@ def extract_text_from_pdf(file_path, filename):
                         content_blocks.append(cleaned_block)
                         total_chars += len(cleaned_block)
                         if total_chars > PDF_CONFIG['MAX_INPUT_CHARS']:
-                            print(f"Sufficient text gathered after processing page {page_index + 1}/{total_pages}.")
                             break
             
     except Exception as e:
@@ -130,7 +137,6 @@ def extract_text_from_pdf(file_path, filename):
         return filename
 
     if not content_blocks:
-        print(f"Could not extract high-quality content from {filename}.")
         return filename
 
     final_text = "\n\n".join(content_blocks)
@@ -138,6 +144,29 @@ def extract_text_from_pdf(file_path, filename):
         final_text = pdf_meta_title + "\n\n" + final_text
 
     return final_text[:PDF_CONFIG['MAX_INPUT_CHARS']]
+
+def extract_text_from_docx(file_path, filename):
+    if not DOCX_AVAILABLE:
+        return filename
+    try:
+        doc = docx.Document(file_path)
+        content_list = []
+        current_length = 0
+        
+        # Optimization: Iterate and break early instead of joining all paragraphs
+        for p in doc.paragraphs:
+            text = p.text
+            if text:
+                content_list.append(text)
+                current_length += len(text)
+                if current_length > PDF_CONFIG['MAX_INPUT_CHARS'] * 1.2: # Small buffer
+                    break
+        
+        raw = "\n".join(content_list)
+        return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
+    except Exception as e:
+        print(f"Failed to read DOCX {filename} — {e}")
+        return filename
 
 # -----------------------
 # MAIN DISPATCHER
@@ -151,31 +180,20 @@ def extract_text(file_path):
         return extract_text_from_pdf(file_path, filename)
 
     elif ext == ".docx":
-        if not DOCX_AVAILABLE:
-            return filename
-        try:
-            doc = docx.Document(file_path)
-            raw = "\n".join([p.text for p in doc.paragraphs if p.text])
-            return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
-        except Exception as e:
-            print(f"Failed to read DOCX {filename} — {e}")
-            return filename
+        return extract_text_from_docx(file_path, filename)
 
     elif ext == ".txt":
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                raw = f.read()
+                # Optimization: Read only what we need plus a safety buffer for cleaning
+                raw = f.read(PDF_CONFIG['MAX_INPUT_CHARS'] * 2) 
                 return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
         except Exception as e:
             print(f"Failed to read TXT {filename} — {e}")
             return filename
             
-    return filename # Fallback for other formats
+    return filename 
 
-
-# ==============================================================================
-# for testing
-# ==============================================================================
 if __name__ == "__main__":
     files_dir = "./files/"
     if not os.path.exists(files_dir):
@@ -188,18 +206,11 @@ if __name__ == "__main__":
         if os.path.isfile(os.path.join(files_dir, f)) and not f.endswith('.extracted.txt')
     ]
 
-    if not files_to_process:
-        print(f"The '{files_dir}' directory is empty.")
-
     for file_path in files_to_process:
         print("-" * 60)
         print(f"Processing: {os.path.basename(file_path)}")
         
         extracted_text = extract_text(file_path)
         
-        output_filename = file_path + ".extracted.txt"
-        with open(output_filename, "w", encoding="utf-8") as out_f:
-            out_f.write(extracted_text)
-            
-        print(f"Extracted text saved to: {output_filename}")
-        print(f"Character count: {len(extracted_text)}")
+        print(f"Extracted text length: {len(extracted_text)}")
+        print(f"Preview: {extracted_text[:200]}...")

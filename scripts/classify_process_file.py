@@ -17,14 +17,14 @@ from extract_text import extract_text
 BASE_DIR = Path(__file__).resolve().parent.parent
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
-THRESHOLD = 0.45
+THRESHOLD = 0.5
 
 index = None
 folder_data = {}
 FOLDER_LABELS = []
 model = None
 
-# CHANGED: RLock fixes the deadlock freeze (damn fun to debug)
+# Rlock(fun-est experience debugging )
 CLASSIFICATION_LOCK = threading.RLock() 
 
 def load_index_and_labels():
@@ -89,8 +89,12 @@ def classify_file(text, filename, allow_generation = True):
     else:
         if allow_generation:
             with CLASSIFICATION_LOCK:
-                if not allow_generation: 
-                     return classify_file(text, filename, allow_generation=False)
+                # Another thread might have updated the index while we were waiting for the lock.
+                retry_label, retry_sim = classify_file(text, filename, allow_generation=False)
+                
+                if retry_sim >= THRESHOLD:
+                    print(f"[!] Index updated by another thread. '{filename}' matched to '{retry_label}' ({retry_sim:.2f}). Skipping generation.")
+                    return retry_label, retry_sim
 
                 print(f"[?] Low confidence ({best_sim:.2f}) for '{filename}'. Generating label...")
                 new_label_info = generate_folder_label(text)
@@ -102,11 +106,11 @@ def classify_file(text, filename, allow_generation = True):
                 
                 return classify_file(text, filename, allow_generation=False)
         else:
-
-            if best_sim > 0.15: # Lower fallback threshold
+            if best_sim > 0.4: 
+                print(f"[!] Low confidence ({best_sim:.2f}) but accepting '{best_label}' as fallback.")
                 return best_label, round(float(best_sim), 2)
             
-            print(f"[!] Could not classify '{filename}' (Sim: {best_sim:.2f}). Moving to Uncategorized.")
+            print(f"[!] Could not classify '{filename}' (Sim: {best_sim:.2f}). Moving to Uncategorized or generating Label.")
             return "Uncategorized", 0.0
 
 def process_file(file_path, testing=False, allow_generation=True):

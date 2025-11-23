@@ -1,26 +1,27 @@
 from google import genai
 from google.genai.errors import APIError
 import json
-
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 client = genai.Client(api_key=os.getenv("API_KEY"))
-MODEL = "gemini-2.5-flash" #BEcause got a free api key
+MODEL = "gemini-2.5-flash"
+
 schema = {
     "type": "object",
     "properties": {
         "folder_label": {
             "type": "string",
-            "description": "A concise and descriptive folder label, limited to 5 words max inspired from examples."
+            "description": "A concise, 1-2 word BROAD category label (e.g., Physics, Finance)."
         },
         "description": {
             "type": "string",
-            "description": "A brief but concise and clear explanation of the folder label generated with proper description for the folder so that future files can be easily searched and categorised"
+            "description": "A dense, comma-separated list of 20-30 synonyms, sub-topics, and related vocabulary."
         },
         "keywords": {
             "type": "string",
-            "description": "A list of relevant keywords associated with the folder label to help in searching and categorization."
+            "description": "A comma-separated list of 8-12 broad search keywords."
         }
     },
     "required": [
@@ -30,70 +31,134 @@ schema = {
     ]
 }
 
+merge_schema = {
+    "type": "object",
+    "properties": {
+        "merged_description": {
+            "type": "string",
+            "description": "A single, consolidated description containing a dense list of sub-topics and synonyms from both inputs. No conversational filler."
+        },
+        "merged_keywords": {
+            "type": "string",
+            "description": "A single, comma-separated string of unique, high-value keywords combining both lists without duplicates."
+        }
+    },
+    "required": ["merged_description", "merged_keywords"]
+}
+
+def merge_folder_metadata(folder_label, old_desc, old_kw, new_desc, new_kw):
+    """
+    Uses LLM to intelligently merge existing folder metadata with new metadata.
+    """
+    prompt = f"""You are an expert semantic data organizer. Your task is to merge metadata for the file category: "{folder_label}".
+
+    You have Existing metadata (from the database) and New metadata (from a new file).
+    Combine them into a unified, comprehensive representation.
+
+    --- INPUT DATA ---
+    Existing Description: {old_desc}
+    Existing Keywords: {old_kw}
+
+    New Description: {new_desc}
+    New Keywords: {new_kw}
+
+    --- RULES ---
+    1. **Description Merging:** 
+       - The output description must be a **dense list of sub-topics and synonyms** (Bag-of-Words style).
+       - **DO NOT** use sentences like "This folder contains...".
+       - Combine unique concepts from both descriptions.
+       - Remove duplicates and overlapping terms.
+    
+    2. **Keyword Merging:**
+       - Combine both keyword lists.
+       - Remove exact duplicates and near-duplicates (e.g., "finance" and "finances").
+       - Keep the list comma-separated.
+       - Limit to the top 15-20 most relevant terms.
+
+    3. **Consistency:** Ensure the final output strongly relates to the main Category Label: "{folder_label}".
+    """
+
+    try:
+        res = client.models.generate_content(
+            model=MODEL,
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": merge_schema,
+                "temperature": 0.3, # Low temp for consistent merging
+            }
+        )
+        
+        return json.loads(res.text)
+
+    except Exception as e:
+        print(f"[!] Error merging metadata: {e}")
+        # Fallback: Simple string concatenation if AI fails
+        return {
+            "merged_description": f"{old_desc}, {new_desc}",
+            "merged_keywords": f"{old_kw}, {new_kw}"
+        }
 examples = """
-15 examples of label generation are given below
---- EXAMPLE 1 ---
-Document: Abstract: Are you curious about what makes your favorite diet drinks sweet yet calorie-free? Look no further! This project dives deep into the fascinating world of artificial sweeteners, the hidden stars behind the sweetness in Diet Coke, Red Bull Sugarfree, Moster Ultra Black and Sting energy. These sweeteners, Aspartame and Acesulfame Potassium (Ace-K), are designed to provide sweetness without the added sugar, offering a healthier alternative for those who can't resist their fizzy favorites. Artificial sweeteners like Aspartame and Ace-K are unique compounds with distinctive properties. Aspartame is a low-calorie sweetener with a slightly neutral nature, while Ace-K offers stability under heat and acidic conditions. Through this project, we unravel the properties and behaviors of these sweeteners using chemical methods such as paper chromatography, pH testing, solubility testing, and acid-base titration.
-output = {"folder_label": "Chemistry", "description": "Practical records, lab reports, and handwritten notes about physical, organic, and inorganic chemistry. Includes titration, molarity, concentration, chemical equations, rate of reaction, qualitative analysis of salts, and experiments with acids, bases, or indicators. Keywords: titration, molarity, acid-base, kinetics, organic, inorganic", "keywords": "titration, molarity, acid-base, kinetics, organic, inorganic"}
+--- EXAMPLE 1 (Physics) ---
+Document: "EXPERIMENT 4: BERNOULLI'S PRINCIPLE AND FLUID DYNAMICS. Abstract: This experiment investigates the relationship between fluid speed and pressure in a horizontal pipe. According to Bernoulli's equation, P + 1/2pv^2 + pgh = constant. As the cross-sectional area of the pipe decreases, the velocity of the fluid increases, leading to a corresponding drop in static pressure. We utilized a Venturi meter to measure these pressure differentials. Data Analysis: The flow rate Q was maintained at 5.0 L/min. At Section A (diameter 5cm), velocity was 0.4 m/s. At Section B (diameter 2cm), velocity increased to 2.5 m/s. The manometer readings confirmed a pressure drop of 150 Pa. We also calculated the Reynolds number (Re = pvd/u) to characterize the flow regime. With Re > 4000, the flow was determined to be turbulent. Error analysis suggests minor friction losses were neglected. Conclusion: The experiment successfully verified the inverse relationship between velocity and pressure in fluid dynamics."
+Output: {"folder_label": "Physics", "description": "mechanics, fluid dynamics, thermodynamics, electromagnetism, optics, quantum physics, relativity, kinematics, forces, energy, laboratory experiments, scientific formulas, Newton's laws, wave theory, hydrodynamics, pressure, velocity, viscosity, turbulence, aerodynamics, engineering physics", "keywords": "fluids, pressure, flow, laminar, turbulent, reynolds, physics, mechanics, experiment, laboratory"}
 
---- EXAMPLE 2 ---
-Document: This is to certify that Jane Doe has successfully completed the "Project Management Professional (PMP)" certification course offered by the Project Management Institute. The course covered key knowledge areas including scope, time, cost, quality, risk, and stakeholder management. This certificate was awarded on October 28, 2023, and is valid for three years. Certificate ID: 84629PMP.
-output = {"folder_label": "Certificates", "description": "Digital and scanned copies of academic, professional, and vocational certificates. Includes course completion certificates, workshop attendance, training programs, and other official recognitions of achievement or qualification from various fields. Keywords: certificate, certification, course, training, award, degree, diploma", "keywords": "certificate, certification, course, training, award, degree"}
+--- EXAMPLE 2 (Chemistry) ---
+Document: "SYNTHESIS OF ACETYLSALICYLIC ACID (ASPIRIN). Objective: To synthesize aspirin via the esterification of salicylic acid with acetic anhydride using sulfuric acid as a catalyst. Reaction Mechanism: The hydroxyl group on the salicylic acid attacks the carbonyl carbon of the acetic anhydride. Procedure: 3.0g of salicylic acid was mixed with 6mL of acetic anhydride. 5 drops of H2SO4 were added. The mixture was heated in a water bath at 50°C for 15 minutes. Upon cooling, crystals began to form. Recrystallization: The crude product was dissolved in minimal hot ethanol and cooled slowly to purify the crystals. Characterization: The melting point of the purified product was found to be 135°C (Lit: 136°C). Ferric chloride test was negative, indicating no unreacted salicylic acid. Yield Calculation: Theoretical yield = 3.9g. Actual yield = 2.8g. Percent yield = 71.8%."
+Output: {"folder_label": "Chemistry", "description": "organic chemistry, inorganic chemistry, physical chemistry, chemical reactions, molecular structure, stoichiometry, titration, lab reports, synthesis, bonding, compounds, periodic table, acids, bases, polymers, biochemistry, analytical chemistry, spectroscopy, elements, solutions", "keywords": "synthesis, organic, reaction, purification, acid, chemical, chemistry, lab, aspirin, yield"}
 
---- EXAMPLE 3 ---
-Document: UNIVERSITY OF OXFORD, Lecture Transcript: Philosophy 101 - Dr. Alan Finch. Good morning. In today's lecture, we will delve into Plato's Theory of Forms. The central idea is that the physical world is not the 'real' world; instead, ultimate reality exists beyond our physical world in the realm of Forms or Ideas. For every object or quality in the physical world, there is a corresponding perfect Form. For instance, the Form of 'Beauty' is eternal and unchanging, while a beautiful person or a beautiful painting is merely a shadow or imitation of that perfect Form. We will be analyzing excerpts from 'The Republic' to understand this concept better.
-output = {"folder_label": "Transcripts", "description": "Written records of spoken language from lectures, interviews, meetings, or speeches. Includes academic transcripts, verbatim notes from seminars, and dictated content for professional or personal use. Focuses on capturing spoken words in a written format for record-keeping, analysis, or accessibility. Keywords: transcript, lecture, interview, meeting notes, speech, dictation", "keywords": "transcript, lecture, interview, meeting notes, speech"}
+--- EXAMPLE 3 (Maths) ---
+Document: "MATH 201: CALCULUS II - MIDTERM EXAM. Problem 1: Evaluate the indefinite integral of f(x) = x^2 * e^x dx using integration by parts. Let u = x^2 and dv = e^x dx. Problem 2: Determine if the series sum(1/n^2) from n=1 to infinity converges using the p-series test. Since p=2 > 1, the series converges. Problem 3: Find the volume of the solid generated by rotating the region bounded by y = x^2 and y = 4 about the x-axis using the washer method. V = pi * integral((4)^2 - (x^2)^2) dx. Problem 4: Solve the differential equation dy/dx + 2y = 4. This is a linear first-order ODE. The integrating factor is e^(2x). Multiplying through, we get d/dx(y*e^2x) = 4e^2x. Integrating both sides yields y = 2 + Ce^(-2x)."
+Output: {"folder_label": "Maths", "description": "algebra, calculus, geometry, trigonometry, statistics, probability, linear algebra, differential equations, mathematical proofs, theorems, numerical analysis, formulas, derivatives, integrals, limits, functions, vectors, matrices, logic, topology", "keywords": "calculus, derivative, integral, equation, math, function, algebra, geometry, series, convergence"}
 
---- EXAMPLE 4 ---
-Document: Invoice #INV-0078. Bill To: Alpha Corp. Date: November 18, 2023. Due Date: December 18, 2023. Description: Q4 Consulting Services - Market Analysis Report. Quantity: 1. Unit Price: $5,000.00. Subtotal: $5,000.00. Tax (10%): $500.00. Total Amount Due: $5,500.00. Please make payment to the bank account listed below. Thank you for your business.
-output = {"folder_label": "Finance", "description": "Documents related to financial management, reporting, and analysis. Includes financial statements, balance sheets, income statements, invoices, receipts, expense reports, investment portfolios, bank statements, and tax documents. Keywords: finance, invoice, receipt, budget, investment, stocks, taxes, banking", "keywords": "finance, invoice, receipt, budget, investment, stocks, taxes"}
+--- EXAMPLE 4 (Finance) ---
+Document: "INVOICE #INV-2024-001. Issued Date: Oct 15, 2024. Due Date: Nov 15, 2024. Bill To: Global Tech Solutions. From: Alpha Consulting LLC. Description of Services: 1. Q3 Financial Audit - Comprehensive review of balance sheets, income statements, and cash flow reports ($2,500.00). 2. Tax Advisory Services - Consultation regarding corporate tax liabilities and deductions ($1,200.00). 3. Payroll Processing - September 2024 ($800.00). Subtotal: $4,500.00. VAT (10%): $450.00. Total Amount Due: $4,950.00. Payment Methods: Bank Transfer (Account: 123-456-789), Credit Card, or Check. Late fees of 5% apply after 30 days. Thank you for your business."
+Output: {"folder_label": "Finance", "description": "invoices, receipts, tax documents, bank statements, investment portfolios, budgeting, accounting, audits, financial reports, payroll, expenses, assets, liabilities, billing, economics, markets, stocks, bonds, insurance, bookkeeping", "keywords": "invoice, payment, tax, bill, banking, amount, finance, accounting, audit, budget"}
 
---- EXAMPLE 5 ---
-Document: Essay Prompt: Discuss the theme of ambition in Shakespeare's 'Macbeth'. Your essay should analyze how Macbeth's ambition, spurred by the witches' prophecy and Lady Macbeth's persuasion, leads to his tragic downfall. Use specific quotes and scenes from the play to support your argument. Consider the psychological and moral consequences of unchecked ambition as portrayed by Shakespeare.
-output = {"folder_label": "English", "description": "Essays, literary analysis, book reports, and creative writing pieces. Includes analyses of themes, characters, and symbolism in literature, as well as grammar exercises, vocabulary lists, and course notes on literary periods. Focuses on the study and interpretation of language and literature. Keywords: literature, essay, poetry, novel, grammar, analysis, Shakespeare", "keywords": "literature, essay, poetry, novel, grammar, analysis"}
+--- EXAMPLE 5 (English/Literature) ---
+Document: "ESSAY: THE ILLUSION OF THE AMERICAN DREAM IN THE GREAT GATSBY. F. Scott Fitzgerald's masterpiece, 'The Great Gatsby', serves as a biting critique of the Jazz Age. The protagonist, Jay Gatsby, embodies the relentless pursuit of wealth and status, symbolized by the green light at the end of Daisy's dock. However, Fitzgerald suggests that this dream is ultimately hollow. The valley of ashes represents the moral decay hidden behind the glittering facade of West Egg. Tom and Daisy Buchanan, careless people who smash up things and creatures, illustrate the corruption of the old money elite. In the end, Gatsby's death reflects the futility of trying to repeat the past. The novel employs rich symbolism, such as the eyes of Dr. T.J. Eckleburg, to convey themes of judgment and loss of spirituality."
+Output: {"folder_label": "English", "description": "essays, book reviews, literary analysis, poetry, creative writing, novel summaries, character studies, themes, metaphors, linguistic analysis, grammar, humanities, authors, symbolism, prose, drama, fiction, non-fiction, storytelling, reading comprehension", "keywords": "essay, analysis, theme, novel, book, symbolism, literature, english, fitzgerald, writing"}
 
---- EXAMPLE 6 ---
-Document: Problem: Solve the following quadratic equation for x: 2x² - 8x - 10 = 0. Solution Steps: 1. Divide the entire equation by 2 to simplify: x² - 4x - 5 = 0. 2. Factor the quadratic expression: (x - 5)(x + 1) = 0. 3. Set each factor to zero to find the possible values for x. x - 5 = 0 leads to x = 5. x + 1 = 0 leads to x = -1. The solutions are x = 5 and x = -1.
-output = {"folder_label": "Maths", "description": "Mathematical problem sets, lecture notes, and textbooks. Covers topics such as algebra, calculus, geometry, statistics, and trigonometry. Includes equations, proofs, graphs, step-by-step solutions, and formulas for various mathematical problems. Keywords: calculus, algebra, geometry, statistics, trigonometry, derivatives, integrals, equation", "keywords": "calculus, algebra, geometry, statistics, trigonometry, derivatives, integrals"}
+--- EXAMPLE 6 (Computer Science) ---
+Document: "PYTHON PROJECT: BINARY SEARCH TREE IMPLEMENTATION. class Node: def __init__(self, key): self.left = None, self.right = None, self.val = key. def insert(root, key): if root is None: return Node(key). else: if root.val < key: root.right = insert(root.right, key) else: root.left = insert(root.left, key) return root. Time Complexity Analysis: The average case time complexity for search, insert, and delete operations in a BST is O(log n). However, in the worst case (skewed tree), it degrades to O(n). To optimize this, AVL trees or Red-Black trees can be used to ensure balancing. This module also includes a BFS (Breadth-First Search) traversal method using a queue."
+Output: {"folder_label": "Computer Science", "description": "programming, algorithms, data structures, software development, coding, python, java, machine learning, artificial intelligence, database management, cyber security, networking, web development, code, scripting, backend, frontend, api, logic, debugging", "keywords": "code, algorithm, python, function, sorting, programming, development, cs, data structures, complexity"}
 
---- EXAMPLE 7 ---
-Document: This LEASE AGREEMENT is made and entered into on this 1st day of January, 2024, by and between John Smith (hereinafter referred to as the "Landlord") and Mary Jane (hereinafter referred to as the "Tenant"). The Landlord agrees to lease the residential property located at 123 Main Street, Anytown, USA to the Tenant for a term of one (1) year, commencing on January 15, 2024, and ending on January 14, 2025.
-output = {"folder_label": "Legal Documents", "description": "Official and personal legal documents. Includes contracts, agreements, wills, power of attorney forms, deeds, leases, non-disclosure agreements (NDAs), and court filings. These documents establish legal rights, obligations, and agreements between parties. Keywords: legal, contract, agreement, lease, will, affidavit, court", "keywords": "legal, contract, agreement, lease, will, affidavit"}
+--- EXAMPLE 7 (Legal) ---
+Document: "NON-DISCLOSURE AGREEMENT (NDA). This Agreement is made between 'Disclosing Party' and 'Receiving Party'. 1. Confidential Information: Shall include all data, materials, products, technology, computer programs, specifications, manuals, business plans, software, marketing plans, business opportunities, financial information, and other information disclosed or submitted, orally, in writing, or by any other media. 2. Obligations: The Receiving Party agrees to hold and maintain the Confidential Information in strictest confidence for the sole and exclusive benefit of the Disclosing Party. 3. Term: This agreement shall remain in effect for a period of 5 years. 4. Governing Law: This Agreement shall be governed by and construed in accordance with the laws of the State of California."
+Output: {"folder_label": "Legal", "description": "contracts, agreements, non-disclosure agreements, wills, deeds, court documents, litigation, affidavits, intellectual property, regulations, statutes, legal advice, arbitration, clauses, patents, trademarks, copyrights, terms of service, privacy policy, corporate law", "keywords": "contract, agreement, nda, confidential, parties, legal, law, term, clause, obligation"}
 
---- EXAMPLE 8 ---
-Document: Patient Name: David Chen. Date of Visit: 11/17/2023. Physician: Dr. Emily Carter. Chief Complaint: Persistent cough and sore throat for one week. Assessment: Acute bronchitis. Plan: Prescribed Amoxicillin 500mg, to be taken twice daily for 7 days. Advised rest and increased fluid intake. Follow-up appointment scheduled in one week if symptoms do not improve.
-output = {"folder_label": "Health & Medical", "description": "Personal health records, medical reports, and insurance information. Includes doctor's notes, lab results, prescription details, vaccination records, hospital discharge summaries, and health insurance claims. Keywords: medical, health, doctor, prescription, lab results, insurance, clinic", "keywords": "medical, health, doctor, prescription, lab results, insurance"}
+--- EXAMPLE 8 (Medical) ---
+Document: "CLINICAL DISCHARGE SUMMARY. Patient: John Doe (DOB: 01/01/1980). Admitted: 11/10/2023. Discharged: 11/14/2023. Diagnosis: Acute Bacterial Pneumonia. History of Present Illness: Patient presented with high fever (39°C), productive cough with rust-colored sputum, and dyspnea. Chest X-ray revealed consolidation in the right lower lobe. Lab results showed elevated WBC count (15,000/uL). Treatment Course: Started on IV Ceftriaxone and Azithromycin. Oxygen saturation improved from 88% to 98% on room air by Day 3. Fever resolved. Discharge Medications: Amoxicillin 500mg PO TID for 5 days. Follow-up: Patient to see PCP in 1 week. Instructions: Encourage fluid intake, rest, and complete full course of antibiotics."
+Output: {"folder_label": "Medical", "description": "medical reports, prescriptions, lab results, patient records, diagnosis, treatment plans, insurance claims, vaccinations, clinical notes, health summary, doctor visits, pathology, symptoms, anatomy, physiology, surgery, nursing, pharmacology, diseases, healthcare", "keywords": "patient, diagnosis, prescription, doctor, health, treatment, medical, clinical, hospital, medicine"}
 
---- EXAMPLE 9 ---
-Document: Hello Team, This is a summary of our project sync-up meeting held on November 15, 2023. Attendees: Alice, Bob, Charlie. Agenda: Review Q4 progress for Project Phoenix. Key Points Discussed: 1. The design phase is 90% complete. 2. Development is on track to start next week. 3. Bob raised a concern about potential budget overruns. Action Items: Alice to revise the budget forecast by EOD Friday. Charlie to finalize the UI mockups. Next meeting is scheduled for November 22.
-output = {"folder_label": "Meeting Minutes", "description": "Summaries and formal records of proceedings from business, academic, or organizational meetings. Includes a list of attendees, agenda items, key discussion points, decisions made, and assigned action items with deadlines. Keywords: meeting, minutes, agenda, action items, summary, notes", "keywords": "meeting, minutes, agenda, action items, summary"}
+--- EXAMPLE 9 (History) ---
+Document: "CHAPTER 5: THE TREATY OF VERSAILLES (1919). The Treaty of Versailles officially ended World War I between the Allied Powers and Germany. Signed in the Hall of Mirrors, the treaty imposed harsh penalties on Germany, often cited as a cause for the rise of Nazism and WWII. Key Provisions: 1. Territorial Losses: Germany lost 13% of its European territory, including Alsace-Lorraine (returned to France) and the Polish Corridor. 2. Military Restrictions: The German army was limited to 100,000 men, and conscription was banned. The Rhineland was demilitarized. 3. War Guilt Clause (Article 231): Germany was forced to accept full responsibility for causing the war. 4. Reparations: Germany was required to pay 132 billion gold marks. The treaty created the League of Nations to prevent future conflicts."
+Output: {"folder_label": "History", "description": "historical events, timelines, civilizations, wars, revolutions, biographies, archival documents, primary sources, cultural heritage, anthropology, sociology, treaties, eras, past events, archaeology, politics, geography, monarchs, empires, ancient history", "keywords": "war, treaty, history, event, date, revolution, past, world war, germany, allied"}
 
---- EXAMPLE 10 ---
-Document: Flight Confirmation: H7G9K2. Passenger: Sarah Wilson. Date: December 20, 2023. Departure: New York (JFK) at 8:00 AM, United Airlines Flight UA456. Arrival: Los Angeles (LAX) at 11:30 AM. Hotel Booking: The Grand Hotel, Los Angeles. Check-in: December 20, 2023. Check-out: December 25, 2023. Room Type: King Bed, Non-Smoking. Confirmation #: 998271. Your itinerary is confirmed.
-output = {"folder_label": "Travel Itinerary", "description": "Documents related to travel planning and booking. Includes flight confirmations, hotel reservations, car rental agreements, train tickets, cruise details, and trip schedules. Contains key information like booking numbers, dates, times, and locations. Keywords: travel, flight, hotel, booking, itinerary, reservation, ticket", "keywords": "travel, flight, hotel, booking, itinerary, reservation"}
+--- EXAMPLE 10 (Travel) ---
+Document: "TRAVEL ITINERARY: EUROPEAN VACATION. Booking Reference: XJ9-22L. Passenger: Sarah Smith. Flight 1: Delta DL106 - JFK (New York) to LHR (London). Departs: June 10, 18:30. Arrives: June 11, 06:45. Seat: 12A. Hotel 1: The Savoy, London (3 Nights). Check-in: June 11. Check-out: June 14. Train: Eurostar 9024 - London St Pancras to Paris Nord. Departs: June 14, 10:00. Hotel 2: Hotel Ritz, Paris (4 Nights). Flight 2: Air France AF022 - CDG (Paris) to JFK (New York). Departs: June 18, 14:00. Notes: Visa requirements checked. Travel insurance policy #998877 active. Carry-on allowance: 1 bag + 1 personal item."
+Output: {"folder_label": "Travel", "description": "itinerary, flight tickets, boarding passes, hotel reservations, visa documents, passport copies, car rental, travel insurance, booking confirmations, vacation planning, tourism, transport, maps, guides, luggage, airlines, accommodation, trips, holidays, exploration", "keywords": "flight, hotel, booking, itinerary, travel, reservation, trip, ticket, tourism, vacation"}
 
---- EXAMPLE 11 ---
-Document: Lasagna al Forno. Ingredients: 1 lb ground beef, 1 jar of marinara sauce, 15 oz ricotta cheese, 1 egg, 1/2 cup grated Parmesan cheese, 1 lb mozzarella cheese (shredded), 1 box of lasagna noodles. Instructions: 1. Preheat oven to 375°F (190°C). 2. In a skillet, brown the ground beef. Drain fat and stir in the marinara sauce. 3. In a bowl, mix ricotta, egg, and Parmesan cheese. 4. Cook noodles according to package directions. 5. Layer sauce, noodles, ricotta mixture, and mozzarella cheese in a baking dish. Repeat layers. 6. Bake for 45 minutes until bubbly.
-output = {"folder_label": "Recipes", "description": "Collections of culinary recipes and cooking instructions. Includes lists of ingredients, step-by-step preparation methods, cooking times, and serving suggestions for various dishes, desserts, and beverages. Keywords: recipe, cooking, food, ingredients, baking, kitchen, dish", "keywords": "recipe, cooking, food, ingredients, baking"}
+--- EXAMPLE 11 (Recipes/Food) ---
+Document: "RECIPE: CLASSIC ITALIAN LASAGNA. Prep time: 30 mins. Cook time: 1 hr. Ingredients: 1 lb ground beef, 1 jar marinara sauce, 1 box lasagna noodles, 15 oz ricotta cheese, 1 egg, 2 cups mozzarella cheese, 1/2 cup parmesan. Instructions: 1. Preheat oven to 375°F (190°C). 2. Boil noodles in salted water until al dente. Drain. 3. In a skillet, brown the beef and season with salt, pepper, and oregano. Add marinara sauce and simmer. 4. In a separate bowl, whisk the egg and mix with ricotta and parmesan. 5. Assemble: Spread sauce on the bottom of a 9x13 dish. Layer noodles, ricotta mixture, meat sauce, and mozzarella. Repeat layers. 6. Cover with foil and bake for 45 minutes. Remove foil and bake 10 more minutes until cheese is bubbly. Let rest before serving."
+Output: {"folder_label": "Food", "description": "recipes, ingredients, cooking instructions, meal planning, dietary information, nutrition facts, baking, culinary techniques, grocery lists, menu, dishes, cuisine, gastronomy, restaurant reviews, food science, beverages, desserts, chef, kitchen, dining", "keywords": "recipe, cooking, bake, ingredients, food, kitchen, meal, dish, culinary, lasagna"}
 
---- EXAMPLE 12 ---
-Document: Michael Johnson, (123) 456-7890, michael.j@email.com. Professional Experience: Senior Software Engineer, Tech Solutions Inc., San Francisco, CA (2018 - Present). Led a team of 5 engineers in developing and maintaining a scalable cloud-based SaaS platform using Python, Django, and AWS. Improved application performance by 30% through code optimization and database query refactoring.
-output = {"folder_label": "Resume & CV", "description": "Professional and academic resumes or curriculum vitae (CVs). Details an individual's work experience, educational background, skills, qualifications, and accomplishments for the purpose of job applications or professional networking. Keywords: resume, CV, curriculum vitae, career, jobs, experience, skills", "keywords": "resume, CV, career, jobs, experience"}
+--- EXAMPLE 12 (Career/Resume) ---
+Document: "RESUME: JANE DOE. Contact: jane.doe@email.com | 555-0199. Professional Summary: Results-oriented Marketing Manager with 7+ years of experience driving brand growth and digital strategy. Proven track record in SEO, content marketing, and social media campaigns. Experience: Senior Marketing Specialist at TechGrowth Inc (2019-Present). - Led a team of 5 to execute a rebranding campaign that increased web traffic by 40%. - Managed a $50k monthly ad budget across Google and LinkedIn. Marketing Coordinator at Creative Solutions (2016-2019). - Designed email newsletters with a 25% open rate. Education: BA in Marketing, University of California, Berkeley. Skills: Google Analytics, HubSpot, Adobe Creative Suite, Copywriting, Leadership."
+Output: {"folder_label": "Career", "description": "resume, cv, curriculum vitae, cover letter, job application, portfolio, reference letters, interview notes, offer letters, employment contracts, professional development, skills, hiring, recruitment, networking, linkedin, qualifications, experience, internships, career planning", "keywords": "resume, experience, skills, job, education, cv, career, employment, application, work"}
 
---- EXAMPLE 13 ---
-Document: Washington D.C. – A new report from the Department of Labor released today shows that the national unemployment rate fell to 3.5% in the last quarter, the lowest it has been in two years. The report cites robust job growth in the technology and healthcare sectors as the primary drivers of this positive trend. Economists are optimistic that this signals a strong economic recovery, but caution that inflation remains a key concern for the coming months.
-output = {"folder_label": "News Articles", "description": "Clippings, saved web pages, and transcripts of news reports from various sources. Covers current events, politics, business, technology, sports, and culture. Includes articles from newspapers, magazines, and online news outlets. Keywords: news, article, report, journalism, current events, headlines", "keywords": "news, article, report, journalism, current events"}
+--- EXAMPLE 13 (News/Journalism) ---
+Document: "BREAKING NEWS: GLOBAL MARKETS RALLY AS INFLATION COOLS. New York - Stock markets surged on Friday following the release of the latest Consumer Price Index (CPI) report, which showed inflation slowing to 3.2% year-over-year. The Dow Jones Industrial Average gained 400 points, while the S&P 500 reached a new record high. Tech stocks led the rally, with major gains in the semiconductor sector. Federal Reserve Chairman Jerome Powell hinted that interest rate hikes may be paused in the coming quarter if the trend continues. 'This is a promising sign for the economy,' said chief economist Maria Gonzalez. However, experts warn that geopolitical tensions in the Middle East could still impact oil prices."
+Output: {"folder_label": "News", "description": "news articles, clippings, press releases, journalism, headlines, current events, reports, editorials, op-eds, broadcasts, media, politics, economy, world affairs, local news, updates, bulletins, interviews, commentary, information", "keywords": "news, article, report, journalism, current events, market, economy, headline, update, media"}
 
---- EXAMPLE 14 ---
-Document: The Amazon Rainforest, located in South America, is the world's largest tropical rainforest, famed for its immense biodiversity. It spans across nine countries, with the majority contained within Brazil. The Amazon River, the lifeblood of the forest, is the largest river by discharge volume of water in the world. This ecosystem plays a crucial role in regulating the global climate and is home to millions of species of insects, plants, fish, and other forms of life.
-output = {"folder_label": "Geography", "description": "Notes, articles, and maps related to the study of Earth's lands, features, inhabitants, and phenomena. Includes descriptions of continents, countries, cities, landforms like mountains and rivers, as well as concepts like climate and population distribution. Keywords: geography, country, city, map, climate, geology, continent", "keywords": "geography, country, city, map, climate, geology"}
+--- EXAMPLE 14 (Geography) ---
+Document: "GEOGRAPHY 101: THE AMAZON RAINFOREST ECOSYSTEM. The Amazon Biome spans 6.7 million km^2, covering nine nations. It represents over half of the planet's remaining rainforests and comprises the largest and most biodiverse tract of tropical rainforest in the world. Climate: The region experiences a tropical rainforest climate, with high humidity and heavy rainfall averaging 2000-3000 mm annually. Hydrography: The Amazon River is the lifeblood of the forest, discharging more water than the next seven largest rivers combined. Flora and Fauna: Home to 10% of the known species on Earth, including the jaguar, sloth, macaw, and pink river dolphin. Deforestation remains a critical threat, driven by logging, cattle ranching, and agriculture."
+Output: {"folder_label": "Geography", "description": "maps, atlas, climate, topography, ecosystems, countries, capitals, continents, demographics, population, geology, landforms, rivers, mountains, environmental science, cartography, earth science, regions, urban planning, meteorology", "keywords": "geography, map, earth, climate, location, region, land, environment, river, country"}
 
---- EXAMPLE 15 ---
-Document: Confirmation bias is the tendency of people to favor information that confirms their existing beliefs or hypotheses. This cognitive bias results in individuals selectively gathering and interpreting evidence in a way that supports their preconceptions, while ignoring or devaluing evidence that contradicts them. For example, a person who believes that left-handed people are more creative will tend to notice and remember instances of creative left-handed people more readily than instances of non-creative ones.
-output = {"folder_label": "Psychology", "description": "Research papers, lecture notes, and summaries on the study of mind and behavior. Covers topics like cognitive biases, developmental psychology, social behavior, and mental health. Includes theories, case studies, and experimental findings. Keywords: psychology, cognitive, behavior, therapy, mind, social, study", "keywords": "psychology, cognitive, behavior, therapy, mind"}
+--- EXAMPLE 15 (Psychology) ---
+Document: "ABSTRACT: COGNITIVE DISSONANCE AND DECISION MAKING. This study explores the theory of cognitive dissonance, proposed by Leon Festinger, which suggests that individuals experience psychological discomfort when holding conflicting beliefs or behaviors. We conducted a controlled experiment with 100 participants who were asked to perform a boring task. Half were paid $1, and the other half $20, to lie to the next participant that the task was fun. Results showed that the $1 group rated the task as significantly more enjoyable than the $20 group. This supports the hypothesis of 'insufficient justification', where individuals alter their internal attitudes to align with their actions to reduce dissonance. Implications for consumer behavior and persuasion are discussed."
+Output: {"folder_label": "Psychology", "description": "research papers, case studies, cognitive science, behavior, mental health, therapy, neuroscience, counseling, development, social psychology, experiments, theories, freud, jung, personality, disorders, treatment, mind, emotions, perception", "keywords": "psychology, mind, behavior, research, study, cognitive, therapy, mental, emotion, theory"}
 """
-
-
 
 def generate_folder_label(target_text: str):
     try:
@@ -106,34 +171,24 @@ def generate_folder_label(target_text: str):
 
     prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
 
-    --- CRITICAL RULE: EXISTING LABELS ---
+    --- CRITICAL RULE 1: BANNED WORDS (NEGATIVE CONSTRAINTS) ---
+    *   **NEVER** include generic document types in `description` or `keywords`.
+    *   **BANNED WORDS:** "project", "assignment", "work", "synopsis", "investigatory", "pdf", "file", "document", "class 12", "student", "report", "presentation".
+    *   **FOCUS ONLY** on the Subject Matter (e.g., "Optics", "Poetry", "Algebra").
+    *   *Reasoning:* If you include "project" in Physics, an English Project will get misclassified as Physics.
+
+    --- CRITICAL RULE 2: EXISTING LABELS ---
     Below is a list of folders that ALREADY EXIST. 
     1. Check if the document fits into one of these existing `folder_labels`.
-    2. If it fits, YOU MUST USE THE EXACT SAME LABEL NAME. Do not create a synonym (e.g., if "Physics" exists, do not create "Physics Docs") 
-    3. If it does NOT fit, generate a new, concise (1-2 words) label.
-    4. DO NOT CREATE EXTEREMLY SPECIFIC LABELS. Keep them broad and general.(For eg, fluid mechanics and current is too general both should be under physics label)
-    5. Strictly follow the JSON output requirements below and example formats from example.
+    2. If it fits a BROAD category (e.g., document is "Fluids", label "Physics" exists), YOU MUST USE THE EXISTING LABEL.
+    3. If it is a DISTINCT FIELD (e.g., document is "Literature", only "Physics" exists), generate a NEW LABEL.
+    4. If you are able to classify under an academic label (Maths, Physics, Chemistry, English, Computer Science, History, Geography, Psychology), PREFER THAT rather than stories, time travel or more specific label.
+    --- CRITICAL RULE 3: BROAD CATEGORIZATION ---
+    *   **DO NOT** create specific labels like "Fluid Dynamics". Group under "Physics".
+    *   Distinct subjects (Maths vs Physics vs Chemistry vs English) MUST remain separate.
 
-        --- CRITICAL RULE 1: BROAD CATEGORIZATION ---
-    *   **DO NOT** create specific labels like "Fluid Dynamics", "Circuitry", "Calculus", or "Invoices".
-    *   **DO** group these under their parent fields: "Physics", "Maths", "Finance".
-    *   If a label already exists in the provided list below, YOU MUST USE IT exactly.
-
-    --- CRITICAL RULE 2: SEMANTIC DESCRIPTIONS ---
-    *   The `description` field is for **SEARCH ENGINES**, not humans.
-    *   **DO NOT** write sentences like "This folder contains..." or "Ideal for...".
-    *   **DO** write a dense list of relevant sub-topics, synonyms, and vocabulary associated with the *Category*.
     EXISTING LABELS: 
     {existing_labels_content}
-
-    EXAMPLES:
-    {examples}
-
-    --- JSON OUTPUT REQUIREMENTS ---
-    1. **folder_label**: The category name (Existing or New).
-    2. **description**: A generic words that may appear in the text filesof what belongs in this folder (30-50 words). 
-       - Describe the CATEGORY. follow example.
-    3. **keywords**: A comma-separated list of 6-10 broad search terms.
 
     --- USER DOCUMENT ---
     {target_text}
@@ -146,7 +201,7 @@ def generate_folder_label(target_text: str):
             config={
                 "response_mime_type": "application/json",  
                 "response_schema": schema,
-                "temperature": 0.5, 
+                "temperature": 0.5, # Low temperature to enforce strict adherence to existing labels
             }
         )
 
@@ -165,7 +220,7 @@ def generate_folder_label(target_text: str):
                 folder_data[new_label] = f"{new_desc} Keywords: {new_keywords_str}"
                 print(f"Generated new folder label: {new_label}")
             else:
-                print(f"Label '{new_label}' exists. Merging keywords...")
+                print(f"Label '{new_label}' exists. Merging description and keywords via gemini...")
                 
                 existing_full_text = folder_data[new_label]
                 
@@ -175,12 +230,38 @@ def generate_folder_label(target_text: str):
                     existing_desc = existing_full_text
                     existing_kw_str = ""
 
-                old_kws = set([k.strip().lower() for k in existing_kw_str.split(',') if k.strip()])
-                incoming_kws = [k.strip().lower() for k in new_keywords_str.split(',') if k.strip()]
-                old_kws.update(incoming_kws)
+                merged_data = merge_folder_metadata(
+                    folder_label=new_label,
+                    old_desc=existing_desc,
+                    old_kw=existing_kw_str,
+                    new_desc=new_desc,
+                    new_kw=new_keywords_str
+                )
+
+                final_desc = merged_data.get("merged_description", existing_desc)
+                final_kws = merged_data.get("merged_keywords", existing_kw_str)
+
+                folder_data[new_label] = f"{final_desc} Keywords: {final_kws}"
+                # if " Keywords: " in existing_full_text:
+                #     existing_desc, existing_kw_str = existing_full_text.split(" Keywords: ", 1)
+                # else:
+                #     existing_desc = existing_full_text
+                #     existing_kw_str = ""
+
+                # # Merge Keywords (Set to remove duplicates)
+                # old_kws = set([k.strip().lower() for k in existing_kw_str.split(',') if k.strip()])
+                # incoming_kws = [k.strip().lower() for k in new_keywords_str.split(',') if k.strip()]
+                # old_kws.update(incoming_kws)
                 
-                merged_kw_str = ", ".join(list(old_kws))
-                folder_data[new_label] = f"{existing_desc} Keywords: {merged_kw_str}"
+                # # Merge Description Terms (Set to remove duplicates)
+                # old_desc_terms = set([d.strip().lower() for d in existing_desc.split(',') if d.strip()])
+                # incoming_desc_terms = [d.strip().lower() for d in new_desc.split(',') if d.strip()]
+                # old_desc_terms.update(incoming_desc_terms)
+
+                # merged_kw_str = ", ".join(sorted(list(old_kws))) 
+                # merged_desc_str = ", ".join(sorted(list(old_desc_terms)))
+
+                # folder_data[new_label] = f"{merged_desc_str} Keywords: {merged_kw_str}"
 
             f.seek(0)
             json.dump(folder_data, f, indent=2)
