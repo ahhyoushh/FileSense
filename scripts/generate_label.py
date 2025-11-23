@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 client = genai.Client(api_key=os.getenv("API_KEY"))
-
+MODEL = "gemini-2.5-flash" #BEcause got a free api key
 schema = {
     "type": "object",
     "properties": {
@@ -96,66 +96,101 @@ output = {"folder_label": "Psychology", "description": "Research papers, lecture
 
 
 def generate_folder_label(target_text: str):
-    prompt = f"""You are an intelligent file organization system. Your task is to analyze a document and classify it by generating a single, valid JSON object.
+    try:
+        with open("folder_labels.json", "r", encoding="utf-8") as f:
+            existing_labels_content = f.read()
+            if not existing_labels_content.strip():
+                existing_labels_content = "{}"
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_labels_content = "{}"
 
-    JSON Output Structure:
+    prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
 
-    Your output must contain these three keys:
+    --- CRITICAL RULE: EXISTING LABELS ---
+    Below is a list of folders that ALREADY EXIST. 
+    1. Check if the document fits into one of these existing `folder_labels`.
+    2. If it fits, YOU MUST USE THE EXACT SAME LABEL NAME. Do not create a synonym (e.g., if "Physics" exists, do not create "Physics Docs") 
+    3. If it does NOT fit, generate a new, concise (1-2 words) label.
+    4. DO NOT CREATE EXTEREMLY SPECIFIC LABELS. Keep them broad and general.(For eg, fluid mechanics and current is too general both should be under physics label)
+    5. Strictly follow the JSON output requirements below and example formats from example.
 
-    folder_label: A concise, one-or-two-word category that best represents the document's general subject matter (e.g., "Finance", "Chemistry", "Legal Documents").
+        --- CRITICAL RULE 1: BROAD CATEGORIZATION ---
+    *   **DO NOT** create specific labels like "Fluid Dynamics", "Circuitry", "Calculus", or "Invoices".
+    *   **DO** group these under their parent fields: "Physics", "Maths", "Finance".
+    *   If a label already exists in the provided list below, YOU MUST USE IT exactly.
 
-    description: A 40-60 word paragraph describing the general purpose of a folder with this label. The description must be broad, covering the types of documents and sub-topics one might find in this folder, not just the provided document.
+    --- CRITICAL RULE 2: SEMANTIC DESCRIPTIONS ---
+    *   The `description` field is for **SEARCH ENGINES**, not humans.
+    *   **DO NOT** write sentences like "This folder contains..." or "Ideal for...".
+    *   **DO** write a dense list of relevant sub-topics, synonyms, and vocabulary associated with the *Category*.
+    EXISTING LABELS: 
+    {existing_labels_content}
 
-    keywords: A comma-separated string of 6-7 relevant keywords that summarize the folder's category. These keywords must be general to the folder's topic, not specific to the single document.
-
-    Rules:
-
-    Try not to generate folder labels that already exist in folder_labels.json nor similar ones to already existing. If similar folder labels exists in folders_json, use the same label and modify descriptions and keywords accordingly. folders_json will be provided below.
-    folders_json: {open("folder_labels.json", "r", encoding="utf-8").read()}
-
-    Try to weight the title if title exists in the text document when generating label and description.
-    Your output must be only the JSON object.
-
-    Do not include any text, explanations, or markdown formatting (like ```json) before or after the JSON object.
-
-    The classification must be based on the general category suggested by the document, not limited to the document's specific contents.
-
-    --- EXAMPLES ---
+    EXAMPLES:
     {examples}
 
+    --- JSON OUTPUT REQUIREMENTS ---
+    1. **folder_label**: The category name (Existing or New).
+    2. **description**: A generic words that may appear in the text filesof what belongs in this folder (30-50 words). 
+       - Describe the CATEGORY. follow example.
+    3. **keywords**: A comma-separated list of 6-10 broad search terms.
+
     --- USER DOCUMENT ---
-    {target_text}"""
+    {target_text}
+    """
+
     try:
         res = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model=MODEL,
             contents=prompt,
             config={
                 "response_mime_type": "application/json",  
                 "response_schema": schema,
-                "temperature": 0.8, 
-                "system_instruction": "You are an expert document organization system. Your task is to analyze the document text and generate a concise, descriptive and genral folder label that is no more than 3 words. Do not include any explanations or extra text and rely on examples but make appropriate and general folder labels, you can create your own labels do not only choose from examples. And last should be the keywords relevant to the folder label for easy searching and categorization.",
+                "temperature": 0.5, 
             }
         )
 
         response = json.loads(res.text)
-        folder_label = response.get("folder_label")
-        description = response.get("description")
-        keywords = response.get("keywords")
-        with open("folder_labels.json", "r+", encoding="utf-8") as f:
-            folder_data = json.load(f)
-            if folder_label not in folder_data:
-                folder_data[folder_label] = description + " Keywords: " + keywords
-                f.seek(0)
-                json.dump(folder_data, f, indent=2)
-                f.truncate()
-                print(f"Generated new folder label: {folder_label}")
-            else:
-                print(f"Folder label '{folder_label}' already exists. Skipping addition.")
+        new_label = response.get("folder_label")
+        new_desc = response.get("description")
+        new_keywords_str = response.get("keywords")
         
+        with open("folder_labels.json", "r+", encoding="utf-8") as f:
+            try:
+                folder_data = json.load(f)
+            except json.JSONDecodeError:
+                folder_data = {}
+            
+            if new_label not in folder_data:
+                folder_data[new_label] = f"{new_desc} Keywords: {new_keywords_str}"
+                print(f"Generated new folder label: {new_label}")
+            else:
+                print(f"Label '{new_label}' exists. Merging keywords...")
+                
+                existing_full_text = folder_data[new_label]
+                
+                if " Keywords: " in existing_full_text:
+                    existing_desc, existing_kw_str = existing_full_text.split(" Keywords: ", 1)
+                else:
+                    existing_desc = existing_full_text
+                    existing_kw_str = ""
+
+                old_kws = set([k.strip().lower() for k in existing_kw_str.split(',') if k.strip()])
+                incoming_kws = [k.strip().lower() for k in new_keywords_str.split(',') if k.strip()]
+                old_kws.update(incoming_kws)
+                
+                merged_kw_str = ", ".join(list(old_kws))
+                folder_data[new_label] = f"{existing_desc} Keywords: {merged_kw_str}"
+
+            f.seek(0)
+            json.dump(folder_data, f, indent=2)
+            f.truncate()
+
         return response
+
     except APIError as e:
         print(f"An API error occurred: {e}")
+        return False
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return False
-

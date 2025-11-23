@@ -4,4 +4,6 @@ folder_labels.json
 folder_label_generator/clean_generated_data.py
 folder_label_generator/data_cleaned.jsonl
 folder_label_generator/data_fixedcommas.jsonl
+folder_label_generator/validate_split_data.py
+folder_label_generator/data.jsonl
 .env

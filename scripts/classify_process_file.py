@@ -1,5 +1,3 @@
-# --- START OF FILE classify_process_file.py ---
-
 import os
 import re
 import shutil
@@ -7,7 +5,6 @@ import json
 import time
 from pathlib import Path
 import threading
-import sys
 
 import faiss
 import numpy as np
@@ -26,11 +23,12 @@ index = None
 folder_data = {}
 FOLDER_LABELS = []
 model = None
-CLASSIFICATION_LOCK = threading.Lock() 
+
+# CHANGED: RLock fixes the deadlock freeze (damn fun to debug)
+CLASSIFICATION_LOCK = threading.RLock() 
 
 def load_index_and_labels():
-    global index, folder_data, FOLDER_LABELS, model
-    print("Loading classification model and index...")
+    global index, folder_data, FOLDER_LABELS, model 
     try:
         if not FAISS_INDEX_FILE.exists() or not LABELS_FILE.exists():
             print(f"[!] Error: Missing required files...")
@@ -40,17 +38,15 @@ def load_index_and_labels():
             folder_data = json.load(f)
         FOLDER_LABELS = list(folder_data.keys())
         if not FOLDER_LABELS:
-            print("[!] The labels file is empty. Cannot proceed.")
             return False
         if model is None: 
             model = SentenceTransformer(MODEL_NAME, device="cpu")
-        print(f"[1] Loaded {len(FOLDER_LABELS)} labels and index successfully.")
         return True
     except Exception as e:
         print(f"[!] An error occurred while loading index or labels: {e}")
         return False
 
-def classify_file(text, filename):
+def classify_file(text, filename, allow_generation = True):
     if not index or not model:
         return "Uncategorized", 0.0
 
@@ -82,7 +78,7 @@ def classify_file(text, filename):
             continue
         for kw in keywords:
             if re.search(rf"\b{re.escape(kw)}\b", filename_lower):
-                boosted[i] += FILENAME_BOOST
+                boosted[i] += TEXT_BOOST
                 break
 
     best_idx = int(np.argmax(boosted))
@@ -91,19 +87,29 @@ def classify_file(text, filename):
     if best_sim >= THRESHOLD:
         return best_label, round(float(best_sim), 2)
     else:
-        with CLASSIFICATION_LOCK:
-            new_label_info = generate_folder_label(text)
-            if new_label_info and new_label_info.get("folder_label"):
-                new_label_name = new_label_info["folder_label"]
-                if new_label_name not in FOLDER_LABELS:
+        if allow_generation:
+            with CLASSIFICATION_LOCK:
+                if not allow_generation: 
+                     return classify_file(text, filename, allow_generation=False)
+
+                print(f"[?] Low confidence ({best_sim:.2f}) for '{filename}'. Generating label...")
+                new_label_info = generate_folder_label(text)
+                
+                if new_label_info and new_label_info.get("folder_label"):
                     if create_faiss_index():
                         load_index_and_labels()
-                        return new_label_name, 1.0
-                else:
-                    return classify_file(text, filename)
+                        return classify_file(text, filename, allow_generation=False)
+                
+                return classify_file(text, filename, allow_generation=False)
+        else:
+
+            if best_sim > 0.15: # Lower fallback threshold
+                return best_label, round(float(best_sim), 2)
+            
+            print(f"[!] Could not classify '{filename}' (Sim: {best_sim:.2f}). Moving to Uncategorized.")
             return "Uncategorized", 0.0
 
-def process_file(file_path, testing=False):
+def process_file(file_path, testing=False, allow_generation=True):
     start_time = time.time()
     filename = os.path.basename(file_path)
     text = extract_text(file_path)
@@ -111,9 +117,11 @@ def process_file(file_path, testing=False):
     if not text.strip() or text == filename:
         text = filename.replace("_", " ").replace("-", " ")
 
-    predicted_folder, similarity = classify_file(text, filename)
+    predicted_folder, similarity = classify_file(text, filename, allow_generation=allow_generation)
+    
     destination_folder = BASE_DIR / "sorted" / predicted_folder
     os.makedirs(destination_folder, exist_ok=True)
+    
     if not testing:
         try:
             shutil.move(file_path, destination_folder / filename)
@@ -122,4 +130,3 @@ def process_file(file_path, testing=False):
 
     time_taken = time.time() - start_time
     print(f"[1] Processed: {filename} -> {predicted_folder} (sim={similarity:.2f}) in {time_taken:.2f}s")
-

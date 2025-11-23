@@ -19,9 +19,11 @@ PDF_CONFIG = {
     'QUALITY_THRESHOLD': 0.4,       # Min score for a page to be considered good
     'START_PAGE_ASSUMPTION': 3,     # Assumes content starts around page 3-4
     'HEADER_FOOTER_MARGIN': 70,     # Pixels from top/bottom to ignore for ocr
-    'MIN_LINE_LENGTH': 20,
-    'MIN_TITLE_LINE_LENGTH': 4
+    'MIN_LINE_LENGTH': 25,
+    'MIN_TITLE_LINE_LENGTH': 10
 }
+
+PRINT_DEBUG = False
 
 JUNK_PAGE_KEYWORDS = re.compile(
     r'\b(certificate|acknowledgement|declaration|submitted by|roll no|index|table of contents|bonafide|bibliography)\b',
