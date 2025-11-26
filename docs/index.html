@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🗂️ FileSense – Smart File Organizer</title>
+  <title>🗂️ FileSense</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -22,6 +22,7 @@
       --accent-light: #60a5fa;
       --accent-dark: #1e40af;
       --success: #10b981;
+      --warning: #f59e0b;
       --border: rgba(255, 255, 255, 0.08);
       --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
@@ -185,7 +186,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      -webkit-text-fill-color: transparent;
       animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -208,10 +208,6 @@
       max-width: 680px;
       margin: 0 auto;
       animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
-    }
-
-    header p:first-of-type {
-      margin-bottom: 16px;
     }
 
     .header-date {
@@ -337,6 +333,21 @@
     .feature-card p {
       font-size: 0.95rem;
       margin: 0;
+    }
+
+    /* Special AI Card Style */
+    .feature-card.ai-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .feature-card.ai-card:hover {
+      border-color: var(--success);
+      box-shadow: 0 16px 32px rgba(16, 185, 129, 0.15);
+    }
+
+    .feature-card.ai-card h4 {
+      color: var(--success);
     }
 
     /* Code Block */
@@ -496,11 +507,6 @@
       border: 1px solid var(--border);
     }
 
-    .highlight p {
-      margin: 0;
-      font-weight: 500;
-    }
-
     /* Learned Section */
     .learned-grid {
       display: grid;
@@ -627,11 +633,10 @@
         padding: 10px 14px;
       }
 
-      /* mobile header date tweak */
       .header-date {
-        top: 24px; /* Move up from 80px */
+        top: 24px;
         left: 24px;
-        font-size: 0.75rem; /* Slightly smaller */
+        font-size: 0.75rem;
       }
 
       .sidebar {
@@ -649,24 +654,21 @@
   <a href="https://ahhyoushh.github.io" class="back-button" title="Back to Portfolio">← Back</a>
 
   <header>
-    <div class="header-date">November, 2025</div>
+    <div class="header-date">Updated: 2025</div>
     <h1>🗂️ FileSense</h1>
-    <p>AI-powered local file organizer that sorts documents by meaning, not just type. Uses semantic embeddings, FAISS indexing, and OCR to intelligently categorize your chaotic files.</p>
+    <p>A self-organizing, AI-powered file manager. It combines local vector search with Google Gemini to classify, label, and organize your digital chaos automatically.</p>
   </header>
 
   <nav class="sidebar">
     <h3>📑 Contents</h3>
     <ul class="sidebar-tree">
       <li><a href="#overview">Quick Overview</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li class="level-2"><a href="#create-index">Create FAISS Index</a></li>
-      <li class="level-2"><a href="#process-files">Process Files in Bulk</a></li>
-      <li class="level-2"><a href="#watch-folder">Watch Folder</a></li>
-      <li class="level-2"><a href="#launch-gui">Launch GUI</a></li>
+      <li><a href="#how-it-works">The Logic</a></li>
+      <li class="level-2"><a href="#genai-integration">Generative AI</a></li>
+      <li class="level-2"><a href="#process-flow">The Pipeline</a></li>
       <li><a href="#structure">Project Structure</a></li>
       <li><a href="#features">Core Features</a></li>
       <li><a href="#installation">Installation & Setup</a></li>
-      <li><a href="#configuration">Configuration</a></li>
       <li><a href="#learned">What I Learned</a></li>
     </ul>
   </nav>
@@ -674,32 +676,32 @@
   <main>
     <section id="overview">
       <h2>Quick Overview</h2>
-      <p>Tired of your Downloads folder looking like a digital junkyard? FileSense uses advanced AI to understand what each file is about and organizes it automatically.</p>
+      <p>FileSense isn't just a sorter; it's a taxonomist. If a file fits an existing folder, it moves it there. If it encounters a completely new topic (e.g., a "Quantum Mechanics" paper when you only have "Finance" folders), it detects the anomaly, uses <strong>Generative AI</strong> to create a new category, and rebuilds its own sorting index instantly.</p>
 
       <div class="feature-grid">
-        <div class="feature-card">
-          <h4>🧠 Semantic Understanding</h4>
-          <p>Reads file content and understands meaning using SentenceTransformers embeddings.</p>
+        <div class="feature-card ai-card">
+          <h4>🤖 Generative Labeling</h4>
+          <p>Uses Google Gemini to analyze unknown files and auto-create specific folder categories.</p>
         </div>
         <div class="feature-card">
-          <h4>⚡ Lightning Fast</h4>
-          <p>FAISS indexing provides fast similarity searches locally on your machine.</p>
+          <h4>🧠 Semantic Search</h4>
+          <p>Vector embeddings understand "Newton" belongs in "Physics" without explicit rules.</p>
         </div>
         <div class="feature-card">
-          <h4>👁️ OCR Enabled</h4>
-          <p>Automatically extracts text from scanned PDFs and image-only documents.</p>
+          <h4>⚡ Live Indexing</h4>
+          <p>FAISS index rebuilds dynamically when new labels are generated.</p>
         </div>
         <div class="feature-card">
-          <h4>🕵️ Fully Offline</h4>
-          <p>Works entirely offline—nothing leaves your device, complete privacy.</p>
+          <h4>👁️ OCR Vision</h4>
+          <p>Reads text from scanned PDFs and images using pdfplumber + pytesseract.</p>
         </div>
         <div class="feature-card">
-          <h4>🔄 Real-time Watch</h4>
-          <p>Detects and organizes new files automatically as they appear.</p>
+          <h4>🔄 Self-Correction</h4>
+          <p>Merges similar concepts automatically to prevent duplicate folders.</p>
         </div>
         <div class="feature-card">
-          <h4>🖥️ Easy GUI</h4>
-          <p>Desktop launcher with start/stop controls, logs, and system tray support.</p>
+          <h4>🖥️ GUI & Tray</h4>
+          <p>Desktop app with background watching and system tray integration.</p>
         </div>
       </div>
 
@@ -722,38 +724,37 @@
 
     <section id="how-it-works">
       <h2>How It Works</h2>
-      <p>FileSense follows a four-step pipeline: extract text, generate embeddings, find best match, move file.</p>
+      <p>The system follows a decision pipeline: <strong>Identify → Search → Generate (if needed) → Move</strong>.</p>
 
-      <h3 id="create-index">1️⃣ Create FAISS Index</h3>
-      <p>Build a semantic search index from your folder descriptions:</p>
-      <div class="code-block">python scripts/create_index.py</div>
+      <h3 id="process-flow">1️⃣ Semantic Classification</h3>
+      <p>Files are read (via text or OCR), encoded into vectors, and compared against the <code>folder_embeddings.faiss</code> index. If similarity is high (>0.5), it moves to the existing folder.</p>
 
-      <h3 id="process-files">2️⃣ Process Files in Bulk</h3>
-      <p>Scan and classify all files with optional multithreading:</p>
-      <div class="code-block">python scripts/script.py --dir ./files --threads 8</div>
+      <h3 id="genai-integration">2️⃣ Generative Fallback (The AI Layer)</h3>
+      <p>If confidence is low, the file content is sent to <strong>Google Gemini</strong> via the API. The LLM:</p>
+      <ul>
+        <li>Analyzes the text summary.</li>
+        <li>Generates a broad Category Label (e.g., "Medical Records").</li>
+        <li>Creates a dense list of description keywords.</li>
+        <li>Updates <code>folder_labels.json</code> and triggers a FAISS index rebuild.</li>
+      </ul>
 
-      <h3 id="watch-folder">3️⃣ Watch Folder Real-time</h3>
-      <p>Automatically organize new files as they arrive:</p>
-      <div class="code-block">python scripts/watcher_script.py --dir ./files</div>
-
-      <h3 id="launch-gui">4️⃣ Launch with GUI</h3>
-      <p>Simple desktop interface with logs and tray control:</p>
-      <div class="code-block">python scripts/launcher.py</div>
+      <h3 id="watch-folder">3️⃣ Real-time Watcher</h3>
+      <p>The system monitors directories for <code>Created</code> or <code>Moved</code> events, ignoring temporary download files (.crdownload) until they are fully written.</p>
     </section>
 
     <section id="structure">
       <h2>Project Structure</h2>
       <div class="structure-box"><pre>FileSense/
 ├── scripts/
-│   ├── create_index.py      # Build FAISS index from folder labels
-│   ├── process_file.py      # Extract, classify, and move files
-│   ├── script.py            # Bulk organizer with threading
-│   ├── watcher_script.py    # Real-time folder monitoring
-│   ├── launcher.py          # GUI desktop app
-│   └── multhread.py         # Multithreading handler
-├── folder_labels.json       # Folder names and descriptions
-├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
-└── files/                   # Drop unorganized files here</pre></div>
+│   ├── generate_label.py    # Interfaces with Gemini API
+│   ├── create_index.py      # Rebuilds FAISS index dynamically
+│   ├── process_file.py      # Main decision logic
+│   ├── script.py            # Bulk processor
+│   ├── watcher_script.py    # Watchdog implementation
+│   └── launcher.py          # Tkinter GUI
+├── folder_labels.json       # JSON database of labels & descriptions
+├── folder_embeddings.faiss  # Vector Index
+└── files/                   # Input zone</pre></div>
     </section>
 
     <section id="features">
@@ -764,36 +765,32 @@
           <th>Description</th>
         </tr>
         <tr>
-          <td><strong>🧠 Semantic Sorting</strong></td>
-          <td>Understands file content using transformer embeddings, not just names.</td>
+          <td><strong>🤖 Generative AI</strong></td>
+          <td>Auto-generates labels for unknown file types via Gemini.</td>
         </tr>
         <tr>
-          <td><strong>⚡ FAISS Indexing</strong></td>
-          <td>Builds a fast semantic search index for folder labels.</td>
+          <td><strong>🧠 Semantic Search</strong></td>
+          <td>Sorts by meaning (Vector Embeddings) vs Keywords.</td>
+        </tr>
+        <tr>
+          <td><strong>⚡ Dynamic Indexing</strong></td>
+          <td>Updates sorting logic in real-time as new folders are created.</td>
         </tr>
         <tr>
           <td><strong>👁️ OCR Fallback</strong></td>
-          <td>Extracts text from scanned/image PDFs using pdfplumber + pytesseract.</td>
+          <td>Extracts text from scanned/image PDFs.</td>
         </tr>
         <tr>
           <td><strong>🧩 Keyword Boosting</strong></td>
-          <td>Gives weight bonuses for subject-specific terms.</td>
+          <td>Hybrid search (Vectors + Keyword weights) for accuracy.</td>
         </tr>
         <tr>
           <td><strong>🧵 Multithreading</strong></td>
-          <td>Handles multiple files simultaneously for faster processing.</td>
-        </tr>
-        <tr>
-          <td><strong>🕵️ Real-time Watcher</strong></td>
-          <td>Detects and organizes files automatically as they appear.</td>
+          <td>Parallel processing for bulk organization.</td>
         </tr>
         <tr>
           <td><strong>🖥️ GUI Launcher</strong></td>
-          <td>Desktop interface with controls, logs, and system tray icon.</td>
-        </tr>
-        <tr>
-          <td><strong>🔐 Offline Privacy</strong></td>
-          <td>Works entirely offline—nothing leaves your device.</td>
+          <td>Desktop interface with logs and tray icon.</td>
         </tr>
       </table>
     </section>
@@ -801,107 +798,61 @@
     <section id="installation">
       <h2>Installation & Setup</h2>
       <h3>Requirements</h3>
-      <p>Python 3.8+ with the following libraries:</p>
-      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray</div>
+      <p>Python 3.8+, Google Cloud API Key, and Tesseract OCR.</p>
+      
+      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv</div>
 
-      <p>On Linux, also install tesseract:</p>
-      <div class="code-block">sudo apt install tesseract-ocr</div>
+      <h3>Environment Config</h3>
+      <p>Create a <code>.env</code> file in the root:</p>
+      <div class="code-block">API_KEY=your_gemini_api_key_here</div>
 
       <h3>Quick Start</h3>
       <ol>
-        <li><strong>Clone the repo:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git &amp;&amp; cd filesense</code></li>
-        <li><strong>Edit folder_labels.json</strong> with your desired folder names and descriptions</li>
-        <li><strong>Create the index:</strong> <code>python scripts/create_index.py</code></li>
-        <li><strong>Drop files in /files</strong> and run the organizer</li>
-        <li><strong>Choose your method:</strong> bulk process, real-time watch, or GUI launcher</li>
+        <li><strong>Clone:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git</code></li>
+        <li><strong>Init:</strong> <code>python scripts/create_index.py</code> (Creates initial index)</li>
+        <li><strong>Run GUI:</strong> <code>python scripts/launcher.py</code></li>
       </ol>
-
-      <div class="highlight">
-        <p>💡 <strong>Pro Tip:</strong> Use the GUI launcher for the easiest experience. It handles everything with a simple interface.</p>
-      </div>
-    </section>
-
-    <section id="configuration">
-      <h2>Configuration Options</h2>
-      <table>
-        <tr><th>Setting</th><th>File</th><th>Description</th></tr>
-        <tr><td><code>--dir / -d</code></td><td>script.py / watcher_script.py</td><td>Directory to scan or watch</td></tr>
-        <tr><td><code>--threads / -t</code></td><td>script.py</td><td>Maximum concurrent threads (default: 4)</td></tr>
-        <tr><td><code>THRESHOLD</code></td><td>process_file.py</td><td>Minimum similarity score to accept match (default: 0.45)</td></tr>
-        <tr><td><code>MODEL_NAME</code></td><td>create_index.py</td><td>SentenceTransformer model (default: all-mpnet-base-v2)</td></tr>
-      </table>
     </section>
 
     <section id="learned">
       <h2>What I Learned</h2>
       <div class="learned-grid">
         <div class="learned-card">
-          <h4>🧠 Embeddings & NLP</h4>
+          <h4>🤖 LLM Integration</h4>
           <ul>
-            <li>Web browsers download process, handling .tmp files, etc.</li>
-            <li>SentenceTransformer embeddings enable semantic matching beyond keywords</li>
-            <li>Embeddings capture meaning and context in high-dimensional space</li>
-            <li>Keyword boosting improves accuracy for domain-specific classification</li>
+            <li>Prompt engineering to force strict JSON output from Gemini.</li>
+            <li>Merging existing metadata with new AI-generated insights.</li>
+            <li>Handling API latency vs local processing speed trade-offs.</li>
           </ul>
         </div>
 
         <div class="learned-card">
-          <h4>⚡ Vector Search at Scale</h4>
+          <h4>🧠 Vector Databases</h4>
           <ul>
-            <li>FAISS provides fast nearest-neighbor searches locally</li>
-            <li>Building indexes scales better than brute-force similarity</li>
-            <li>Indexing trades memory for speed—perfect for real-time processing</li>
+            <li>Using FAISS for high-speed local similarity search.</li>
+            <li>The challenge of "Cold Start" (empty index) vs pre-filled categories.</li>
+            <li>Balancing Embedding dimensionality with search performance.</li>
           </ul>
         </div>
 
         <div class="learned-card">
-          <h4>🎯 OCR & Document Processing</h4>
+          <h4>⚙️ System Design</h4>
           <ul>
-            <li>Combining pdfplumber + pytesseract handles varied PDF formats</li>
-            <li>Fallback strategies are critical for messy real-world data</li>
-            <li>OCR preprocessing (contrast, rotation) significantly improves accuracy</li>
+            <li>Building self-healing systems (Index rebuilds on anomaly detection).</li>
+            <li>Concurrency: Managing thread locks when writing to shared JSON/Index files.</li>
+            <li>Designing fail-safes (OCR -> Text -> Vector -> LLM).</li>
           </ul>
         </div>
 
         <div class="learned-card">
-          <h4>⚙️ Concurrent Processing</h4>
+          <h4>🎨 UX & Product</h4>
           <ul>
-            <li>Multithreading improves throughput for I/O-bound file operations</li>
-            <li>Thread pools prevent resource exhaustion and improve stability</li>
-            <li>Race conditions require careful synchronization in file operations</li>
-          </ul>
-        </div>
-
-        <div class="learned-card">
-          <h4>🔐 Privacy-First Design</h4>
-          <ul>
-            <li>Offline-first architecture eliminates data transmission risks</li>
-            <li>Users value speed and control over cloud convenience</li>
-            <li>Local processing builds trust with your users</li>
-          </ul>
-        </div>
-
-        <div class="learned-card">
-          <h4>🎨 UX & Product Design</h4>
-          <ul>
-            <li>Downloading from web consists of many steps rather than file magically appearing</li>
-            <li>Non-technical users need simple GUI controls</li>
-            <li>Fallback mechanisms (keywords, filename matching) improve reliability</li>
-            <li>Real-time feedback and logs reduce user uncertainty</li>
+            <li>Users trust local processing but love cloud-intelligence fallback.</li>
+            <li>Visualizing background AI processes (logs) builds user confidence.</li>
+            <li>Seamless fallback from "Smart" to "GenAI" logic.</li>
           </ul>
         </div>
       </div>
-
-      <h3>Future Enhancements</h3>
-      <ul>
-        <li>🤖 fine tune models to generate folder descriptions for folder names</li>
-        <li>🚀 Incremental FAISS updates (no full rebuilds needed)</li>
-        <li>📸 Better image-only classification using vision models</li>
-        <li>↩️ Undo/recovery feature to relocate moved files</li>
-        <li>🏷️ Auto-renaming using extracted metadata</li>
-        <li>📊 Web dashboard for previews and remote control</li>
-        <li>💾 Embedding caching for faster reprocessing</li>
-      </ul>
     </section>
 
     <section style="text-align: center; margin-top: 80px;">
