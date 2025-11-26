@@ -1,209 +1,122 @@
-# 🗂️ FileSense - Smart File Organizer
+# 🗂️ FileSense - File Sorter
 
 ## 🔍 Overview
 
-Tired of your Downloads folder looking like a digital junkyard — random PDFs, reports, screenshots, and JSONs all over?  
-**FileSense** is an AI-powered local file organizer that sorts documents **by meaning**, not just by name or type.
+**FileSense** is an intelligent, local file organizer that sorts documents by **meaning**, not just by name or extension.
 
-It uses **SentenceTransformers** and **FAISS** to understand what each file *means*, then moves it into the right folder automatically.  
-For scanned documents, it even uses **OCR (Optical Character Recognition)** to read text from images and classify them correctly.
+Unlike standard organizers that rely on hardcoded rules, FileSense uses **SentenceTransformers** and **FAISS** to understand the semantic context of your files. 
 
-> 📺 **Overview Video**: [FileSense](https://youtu.be/f27I2L7uoC8)
->
-> 🎥 **Demo / Webpage:** [ahhyoush.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
->
-> 🌴 **Dive Deeper in the code:** [DeepWiki](https://deepwiki.com/ahhyoushh/FileSense)
+**✨ New in v2.0:** It is now **Self-Organizing**. If FileSense encounters a document that doesn't fit any existing folder, it uses **Google Gemini (GenAI)** to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.
 
+> 📺 **Overview Video**: [FileSense Demo](https://youtu.be/f27I2L7uoC8)
+> 
+> 🎥 **Webpage:** [ahhyoushh.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
 
 ---
 
 ## ⚙️ Core Features
 
-
-### Launcher and docx are not currently up to date. 
 | Feature | Description |
 |----------|-------------|
-| 🧠 **Semantic Sorting** | Understands file content instead of just names using transformer embeddings. |
-| ⚡ **FAISS Indexing** | Builds a fast semantic search index for folder labels. |
-| 👀 **OCR Fallback** | Extracts text from scanned or image-based PDFs using `pdfplumber + pytesseract`. |
-| 🧩 **Keyword Boosting** | Gives small weight bonuses for subject-specific terms (like "newton" for folder label "physics", "sql" for folder label Informatic Practices, etc). |
-| 🧵 **Multithreading** | Handles multiple files simultaneously for faster performance. |
-| 🕵️ **Real-time Watcher** | Detects and organizes files automatically as soon as new ones appear. |
-| 🖥️ **GUI Launcher** | Desktop interface with start/stop controls, logs, and tray icon. |
-| 🔒 **Offline Privacy** | Works entirely offline — nothing leaves your device. |
+| 🧠 **Semantic Sorting** | Sorts by meaning (e.g., "Newton's Laws" → "Physics"), not just keywords. |
+| 🤖 **Generative Labeling** | **(New)** Uses Google Gemini to auto-generate new categories/folders for unknown file types. |
+| ⚡ **FAISS Indexing** | Uses vector databases for lightning-fast similarity searches. |
+| 🔄 **Self-Updating** | When a new label is generated, the AI creates the folder and rebuilds the index automatically. |
+| 👀 **OCR Support** | Extracts text from scanned PDFs and images using `pdfplumber` and `pytesseract`. |
+| 🧩 **Keyword Boosting** | Hybrid search approach: Vector Similarity + Keyword weighting for maximum accuracy. |
+| 🖥️ **GUI Launcher** | Desktop interface with real-time logs, system tray support, and process management. |
+| 🧵 **Multithreading** | Sorts massive directories in parallel for high performance. |
 
 ---
 
 ## 📁 Folder Structure
-
 ```
 FileSense/
 │
-├── scripts/                 # All runnable scripts live here
-│   ├── create_index.py      # Builds FAISS index for folder labels
-│   ├── process_file.py      # Extracts, classifies, and moves files
-│   ├── script.py            # CLI runner (bulk organizer)
-│   ├── watcher_script.py    # Watches directory for new files
-│   ├── launcher.py          # GUI app to manage scripts (optional run from repo root)
-│   └── multhread.py         # Multithreading handler
+├── scripts/
+│ ├── process_file.py # Core logic: Extract -> Classify -> (GenAI Fallback) -> Move
+│ ├── generate_label.py # Interfaces with Google Gemini to create new labels
+│ ├── create_index.py # Builds/Rebuilds FAISS vector index
+│ ├── extract_text.py # Handles PDF, DOCX, TXT, and OCR extraction
+│ ├── script.py # CLI runner for bulk processing
+│ ├── watcher_script.py # Real-time folder monitoring
+│ └── launcher.py # GUI Application
 │
-├── folder_labels.json       # Folder names and semantic descriptions
-├── folder_embeddings.faiss  # (auto-generated) FAISS vector index
-└── files/                   # Drop unorganized files here
+├── folder_labels.json # The "Brain": Maps categories to semantic descriptions
+├── folder_embeddings.faiss # Vector store for fast lookup
+└── files/ # Input directory
 ```
 
 ---
 
 ## 🔬 How It Works
 
-### 1️⃣ Create the FAISS Index (`scripts/create_index.py`)
+### 1️⃣ Text Extraction
+FileSense reads the file. If it's a text-based PDF/DOCX, it extracts raw text. If it's a scanned document, it applies OCR/Image processing to read the content.
 
-- Reads folder names and descriptions from `folder_labels.json`.
-- Enriches descriptions with extra keywords for better context.
-- Uses **SentenceTransformer (`all-mpnet-base-v2`)** to encode them.
-- Builds a FAISS index for fast similarity lookups.
+### 2️⃣ Semantic Search
+It converts the document text into a vector embedding and searches the local `folder_embeddings.faiss` index.
+- **High Confidence (≥ 0.5):** The file is moved to the matching folder.
+- **Low Confidence:** The system assumes no suitable folder exists.
 
-```bash
-python scripts/create_index.py
-```
-> Output: `folder_embeddings.faiss` + updated `folder_labels.json`
-
----
-
-### 2️⃣ Process Files in Bulk (`scripts/script.py`)
-
-- Scans your target folder (default: `./files`)
-- For each file:
-  - Extracts text via PDF/DOCX/TXT/OCR.
-  - Encodes the text and finds the best-matching folder embedding.
-  - If similarity ≥ 0.45 (default threshold), moves it there.
-  - Otherwise, falls back to keyword matches.
-
-**Supports multithreading** via `scripts/multhread.py`:
-```bash
-python scripts/script.py --dir ./files --threads 8
-```
+### 3️⃣ Generative Classification (The "AI" Step)
+If confidence is low:
+1. The text is sent to **Google Gemini**.(Optional)
+2. Gemini analyzes the content and determines a broad category (e.g., "Quantum Mechanics") and specific keywords.
+3. It updates `folder_labels.json` (merging with existing data if needed).
+4. FileSense **rebuilds the FAISS index** on the fly and classifies the file again with the new knowledge.
 
 ---
 
-### 3️⃣ Watch Folder in Real-time (`scripts/watcher_script.py`)
+## 🛠️ Installation & Setup
 
-Automatically monitors a directory and sorts files as soon as they appear.
-
-```bash
-python scripts/watcher_script.py --dir ./files
-```
-
-Uses `watchdog` to detect file creation events and passes each new file to `scripts/process_file.py`.
-
----
-
-### 4️⃣ Launch with GUI (`scripts/launcher.py`)
-
-Tired of the terminal? FileSense includes a full desktop launcher with buttons, logs, and tray control.
-
-- Start/Stop the main processor (`scripts/script.py`)
-- Start/Stop the real-time watcher
-- View live logs directly in the window
-- Minimize to system tray and keep running in the background
-
-Run it like this from repo root:
-```bash
-python -m scripts.launcher
-```
-or directly:
-```bash
-python scripts/launcher.py
-```
-
----
-
-## 🧩 Configuration Options
-
-| Setting | File | Description |
-|----------|------|-------------|
-| `--dir` / `-d` | scripts/script.py / scripts/watcher_script.py | Directory to scan or watch. |
-| `--threads` / `-t` | scripts/script.py | Maximum number of concurrent threads. |
-| `THRESHOLD` | scripts/process_file.py | Minimum similarity to accept match (default 0.45). |
-| `MODEL_NAME` | scripts/create_index.py | SentenceTransformer model (default: `all-mpnet-base-v2`). |
-
----
-
-## 🛠️ Installation
-
-### Requirements
+### 1. Prerequisites
 - Python 3.8+
-- faiss-cpu
-- sentence-transformers
-- numpy
-- pdfplumber
-- pytesseract + Pillow
-- python-docx
-- watchdog
-- pystray (for launcher GUI)
+- A Google Cloud API Key (for Gemini)
 
-### Install All
+### 2. Install Dependencies
 ```bash
-pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray
-sudo apt install tesseract-ocr   # (Linux)
+pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv
 ```
-
+## Linux Users
+Install Tesseract OCR:
+```bash
+sudo apt install tesseract-ocr
+```
 ---
 
-## 🚀 Quick Start
-
-1. Clone the repo:
+## 3. Environment Setup
+Create a `.env` file in the root directory and add your Google API key:
 ```bash
-git clone https://github.com/ahhyoushh/filesense.git
-cd filesense
+API_KEY=your_google_gemini_api_key_here
 ```
+---
 
-2. Edit `folder_labels.json` to define your folder names and descriptions.
-
-3. Create the FAISS index:
+## 4. Initialization
+Create the initial index (even if empty):
 ```bash
 python scripts/create_index.py
 ```
+---
 
-4. Drop unorganized files into `/files` and run:
-```bash
-python scripts/script.py
-```
-or
+# 🚀 Usage
+
+## Option A: GUI Launcher (Recommended)
+Run the desktop app to manage everything visually.
 ```bash
 python scripts/launcher.py
 ```
-
+## Option B: Real-Time Watcher
+Keep it running in the background to sort files as you download them.
+```bash
+python scripts/watcher_script.py --dir ./Downloads
+```
+## Option C: Bulk Sort
+Sort an existing mess of files once.
+```bash
+python scripts/script.py --dir ./Downloads --threads 8
+```
 ---
-
-## 💡 Future Plans
-- Auto generated folder descriptions for folder names
-- Faster embedding caching
-- Incremental FAISS updates (no full rebuild needed)
-- Better classification for image-only documents
-- Undo/recovery feature for moved files
-- Auto-renaming using extracted metadata
-- Simple web dashboard for previews and control
-
----
-
-## 🧠 What I Learned
-- **How web browsers download:** Dealt with practical edge cases like .tmp files, file locks, and renames.
-- **Natural Language Embeddings:** how to use `SentenceTransformer` for semantic similarity tasks.
-- **FAISS Indexing:** building a local vector database for fast nearest-neighbor searches.
-- **Threading:** managing concurrent file operations without blocking I/O.
-- **OCR Processing:** extracting readable text from scanned or image-only PDFs.
-- **Automation with Watchdog:** event-driven file monitoring in real time.
-- **GUI Development:** building a full-featured Python launcher with Tkinter and pystray.
-- **Modular Architecture:** clean separation between data prep, processing, and user interaction layers.
-
----
-
 
 ## 🧾 License
-
 MIT License © 2025 Ayush Bhalerao
-
----
-
-> icl ts cool 
