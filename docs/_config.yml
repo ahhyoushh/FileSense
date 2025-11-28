@@ -3,50 +3,22 @@ title: FileSense
 description: FileSense documentation and blog
 baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
+theme: just-the-docs
+# Enable dark mode
+just_the_docs:
+  color_scheme: dark
 
-# Remote theme (Minimal Mistakes). Remote theme provides layouts/includes used by the site.
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-# keep a fallback theme for local tools that expect 'theme'
-theme: minima
+# Optional: clean URLs without .html
+# (Keeps URLs neat)
+permalink: pretty
 
-# Plugins required by the remote theme and site features.
-# NOTE: jekyll-include-cache provides the `include_cached` Liquid tag used by Minimal Mistakes.
-plugins:
-  - jekyll-remote-theme
-  - jekyll-include-cache
-  - jekyll-seo-tag
-  - jekyll-feed
-  - jekyll-paginate
+# Optional: search box (keeps it simple)
+search_enabled: true
 
-# Defaults: ensure your custom CSS is used site-wide
-defaults:
-  - scope:
-      path: ""
-    values:
-      css: "/assets/css/custom.css"
+# Navigation order (add pages as needed)
+nav_order: 1
 
-highlighter: rouge
-
-# Minimal Mistakes options
-minimal_mistakes_skin: "dark"
-
-# Useful build/permalink settings
+# Markdown options
 markdown: kramdown
 kramdown:
-  input: GFM
-permalink: /:categories/:title/
-
-# Files/dirs to exclude from the site build
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
-  - vendor
-
-# Optional: pagination defaults (adjust per-site)
-paginate: 10
-paginate_path: "/page:num/"
-
-# Optional: GitHub metadata (keeps jekyll-github-metadata behavior consistent)
-github:
-  is_project_page: true
+  syntax_highlighter: rouge
