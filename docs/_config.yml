@@ -1,16 +1,35 @@
 # docs/_config.yml
 title: FileSense
-description: FileSense documentation
-baseurl: "/FileSense"     
+description: FileSense documentation and blog
+baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
-paginate: 0
-
-remote_theme: pmarsceill/just-the-docs
+theme: minima                 # fallback; remote_theme used for richer layout
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 plugins:
   - jekyll-remote-theme
+  - jekyll-seo-tag
 
+# Navigation (edit as needed)
+nav:
+  - title: Home
+    url: /
+  - title: Docs
+    url: /doc/
+  - title: Blog
+    url: /blog/
+  - title: GitHub
+    url: https://github.com/ahhyoushh/FileSense
+
+# Ensure our custom css is used site-wide
 defaults:
   - scope:
-      path: "" 
+      path: ""
     values:
       css: "/assets/css/custom.css"
+
+# Code highlighting: GitHub Pages uses rouge server-side,
+# we'll also style code blocks client-side via CSS.
+highlighter: rouge
+
+# Minimal mistakes options (some defaults; modify if needed)
+minimal_mistakes_skin: "dark"     # theme skin suggestion (doesn't force UI)

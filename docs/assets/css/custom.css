@@ -1,10 +1,222 @@
-/* basic prefers-color-scheme dark tweaks (adjust variables to taste) */
+/* docs/assets/css/custom.css
+   Minimal Mist (Minimal-Mistakes) - full dark mode support, code-friendly
+   - Respects prefers-color-scheme and data-theme="dark"/"light"
+   - Hides footer credits (no watermark)
+   - Improves code block readability & table styles
+*/
+
+/* -----------------------
+   Color variables (light)
+   ----------------------- */
+:root {
+  --fs-bg: #fbfcfe;
+  --fs-surface: #ffffff;
+  --fs-text: #081019;
+  --fs-muted: #526777;
+  --fs-accent: #0a84ff;      /* blue accent */
+  --fs-border: rgba(8,16,25,0.06);
+  --fs-code-bg: #f6f8fb;
+  --fs-code-text: #0b1a1f;
+  --fs-pre-shadow: rgba(2,6,10,0.04);
+}
+
+/* -----------------------
+   Dark mode overrides
+   Triggered by system preference or html[data-theme="dark"]
+   ----------------------- */
 @media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
   :root {
-    --jtd-background: #0b0f14;
-    --jtd-surface: #0f1419;
-    --jtd-text: #e6eef6;
-    --jtd-link: #7bd389;
-    --jtd-muted: #9aa6b2;
+    --fs-bg: #071018;
+    --fs-surface: #0b1220;
+    --fs-text: #d9e7ef;
+    --fs-muted: #9aa6b2;
+    --fs-accent: #00c2d6;
+    --fs-border: rgba(255,255,255,0.04);
+    --fs-code-bg: #071014;
+    --fs-code-text: #e6f6fb;
+    --fs-pre-shadow: rgba(2,6,10,0.45);
   }
+}
+
+/* Also support explicit toggle via html[data-theme="dark"] */
+html[data-theme="dark"] {
+  --fs-bg: #071018;
+  --fs-surface: #0b1220;
+  --fs-text: #d9e7ef;
+  --fs-muted: #9aa6b2;
+  --fs-accent: #00c2d6;
+  --fs-border: rgba(255,255,255,0.04);
+  --fs-code-bg: #071014;
+  --fs-code-text: #e6f6fb;
+  --fs-pre-shadow: rgba(2,6,10,0.45);
+}
+html[data-theme="light"] {
+  /* restore light vars if user forces light */
+  --fs-bg: #fbfcfe;
+  --fs-surface: #ffffff;
+  --fs-text: #081019;
+  --fs-muted: #526777;
+  --fs-accent: #0a84ff;
+  --fs-border: rgba(8,16,25,0.06);
+  --fs-code-bg: #f6f8fb;
+  --fs-code-text: #0b1a1f;
+  --fs-pre-shadow: rgba(2,6,10,0.04);
+}
+
+/* -----------------------
+   Page basics
+   ----------------------- */
+html, body {
+  background: var(--fs-bg) !important;
+  color: var(--fs-text) !important;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Container surfaces */
+.site, .wrapper, .page, .site-main, .content {
+  background: transparent;
+}
+
+/* Header */
+.site-header, .site-header-inner, header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.00), rgba(255,255,255,0.00));
+  border-bottom: 1px solid var(--fs-border);
+}
+
+/* Navigation & sidebar */
+.site-navigation, .sidebar, .nav {
+  background: transparent;
+  color: var(--fs-muted);
+  border-right: 1px solid var(--fs-border);
+}
+.site-navigation a, .sidebar a, .nav a {
+  color: var(--fs-text);
+  text-decoration: none;
+}
+.site-navigation a:hover, .sidebar a:hover, .nav a:hover {
+  color: var(--fs-accent);
+}
+
+/* Links */
+a, a:visited { color: var(--fs-accent); }
+a:hover { text-decoration: underline; }
+
+/* Headings */
+h1, h2, h3, h4 { color: var(--fs-text); font-weight: 600; }
+
+/* -----------------------
+   Code blocks & inline code
+   ----------------------- */
+code, kbd, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  color: var(--fs-code-text);
+  background: var(--fs-code-bg);
+}
+
+code {
+  padding: 0.12em 0.35em;
+  border-radius: 6px;
+  font-size: 0.95em;
+}
+
+/* Block code */
+pre[class*="language-"], .highlight pre {
+  padding: 0.9rem;
+  border-radius: 8px;
+  overflow: auto;
+  border: 1px solid var(--fs-border);
+  box-shadow: 0 9px 32px var(--fs-pre-shadow);
+  background: var(--fs-code-bg);
+  color: var(--fs-code-text);
+  margin: 0.8rem 0;
+  font-size: 0.95rem;
+}
+
+/* Improve long-line readability */
+pre code {
+  display: block;
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* Copy button space (Minimal Mistakes doesn't add one by default).
+   If you add a copy plugin later, it will sit well here. */
+.code-toolbar {
+  display: block;
+  position: relative;
+}
+
+/* -----------------------
+   Tables
+   ----------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0;
+  background: transparent;
+}
+th, td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--fs-border);
+}
+th {
+  background: rgba(255,255,255,0.01);
+  font-weight: 600;
+}
+
+/* -----------------------
+   Callouts / admonitions
+   ----------------------- */
+.callout, .note, .warning, .tip, .important, .alert {
+  border-left: 4px solid rgba(0,0,0,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.003), transparent);
+  padding: 0.6rem 0.9rem;
+  margin: 0.7rem 0;
+  color: var(--fs-text);
+}
+.callout .callout-title { font-weight: 700; }
+
+/* -----------------------
+   Buttons
+   ----------------------- */
+.button, .btn, .site-button {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  color: var(--fs-accent);
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 0.35rem 0.7rem;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+/* -----------------------
+   Footer: remove theme credits / watermark
+   ----------------------- */
+/* Hide the default footer content so no theme credit/watermark shows */
+.site-footer, footer.site-footer, .site-footer-inner, .footer {
+  display: none !important;
+}
+
+/* If you prefer to keep a small copyright only, replace the above with a tighter rule:
+.site-footer .site-footer-links { display: none !important; }
+*/
+
+/* -----------------------
+   Small screens
+   ----------------------- */
+@media (max-width: 900px) {
+  body { font-size: 15px; }
+  .sidebar { display: none; }
+}
+
+/* -----------------------
+   Accessibility helpers
+   ----------------------- */
+/* High-contrast class you can toggle on <html> if needed */
+html.fs-high-contrast {
+  filter: contrast(1.05) saturate(1.02);
 }
