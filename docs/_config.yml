@@ -3,22 +3,14 @@ title: FileSense
 description: FileSense documentation and blog
 baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
-theme: just-the-docs
-# Enable dark mode
+remote_theme: just-the-docs/just-the-docs
+
 just_the_docs:
   color_scheme: dark
 
-# Optional: clean URLs without .html
-# (Keeps URLs neat)
-permalink: pretty
-
-# Optional: search box (keeps it simple)
-search_enabled: true
-
-# Navigation order (add pages as needed)
-nav_order: 1
-
-# Markdown options
 markdown: kramdown
 kramdown:
   syntax_highlighter: rouge
+
+search_enabled: true
+permalink: pretty
