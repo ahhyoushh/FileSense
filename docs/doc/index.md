@@ -1,6 +1,5 @@
 ---
 title: FileSense Docs
-layout: page
 permalink: /doc/
 ---
 

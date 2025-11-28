@@ -10,15 +10,13 @@ plugins:
   - jekyll-seo-tag
 
 # Navigation (edit as needed)
-nav:
-  - title: Home
-    url: /
-  - title: Docs
-    url: /doc/
-  - title: Blog
-    url: /blog/
-  - title: GitHub
-    url: https://github.com/ahhyoushh/FileSense
+# nav:
+#   - title: Home
+#     url: /
+#   - title: Docs
+#     url: /doc/
+#   - title: GitHub
+#     url: https://github.com/ahhyoushh/FileSense
 
 # Ensure our custom css is used site-wide
 defaults:
