@@ -3,31 +3,50 @@ title: FileSense
 description: FileSense documentation and blog
 baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
-theme: minima                 # fallback; remote_theme used for richer layout
+
+# Remote theme (Minimal Mistakes). Remote theme provides layouts/includes used by the site.
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+# keep a fallback theme for local tools that expect 'theme'
+theme: minima
+
+# Plugins required by the remote theme and site features.
+# NOTE: jekyll-include-cache provides the `include_cached` Liquid tag used by Minimal Mistakes.
 plugins:
   - jekyll-remote-theme
+  - jekyll-include-cache
   - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-paginate
 
-# Navigation (edit as needed)
-# nav:
-#   - title: Home
-#     url: /
-#   - title: Docs
-#     url: /doc/
-#   - title: GitHub
-#     url: https://github.com/ahhyoushh/FileSense
-
-# Ensure our custom css is used site-wide
+# Defaults: ensure your custom CSS is used site-wide
 defaults:
   - scope:
       path: ""
     values:
       css: "/assets/css/custom.css"
 
-# Code highlighting: GitHub Pages uses rouge server-side,
-# we'll also style code blocks client-side via CSS.
 highlighter: rouge
 
-# Minimal mistakes options (some defaults; modify if needed)
-minimal_mistakes_skin: "dark"     # theme skin suggestion (doesn't force UI)
+# Minimal Mistakes options
+minimal_mistakes_skin: "dark"
+
+# Useful build/permalink settings
+markdown: kramdown
+kramdown:
+  input: GFM
+permalink: /:categories/:title/
+
+# Files/dirs to exclude from the site build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# Optional: pagination defaults (adjust per-site)
+paginate: 10
+paginate_path: "/page:num/"
+
+# Optional: GitHub metadata (keeps jekyll-github-metadata behavior consistent)
+github:
+  is_project_page: true
