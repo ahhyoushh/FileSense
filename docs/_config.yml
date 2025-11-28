@@ -1,7 +1,10 @@
 # docs/_config.yml
 title: FileSense
 description: FileSense documentation
-theme: minima              
 baseurl: "/FileSense"     
 url: "https://ahhyoushh.github.io"
 paginate: 0
+
+remote_theme: pmarsceill/just-the-docs
+plugins:
+  - jekyll-remote-theme
