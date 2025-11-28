@@ -1,7 +1,7 @@
 ---
-title: FileSense Documentation
+title: FileSense Docs
+layout: page
 permalink: /doc/
-
 ---
 
 # FileSense
