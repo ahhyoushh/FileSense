@@ -1,0 +1,7 @@
+# docs/_config.yml
+title: FileSense
+description: FileSense documentation
+theme: minima              
+baseurl: "/FileSense"     
+url: "https://ahhyoushh.github.io"
+paginate: 0
