@@ -1,6 +1,6 @@
 ---
 title: FileSense Documentation
-permalink: /FileSense/doc/
+permalink: /doc/
 
 ---
 
