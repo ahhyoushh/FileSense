@@ -1,0 +1,10 @@
+/* basic prefers-color-scheme dark tweaks (adjust variables to taste) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --jtd-background: #0b0f14;
+    --jtd-surface: #0f1419;
+    --jtd-text: #e6eef6;
+    --jtd-link: #7bd389;
+    --jtd-muted: #9aa6b2;
+  }
+}

@@ -8,3 +8,9 @@ paginate: 0
 remote_theme: pmarsceill/just-the-docs
 plugins:
   - jekyll-remote-theme
+
+defaults:
+  - scope:
+      path: "" 
+    values:
+      css: "/assets/css/custom.css"
