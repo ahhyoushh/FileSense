@@ -1,0 +1,35 @@
+
+/* Force dark mode and readable colors (aggressive override) */
+:root { color-scheme: dark; }
+
+html, body {
+  background-color: #060607 !important;
+  color: #e6eef6 !important;
+}
+
+/* Links, headings, tables, code blocks */
+a { color: #8db4ff !important; }
+h1,h2,h3,h4,h5 { color: #f1f7ff !important; }
+pre, code, .highlight { background: #081021 !important; color: #dbeafe !important; }
+table, th, td { background: transparent !important; color: #e6eef6 !important; }
+
+/* Tweak docs layout spacing so things don't look broken */
+.page__inner, .content {
+  background: transparent !important;
+}
+
+/* Hide theme watermark/credits in footer (broad selectors to cover variations) */
+footer,
+footer .site-credits,
+.site-footer,
+.site-footer *[class*="credit"],
+.site-footer *[class*="credits"],
+a[href*="just-the-docs"],
+a:contains("Just the Docs") { 
+  display: none !important; 
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}

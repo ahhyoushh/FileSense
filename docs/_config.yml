@@ -5,6 +5,7 @@ baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
 remote_theme: just-the-docs/just-the-docs
 
+# just-the-docs options
 just_the_docs:
   color_scheme: dark
 
@@ -14,3 +15,7 @@ kramdown:
 
 search_enabled: true
 permalink: pretty
+
+# ensure remote theme plugin is available for local preview
+plugins:
+  - jekyll-remote-theme
