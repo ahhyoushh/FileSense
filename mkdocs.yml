@@ -1,4 +1,5 @@
 site_name: FileSense
+site_description: Modern file analysis and insights platform
 site_url: https://ahhyoushh.github.io/FileSense/
 repo_url: https://github.com/ahhyoushh/FileSense
 repo_name: ahhyoushh/FileSense
@@ -8,61 +9,91 @@ docs_dir: wiki
 theme:
   name: material
   
-  # logo: assets/logo.png 
-  # favicon: assets/favicon.png
-  
-  palette: 
+  palette:
     - scheme: slate
-      primary: indigo
-      accent: cyan
+      primary: slate
+      accent: blue
       toggle:
-        icon: material/weather-night
-        name: Switch to light mode
+        icon: material/moon-waning-crescent
+        name: Light mode
     
     - scheme: default
-      primary: indigo
-      accent: cyan
+      primary: slate
+      accent: blue
       toggle:
-        icon: material/weather-sunny
-        name: Switch to dark mode
+        icon: material/white-balance-sunny
+        name: Dark mode
 
   features:
-    - navigation.instant     # SPA-like loading (no page refresh) - Very Fast
-    - navigation.tabs        # Top navigation tabs (cleaner than just sidebar)
-    - navigation.tabs.sticky # Tabs stay visible when scrolling
-    - navigation.sections    # Group sidebar items
-    - navigation.expand      # Open sidebar groups by default
-    - navigation.top         # "Back to Top" button
-    - navigation.tracking    # URL changes as you scroll
-    - search.suggest         # Auto-complete search
-    - search.highlight       # Highlight search terms
-    - content.code.copy      # "Copy" button on code blocks
-    - content.tooltips       # Hover tooltips
+    # Navigation & UX
+    - navigation.instant
+    - navigation.instant.loading
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.path
+    
+    # Search
+    - search.suggest
+    - search.highlight
+    - search.share
+    
+    # Content
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+    
+    # Appearance
+    - toc.follow
+    - header.autohide
 
 font:
-  text: Roboto
-  code: Roboto Mono
+  text: Inter
+  code: JetBrains Mono
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
-  - admonition               # "!!! note" or "!!! warning" blocks
-  - attr_list                # Allows adding CSS classes to elements
-  - md_in_html               # Allow markdown inside HTML tags
-  - pymdownx.details         # Collapsible "Show more" blocks
-  - pymdownx.superfences     # Nesting code blocks inside tabs
-  - pymdownx.tabbed:         # Content tabs (e.g., "Windows | Mac | Linux")
-      alternate_style: true 
-  - pymdownx.highlight:      # Syntax highlighting
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_block
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+  - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+      permalink_class: headerlink
 
 nav:
   - Home: index.md
-  - Documentation:
-      - Getting Started: setup.md
-      - Metrics: metrics.md
-      - pipelines: ipelines.md
-      - FAQ: faq.md
+  - Getting Started: getting_started.md
+  - Pipelines: pipelines.md
+  - Metrics: metrics.md
+  - FAQ: faq.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ahhyoushh/FileSense
+      name: GitHub
