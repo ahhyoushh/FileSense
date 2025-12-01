@@ -17,8 +17,8 @@ from extract_text import extract_text
 BASE_DIR = Path(__file__).resolve().parent.parent
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
-THRESHOLD = 0.5
-
+THRESHOLD = 0.4
+low_confidence_threshold = 0.3
 index = None
 folder_data = {}
 FOLDER_LABELS = []
@@ -46,9 +46,13 @@ def load_index_and_labels():
         print(f"[!] An error occurred while loading index or labels: {e}")
         return False
 
-def classify_file(text, filename, allow_generation = True):
+def classify_file(text, filename, allow_generation=True):
     if not index or not model:
         return "Uncategorized", 0.0
+
+    # Local copies to avoid UnboundLocalError when modifying them
+    current_threshold = THRESHOLD
+    current_low_threshold = low_confidence_threshold
 
     clean_filename = os.path.splitext(filename)[0].replace("_", " ").replace("-", " ")
     combined_input = f"{clean_filename}\n\n{text}"
@@ -84,14 +88,24 @@ def classify_file(text, filename, allow_generation = True):
     best_idx = int(np.argmax(boosted))
     best_label, best_sim = FOLDER_LABELS[best_idx], boosted[best_idx]
 
-    if best_sim >= THRESHOLD:
+    if best_sim >= current_threshold:
         return best_label, round(float(best_sim), 2)
     else:
+        if not allow_generation:
+            decrease_amount = 0.07
+            current_threshold = current_threshold - decrease_amount
+            current_low_threshold = current_low_threshold - decrease_amount
+            
+            if best_sim > current_low_threshold:
+                print(f"[!] [NO GEN] Low confidence ({best_sim:.2f}) but accepting '{best_label}' as fallback.")
+                return best_label, round(float(best_sim), 2)
+                
         if allow_generation:
             with CLASSIFICATION_LOCK:
                 # Another thread might have updated the index while we were waiting for the lock.
                 retry_label, retry_sim = classify_file(text, filename, allow_generation=False)
                 
+                # Use global THRESHOLD here to ensure we don't skip based on lowered standards
                 if retry_sim >= THRESHOLD:
                     print(f"[!] Index updated by another thread. '{filename}' matched to '{retry_label}' ({retry_sim:.2f}). Skipping generation.")
                     return retry_label, retry_sim
@@ -106,7 +120,7 @@ def classify_file(text, filename, allow_generation = True):
                 
                 return classify_file(text, filename, allow_generation=False)
         else:
-            if best_sim > 0.4: 
+            if best_sim > current_low_threshold:
                 print(f"[!] Low confidence ({best_sim:.2f}) but accepting '{best_label}' as fallback.")
                 return best_label, round(float(best_sim), 2)
             
