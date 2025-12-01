@@ -62,7 +62,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Documentation:
-      - Getting Started: wiki/setup.md
-      - Metrics: wiki/metrics.md
-      - pipelines: wiki/pipelines.md
-      - FAQ: wiki/faq.md
+      - Getting Started: setup.md
+      - Metrics: metrics.md
+      - pipelines: ipelines.md
+      - FAQ: faq.md

@@ -26,13 +26,11 @@ jobs:
         run: |
           mkdir _final_build
           
-          # Move generated docs into a 'doc' subfolder
-          mv site _final_build/doc
+          mv site _final_build/wiki
           
           # Copy your custom landing page to the root
           cp -r landing/* _final_build/
 
-      # 3. Deploy the '_final_build' folder to gh-pages branch
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: _final_build
