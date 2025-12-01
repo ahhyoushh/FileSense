@@ -46,7 +46,7 @@ def load_index_and_labels():
         print(f"[!] An error occurred while loading index or labels: {e}")
         return False
 
-def classify_file(text, filename, allow_generation=True):
+def classify_file(text, filename, allow_generation=True, TRAIN=False):
     if not index or not model:
         return "Uncategorized", 0.0
 
@@ -63,7 +63,8 @@ def classify_file(text, filename, allow_generation=True):
     all_sims = np.zeros(len(FOLDER_LABELS), dtype=np.float32)
     for i in range(len(I[0])):
         idx, sim = I[0][i], D[0][i]
-        if idx != -1: all_sims[idx] = sim
+        if idx != -1:
+            all_sims[idx] = sim
 
     boosted, filename_lower = all_sims.copy(), filename.lower()
     FILENAME_BOOST, TEXT_BOOST = 0.2, 0.1
@@ -103,7 +104,9 @@ def classify_file(text, filename, allow_generation=True):
         if allow_generation:
             with CLASSIFICATION_LOCK:
                 # Another thread might have updated the index while we were waiting for the lock.
-                retry_label, retry_sim = classify_file(text, filename, allow_generation=False)
+                retry_label, retry_sim = classify_file(
+                    text, filename, allow_generation=False, TRAIN=TRAIN
+                )
                 
                 # Use global THRESHOLD here to ensure we don't skip based on lowered standards
                 if retry_sim >= THRESHOLD:
@@ -116,9 +119,15 @@ def classify_file(text, filename, allow_generation=True):
                 if new_label_info and new_label_info.get("folder_label"):
                     if create_faiss_index():
                         load_index_and_labels()
-                        return classify_file(text, filename, allow_generation=False)
-                
-                return classify_file(text, filename, allow_generation=False)
+                        if TRAIN == True:
+                            print(f"[+] [TRAIN MODE] Re-classified '{filename}' again until not Categorised")
+                            return classify_file(
+                                text, filename, allow_generation=True, TRAIN=TRAIN
+                            )
+
+                return classify_file(
+                    text, filename, allow_generation=False, TRAIN=TRAIN
+                )
         else:
             if best_sim > current_low_threshold:
                 print(f"[!] Low confidence ({best_sim:.2f}) but accepting '{best_label}' as fallback.")
@@ -127,7 +136,7 @@ def classify_file(text, filename, allow_generation=True):
             print(f"[!] Could not classify '{filename}' (Sim: {best_sim:.2f}). Moving to Uncategorized or generating Label.")
             return "Uncategorized", 0.0
 
-def process_file(file_path, testing=False, allow_generation=True):
+def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
     start_time = time.time()
     filename = os.path.basename(file_path)
     text = extract_text(file_path)
@@ -135,7 +144,9 @@ def process_file(file_path, testing=False, allow_generation=True):
     if not text.strip() or text == filename:
         text = filename.replace("_", " ").replace("-", " ")
 
-    predicted_folder, similarity = classify_file(text, filename, allow_generation=allow_generation)
+    predicted_folder, similarity = classify_file(
+        text, filename, allow_generation=allow_generation, TRAIN=TRAIN
+    )
     
     destination_folder = BASE_DIR / "sorted" / predicted_folder
     os.makedirs(destination_folder, exist_ok=True)

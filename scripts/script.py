@@ -10,6 +10,7 @@ parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to 
 parser.add_argument("--threads", "-t", type=int, default=6, help="Maximum number of concurrent threads.")
 parser.add_argument("--single-thread", action="store_true", help="Run in single-threaded mode instead of multi-threaded.")
 parser.add_argument("--no-generation", action="store_true", help="Do not allow generation if classification fails.")
+parser.add_argument("--train", action="store_true", help="Enable training mode during processing.")
 args = parser.parse_args()
 
 if __name__ == "__main__":
@@ -35,8 +36,8 @@ if __name__ == "__main__":
             print("No files to process.")
         else:
             for file_path in files:
-                process_file(file_path, testing=test, allow_generation=not args.no_generation)
+                process_file(file_path, testing=test, allow_generation=not args.no_generation, TRAIN=args.train)
     else:
         print(f"Processing files in directory: {files_dir} with {MAX_THREADS} threads.")
-        process_multiple(files_dir, MAX_THREADS, testing=test, allow_generation=not args.no_generation)
+        process_multiple(files_dir, MAX_THREADS, testing=test, allow_generation=not args.no_generation, TRAIN=args.train)
 

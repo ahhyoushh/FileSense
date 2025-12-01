@@ -120,3 +120,8 @@ python scripts/script.py --dir ./Downloads --threads 8
 
 ## 🧾 License
 MIT License © 2025 Ayush Bhalerao
+
+
+# IDEAS TO IMPLEMENT
+1. Use the dateset with category labels for the data, make a script to general folder labels until the similarity crosses a certain threshold for all files in the train dataset. In this way the description and folders_labels.json would be most optimised.
+2. After the last update with gemini, make the model return the revised prompt and use the revised prompt so that the prompt self optimises.

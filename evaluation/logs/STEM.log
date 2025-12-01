@@ -1,0 +1,267 @@
+# TRAIN
+Processing files in directory: ./files with 6 threads.
+Found 20 files to process.
+
+[+] Started thread for train_file_001.txt | Active threads: 1
+[+] Started thread for train_file_002.txt | Active threads: 2
+[+] Started thread for train_file_003.txt | Active threads: 3
+[+] Started thread for train_file_004.txt | Active threads: 4
+[+] Started thread for train_file_005.txt | Active threads: 5
+[+] Started thread for train_file_006.txt | Active threads: 6
+[!] Could not classify 'train_file_003.txt' (Sim: 0.14). Moving to Uncategorized or generating Label.
+[?] Low confidence (0.14) for 'train_file_003.txt'. Generating label...
+Generated new folder label: Biology
+Found 2 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.82it/s]
+Embeddings generated in 0.56 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: train_file_003.txt -> Biology (sim=0.68) in 17.84s
+[!] [NO GEN] Low confidence (0.26) but accepting 'Biology' as fallback.
+[?] Low confidence (0.18) for 'train_file_002.txt'. Generating label...
+Generated new folder label: Maths
+Found 3 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.40it/s]
+Embeddings generated in 0.72 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: train_file_002.txt -> Maths (sim=0.73) in 31.81s
+[+] Started thread for train_file_007.txt | Active threads: 6
+[!] [NO GEN] Low confidence (0.26) but accepting 'Maths' as fallback.
+[?] Low confidence (0.23) for 'train_file_001.txt'. Generating label...
+Generated new folder label: Computer Science
+Found 4 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.06s/it]
+Embeddings generated in 1.07 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: train_file_001.txt -> Computer Science (sim=0.57) in 47.15s
+[+] Started thread for train_file_008.txt | Active threads: 6
+[!] [NO GEN] Low confidence (0.39) but accepting 'Biology' as fallback.
+[?] Low confidence (0.13) for 'train_file_006.txt'. Generating label...
+Generated new folder label: Chemistry
+Found 5 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.56s/it]
+Embeddings generated in 1.57 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: train_file_006.txt -> Chemistry (sim=0.77) in 63.67s
+[+] Started thread for train_file_009.txt | Active threads: 6
+[!] [NO GEN] Low confidence (0.40) but accepting 'Maths' as fallback.
+[!] Index updated by another thread. 'train_file_005.txt' matched to 'Maths' (0.40). Skipping generation.
+[1] Processed: train_file_005.txt -> Maths (sim=0.40) in 64.59s
+[+] Started thread for train_file_010.txt | Active threads: 6
+[1] Processed: train_file_009.txt -> Biology (sim=0.70) in 0.93s
+[+] Started thread for train_file_011.txt | Active threads: 6
+[!] [NO GEN] Low confidence (0.39) but accepting 'Maths' as fallback.
+[?] Low confidence (0.16) for 'train_file_004.txt'. Generating label...
+[1] Processed: train_file_010.txt -> Biology (sim=0.69) in 1.32s
+[1] Processed: train_file_011.txt -> Maths (sim=0.70) in 1.30s
+[+] Started thread for train_file_012.txt | Active threads: 5
+[+] Started thread for train_file_013.txt | Active threads: 6
+[1] Processed: train_file_013.txt -> Chemistry (sim=0.75) in 0.97s
+[1] Processed: train_file_012.txt -> Chemistry (sim=0.74) in 0.97s
+[+] Started thread for train_file_014.txt | Active threads: 5
+[+] Started thread for train_file_015.txt | Active threads: 6
+Generated new folder label: Physics
+Found 6 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Batches: 100%|███████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.56s/it]
+Embeddings generated in 1.56 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: train_file_004.txt -> Physics (sim=0.62) in 88.23s
+[+] Started thread for train_file_016.txt | Active threads: 6
+[!] Index updated by another thread. 'train_file_007.txt' matched to 'Physics' (0.60). Skipping generation.
+[1] Processed: train_file_007.txt -> Physics (sim=0.60) in 57.32s
+[+] Started thread for train_file_017.txt | Active threads: 6
+[1] Processed: train_file_016.txt -> Maths (sim=0.71) in 1.08s
+[+] Started thread for train_file_018.txt | Active threads: 6
+[!] Index updated by another thread. 'train_file_008.txt' matched to 'Chemistry' (0.77). Skipping generation.
+[1] Processed: train_file_008.txt -> Chemistry (sim=0.77) in 43.37s
+[+] Started thread for train_file_019.txt | Active threads: 6
+[1] Processed: train_file_017.txt -> Physics (sim=0.62) in 1.43s
+[+] Started thread for train_file_020.txt | Active threads: 6
+[1] Processed: train_file_018.txt -> Maths (sim=0.71) in 1.54s
+[!] Index updated by another thread. 'train_file_014.txt' matched to 'Physics' (0.60). Skipping generation.
+[1] Processed: train_file_014.txt -> Physics (sim=0.60) in 24.86s
+[1] Processed: train_file_019.txt -> Computer Science (sim=0.53) in 1.44s
+[1] Processed: train_file_020.txt -> Maths (sim=0.69) in 1.41s
+[!] Index updated by another thread. 'train_file_015.txt' matched to 'Physics' (0.61). Skipping generation.
+[1] Processed: train_file_015.txt -> Physics (sim=0.61) in 25.58s
+
+ All files processed in 92.69s
+
+
+
+# TEST
+
+Processing files in directory: test_files with 6 threads.
+Found 80 files to process.
+
+[+] Started thread for test_file_021.txt | Active threads: 1
+[+] Started thread for test_file_022.txt | Active threads: 2
+[+] Started thread for test_file_023.txt | Active threads: 3
+[+] Started thread for test_file_024.txt | Active threads: 4
+[+] Started thread for test_file_025.txt | Active threads: 5
+[+] Started thread for test_file_026.txt | Active threads: 6
+[1] Processed: test_file_022.txt -> Computer Science (sim=0.61) in 2.53s
+[1] Processed: test_file_026.txt -> Biology (sim=0.72) in 2.53s
+[1] Processed: test_file_025.txt -> Biology (sim=0.73) in 2.54s
+[+] Started thread for test_file_027.txt | Active threads: 5
+[+] Started thread for test_file_028.txt | Active threads: 6
+[1] Processed: test_file_023.txt -> Chemistry (sim=0.79) in 2.60s
+[1] Processed: test_file_024.txt -> Maths (sim=0.73) in 2.61s
+[1] Processed: test_file_021.txt -> Chemistry (sim=0.75) in 2.64s
+[+] Started thread for test_file_029.txt | Active threads: 4
+[+] Started thread for test_file_030.txt | Active threads: 5
+[+] Started thread for test_file_031.txt | Active threads: 6
+[1] Processed: test_file_027.txt -> Computer Science (sim=0.62) in 1.96s
+[1] Processed: test_file_028.txt -> Biology (sim=0.69) in 2.00s
+[+] Started thread for test_file_032.txt | Active threads: 5
+[+] Started thread for test_file_033.txt | Active threads: 6
+[1] Processed: test_file_029.txt -> Biology (sim=0.70) in 2.14s
+[+] Started thread for test_file_034.txt | Active threads: 6
+[1] Processed: test_file_031.txt -> Physics (sim=0.62) in 2.23s
+[1] Processed: test_file_030.txt -> Computer Science (sim=0.62) in 2.27s
+[+] Started thread for test_file_035.txt | Active threads: 5
+[+] Started thread for test_file_036.txt | Active threads: 6
+[1] Processed: test_file_033.txt -> Computer Science (sim=0.61) in 2.34s
+[+] Started thread for test_file_037.txt | Active threads: 6
+[1] Processed: test_file_032.txt -> Physics (sim=0.61) in 2.47s
+[+] Started thread for test_file_038.txt | Active threads: 6
+[1] Processed: test_file_035.txt -> Computer Science (sim=0.60) in 2.19s
+[+] Started thread for test_file_039.txt | Active threads: 6
+[1] Processed: test_file_034.txt -> Chemistry (sim=0.74) in 2.39s
+[+] Started thread for test_file_040.txt | Active threads: 6
+[1] Processed: test_file_036.txt -> Physics (sim=0.61) in 2.39s
+[+] Started thread for test_file_041.txt | Active threads: 6
+[1] Processed: test_file_039.txt -> Maths (sim=0.71) in 2.31s
+[1] Processed: test_file_037.txt -> Chemistry (sim=0.76) in 2.61s
+[1] Processed: test_file_040.txt -> Computer Science (sim=0.58) in 2.27s
+[+] Started thread for test_file_042.txt | Active threads: 4
+[+] Started thread for test_file_043.txt | Active threads: 5
+[+] Started thread for test_file_044.txt | Active threads: 6
+[1] Processed: test_file_038.txt -> Physics (sim=0.60) in 2.60s
+[+] Started thread for test_file_045.txt | Active threads: 6
+[1] Processed: test_file_041.txt -> Biology (sim=0.70) in 2.45s
+[+] Started thread for test_file_046.txt | Active threads: 6
+[1] Processed: test_file_043.txt -> Biology (sim=0.73) in 2.06s
+[+] Started thread for test_file_047.txt | Active threads: 6
+[1] Processed: test_file_044.txt -> Maths (sim=0.72) in 2.12s
+[+] Started thread for test_file_048.txt | Active threads: 6
+[1] Processed: test_file_042.txt -> Physics (sim=0.62) in 2.38s
+[+] Started thread for test_file_049.txt | Active threads: 6
+[1] Processed: test_file_045.txt -> Biology (sim=0.72) in 2.32s
+[+] Started thread for test_file_050.txt | Active threads: 6
+[1] Processed: test_file_046.txt -> Biology (sim=0.72) in 2.19s
+[+] Started thread for test_file_051.txt | Active threads: 6
+[1] Processed: test_file_047.txt -> Chemistry (sim=0.77) in 2.46s
+[+] Started thread for test_file_052.txt | Active threads: 6
+[1] Processed: test_file_048.txt -> Chemistry (sim=0.78) in 2.50s
+[+] Started thread for test_file_053.txt | Active threads: 6
+[1] Processed: test_file_049.txt -> Biology (sim=0.72) in 2.68s
+[+] Started thread for test_file_054.txt | Active threads: 6
+[1] Processed: test_file_050.txt -> Computer Science (sim=0.59) in 2.78s
+[+] Started thread for test_file_055.txt | Active threads: 6
+[1] Processed: test_file_051.txt -> Physics (sim=0.63) in 2.84s
+[+] Started thread for test_file_056.txt | Active threads: 6
+[1] Processed: test_file_052.txt -> Physics (sim=0.61) in 2.69s
+[+] Started thread for test_file_057.txt | Active threads: 6
+[1] Processed: test_file_053.txt -> Biology (sim=0.71) in 3.10s
+[+] Started thread for test_file_058.txt | Active threads: 6
+[1] Processed: test_file_055.txt -> Biology (sim=0.67) in 2.97s
+[+] Started thread for test_file_059.txt | Active threads: 6
+[1] Processed: test_file_054.txt -> Biology (sim=0.70) in 3.27s
+[+] Started thread for test_file_060.txt | Active threads: 6
+[1] Processed: test_file_056.txt -> Physics (sim=0.59) in 3.10s
+[+] Started thread for test_file_061.txt | Active threads: 6
+[1] Processed: test_file_058.txt -> Biology (sim=0.71) in 2.71s
+[1] Processed: test_file_057.txt -> Chemistry (sim=0.77) in 3.31s
+[+] Started thread for test_file_062.txt | Active threads: 5
+[+] Started thread for test_file_063.txt | Active threads: 6
+[1] Processed: test_file_059.txt -> Biology (sim=0.70) in 2.60s
+[+] Started thread for test_file_064.txt | Active threads: 6
+[1] Processed: test_file_060.txt -> Physics (sim=0.62) in 2.77s
+[+] Started thread for test_file_065.txt | Active threads: 6
+[1] Processed: test_file_061.txt -> Chemistry (sim=0.71) in 2.87s
+[+] Started thread for test_file_066.txt | Active threads: 6
+[1] Processed: test_file_063.txt -> Computer Science (sim=0.59) in 2.25s
+[+] Started thread for test_file_067.txt | Active threads: 6
+[1] Processed: test_file_062.txt -> Physics (sim=0.59) in 2.57s
+[+] Started thread for test_file_068.txt | Active threads: 6
+[1] Processed: test_file_064.txt -> Maths (sim=0.70) in 2.50s
+[+] Started thread for test_file_069.txt | Active threads: 6
+[1] Processed: test_file_065.txt -> Physics (sim=0.61) in 2.51s
+[+] Started thread for test_file_070.txt | Active threads: 6
+[1] Processed: test_file_066.txt -> Chemistry (sim=0.77) in 2.64s
+[+] Started thread for test_file_071.txt | Active threads: 6
+[1] Processed: test_file_067.txt -> Maths (sim=0.69) in 2.36s
+[+] Started thread for test_file_072.txt | Active threads: 6
+[1] Processed: test_file_068.txt -> Chemistry (sim=0.76) in 2.23s
+[+] Started thread for test_file_073.txt | Active threads: 6
+[1] Processed: test_file_070.txt -> Biology (sim=0.68) in 2.20s
+[1] Processed: test_file_069.txt -> Physics (sim=0.60) in 2.46s
+[+] Started thread for test_file_074.txt | Active threads: 5
+[+] Started thread for test_file_075.txt | Active threads: 6
+[1] Processed: test_file_071.txt -> Chemistry (sim=0.78) in 2.56s
+[+] Started thread for test_file_076.txt | Active threads: 6
+[1] Processed: test_file_072.txt -> Chemistry (sim=0.71) in 2.41s
+[+] Started thread for test_file_077.txt | Active threads: 6
+[1] Processed: test_file_073.txt -> Maths (sim=0.71) in 2.77s
+[+] Started thread for test_file_078.txt | Active threads: 6
+[1] Processed: test_file_075.txt -> Chemistry (sim=0.76) in 2.65s
+[1] Processed: test_file_074.txt -> Biology (sim=0.70) in 2.68s
+[+] Started thread for test_file_079.txt | Active threads: 5
+[+] Started thread for test_file_080.txt | Active threads: 6
+[1] Processed: test_file_076.txt -> Chemistry (sim=0.73) in 2.59s
+[+] Started thread for test_file_081.txt | Active threads: 6
+[1] Processed: test_file_077.txt -> Chemistry (sim=0.77) in 2.63s
+[+] Started thread for test_file_082.txt | Active threads: 6
+[1] Processed: test_file_078.txt -> Biology (sim=0.71) in 2.34s
+[+] Started thread for test_file_083.txt | Active threads: 6
+[1] Processed: test_file_079.txt -> Biology (sim=0.64) in 2.10s
+[+] Started thread for test_file_084.txt | Active threads: 6
+[1] Processed: test_file_080.txt -> Computer Science (sim=0.62) in 2.21s
+[+] Started thread for test_file_085.txt | Active threads: 6
+[1] Processed: test_file_081.txt -> Physics (sim=0.61) in 2.41s
+[+] Started thread for test_file_086.txt | Active threads: 6
+[1] Processed: test_file_082.txt -> Chemistry (sim=0.74) in 2.35s
+[+] Started thread for test_file_087.txt | Active threads: 6
+[1] Processed: test_file_083.txt -> Computer Science (sim=0.59) in 2.18s
+[+] Started thread for test_file_088.txt | Active threads: 6
+[1] Processed: test_file_084.txt -> Chemistry (sim=0.73) in 2.33s
+[+] Started thread for test_file_089.txt | Active threads: 6
+[1] Processed: test_file_085.txt -> Computer Science (sim=0.60) in 2.41s
+[+] Started thread for test_file_090.txt | Active threads: 6
+[1] Processed: test_file_086.txt -> Chemistry (sim=0.72) in 2.57s
+[+] Started thread for test_file_091.txt | Active threads: 6
+[1] Processed: test_file_087.txt -> Physics (sim=0.62) in 2.27s
+[+] Started thread for test_file_092.txt | Active threads: 6
+[1] Processed: test_file_088.txt -> Chemistry (sim=0.76) in 2.50s
+[+] Started thread for test_file_093.txt | Active threads: 6
+[1] Processed: test_file_089.txt -> Maths (sim=0.71) in 2.53s
+[+] Started thread for test_file_094.txt | Active threads: 6
+[1] Processed: test_file_090.txt -> Physics (sim=0.61) in 2.74s
+[+] Started thread for test_file_095.txt | Active threads: 6
+[1] Processed: test_file_091.txt -> Chemistry (sim=0.79) in 2.64s
+[1] Processed: test_file_092.txt -> Biology (sim=0.70) in 2.11s
+[+] Started thread for test_file_096.txt | Active threads: 5
+[+] Started thread for test_file_097.txt | Active threads: 6
+[1] Processed: test_file_093.txt -> Physics (sim=0.63) in 2.59s
+[+] Started thread for test_file_098.txt | Active threads: 6
+[1] Processed: test_file_094.txt -> Maths (sim=0.72) in 2.45s
+[+] Started thread for test_file_099.txt | Active threads: 6
+[1] Processed: test_file_095.txt -> Maths (sim=0.70) in 2.22s
+[+] Started thread for test_file_100.txt | Active threads: 6
+[1] Processed: test_file_096.txt -> Computer Science (sim=0.59) in 2.32s
+[1] Processed: test_file_097.txt -> Computer Science (sim=0.58) in 2.32s
+[1] Processed: test_file_098.txt -> Maths (sim=0.72) in 2.12s
+[1] Processed: test_file_099.txt -> Physics (sim=0.63) in 1.98s
+[1] Processed: test_file_100.txt -> Computer Science (sim=0.63) in 1.90s
+
+ All files processed in 40.33s
