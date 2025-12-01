@@ -5,9 +5,7 @@ baseurl: "/FileSense"
 url: "https://ahhyoushh.github.io"
 remote_theme: just-the-docs/just-the-docs
 
-# just-the-docs options
-just_the_docs:
-  color_scheme: dark
+color_scheme: dark
 
 markdown: kramdown
 kramdown:
