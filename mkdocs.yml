@@ -1,0 +1,68 @@
+site_name: FileSense
+site_url: https://ahhyoushh.github.io/FileSense/
+repo_url: https://github.com/ahhyoushh/FileSense
+repo_name: ahhyoushh/FileSense
+
+docs_dir: wiki
+
+theme:
+  name: material
+  
+  # logo: assets/logo.png 
+  # favicon: assets/favicon.png
+  
+  palette: 
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+  features:
+    - navigation.instant     # SPA-like loading (no page refresh) - Very Fast
+    - navigation.tabs        # Top navigation tabs (cleaner than just sidebar)
+    - navigation.tabs.sticky # Tabs stay visible when scrolling
+    - navigation.sections    # Group sidebar items
+    - navigation.expand      # Open sidebar groups by default
+    - navigation.top         # "Back to Top" button
+    - navigation.tracking    # URL changes as you scroll
+    - search.suggest         # Auto-complete search
+    - search.highlight       # Highlight search terms
+    - content.code.copy      # "Copy" button on code blocks
+    - content.tooltips       # Hover tooltips
+
+font:
+  text: Roboto
+  code: Roboto Mono
+
+markdown_extensions:
+  - admonition               # "!!! note" or "!!! warning" blocks
+  - attr_list                # Allows adding CSS classes to elements
+  - md_in_html               # Allow markdown inside HTML tags
+  - pymdownx.details         # Collapsible "Show more" blocks
+  - pymdownx.superfences     # Nesting code blocks inside tabs
+  - pymdownx.tabbed:         # Content tabs (e.g., "Windows | Mac | Linux")
+      alternate_style: true 
+  - pymdownx.highlight:      # Syntax highlighting
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Documentation:
+      - Getting Started: wiki/setup.md
+      - Metrics: wiki/metrics.md
+      - pipelines: wiki/pipelines.md
+      - FAQ: wiki/faq.md

@@ -1,5 +1,21 @@
 MARKDOWN CHEAT SHEET (Quick Reference)
 
+COde TABs
+=== "JavaScript"
+    ```js
+    console.log("Hello");
+    ```
+
+=== "Python"
+    ```python
+    print("Hello")
+    ```
+
+WARNING BOXES
+!!! warning "Important"
+    Do not forget to set your API key before running the server!
+
+
 HEADINGS
 # H1
 ## H2
