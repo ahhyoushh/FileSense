@@ -1,0 +1,1 @@
+HDS unveils TagmaStore array Hitachi Data Systems has unveiled its TagmaStore Universal Storage System, a series of three arrays based on a switched architecture that can scale to 332TB of internal storage and manage up to 32 petabytes of external storage.

@@ -1,0 +1,1 @@
+Sun #39;s New Multi-threaded Processor, UltraSPARC IV Implemented using Texas Instruments #39; 90 nanometer process technology, UltraSPARC IV will double the application throughput of the existing UltraSPARC IV through expanded caches and buffers, a better branch prediction mechanism, augmented prefetching 
