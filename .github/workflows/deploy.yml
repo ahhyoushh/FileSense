@@ -1,4 +1,4 @@
-name: Build and Deploy Site (Landing + Wiki)
+name: Build and Deploy (Landing + Wiki)
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Ruby
@@ -22,12 +22,11 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: true
 
-      - name: Install Jekyll (GitHub Pages + remote theme)
+      - name: Install Jekyll (remote theme)
         run: |
           cd wiki
           cat << 'EOF' > Gemfile
           source "https://rubygems.org"
-
           gem "github-pages", group: :jekyll_plugins
           gem "jekyll-remote-theme"
           EOF
@@ -38,24 +37,24 @@ jobs:
           cd wiki
           bundle exec jekyll build -d _site
 
-      - name: Prepare combined site (landing + wiki)
+      - name: Combine landing + wiki
         run: |
           mkdir public
 
-          # Copy landing page and its assets to root
+          # Copy landing to site root
           cp -R landing/* public/
 
-          # Copy wiki assets (CSS/JS)
-          mkdir -p public/assets
-          cp -R wiki/_site/assets/* public/assets/
-
-          # Copy wiki pages under /wiki
+          # Put wiki under /wiki
           mkdir -p public/wiki
           cp -R wiki/_site/wiki/* public/wiki/
+
+          # Copy wiki theme assets to /assets
+          mkdir -p public/assets
+          cp -R wiki/_site/assets/* public/assets/
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
           publish_branch: gh-pages
+          publish_dir: public
