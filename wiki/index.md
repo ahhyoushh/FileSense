@@ -5,6 +5,7 @@ toc: true
 toc_sticky: true
 sidebar:
   nav: wiki
+permalink: /wiki/
 ---
 
 # FileSense

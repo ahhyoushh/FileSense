@@ -1,11 +1,11 @@
 wiki:
   - title: "Overview"
-    url: /
+    url: /wiki/
   - title: "Getting Started"
-    url: /getting-started/
+    url: /wiki/getting-started/
   - title: "Installation"
-    url: /installation/
+    url: /wiki/installation/
   - title: "Usage"
-    url: /usage/
+    url: /wiki/usage/
   - title: "FAQ"
-    url: /faq/
+    url: /wiki/faq/

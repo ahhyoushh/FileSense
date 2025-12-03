@@ -1,10 +1,12 @@
 title: "FileSense Docs"
 
+# Use Minimal Mistakes via remote theme
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin: "dark"
 
+# GitHub Pages project site
 url: "https://ahhyoushh.github.io"
-baseurl: "/FileSense/wiki"
+baseurl: "/FileSense"       # project root, NOT /FileSense/wiki
 
 markdown: kramdown
 highlighter: rouge
@@ -17,7 +19,7 @@ plugins:
 collections:
   wiki:
     output: true
-    permalink: /:path/
+    permalink: /wiki/:path/
 
 defaults:
   - scope:

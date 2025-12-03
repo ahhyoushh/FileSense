@@ -1,4 +1,4 @@
-name: Build and Deploy Wiki
+name: Build and Deploy Site (Landing + Wiki)
 
 on:
   push:
@@ -6,16 +6,10 @@ on:
       - master
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,18 +38,24 @@ jobs:
           cd wiki
           bundle exec jekyll build -d _site
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: wiki/_site
+      - name: Prepare combined site (landing + wiki)
+        run: |
+          mkdir public
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          # Copy landing page and its assets to root
+          cp -R landing/* public/
+
+          # Copy wiki assets (CSS/JS)
+          mkdir -p public/assets
+          cp -R wiki/_site/assets/* public/assets/
+
+          # Copy wiki pages under /wiki
+          mkdir -p public/wiki
+          cp -R wiki/_site/wiki/* public/wiki/
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          publish_branch: gh-pages
