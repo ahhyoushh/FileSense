@@ -1,92 +1,168 @@
----
-title: Project Documentation Template
----
-
-# Project Documentation
-
-Use this template to create consistent, clean, modular technical docs.
+# FileSense Documentation Template
 
 ---
-
-## 1. Overview
-Short summary of what the system does and why it exists.
-
+title: "PAGE TITLE HERE"
+layout: single
+permalink: /wiki/page-slug/
+sidebar:
+  nav: wiki
+toc: true
+toc_sticky: true
 ---
 
-## 2. Architecture
-Describe components, how they interact, and a high-level diagram.
-
-### Architecture Diagram (ASCII)
-```
-Component A --> Component B --> Component C
-```
-
-### Mermaid (optional)
-```mermaid
-flowchart LR
-  A --> B --> C
-```
+# Page Title Here
+Short intro paragraph explaining what this page is about.
 
 ---
 
-## 3. Processing Pipeline
-Step-by-step flow of how the system processes input.
+# 🔥 Quick Summary
 
-1. Step 1  
-2. Step 2  
-3. Step 3  
-
----
-
-## 4. Metrics & Performance
-Detailed tables, charts, and how metrics are generated.
-
-### Metrics Table
-| Metric | Value | Notes |
-|--------|-------|-------|
-| example_metric | 0.00 | description |
-
-### Insert Charts
-```
-Place PNGs into ./assets/ and reference them:
-![Chart Title](./assets/chart.png)
-```
+- Bullet point 1  
+- Bullet point 2  
+- Bullet point 3  
 
 ---
 
-## 5. Code Examples
-Show runnable snippets or important logic.
+# 🧩 Section Heading
+Explain something clearly.
+
+## Subsection
+Explain the subsection.
 
 ```python
-def example():
-    return "hello world"
+# Code example
+def demo():
+    return "Hello World"
 ```
 
 ---
 
-## 6. Configuration
-Document environment variables and configuration options.
+# 💡 Tip / Note / Warning Blocks
 
+**Tip**
+{: .notice--info}
+
+**Note**
+{: .notice--success}
+
+**Warning**
+{: .notice--danger}
+
+---
+
+# 📁 Directory Structure Example
+
+```text
+FileSense/
+├── landing/
+├── wiki/
+│   ├── index.md
+│   ├── template.md
+│   ├── usage.md
+│   └── ...
+└── folder_labels.json
 ```
-ENV_VAR=value
+
+---
+
+# 🧪 Code Blocks
+
+```python
+print("Python")
+```
+
+```bash
+pip install filesense
+```
+
+```json
+{
+  "folder_label": "Physics",
+  "keywords": ["energy", "forces"]
+}
+```
+
+```yaml
+theme: minimal-mistakes-jekyll
 ```
 
 ---
 
-## 7. Deployment
-Explain how to deploy locally and in production.
+# 📌 Tables
+
+| Feature | Description |
+|--------|-------------|
+| Labeling | Assigns folder labels using vectors + LLM |
+| Merging | Ensures metadata is never lost |
+| Movement | Organizes files automatically |
 
 ---
 
-## 8. Troubleshooting
-List common problems and their resolutions.
+# 📥 Download Button Example
+
+<a href="/FileSense/assets/example.json" class="btn btn--primary">Download JSON</a>
 
 ---
 
-## 9. FAQ
-Short answers to expected questions.
+# 🖼️ Images
+
+Local:
+
+![Local image](/FileSense/wiki/assets/diagram.png)
+
+External:
+
+![External](https://example.com/image.png)
 
 ---
 
-## 10. Appendix
-Extra notes, tables, and references.
+# 🧠 Mermaid Diagram
+
+```mermaid
+flowchart TD
+    A[Extract Text] --> B[Embed with MPNet]
+    B --> C{Similarity >= Threshold?}
+    C -->|Yes| D[Assign Existing Label]
+    C -->|No| E[Ask Gemini for Label]
+    E --> F[Update folder_labels.json]
+```
+
+---
+
+# 🧱 Callouts
+
+> Important information here.
+
+---
+
+# 🔄 API Section Template
+
+## Function `generate_folder_label(text)`
+
+**Returns:**
+
+```json
+{
+  "folder_label": "Physics",
+  "description": "mechanics, forces, motion",
+  "keywords": "physics, energy, force"
+}
+```
+
+---
+
+# 📦 Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+```env
+API_KEY=your_gemini_key
+```
+
+---
+
+# 🧭 Navigation Footer
+
+[← Back to Docs Overview](/FileSense/wiki/)
