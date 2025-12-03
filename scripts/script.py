@@ -3,6 +3,7 @@ import argparse
 import sys
 from multhread import process_multiple
 from classify_process_file import process_file, load_index_and_labels 
+from train import train
 
 test = True
 parser = argparse.ArgumentParser(description="Process files in a directory concurrently.")
@@ -36,8 +37,14 @@ if __name__ == "__main__":
             print("No files to process.")
         else:
             for file_path in files:
-                process_file(file_path, testing=test, allow_generation=not args.no_generation, TRAIN=args.train)
+                if args.train:
+                    train(files_dir, testing=test)
+                else:
+                    process_file(file_path, testing=test, allow_generation=not args.no_generation)
     else:
-        print(f"Processing files in directory: {files_dir} with {MAX_THREADS} threads.")
-        process_multiple(files_dir, MAX_THREADS, testing=test, allow_generation=not args.no_generation, TRAIN=args.train)
+        if args.train:
+            train(files_dir, testing=test)
+        else:             
+            print(f"Processing files in directory: {files_dir} with {MAX_THREADS} threads.")
+            process_multiple(files_dir, MAX_THREADS, testing=test, allow_generation=not args.no_generation)
 

@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, "..", "files")
 TEST_OUTPUT_DIR = os.path.join(BASE_DIR, "..", "test_files")
 
-NUM_FILES = 100
+NUM_FILES = 50
 TRAIN_SPLIT = 0.2*NUM_FILES #USED TO GEN LABELS
 TEST_SPLIT = 0.8*NUM_FILES
 def generate_text_files(data: list):
