@@ -1,16 +1,26 @@
-name: Build Wiki
+name: Build and Deploy Wiki
 
 on:
   push:
     branches:
       - master
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -18,20 +28,34 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: true
 
-      - name: Install Jekyll + theme
+      - name: Install Jekyll (GitHub Pages + remote theme)
         run: |
           cd wiki
-          echo "source 'https://rubygems.org'" > Gemfile
-          echo "gem 'github-pages'" >> Gemfile
-          bundle install
+          cat << 'EOF' > Gemfile
+          source "https://rubygems.org"
+
+          gem "github-pages", group: :jekyll_plugins
+          gem "jekyll-remote-theme"
+          EOF
+          bundle install --jobs 4 --retry 3
 
       - name: Build wiki
         run: |
           cd wiki
-          bundle exec jekyll build -d ../docs/wiki
+          bundle exec jekyll build -d _site
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs
+          path: wiki/_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
