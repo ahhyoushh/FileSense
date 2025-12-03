@@ -1,0 +1,29 @@
+title: "FileSense Docs"
+theme: minimal-mistakes-jekyll
+minimal_mistakes_skin: "dark"
+
+url: "https://ahhyoushh.github.io"
+baseurl: "/FileSense/wiki"
+
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-include-cache
+  - jekyll-seo-tag
+
+collections:
+  wiki:
+    output: true
+    permalink: /:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: wiki
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      sidebar:
+        nav: wiki

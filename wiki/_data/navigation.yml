@@ -1,0 +1,11 @@
+wiki:
+  - title: "Overview"
+    url: /
+  - title: "Getting Started"
+    url: /getting-started/
+  - title: "Installation"
+    url: /installation/
+  - title: "Usage"
+    url: /usage/
+  - title: "FAQ"
+    url: /faq/

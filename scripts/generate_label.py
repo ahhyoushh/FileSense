@@ -46,58 +46,6 @@ merge_schema = {
     "required": ["merged_description", "merged_keywords"]
 }
 
-def merge_folder_metadata(folder_label, old_desc, old_kw, new_desc, new_kw):
-    """
-    Uses LLM to intelligently merge existing folder metadata with new metadata.
-    """
-    prompt = f"""You are an expert semantic data organizer. Your task is to merge metadata for the file category: "{folder_label}".
-
-    You have Existing metadata (from the database) and New metadata (from a new file).
-    Combine them into a unified, comprehensive representation.
-
-    --- INPUT DATA ---
-    Existing Description: {old_desc}
-    Existing Keywords: {old_kw}
-
-    New Description: {new_desc}
-    New Keywords: {new_kw}
-
-    --- RULES ---
-    1. **Description Merging:** 
-       - The output description must be a **dense list of sub-topics and synonyms** (Bag-of-Words style).
-       - **DO NOT** use sentences like "This folder contains...".
-       - Combine unique concepts from both descriptions.
-       - Remove duplicates and overlapping terms.
-    
-    2. **Keyword Merging:**
-       - Combine both keyword lists.
-       - Remove exact duplicates and near-duplicates (e.g., "finance" and "finances").
-       - Keep the list comma-separated.
-       - Limit to the top 15-20 most relevant terms.
-
-    3. **Consistency:** Ensure the final output strongly relates to the main Category Label: "{folder_label}".
-    """
-
-    try:
-        res = client.models.generate_content(
-            model=MODEL,
-            contents=prompt,
-            config={
-                "response_mime_type": "application/json",
-                "response_schema": merge_schema,
-                "temperature": 0.3, # Low temp for consistent merging
-            }
-        )
-        
-        return json.loads(res.text)
-
-    except Exception as e:
-        print(f"[!] Error merging metadata: {e}")
-        # Fallback: Simple string concatenation if AI fails
-        return {
-            "merged_description": f"{old_desc}, {new_desc}",
-            "merged_keywords": f"{old_kw}, {new_kw}"
-        }
 examples = """
 --- EXAMPLE 1 (Physics) ---
 Document: "EXPERIMENT 4: BERNOULLI'S PRINCIPLE AND FLUID DYNAMICS. Abstract: This experiment investigates the relationship between fluid speed and pressure in a horizontal pipe. According to Bernoulli's equation, P + 1/2pv^2 + pgh = constant. As the cross-sectional area of the pipe decreases, the velocity of the fluid increases..."
@@ -148,16 +96,89 @@ Document: "WORLD NEWS: DIPLOMATS GATHER FOR CLIMATE SUMMIT IN PARIS. Delegates f
 Output: {"folder_label": "International Relations", "description": "diplomacy, geopolitics, treaties, summits, united nations, foreign policy, international law, climate accords, global politics, state negotiations", "keywords": "diplomacy, summit, treaty, nations, global, politics, negotiation, paris, international, policy"}
 """
 
+
+def merge_folder_metadata(folder_label, old_desc, old_kw, new_desc, new_kw):
+    """
+    Uses LLM to intelligently merge existing folder metadata with new metadata.
+
+    Hard requirement: NO important topic from old_desc/old_kw is lost.
+    The model can rephrase but should not drop them.
+    """
+    prompt = f"""You are an expert semantic data organizer. Your task is to MERGE metadata
+for the file category: "{folder_label}".
+
+You have Existing metadata (from the database) and New metadata (from a new file).
+Combine them into a unified, comprehensive representation.
+
+--- INPUT DATA ---
+Existing Description: {old_desc}
+Existing Keywords: {old_kw}
+
+New Description: {new_desc}
+New Keywords: {new_kw}
+
+--- HARD CONSTRAINTS (DO NOT VIOLATE) ---
+1. You MUST preserve all distinct topics, concepts, and subject areas present in the Existing metadata.
+   - You MAY rephrase words (e.g., "stock market" -> "equity markets"), but you MUST NOT drop the concept.
+   - If a topic appears in Existing but not in the final merge, that's WRONG.
+2. New metadata can ADD extra topics, but cannot REMOVE concepts that were already present.
+3. Stay consistent with the broad category "{folder_label}".
+
+--- DESCRIPTION MERGING RULES ---
+1. Output `merged_description` as a **dense, comma-separated list** of sub-topics and synonyms.
+2. NO sentences like "This folder contains..." or "These are topics about...".
+3. Merge unique concepts from Existing + New:
+   - remove exact duplicates and near-duplicates,
+   - keep related items grouped logically.
+4. Aim for 25–40 items (not fewer than 20 unless impossible).
+
+--- KEYWORD MERGING RULES ---
+1. Output `merged_keywords` as a **comma-separated list**.
+2. Combine Existing + New keywords.
+3. Remove duplicates and trivial variants (e.g., "finance" vs "finances" – keep one).
+4. Focus on **high-value, broad search terms**.
+5. Limit to about 15–20 strong keywords.
+"""
+
+    try:
+        res = client.models.generate_content(
+            model=MODEL,
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": merge_schema,
+                "temperature": 0.2,
+            }
+        )
+
+        merged = json.loads(res.text)
+
+        # Safety net: if model returns something empty, fall back to simple concat
+        if not merged.get("merged_description") or not merged.get("merged_keywords"):
+            raise ValueError("Empty merged fields from LLM")
+
+        return merged
+
+    except Exception as e:
+        print(f"[!] Error merging metadata: {e}")
+        # Fallback: Simple string concatenation if AI fails
+        return {
+            "merged_description": f"{old_desc}, {new_desc}",
+            "merged_keywords": f"{old_kw}, {new_kw}"
+        }
+
+
 def generate_folder_label(target_text: str):
     try:
-        with open("folder_labels.json", "r", encoding="utf-8") as f:
-            existing_labels_content = f.read()
-            if not existing_labels_content.strip():
-                existing_labels_content = "{}"
-    except (FileNotFoundError, json.JSONDecodeError):
-        existing_labels_content = "{}"
+        try:
+            with open("folder_labels.json", "r", encoding="utf-8") as f:
+                existing_labels_content = f.read()
+                if not existing_labels_content.strip():
+                    existing_labels_content = "{}"
+        except (FileNotFoundError, json.JSONDecodeError):
+            existing_labels_content = "{}"
 
-    prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
+        prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
 
 --- CRITICAL RULE 1: BANNED WORDS (NEGATIVE CONSTRAINTS) ---
 *   **NEVER** include generic document types in `description` or `keywords`.
@@ -191,14 +212,13 @@ EXISTING LABELS:
 {target_text}
 """
 
-    try:
         res = client.models.generate_content(
             model=MODEL,
             contents=prompt,
             config={
-                "response_mime_type": "application/json",  
+                "response_mime_type": "application/json",
                 "response_schema": schema,
-                "temperature": 0.5, # Low temperature to enforce strict adherence to existing labels
+                "temperature": 0.5,
             }
         )
 
@@ -206,21 +226,24 @@ EXISTING LABELS:
         new_label = response.get("folder_label")
         new_desc = response.get("description")
         new_keywords_str = response.get("keywords")
-        
+
+        # Now read/merge into folder_labels.json
         with open("folder_labels.json", "r+", encoding="utf-8") as f:
             try:
                 folder_data = json.load(f)
             except json.JSONDecodeError:
                 folder_data = {}
-            
+
             if new_label not in folder_data:
+                # New label: just store as-is
                 folder_data[new_label] = f"{new_desc} Keywords: {new_keywords_str}"
                 print(f"Generated new folder label: {new_label}")
             else:
+                # Existing label: merge metadata
                 print(f"Label '{new_label}' exists. Merging description and keywords via gemini...")
-                
+
                 existing_full_text = folder_data[new_label]
-                
+
                 if " Keywords: " in existing_full_text:
                     existing_desc, existing_kw_str = existing_full_text.split(" Keywords: ", 1)
                 else:
@@ -235,30 +258,51 @@ EXISTING LABELS:
                     new_kw=new_keywords_str
                 )
 
-                final_desc = merged_data.get("merged_description", existing_desc)
-                final_kws = merged_data.get("merged_keywords", existing_kw_str)
+                llm_desc = merged_data.get("merged_description", "") or ""
+                llm_kws = merged_data.get("merged_keywords", "") or ""
+
+                def split_terms(s: str):
+                    return [t.strip() for t in s.split(",") if t.strip()]
+
+                # --- Description hard-merge (old → LLM → new) ---
+                old_desc_terms = split_terms(existing_desc)
+                new_desc_terms = split_terms(new_desc)
+                llm_desc_terms = split_terms(llm_desc)
+
+                seen_desc = set()
+                final_desc_terms = []
+
+                for term_list in (old_desc_terms, llm_desc_terms, new_desc_terms):
+                    for term in term_list:
+                        key = term.lower()
+                        if key not in seen_desc:
+                            seen_desc.add(key)
+                            final_desc_terms.append(term)
+
+                # Optional cap:
+                # final_desc_terms = final_desc_terms[:40]
+                final_desc = ", ".join(final_desc_terms)
+
+                # --- Keyword hard-merge (old → LLM → new) ---
+                old_kw_terms = split_terms(existing_kw_str)
+                new_kw_terms = split_terms(new_keywords_str)
+                llm_kw_terms = split_terms(llm_kws)
+
+                seen_kw = set()
+                final_kw_terms = []
+
+                for term_list in (old_kw_terms, llm_kw_terms, new_kw_terms):
+                    for term in term_list:
+                        key = term.lower()
+                        if key not in seen_kw:
+                            seen_kw.add(key)
+                            final_kw_terms.append(term)
+
+                # Optional cap:
+                # final_kw_terms = final_kw_terms[:20]
+                final_kws = ", ".join(final_kw_terms)
 
                 folder_data[new_label] = f"{final_desc} Keywords: {final_kws}"
-                # if " Keywords: " in existing_full_text:
-                #     existing_desc, existing_kw_str = existing_full_text.split(" Keywords: ", 1)
-                # else:
-                #     existing_desc = existing_full_text
-                #     existing_kw_str = ""
-
-                # # Merge Keywords (Set to remove duplicates)
-                # old_kws = set([k.strip().lower() for k in existing_kw_str.split(',') if k.strip()])
-                # incoming_kws = [k.strip().lower() for k in new_keywords_str.split(',') if k.strip()]
-                # old_kws.update(incoming_kws)
-                
-                # # Merge Description Terms (Set to remove duplicates)
-                # old_desc_terms = set([d.strip().lower() for d in existing_desc.split(',') if d.strip()])
-                # incoming_desc_terms = [d.strip().lower() for d in new_desc.split(',') if d.strip()]
-                # old_desc_terms.update(incoming_desc_terms)
-
-                # merged_kw_str = ", ".join(sorted(list(old_kws))) 
-                # merged_desc_str = ", ".join(sorted(list(old_desc_terms)))
-
-                # folder_data[new_label] = f"{merged_desc_str} Keywords: {merged_kw_str}"
 
             f.seek(0)
             json.dump(folder_data, f, indent=2)

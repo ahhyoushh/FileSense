@@ -1,7 +1,14 @@
 ---
-title: FileSense Docs
-permalink: /doc/
+title: "FileSense Docs"
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: wiki
 ---
 
 # FileSense
-Essentially a python script that generates generates vector embeddings using SentenceTransformers all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less than threshold) to classify, create folder label , and organize your files automatically by moving them in respective folders.
+
+Semantic document classifier powered by vector embeddings + Gemini fallback reasoning.
+
+Select a section from the left navigation.

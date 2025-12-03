@@ -1,0 +1,37 @@
+name: Build Wiki
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Install Jekyll + theme
+        run: |
+          cd wiki
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'github-pages'" >> Gemfile
+          bundle install
+
+      - name: Build wiki
+        run: |
+          cd wiki
+          bundle exec jekyll build -d ../docs/wiki
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs
