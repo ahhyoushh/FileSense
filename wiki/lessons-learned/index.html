@@ -1,0 +1,709 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Lessons Learned - FileSense Documentation</title>
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT + Gemini">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="FileSense Documentation">
+<meta property="og:title" content="Lessons Learned">
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/lessons-learned/">
+
+
+  <meta property="og:description" content="Intelligent semantic file organizer powered by SBERT + Gemini">
+
+
+
+  <meta property="og:image" content="https://ahhyoushh.github.io/FileSense/assets/images/og-image.png">
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/lessons-learned/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/FileSense/feed.xml" type="application/atom+xml" rel="alternate" title="FileSense Documentation Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/FileSense/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--default">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/FileSense/"><img src="/FileSense/assets/images/logo.png" alt="FileSense Documentation"></a>
+        
+        <a class="site-title" href="/FileSense/">
+          FileSense Documentation
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      <h1 id="-lessons-learned">🎓 Lessons Learned</h1>
+
+<p>Key insights and discoveries from developing FileSense.</p>
+
+<hr />
+
+<h2 id="-major-discoveries">🔬 Major Discoveries</h2>
+
+<h3 id="1-keyword-descriptions-natural-language">1. Keyword Descriptions » Natural Language</h3>
+
+<p><strong>Hypothesis:</strong> Natural language descriptions mimicking document content would match better with SBERT embeddings.</p>
+
+<p><strong>Result:</strong> ❌ <strong>Completely Wrong</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Approach</th>
+      <th>Accuracy</th>
+      <th>Avg Similarity</th>
+      <th>Uncategorized</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Natural Language</strong></td>
+      <td>24%</td>
+      <td>0.104</td>
+      <td>71%</td>
+    </tr>
+    <tr>
+      <td><strong>Keywords</strong></td>
+      <td>56%</td>
+      <td>0.355</td>
+      <td>11%</td>
+    </tr>
+    <tr>
+      <td><strong>Difference</strong></td>
+      <td><strong>+32%</strong></td>
+      <td><strong>+241%</strong></td>
+      <td><strong>-60%</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Why Keywords Won:</strong></p>
+
+<ol>
+  <li><strong>Maximum Semantic Density</strong>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Keywords: "mechanics, thermodynamics, optics, quantum, forces, energy"
+→ 100% meaningful tokens
+   
+Natural Language: "Documents contain experimental procedures investigating..."
+→ ~15% meaningful tokens (rest is grammatical noise)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>SBERT Embedding Alignment</strong>
+    <ul>
+      <li>SBERT clusters keyword lists more effectively</li>
+      <li>Grammatical structure adds variance without value</li>
+      <li>Academic terminology works better as isolated terms</li>
+    </ul>
+  </li>
+  <li><strong>Broader Coverage</strong>
+    <ul>
+      <li>Keywords cover more concepts per character</li>
+      <li>Natural language is overly specific</li>
+      <li>Synonyms naturally included in keyword lists</li>
+    </ul>
+  </li>
+</ol>
+
+<p class="notice--success"><strong>Lesson:</strong> For SBERT-based classification, <strong>simpler is better</strong>. Don’t overthink it.</p>
+
+<p><strong>Full analysis:</strong> <a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a></p>
+
+<hr />
+
+<h3 id="2-lighter-models--worse-performance">2. Lighter Models = Worse Performance</h3>
+
+<p><strong>Hypothesis:</strong> Smaller embedding models would provide acceptable accuracy with better speed.</p>
+
+<p><strong>Result:</strong> ❌ <strong>Significantly Worse</strong></p>
+
+<p><strong>Tested Models:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">all-MiniLM-L6-v2</code> (384 dims, 80MB) - ❌ Poor accuracy</li>
+  <li><code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> (768 dims, 420MB) - ✅ Best performance</li>
+  <li><code class="language-plaintext highlighter-rouge">multi-qa-mpnet-base-dot-v1</code> (768 dims) - ⚠️ Moderate</li>
+</ul>
+
+<p class="notice--danger"><strong>Lesson:</strong> The performance drop from lighter models is <strong>not worth</strong> the size/speed gains. Stick with <code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code>.</p>
+
+<hr />
+
+<h3 id="3-ag-news-dataset-performed-poorly">3. AG News Dataset Performed Poorly</h3>
+
+<p><strong>Hypothesis:</strong> FileSense would work well across different document types.</p>
+
+<p><strong>Result:</strong> ⚠️ <strong>Domain-Specific Performance</strong></p>
+
+<p><strong>Findings:</strong></p>
+<ul>
+  <li><strong>Academic documents:</strong> ✅ Good (56% accuracy)</li>
+  <li><strong>News articles:</strong> ❌ Poor (see evaluation logs)</li>
+  <li><strong>Professional documents:</strong> ✅ Acceptable</li>
+</ul>
+
+<p><strong>Why News Failed:</strong></p>
+<ul>
+  <li>Different linguistic structure</li>
+  <li>Time-sensitive content</li>
+  <li>Informal language patterns</li>
+  <li>Topic diversity vs academic consistency</li>
+</ul>
+
+<p class="notice--warning"><strong>Lesson:</strong> FileSense is optimized for <strong>structured, academic/professional documents</strong>. Not a one-size-fits-all solution.</p>
+
+<hr />
+
+<h3 id="4-text-classification-is-hard">4. Text Classification is Hard</h3>
+
+<p><strong>Reality Check:</strong></p>
+
+<blockquote>
+  <p>“Might be the most inefficient way to text classification, learning experience”
+— Development notes</p>
+</blockquote>
+
+<p><strong>What This Means:</strong></p>
+<ul>
+  <li>Text classification is inherently challenging</li>
+  <li>Vector embeddings + LLM is one approach, not the only one</li>
+  <li>Trade-offs exist between accuracy, speed, and complexity</li>
+  <li>FileSense works well for specific use cases, not all scenarios</li>
+</ul>
+
+<p class="notice--info"><strong>Lesson:</strong> Be realistic about limitations. This is a <strong>learning project</strong> that works well for certain document types.</p>
+
+<hr />
+
+<h2 id="-technical-insights">💡 Technical Insights</h2>
+
+<h3 id="sbert-behavior">SBERT Behavior</h3>
+
+<p><strong>Discovery:</strong> SBERT embeddings have specific characteristics that affect classification.</p>
+
+<p><strong>Key Findings:</strong></p>
+
+<ol>
+  <li><strong>Keyword Clustering</strong>
+    <ul>
+      <li>Keyword lists create denser semantic clusters</li>
+      <li>Natural sentences introduce variance</li>
+      <li>Isolated terms align better in embedding space</li>
+    </ul>
+  </li>
+  <li><strong>Synonym Proximity</strong>
+    <ul>
+      <li>Related terms cluster naturally</li>
+      <li>“electricity, electrical, electromagnetism” are close in embedding space</li>
+      <li>Keyword lists leverage this automatically</li>
+    </ul>
+  </li>
+  <li><strong>Grammatical Noise</strong>
+    <ul>
+      <li>Articles (“the”, “a”, “an”) dilute semantic signal</li>
+      <li>Verbs (“contains”, “includes”) add no classification value</li>
+      <li>Prepositions create unnecessary variance</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Lesson:</strong> Understand your embedding model’s behavior. Don’t assume natural language is always better.</p>
+
+<hr />
+
+<h3 id="faiss-performance">FAISS Performance</h3>
+
+<p><strong>Discovery:</strong> FAISS is incredibly efficient for this use case.</p>
+
+<p><strong>Benchmarks:</strong></p>
+<ul>
+  <li><strong>Search time:</strong> ~0.02s for 10 labels</li>
+  <li><strong>Index size:</strong> ~3KB per label</li>
+  <li><strong>Scaling:</strong> Linear with number of labels</li>
+  <li><strong>Memory:</strong> Minimal overhead</li>
+</ul>
+
+<p class="notice--success"><strong>Lesson:</strong> FAISS is perfect for local, offline vector search. No need for complex vector databases.</p>
+
+<hr />
+
+<h3 id="gemini-integration">Gemini Integration</h3>
+
+<p><strong>Discovery:</strong> Structured output with JSON schema is powerful but has quirks.</p>
+
+<p><strong>Best Practices:</strong></p>
+
+<ol>
+  <li><strong>Clear Schemas</strong>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"type"</span><span class="p">:</span> <span class="s">"object"</span><span class="p">,</span>
+    <span class="s">"properties"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"folder_label"</span><span class="p">:</span> <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"..."</span><span class="p">},</span>
+        <span class="s">"description"</span><span class="p">:</span> <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"..."</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s">"folder_label"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Focused Examples</strong>
+    <ul>
+      <li>15 examples covering edge cases</li>
+      <li>Concise format (not verbose)</li>
+      <li>Diverse subject coverage</li>
+    </ul>
+  </li>
+  <li><strong>Temperature Tuning</strong>
+    <ul>
+      <li>0.5 for generation (balanced creativity)</li>
+      <li>0.2 for merging (more deterministic)</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Lesson:</strong> Structured LLM output requires careful prompt engineering and schema design.</p>
+
+<hr />
+
+<h2 id="-development-challenges">🚧 Development Challenges</h2>
+
+<h3 id="challenge-1-merging-metadata">Challenge 1: Merging Metadata</h3>
+
+<p><strong>Problem:</strong> When a new file matches an existing label, how to update the description without losing information?</p>
+
+<p><strong>Solution:</strong> Hard-merge logic that preserves ALL unique terms.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Old → LLM → New
+# Ensures no terms are dropped
+</span><span class="k">for</span> <span class="n">term_list</span> <span class="ow">in</span> <span class="p">(</span><span class="n">old_terms</span><span class="p">,</span> <span class="n">llm_terms</span><span class="p">,</span> <span class="n">new_terms</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">term_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">term</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">final_terms</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Lesson:</strong> When dealing with user-generated data, <strong>never lose information</strong>. Always append, never replace.</p>
+
+<hr />
+
+<h3 id="challenge-2-threshold-tuning">Challenge 2: Threshold Tuning</h3>
+
+<p><strong>Problem:</strong> What similarity threshold balances precision and recall?</p>
+
+<p><strong>Tested Thresholds:</strong></p>
+<ul>
+  <li><strong>0.30:</strong> Too many false positives</li>
+  <li><strong>0.35:</strong> Acceptable fallback</li>
+  <li><strong>0.40:</strong> Sweet spot (current default)</li>
+  <li><strong>0.50:</strong> Too strict, many uncategorized</li>
+</ul>
+
+<p><strong>Solution:</strong> Dual-threshold system</p>
+<ul>
+  <li>Main: 0.40 (high confidence)</li>
+  <li>Fallback: 0.35 (acceptable with warning)</li>
+</ul>
+
+<p><strong>Lesson:</strong> One threshold doesn’t fit all. Use tiered thresholds for better UX.</p>
+
+<hr />
+
+<h3 id="challenge-3-text-extraction-quality">Challenge 3: Text Extraction Quality</h3>
+
+<p><strong>Problem:</strong> PDFs often have table of contents, headers, footers that skew classification.</p>
+
+<p><strong>Solution:</strong> Multi-layered extraction</p>
+<ol>
+  <li>Start from page 3 (skip TOC)</li>
+  <li>Crop headers/footers (70px margins)</li>
+  <li>Quality scoring (filter low-quality pages)</li>
+  <li>Fallback: Extract from middle pages</li>
+</ol>
+
+<p><strong>Lesson:</strong> Text extraction quality directly impacts classification accuracy. Invest time in preprocessing.</p>
+
+<hr />
+
+<h2 id="-unexpected-findings">📊 Unexpected Findings</h2>
+
+<h3 id="1-filename-boosting-is-effective">1. Filename Boosting is Effective</h3>
+
+<p><strong>Discovery:</strong> Adding +0.2 similarity when label appears in filename significantly improves accuracy.</p>
+
+<p><strong>Example:</strong></p>
+<ul>
+  <li>File: <code class="language-plaintext highlighter-rouge">physics_chapter_1.pdf</code></li>
+  <li>Label: “Physics”</li>
+  <li>Boost: +0.2 to similarity score</li>
+</ul>
+
+<p><strong>Impact:</strong> ~10% improvement in correct classifications</p>
+
+<p><strong>Lesson:</strong> Don’t ignore simple heuristics. They can complement ML approaches effectively.</p>
+
+<hr />
+
+<h3 id="2-multithreading-scales-well">2. Multithreading Scales Well</h3>
+
+<p><strong>Discovery:</strong> Near-linear speedup up to 8 threads for I/O-bound workload.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Threads</th>
+      <th>Speedup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1.0x</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.8x</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3.3x</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>4.0x</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>4.4x</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Lesson:</strong> For I/O-bound tasks, multithreading provides excellent performance gains.</p>
+
+<hr />
+
+<h3 id="3-fallback-extraction-helps">3. Fallback Extraction Helps</h3>
+
+<p><strong>Discovery:</strong> Extracting from middle pages (avoiding TOC) improves classification for ~15% of files.</p>
+
+<p><strong>When It Helps:</strong></p>
+<ul>
+  <li>Academic papers with long introductions</li>
+  <li>Books with extensive front matter</li>
+  <li>Documents with cover pages</li>
+</ul>
+
+<p><strong>Lesson:</strong> Don’t give up after first extraction attempt. Fallback strategies can recover many edge cases.</p>
+
+<hr />
+
+<h2 id="-what-would-i-do-differently">🎯 What Would I Do Differently?</h2>
+
+<h3 id="1-start-with-keywords">1. Start with Keywords</h3>
+
+<p><strong>Mistake:</strong> Spent time implementing natural language descriptions first.</p>
+
+<p><strong>Better Approach:</strong> Test both approaches early with small dataset.</p>
+
+<p><strong>Time Saved:</strong> ~2 days of implementation + testing</p>
+
+<hr />
+
+<h3 id="2-benchmark-models-earlier">2. Benchmark Models Earlier</h3>
+
+<p><strong>Mistake:</strong> Assumed lighter models would work acceptably.</p>
+
+<p><strong>Better Approach:</strong> Test all candidate models on representative dataset before committing.</p>
+
+<p><strong>Time Saved:</strong> ~1 day of optimization attempts</p>
+
+<hr />
+
+<h3 id="3-focus-on-academic-documents">3. Focus on Academic Documents</h3>
+
+<p><strong>Mistake:</strong> Tried to make it work for all document types (news, emails, etc.)</p>
+
+<p><strong>Better Approach:</strong> Specialize for academic/professional documents from the start.</p>
+
+<p><strong>Time Saved:</strong> ~3 days of testing and tuning</p>
+
+<hr />
+
+<h3 id="4-simpler-prompts-from-start">4. Simpler Prompts from Start</h3>
+
+<p><strong>Mistake:</strong> Verbose, complex prompts with many rules.</p>
+
+<p><strong>Better Approach:</strong> Start simple, add complexity only when needed.</p>
+
+<p><strong>Lesson:</strong> Prompt engineering benefits from iteration, not upfront complexity.</p>
+
+<hr />
+
+<h2 id="-future-improvements">🚀 Future Improvements</h2>
+
+<h3 id="based-on-lessons-learned">Based on Lessons Learned</h3>
+
+<ol>
+  <li><strong>Domain-Specific Models</strong>
+    <ul>
+      <li>Fine-tune SBERT on academic documents</li>
+      <li>Create specialized embeddings</li>
+      <li>Improve accuracy by 10-15%</li>
+    </ul>
+  </li>
+  <li><strong>Active Learning</strong>
+    <ul>
+      <li>User feedback loop</li>
+      <li>Correct misclassifications</li>
+      <li>Iteratively improve labels</li>
+    </ul>
+  </li>
+  <li><strong>Hybrid Approaches</strong>
+    <ul>
+      <li>Combine SBERT with traditional ML</li>
+      <li>Use rule-based fallbacks</li>
+      <li>Ensemble methods</li>
+    </ul>
+  </li>
+  <li><strong>Better Text Extraction</strong>
+    <ul>
+      <li>ML-based page quality scoring</li>
+      <li>Smarter fallback strategies</li>
+      <li>Enhanced OCR preprocessing</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="-key-takeaways">📚 Key Takeaways</h2>
+
+<h3 id="-do-this">✅ Do This</h3>
+
+<ol>
+  <li><strong>Use keyword-based descriptions</strong> for SBERT</li>
+  <li><strong>Stick with proven models</strong> (all-mpnet-base-v2)</li>
+  <li><strong>Test early and often</strong> with real data</li>
+  <li><strong>Focus on specific use cases</strong> (academic docs)</li>
+  <li><strong>Implement fallback strategies</strong> (extraction, thresholds)</li>
+  <li><strong>Never lose user data</strong> (append, don’t replace)</li>
+</ol>
+
+<h3 id="-dont-do-this">❌ Don’t Do This</h3>
+
+<ol>
+  <li><strong>Assume natural language is better</strong> - Test first!</li>
+  <li><strong>Use lighter models</strong> - Performance drop is real</li>
+  <li><strong>Try to solve all problems</strong> - Specialize</li>
+  <li><strong>Overcomplicate prompts</strong> - Start simple</li>
+  <li><strong>Ignore simple heuristics</strong> - Filename boosting works</li>
+  <li><strong>Skip preprocessing</strong> - Text quality matters</li>
+</ol>
+
+<hr />
+
+<h2 id="-meta-lessons">🎓 Meta-Lessons</h2>
+
+<h3 id="on-machine-learning">On Machine Learning</h3>
+
+<p><strong>Lesson:</strong> ML is not magic. It’s a tool with specific strengths and weaknesses.</p>
+
+<ul>
+  <li><strong>Strengths:</strong> Pattern recognition, semantic understanding</li>
+  <li><strong>Weaknesses:</strong> Requires quality data, domain-specific tuning</li>
+  <li><strong>Reality:</strong> 56% accuracy is good for this problem, not 95%</li>
+</ul>
+
+<h3 id="on-development">On Development</h3>
+
+<p><strong>Lesson:</strong> Iterate quickly, test assumptions, learn from failures.</p>
+
+<ul>
+  <li>Natural language approach failed → Learned about SBERT behavior</li>
+  <li>Lighter models failed → Understood model trade-offs</li>
+  <li>News dataset failed → Recognized domain specificity</li>
+</ul>
+
+<p><strong>Every failure taught something valuable.</strong></p>
+
+<h3 id="on-documentation">On Documentation</h3>
+
+<p><strong>Lesson:</strong> Document what doesn’t work, not just what does.</p>
+
+<p>This wiki includes:</p>
+<ul>
+  <li>❌ Failed approaches (NL descriptions)</li>
+  <li>⚠️ Limitations (news articles)</li>
+  <li>🎓 Lessons learned (model selection)</li>
+</ul>
+
+<p><strong>Honest documentation helps future developers avoid the same mistakes.</strong></p>
+
+<hr />
+
+<h2 id="-recommended-reading">📖 Recommended Reading</h2>
+
+<h3 id="for-understanding-sbert">For Understanding SBERT</h3>
+<ul>
+  <li><a href="https://arxiv.org/abs/1908.10084">Sentence-BERT Paper</a></li>
+  <li><a href="https://huggingface.co/sentence-transformers">HuggingFace Documentation</a></li>
+</ul>
+
+<h3 id="for-vector-search">For Vector Search</h3>
+<ul>
+  <li><a href="https://github.com/facebookresearch/faiss/wiki">FAISS Documentation</a></li>
+  <li><a href="https://www.pinecone.io/learn/vector-search/">Vector Search Best Practices</a></li>
+</ul>
+
+<h3 id="for-prompt-engineering">For Prompt Engineering</h3>
+<ul>
+  <li><a href="https://makersuite.google.com/">Google AI Studio</a></li>
+  <li><a href="https://www.promptingguide.ai/">Prompt Engineering Guide</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-contributing-your-lessons">🤝 Contributing Your Lessons</h2>
+
+<p>Have you learned something new while using FileSense?</p>
+
+<p><strong>Share your insights:</strong></p>
+<ol>
+  <li>Open an issue on <a href="https://github.com/ahhyoushh/FileSense/issues">GitHub</a></li>
+  <li>Submit a PR to this wiki page</li>
+  <li>Start a discussion</li>
+</ol>
+
+<p><strong>Your experience helps everyone!</strong></p>
+
+<hr />
+
+<p><a href="/FileSense/wiki/">← Back to Home</a></p>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://github.com/ahhyoushh/FileSense" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://youtu.be/f27I2L7uoC8" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Demo Video</a></li>
+        
+      
+    
+
+    
+      <li><a href="/FileSense/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://ahhyoushh.github.io">FileSense Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/FileSense/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
