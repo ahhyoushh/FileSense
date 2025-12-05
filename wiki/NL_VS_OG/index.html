@@ -1,0 +1,748 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Natural Language vs Keywords: Comprehensive Analysis - FileSense Documentation</title>
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT + Gemini">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="FileSense Documentation">
+<meta property="og:title" content="Natural Language vs Keywords: Comprehensive Analysis">
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/NL_VS_OG/">
+
+
+  <meta property="og:description" content="Intelligent semantic file organizer powered by SBERT + Gemini">
+
+
+
+  <meta property="og:image" content="https://ahhyoushh.github.io/FileSense/assets/images/og-image.png">
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/NL_VS_OG/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/FileSense/feed.xml" type="application/atom+xml" rel="alternate" title="FileSense Documentation Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/FileSense/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+  
+    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
+  
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--default">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/FileSense/"><img src="/FileSense/assets/images/logo.png" alt="FileSense Documentation"></a>
+        
+        <a class="site-title" href="/FileSense/">
+          FileSense Documentation
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      <nav class="wiki-nav">
+  <div class="wiki-nav-container">
+    <a href="/FileSense/wiki/" class="wiki-nav-brand">
+      🗂️ FileSense
+    </a>
+    <div class="wiki-nav-links">
+      <a href="/FileSense/wiki/" class="wiki-nav-link">Home</a>
+      <a href="/FileSense/wiki/getting-started/" class="wiki-nav-link">Get Started</a>
+      <a href="/FileSense/wiki/metrics/" class="wiki-nav-link">Metrics</a>
+      <a href="/FileSense/wiki/NL_VS_OG/" class="wiki-nav-link">NL vs Keywords</a>
+      <a href="/FileSense/wiki/pipeline/" class="wiki-nav-link">Architecture</a>
+      <a href="/FileSense/wiki/faq/" class="wiki-nav-link">FAQ</a>
+      <a href="https://github.com/ahhyoushh/FileSense" class="wiki-nav-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="content-section">
+
+<div class="centered-block">
+
+**Test Date:** 2025-12-05  
+**Project:** FileSense - Intelligent File Organizer  
+**Test Files:** 75 NCERT textbook markdown files  
+**Model:** all-mpnet-base-v2 (SentenceTransformer)
+
+</div>
+
+</div>
+
+<hr />
+
+<h2 id="-executive-summary">🎯 Executive Summary</h2>
+
+<div class="content-section">
+
+### WINNER: Original Keywords Approach 🏆
+
+The comprehensive testing revealed that **comma-separated keyword terms dramatically outperform natural language descriptions** for SBERT-based semantic matching with academic documents.
+
+<div class="centered-block">
+
+**Performance Comparison**
+
+</div>
+
+| Metric | Natural Language | Original Keywords | Improvement |
+|--------|------------------|-------------------|-------------|
+| **Accuracy** | 24.0% | **56.0%** ✅ | **+32.0%** |
+| **Avg Similarity** | 0.104 | **0.355** ✅ | **+241%** |
+| **Uncategorized Files** | 53/75 (71%) | 8/75 (11%) ✅ | **-60%** |
+| **Failed (0.00 sim)** | 53 files | 8 files ✅ | **-45 files** |
+| **Avg Time/File** | 0.30s | **0.27s** ⚡ | **-10%** |
+
+<div class="notice--success">
+<strong>Verdict:</strong> Original keyword-based descriptions are <strong>superior</strong> for NCERT academic documents with SBERT embeddings.
+</div>
+
+</div>
+
+<hr />
+
+<h2 id="-test-configuration">📊 Test Configuration</h2>
+
+<div class="content-section">
+
+### Test Setup
+
+| Parameter | Value |
+|-----------|-------|
+| **Test Files** | NCERT textbook markdown files (various subjects) |
+| **Natural Language Test** | NCERT_NL_TEST.log (Content-style descriptions) |
+| **Original Keyword Test** | NCERT_OG_TEST.log (Comma-separated terms) |
+| **Total Files** | 75 documents |
+| **Embedding Model** | all-mpnet-base-v2 |
+| **Vector Search** | FAISS IndexFlatIP |
+
+### Approaches Tested
+
+#### Approach 1: Natural Language Descriptions
+
+**Hypothesis:** Content-style descriptions would match better with SBERT
+
+**Format:**
+```
+"Documents contain experimental procedures and physical laws. Content includes 
+laboratory observations, scientific principles like Bernoulli's equation, and 
+analysis of forces, energy, and motion. Typical terminology involves physical 
+quantities, units, and theoretical concepts."
+```
+
+**Characteristics:**
+- Full sentences mimicking document content
+- Natural grammatical structure
+- Descriptive phrases about what documents contain
+- 50-100 words per description
+
+#### Approach 2: Original Keywords (Comma-Separated Terms)
+
+**Hypothesis:** Dense keyword lists capture semantic essence
+
+**Format:**
+```
+"mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, 
+relativity, fluid dynamics, kinematics, forces, energy, motion, waves, 
+heat, light, electricity, magnetism, laboratory experiments, scientific 
+formulas, physical laws"
+```
+
+**Characteristics:**
+- Comma-separated terms
+- Dense terminology (20-40 terms)
+- Domain-specific vocabulary
+- Synonyms and related concepts
+- No grammatical structure
+
+</div>
+
+<hr />
+
+<h2 id="-detailed-results">📈 Detailed Results</h2>
+
+<div class="content-section">
+
+### Overall Performance
+
+<div class="centered-block">
+
+**Table 1: Comprehensive Metrics**
+
+</div>
+
+| Metric | Natural Language | Original Keywords | Winner |
+|--------|------------------|-------------------|--------|
+| **Total Files** | 75 | 75 | - |
+| **Accuracy** | 24.0% | **56.0%** | 🏆 OG |
+| **Avg Similarity** | 0.104 | **0.355** | 🏆 OG |
+| **Uncategorized** | 53 | 8 | ✅ OG |
+| **Low Confidence (&lt;0.40)** | 17 | 40 | ✅ NL |
+| **Avg Time/File** | 0.30s | **0.27s** | ⚡ OG |
+
+### Similarity Score Distribution
+
+<div class="centered-block">
+
+**Table 2: Distribution Analysis**
+
+</div>
+
+| Similarity Range | Natural Language | Original Keywords | Analysis |
+|------------------|------------------|-------------------|----------|
+| **0.00 (Failed)** | 53 | 8 | NL failed on 71% of files |
+| **0.01-0.20 (Very Low)** | 0 | 0 | - |
+| **0.21-0.30 (Low)** | 4 | 8 | Both struggled here |
+| **0.31-0.40 (Medium)** | 14 | 34 | OG had 2.4× more medium matches |
+| **0.41-0.50 (Good)** | 3 | 16 | OG had 5.3× more good matches |
+| **0.51+ (Excellent)** | 1 | 9 | OG had 9× more excellent matches |
+
+### Label Distribution
+
+#### Natural Language Approach
+
+| Category | Files | Percentage |
+|----------|-------|------------|
+| **Uncategorized** | 53 | 71% |
+| **Biotechnology** | 9 | 12% |
+| **Chemistry** | 5 | 7% |
+| **Civics** | 5 | 7% |
+| **English** | 3 | 4% |
+
+#### Original Keywords Approach
+
+| Category | Files | Percentage |
+|----------|-------|------------|
+| **Geography** | 19 | 25% |
+| **English** | 15 | 20% |
+| **Biotechnology** | 14 | 19% |
+| **Physics** | 14 | 19% |
+| **Uncategorized** | 8 | 11% |
+| **Civics** | 5 | 7% |
+
+</div>
+
+<hr />
+
+<h2 id="-analysis-why-natural-language-failed">🔍 Analysis: Why Natural Language Failed</h2>
+
+<div class="content-section">
+
+### 1. Too Specific / Overfitted
+
+Natural language descriptions were too specific to the training examples:
+
+<div class="notice--danger">
+
+❌ **BAD:** "Integration by parts where u equals x squared, dv equals e to the x dx. Series convergence testing using ratio test, comparison test."
+
+This doesn't match NCERT files which have different phrasing and structure.
+
+</div>
+
+### 2. SBERT Embedding Mismatch
+
+- SBERT models work better with **keyword density** than natural sentences for this use case
+- Academic documents have consistent terminology that keywords capture better
+- Natural sentences introduce grammatical noise
+
+### 3. Semantic Noise
+
+Natural sentences introduced grammatical structure that added noise:
+
+| Noise Type | Examples |
+|------------|----------|
+| **Articles** | "the", "a", "an" |
+| **Verbs** | "contains", "includes", "discusses" |
+| **Prepositions** | "in", "on", "with" |
+| **Phrases** | "Documents contain...", "Content includes..." |
+
+These dilute the semantic signal for academic content.
+
+### 4. Reduced Keyword Density
+
+Natural language spreads keywords across more tokens:
+
+```
+Natural Language (100 words):
+"Documents contain experimental procedures investigating physical laws. 
+Content includes laboratory observations, scientific principles..."
+→ ~15 meaningful keywords in 100 words (15% density)
+
+Keywords (40 terms):
+"mechanics, thermodynamics, electromagnetism, optics, quantum mechanics..."
+→ 40 meaningful keywords in 40 words (100% density)
+```
+
+### 5. Embedding Space Geometry
+
+- The all-mpnet-base-v2 model clusters keyword lists more effectively
+- Natural sentences might introduce variance in the embedding space
+- Keywords create denser, more consistent semantic clusters
+
+</div>
+
+<hr />
+
+<h2 id="-analysis-why-keywords-succeeded">✅ Analysis: Why Keywords Succeeded</h2>
+
+<div class="content-section">
+
+### 1. Broader Semantic Coverage
+
+Keyword lists cover MORE semantic space with FEWER tokens:
+
+<div class="notice--success">
+
+✅ **GOOD:** "mechanics, thermodynamics, optics, electromagnetism, quantum physics, relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
+
+Each term is a direct semantic signal without noise.
+
+</div>
+
+### 2. Better Alignment with NCERT Structure
+
+NCERT files use consistent academic terminology:
+- Technical terms appear frequently
+- Keyword matching aligns with document structure
+- Domain-specific vocabulary is strong signal
+
+### 3. Synonym Coverage
+
+Keywords naturally include synonyms and related terms:
+
+| Domain | Keyword Variations |
+|--------|-------------------|
+| **Electricity** | electricity, electrical, electromagnetism, electromagnetic |
+| **Optics** | optics, optical, light, vision |
+| **Mechanics** | mechanics, mechanical, motion, kinematics, dynamics |
+
+### 4. SBERT Model Characteristics
+
+- Trained on diverse text, but keyword matching is robust
+- Academic terminology clusters well in embedding space
+- Synonym proximity enhances matching
+
+### 5. Efficient Token Usage
+
+Every token in keyword descriptions carries semantic weight:
+- No grammatical filler
+- No redundant phrases
+- Maximum information density
+
+</div>
+
+<hr />
+
+<h2 id="-best-practices--recommendations">💡 Best Practices &amp; Recommendations</h2>
+
+<div class="content-section">
+
+### ✅ DO: Use Keyword-Based Descriptions
+
+#### Optimal Format
+
+```json
+{
+  "folder_label": "Physics",
+  "description": "mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics, particle physics, kinematics, dynamics, forces, energy, motion, matter, waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity, laboratory experiments, scientific formulas, physical laws, conservation laws, measurement, vectors, scalars, work, power, momentum, impulse",
+  "keywords": "physics, mechanics, thermodynamics, optics, quantum, relativity, energy, force, motion, waves"
+}
+```
+
+#### Key Elements
+
+| Element | Specification |
+|---------|---------------|
+| **Term Count** | 20-40 comma-separated terms in description |
+| **Core Concepts** | mechanics, thermodynamics |
+| **Sub-topics** | fluid dynamics, particle physics |
+| **Related Terms** | energy, force, motion |
+| **Synonyms** | electricity/electrical, optics/optical |
+| **Keywords** | 8-12 high-value keywords (most important terms) |
+| **Structure** | No articles, verbs, or grammatical structure |
+| **Density** | Dense terminology without filler words |
+
+### ❌ DON'T: Use Natural Language Descriptions
+
+#### Avoid This Format
+
+```json
+{
+  "folder_label": "Physics",
+  "description": "Documents contain experimental procedures and physical laws. Content includes laboratory observations, scientific principles like Newton's laws and Bernoulli's equation. Typical terminology involves physical quantities, units, and theoretical concepts related to mechanics, thermodynamics, and electromagnetism.",
+  "keywords": "physics, experiment, laboratory"
+}
+```
+
+#### Problems
+
+| Issue | Impact |
+|-------|--------|
+| **Grammatical noise** | contains, includes, involves |
+| **Low keyword density** | too many filler words |
+| **Overly specific examples** | Newton's laws, Bernoulli's equation |
+| **Reduced semantic coverage** | fewer meaningful terms |
+| **Embedding space dilution** | noise reduces signal |
+
+</div>
+
+<hr />
+
+<h2 id="-key-insights">🎓 Key Insights</h2>
+
+<div class="content-section">
+
+### For SBERT-Based Semantic Matching
+
+#### ✅ What Works
+
+| Practice | Benefit |
+|----------|---------|
+| **Dense keyword lists** (20-40 terms) | Maximum semantic coverage |
+| **Domain-specific vocabulary** | Strong classification signals |
+| **Synonym inclusion** | Multiple ways to express concepts |
+| **Broad coverage** | Core + sub-topics + related terms |
+| **No grammatical structure** | Pure semantic content |
+
+#### ❌ What Doesn't Work
+
+| Practice | Problem |
+|----------|---------|
+| **Natural language sentences** | Too much noise |
+| **Explanatory text** | "Documents contain..." |
+| **Specific examples** | Overfitting to training data |
+| **Grammatical connectors** | Articles, prepositions, verbs |
+| **Low keyword density** | Diluted semantic signal |
+
+### Why This Matters
+
+**SBERT Embedding Characteristics:**
+- Trained on natural text BUT keyword matching is robust
+- Academic terminology clusters well in embedding space
+- Keyword density creates stronger semantic signals
+- Grammatical structure adds variance without value
+
+**Document Characteristics:**
+- NCERT files use consistent academic terminology
+- Technical terms are strong classification signals
+- Keyword matching aligns with document structure
+- Domain vocabulary is predictable and stable
+
+</div>
+
+<hr />
+
+<h2 id="-actionable-next-steps">🚀 Actionable Next Steps</h2>
+
+<div class="content-section">
+
+### 1. Keep Using Keywords (Confirmed Best Practice)
+
+<div class="notice--success">
+
+✅ Continue with comma-separated keyword terms in descriptions  
+✅ Maintain 20-40 terms per description  
+✅ Focus on domain-specific vocabulary
+
+</div>
+
+### 2. Expand Keyword Coverage (High Priority)
+
+Add more synonyms and related terms to existing labels:
+
+**Example: Expand Physics**
+
+```
+Current: "mechanics, thermodynamics, optics, electromagnetism, quantum physics"
+
+Expanded: "mechanics, thermodynamics, optics, electromagnetism, quantum physics,
+nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics,
+particle physics, kinematics, dynamics, statics, forces, energy, motion, matter,
+waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity,
+laboratory experiments, scientific formulas, physical laws, conservation laws,
+measurement, vectors, scalars, work, power, momentum, impulse, friction, tension,
+pressure, density, velocity, acceleration, displacement, torque, angular momentum"
+```
+
+### 3. Test with Diverse Documents (Medium Priority)
+
+Validate approach with:
+- PDFs with different structures
+- Scanned documents (OCR text)
+- Short vs long documents
+- Multi-topic documents
+- Non-academic content (news, legal, medical)
+
+</div>
+
+<hr />
+
+<h2 id="-success-metrics">📋 Success Metrics</h2>
+
+<div class="content-section">
+
+### Current Performance (Keywords)
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| **Accuracy** | 56% | ✅ Good |
+| **Categorization Rate** | 89% | ✅ Good |
+| **Avg Similarity** | 0.355 | ✅ Acceptable |
+| **Good Matches (&gt;0.40)** | 33% | ✅ Good |
+
+### Target Performance
+
+| Metric | Target | Strategy |
+|--------|--------|----------|
+| **Accuracy** | 70%+ | Expand keyword coverage (+10-15%) |
+| **Categorization Rate** | 95%+ | Fine-tune similarity thresholds (+5%) |
+| **Avg Similarity** | 0.45+ | Add more training examples (+5%) |
+| **Good Matches** | 50%+ | Test and iterate with larger datasets |
+
+</div>
+
+<hr />
+
+<h2 id="-lessons-learned">📚 Lessons Learned</h2>
+
+<div class="content-section">
+
+### Key Takeaways
+
+| Lesson | Insight |
+|--------|---------|
+| **1. Simpler is Better** | Simple keyword lists outperform complex natural language |
+| **2. Keyword Density Matters** | 100% keywords vs 15% keywords in sentences |
+| **3. SBERT Prefers Keywords** | Despite training on natural text |
+| **4. Avoid Overfitting** | Natural language descriptions fail to generalize |
+| **5. Grammatical Noise is Real** | Articles, verbs, prepositions dilute signals |
+| **6. Test Before Assuming** | Hypothesis was proven wrong through testing |
+| **7. Original Intuition Was Correct** | Simplest solution is often the best |
+
+</div>
+
+<hr />
+
+<h2 id="-final-recommendations">✅ Final Recommendations</h2>
+
+<div class="content-section">
+
+### DO
+
+<div class="notice--success">
+
+1. ✅ Continue using **comma-separated keyword terms**
+2. ✅ Maintain **20-40 terms per description**
+3. ✅ Include **synonyms and related vocabulary**
+4. ✅ Focus on **domain-specific terminology**
+5. ✅ Keep descriptions **dense** without filler words
+6. ✅ Avoid **generic words** (document, file, report)
+7. ✅ Test with **diverse document types**
+8. ✅ Monitor **accuracy metrics** over time
+9. ✅ Expand **keyword coverage** iteratively
+10. ✅ Keep **prompts concise and clear**
+
+</div>
+
+### DON'T
+
+<div class="notice--danger">
+
+1. ❌ Switch to **natural language descriptions**
+2. ❌ Add **explanatory text** ("Documents contain...")
+3. ❌ Include **grammatical structure**
+4. ❌ Use **overly specific examples**
+5. ❌ Reduce **keyword density**
+6. ❌ Ignore **similarity metrics**
+7. ❌ Overfit to **training examples**
+8. ❌ Add **filler words** or **connectors**
+9. ❌ Assume **without testing**
+10. ❌ Complicate what **works simply**
+
+</div>
+
+</div>
+
+<hr />
+
+<h2 id="-conclusion">🏆 Conclusion</h2>
+
+<div class="content-section">
+
+The comprehensive testing with 75 NCERT files definitively proved that:
+
+### Keyword Terms &gt;&gt; Natural Language
+
+<div class="centered-block">
+
+**Results Summary**
+
+</div>
+
+| Metric | Improvement |
+|--------|-------------|
+| **Accuracy** | +32% (24% → 56%) |
+| **Similarity** | +241% (0.104 → 0.355) |
+| **Uncategorization** | -60% (71% → 11%) |
+| **Good Matches** | +525% (5% → 33%) |
+
+### Why Keywords Win
+
+| Factor | Explanation |
+|--------|-------------|
+| **1. Maximum semantic density** | 100% vs 15% |
+| **2. Better SBERT alignment** | Effective clustering |
+| **3. Reduced grammatical noise** | Pure semantic signals |
+| **4. Broader coverage per token** | More concepts per character |
+| **5. Stronger classification signals** | Domain-specific vocabulary |
+
+<div class="notice--success">
+<strong>Recommendation:</strong> ✅ <strong>Keep using the original keyword-based approach</strong> - it's proven superior for SBERT semantic matching with academic documents.
+</div>
+
+</div>
+
+<hr />
+
+<div class="centered-block">
+
+**Status:** ✅ **Analysis Complete - Keyword Approach Validated**  
+**Date:** 2025-12-05  
+**Test Files:** 75 NCERT documents  
+**Verdict:** **Original Keywords Win by a Landslide!** 🏆
+
+</div>
+
+<hr />
+
+<p><em>This document consolidates all findings from the Natural Language vs Original Keywords comparison testing for the FileSense project.</em></p>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://github.com/ahhyoushh/FileSense" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://youtu.be/f27I2L7uoC8" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Demo Video</a></li>
+        
+      
+    
+
+    
+      <li><a href="/FileSense/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://ahhyoushh.github.io">FileSense Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/FileSense/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

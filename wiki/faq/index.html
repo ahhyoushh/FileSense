@@ -68,6 +68,10 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
+  
+    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
+  
+
 
     <!-- start custom head snippets -->
 
@@ -113,7 +117,24 @@
 
 
     <div class="initial-content">
-      <h1 id="-frequently-asked-questions">❓ Frequently Asked Questions</h1>
+      <nav class="wiki-nav">
+  <div class="wiki-nav-container">
+    <a href="/FileSense/wiki/" class="wiki-nav-brand">
+      🗂️ FileSense
+    </a>
+    <div class="wiki-nav-links">
+      <a href="/FileSense/wiki/" class="wiki-nav-link">Home</a>
+      <a href="/FileSense/wiki/getting-started/" class="wiki-nav-link">Get Started</a>
+      <a href="/FileSense/wiki/metrics/" class="wiki-nav-link">Metrics</a>
+      <a href="/FileSense/wiki/NL_VS_OG/" class="wiki-nav-link">NL vs Keywords</a>
+      <a href="/FileSense/wiki/pipeline/" class="wiki-nav-link">Architecture</a>
+      <a href="/FileSense/wiki/faq/" class="wiki-nav-link">FAQ</a>
+      <a href="https://github.com/ahhyoushh/FileSense" class="wiki-nav-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<h1 id="-frequently-asked-questions">❓ Frequently Asked Questions</h1>
 
 <p>Common questions and answers about FileSense.</p>
 
@@ -132,32 +153,16 @@
 
 <h3 id="how-is-this-different-from-traditional-file-organizers">How is this different from traditional file organizers?</h3>
 
-<table>
-  <thead>
-    <tr>
-      <th>Traditional Organizers</th>
-      <th>FileSense</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Rules-based (file extension, name patterns)</td>
-      <td>Semantic understanding (actual content)</td>
-    </tr>
-    <tr>
-      <td>Manual category creation</td>
-      <td>AI-powered auto-generation</td>
-    </tr>
-    <tr>
-      <td>Keyword matching only</td>
-      <td>Vector embeddings + keywords</td>
-    </tr>
-    <tr>
-      <td>Static classification</td>
-      <td>Self-learning system</td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Traditional Organizers | FileSense |
+|----------------------|-----------|
+| Rules-based (file extension, name patterns) | Semantic understanding (actual content) |
+| Manual category creation | AI-powered auto-generation |
+| Keyword matching only | Vector embeddings + keywords |
+| Static classification | Self-learning system |
+
+</div>
 
 <h3 id="is-my-data-sent-to-the-cloud">Is my data sent to the cloud?</h3>
 
@@ -176,47 +181,18 @@
 
 <h3 id="what-file-types-are-supported">What file types are supported?</h3>
 
-<table>
-  <thead>
-    <tr>
-      <th>Format</th>
-      <th>Support</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>PDF</strong></td>
-      <td>✅ Full</td>
-      <td>Text-based and scanned (OCR)</td>
-    </tr>
-    <tr>
-      <td><strong>DOCX</strong></td>
-      <td>✅ Full</td>
-      <td>Microsoft Word documents</td>
-    </tr>
-    <tr>
-      <td><strong>TXT</strong></td>
-      <td>✅ Full</td>
-      <td>Plain text files</td>
-    </tr>
-    <tr>
-      <td><strong>MD</strong></td>
-      <td>✅ Full</td>
-      <td>Markdown files</td>
-    </tr>
-    <tr>
-      <td><strong>Images</strong></td>
-      <td>⚠️ Partial</td>
-      <td>OCR only (requires Tesseract)</td>
-    </tr>
-    <tr>
-      <td><strong>Others</strong></td>
-      <td>❌ No</td>
-      <td>Filename-based classification only</td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Format | Support | Notes |
+|--------|---------|-------|
+| **PDF** | ✅ Full | Text-based and scanned (OCR) |
+| **DOCX** | ✅ Full | Microsoft Word documents |
+| **TXT** | ✅ Full | Plain text files |
+| **MD** | ✅ Full | Markdown files |
+| **Images** | ⚠️ Partial | OCR only (requires Tesseract) |
+| **Others** | ❌ No | Filename-based classification only |
+
+</div>
 
 <h3 id="how-accurate-is-the-classification">How accurate is the classification?</h3>
 

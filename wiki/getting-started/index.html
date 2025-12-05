@@ -68,6 +68,10 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
+  
+    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
+  
+
 
     <!-- start custom head snippets -->
 
@@ -113,7 +117,24 @@
 
 
     <div class="initial-content">
-      <h1 id="-getting-started-with-filesense">🚀 Getting Started with FileSense</h1>
+      <nav class="wiki-nav">
+  <div class="wiki-nav-container">
+    <a href="/FileSense/wiki/" class="wiki-nav-brand">
+      🗂️ FileSense
+    </a>
+    <div class="wiki-nav-links">
+      <a href="/FileSense/wiki/" class="wiki-nav-link">Home</a>
+      <a href="/FileSense/wiki/getting-started/" class="wiki-nav-link">Get Started</a>
+      <a href="/FileSense/wiki/metrics/" class="wiki-nav-link">Metrics</a>
+      <a href="/FileSense/wiki/NL_VS_OG/" class="wiki-nav-link">NL vs Keywords</a>
+      <a href="/FileSense/wiki/pipeline/" class="wiki-nav-link">Architecture</a>
+      <a href="/FileSense/wiki/faq/" class="wiki-nav-link">FAQ</a>
+      <a href="https://github.com/ahhyoushh/FileSense" class="wiki-nav-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<h1 id="-getting-started-with-filesense">🚀 Getting Started with FileSense</h1>
 
 <p>Get FileSense up and running in <strong>5 minutes</strong>.</p>
 
@@ -260,52 +281,19 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <p class="notice--info"><strong>CLI Options:</strong></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--dir</code></td>
-      <td>Directory to organize</td>
-      <td><code class="language-plaintext highlighter-rouge">./files</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--threads</code></td>
-      <td>Number of concurrent threads</td>
-      <td><code class="language-plaintext highlighter-rouge">6</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--single-thread</code></td>
-      <td>Disable multithreading</td>
-      <td><code class="language-plaintext highlighter-rouge">False</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--no-generation</code></td>
-      <td>Don’t generate new labels</td>
-      <td><code class="language-plaintext highlighter-rouge">False</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--train</code></td>
-      <td>Enable training mode</td>
-      <td><code class="language-plaintext highlighter-rouge">False</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--auto-save-logs</code></td>
-      <td>Auto-save logs</td>
-      <td><code class="language-plaintext highlighter-rouge">False</code></td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">--no-logs</code></td>
-      <td>Disable logging</td>
-      <td><code class="language-plaintext highlighter-rouge">False</code></td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--dir` | Directory to organize | `./files` |
+| `--threads` | Number of concurrent threads | `6` |
+| `--single-thread` | Disable multithreading | `False` |
+| `--no-generation` | Don't generate new labels | `False` |
+| `--train` | Enable training mode | `False` |
+| `--auto-save-logs` | Auto-save logs | `False` |
+| `--no-logs` | Disable logging | `False` |
+
+</div>
 
 <h3 id="option-c-file-watcher">Option C: File Watcher</h3>
 

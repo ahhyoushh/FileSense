@@ -68,6 +68,10 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
+  
+    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
+  
+
 
     <!-- start custom head snippets -->
 
@@ -113,7 +117,24 @@
 
 
     <div class="initial-content">
-      <h1 id="-lessons-learned">🎓 Lessons Learned</h1>
+      <nav class="wiki-nav">
+  <div class="wiki-nav-container">
+    <a href="/FileSense/wiki/" class="wiki-nav-brand">
+      🗂️ FileSense
+    </a>
+    <div class="wiki-nav-links">
+      <a href="/FileSense/wiki/" class="wiki-nav-link">Home</a>
+      <a href="/FileSense/wiki/getting-started/" class="wiki-nav-link">Get Started</a>
+      <a href="/FileSense/wiki/metrics/" class="wiki-nav-link">Metrics</a>
+      <a href="/FileSense/wiki/NL_VS_OG/" class="wiki-nav-link">NL vs Keywords</a>
+      <a href="/FileSense/wiki/pipeline/" class="wiki-nav-link">Architecture</a>
+      <a href="/FileSense/wiki/faq/" class="wiki-nav-link">FAQ</a>
+      <a href="https://github.com/ahhyoushh/FileSense" class="wiki-nav-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<h1 id="-lessons-learned">🎓 Lessons Learned</h1>
 
 <p>Key insights and discoveries from developing FileSense.</p>
 
@@ -127,36 +148,15 @@
 
 <p><strong>Result:</strong> ❌ <strong>Completely Wrong</strong></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Approach</th>
-      <th>Accuracy</th>
-      <th>Avg Similarity</th>
-      <th>Uncategorized</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Natural Language</strong></td>
-      <td>24%</td>
-      <td>0.104</td>
-      <td>71%</td>
-    </tr>
-    <tr>
-      <td><strong>Keywords</strong></td>
-      <td>56%</td>
-      <td>0.355</td>
-      <td>11%</td>
-    </tr>
-    <tr>
-      <td><strong>Difference</strong></td>
-      <td><strong>+32%</strong></td>
-      <td><strong>+241%</strong></td>
-      <td><strong>-60%</strong></td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Approach | Accuracy | Avg Similarity | Uncategorized |
+|----------|----------|----------------|---------------|
+| **Natural Language** | 24% | 0.104 | 71% |
+| **Keywords** | 56% | 0.355 | 11% |
+| **Difference** | **+32%** | **+241%** | **-60%** |
+
+</div>
 
 <p><strong>Why Keywords Won:</strong></p>
 
@@ -424,36 +424,17 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <p><strong>Discovery:</strong> Near-linear speedup up to 8 threads for I/O-bound workload.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Threads</th>
-      <th>Speedup</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>1.0x</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>1.8x</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>3.3x</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>4.0x</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>4.4x</td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Threads | Speedup |
+|---------|---------|
+| 1 | 1.0x |
+| 2 | 1.8x |
+| 4 | 3.3x |
+| 6 | 4.0x |
+| 8 | 4.4x |
+
+</div>
 
 <p><strong>Lesson:</strong> For I/O-bound tasks, multithreading provides excellent performance gains.</p>
 

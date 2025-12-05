@@ -1,0 +1,544 @@
+/* FileSense Documentation - Professional Clean Minimal Theme */
+
+/* ============================================
+   STICKY NAVIGATION BAR
+   ============================================ */
+
+.wiki-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 30, 0.95));
+  border-bottom: 2px solid rgba(66, 133, 244, 0.3);
+  padding: 0.75rem 0;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.wiki-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.wiki-nav-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #4285f4;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.wiki-nav-brand:hover {
+  color: #5a9aff;
+  text-decoration: none;
+}
+
+.wiki-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wiki-nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.wiki-nav-link:hover {
+  background: rgba(66, 133, 244, 0.15);
+  color: #4285f4;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.wiki-nav-link.active {
+  background: rgba(66, 133, 244, 0.2);
+  color: #4285f4;
+  border: 1px solid rgba(66, 133, 244, 0.3);
+}
+
+/* Mobile responsive navigation */
+@media (max-width: 768px) {
+  .wiki-nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 1rem;
+  }
+
+  .wiki-nav-links {
+    width: 100%;
+    justify-content: space-around;
+    gap: 0.5rem;
+  }
+
+  .wiki-nav-link {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================================
+   GLOBAL LAYOUT & CONTAINER STYLES
+   ============================================ */
+
+.page__content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Main content wrapper with subtle border */
+.page__inner-wrap {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem auto;
+  max-width: 1000px;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+  margin: 2rem 0 1.5rem 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-top: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.75rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+}
+
+p {
+  line-height: 1.8;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+/* ============================================
+   PROFESSIONAL TABLE STYLING
+   ============================================ */
+
+table {
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+thead {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(52, 168, 83, 0.2));
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+thead th {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+thead th:last-child {
+  border-right: none;
+}
+
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+tbody tr:hover {
+  background: rgba(66, 133, 244, 0.1);
+}
+
+tbody td {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.95rem;
+}
+
+tbody td:last-child {
+  border-right: none;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* First column left-aligned for labels */
+tbody td:first-child,
+thead th:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Numeric columns centered */
+tbody td:not(:first-child) {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   CODE BLOCKS & INLINE CODE
+   ============================================ */
+
+code {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+pre {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 900px;
+  overflow-x: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ============================================
+   CONTENT SECTIONS
+   ============================================ */
+
+.content-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 900px;
+}
+
+/* Centered content blocks */
+.centered-block {
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+ul,
+ol {
+  margin: 1.5rem auto;
+  max-width: 800px;
+  padding-left: 2rem;
+}
+
+li {
+  margin: 0.75rem 0;
+  line-height: 1.7;
+}
+
+/* ============================================
+   BLOCKQUOTES & NOTICES
+   ============================================ */
+
+blockquote {
+  border-left: 4px solid rgba(66, 133, 244, 0.5);
+  background: rgba(66, 133, 244, 0.05);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 850px;
+  border-radius: 4px;
+}
+
+.notice,
+.notice--info,
+.notice--warning,
+.notice--success,
+.notice--danger {
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 850px;
+  border-left: 4px solid;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.notice--info {
+  border-left-color: #4285f4;
+  background: rgba(66, 133, 244, 0.08);
+}
+
+.notice--warning {
+  border-left-color: #fbbc04;
+  background: rgba(251, 188, 4, 0.08);
+}
+
+.notice--success {
+  border-left-color: #34a853;
+  background: rgba(52, 168, 83, 0.08);
+}
+
+.notice--danger {
+  border-left-color: #ea4335;
+  background: rgba(234, 67, 53, 0.08);
+}
+
+/* ============================================
+   HORIZONTAL RULES
+   ============================================ */
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent);
+  margin: 3rem auto;
+  max-width: 600px;
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+
+a {
+  color: #4285f4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #5a9aff;
+  text-decoration: underline;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn,
+.btn--primary {
+  background: linear-gradient(135deg, #4285f4, #34a853);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover,
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .page__content {
+    padding: 1rem;
+  }
+
+  .page__inner-wrap {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  thead th,
+  tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  pre {
+    padding: 1rem;
+  }
+}
+
+/* ============================================
+   SPECIAL ELEMENTS
+   ============================================ */
+
+/* Metric highlights */
+.metric-highlight {
+  background: rgba(66, 133, 244, 0.1);
+  border: 1px solid rgba(66, 133, 244, 0.3);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  margin: 0.25rem;
+  font-weight: 600;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0.25rem;
+}
+
+.badge-success {
+  background: rgba(52, 168, 83, 0.2);
+  color: #34a853;
+  border: 1px solid rgba(52, 168, 83, 0.4);
+}
+
+.badge-warning {
+  background: rgba(251, 188, 4, 0.2);
+  color: #fbbc04;
+  border: 1px solid rgba(251, 188, 4, 0.4);
+}
+
+.badge-error {
+  background: rgba(234, 67, 53, 0.2);
+  color: #ea4335;
+  border: 1px solid rgba(234, 67, 53, 0.4);
+}
+
+/* ============================================
+   MERMAID DIAGRAMS
+   ============================================ */
+
+.mermaid {
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   FEATURE GRID (for index page)
+   ============================================ */
+
+.feature__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+}
+
+.feature__item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.feature__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(66, 133, 244, 0.3);
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

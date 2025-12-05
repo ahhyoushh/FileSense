@@ -26,7 +26,7 @@
 
 
 
-  <meta property="og:image" content="https://ahhyoushh.github.io/FileSense/assets/images/header.jpg">
+  <meta property="og:image" content="https://ahhyoushh.github.io/FileSense/assets/images/og-image.png">
 
 
 
@@ -67,6 +67,10 @@
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
+
+  
+    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
+  
 
 
     <!-- start custom head snippets -->
@@ -123,7 +127,7 @@
 
 
 <div class="page__hero--overlay"
-  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/FileSense/assets/images/header.jpg');"
+  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('');"
 >
   
     <div class="wrapper">
@@ -143,7 +147,7 @@
       
         <p>
         
-          <a href="/FileSense/wiki/getting-started/" class="btn btn--light-outline btn--large">🚀 Get Started</a>
+          <a href="/FileSense/FileSense/wiki/getting-started/" class="btn btn--light-outline btn--large">🚀 Get Started</a>
         
           <a href="https://youtu.be/f27I2L7uoC8" class="btn btn--light-outline btn--large">📺 Watch Demo</a>
         
@@ -225,48 +229,20 @@
 
 <h2 id="-core-features">🎯 Core Features</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Feature</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>🧠 <strong>Semantic Sorting</strong></td>
-      <td>Classifies by meaning (e.g., “Newton’s Laws” → Physics)</td>
-    </tr>
-    <tr>
-      <td>🤖 <strong>AI-Powered Labeling</strong></td>
-      <td>Uses Gemini to generate new categories automatically</td>
-    </tr>
-    <tr>
-      <td>⚡ <strong>FAISS Vector Search</strong></td>
-      <td>Lightning-fast similarity matching with embeddings</td>
-    </tr>
-    <tr>
-      <td>🔄 <strong>Self-Updating</strong></td>
-      <td>Automatically rebuilds index when new labels are created</td>
-    </tr>
-    <tr>
-      <td>👀 <strong>OCR Support</strong></td>
-      <td>Extracts text from scanned PDFs and images</td>
-    </tr>
-    <tr>
-      <td>🧩 <strong>Keyword Boosting</strong></td>
-      <td>Hybrid approach: Vector similarity + keyword matching</td>
-    </tr>
-    <tr>
-      <td>🖥️ <strong>GUI &amp; CLI</strong></td>
-      <td>Desktop app with system tray + command-line interface</td>
-    </tr>
-    <tr>
-      <td>🧵 <strong>Multithreading</strong></td>
-      <td>Process hundreds of files in parallel</td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+| Feature | Description |
+|---------|-------------|
+| 🧠 **Semantic Sorting** | Classifies by meaning (e.g., "Newton's Laws" → Physics) |
+| 🤖 **AI-Powered Labeling** | Uses Gemini to generate new categories automatically |
+| ⚡ **FAISS Vector Search** | Lightning-fast similarity matching with embeddings |
+| 🔄 **Self-Updating** | Automatically rebuilds index when new labels are created |
+| 👀 **OCR Support** | Extracts text from scanned PDFs and images |
+| 🧩 **Keyword Boosting** | Hybrid approach: Vector similarity + keyword matching |
+| 🖥️ **GUI &amp; CLI** | Desktop app with system tray + command-line interface |
+| 🧵 **Multithreading** | Process hundreds of files in parallel |
+
+</div>
 
 <hr />
 
@@ -346,36 +322,23 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <h2 id="-performance-highlights">📈 Performance Highlights</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Metric</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Accuracy (NCERT Test)</strong></td>
-      <td>56% with keywords</td>
-    </tr>
-    <tr>
-      <td><strong>Avg Similarity Score</strong></td>
-      <td>0.355</td>
-    </tr>
-    <tr>
-      <td><strong>Categorization Rate</strong></td>
-      <td>89% (11% uncategorized)</td>
-    </tr>
-    <tr>
-      <td><strong>Processing Speed</strong></td>
-      <td>~0.27s per file</td>
-    </tr>
-    <tr>
-      <td><strong>Embedding Model</strong></td>
-      <td>all-mpnet-base-v2 (768 dims)</td>
-    </tr>
-  </tbody>
-</table>
+<div class="content-section">
+
+<div class="centered-block">
+
+**NCERT Test Results**
+
+</div>
+
+| Metric | Value |
+|--------|-------|
+| **Accuracy (NCERT Test)** | 56% with keywords |
+| **Avg Similarity Score** | 0.355 |
+| **Categorization Rate** | 89% (11% uncategorized) |
+| **Processing Speed** | ~0.27s per file |
+| **Embedding Model** | all-mpnet-base-v2 (768 dims) |
+
+</div>
 
 <hr />
 
