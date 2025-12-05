@@ -1,758 +1,453 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FileSense Research Documentation</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #0a0a0a;
-      --bg-secondary: #111111;
-      --bg-tertiary: #1a1a1a;
-      --text: #e5e7eb;
-      --text-secondary: #9ca3af;
-      --text-muted: #6b7280;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-      --accent-dark: #1e40af;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-light: rgba(255, 255, 255, 0.05);
-      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      --hover-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-light);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--accent-light);
-    }
-
-    /* Sidebar Navigation */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 80px;
-      width: 280px;
-      height: calc(100vh - 80px);
-      background: var(--bg-secondary);
-      border-right: 1px solid var(--border);
-      padding: 24px;
-      overflow-y: auto;
-      z-index: 500;
-    }
-
-    .sidebar::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .sidebar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 3px;
-    }
-
-    .sidebar h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-      letter-spacing: 1px;
-    }
-
-    .sidebar-tree {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .sidebar-tree li {
-      margin: 0;
-      padding: 0;
-    }
-
-    .sidebar-tree a {
-      display: block;
-      padding: 8px 12px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-      border-radius: 6px;
-      border-left: 2px solid transparent;
-      margin: 2px 0;
-    }
-
-    .sidebar-tree a:hover {
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-light);
-      border-left-color: var(--accent);
-      padding-left: 16px;
-    }
-
-    .sidebar-tree a.active {
-      background: rgba(59, 130, 246, 0.15);
-      color: var(--accent-light);
-      border-left-color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* Main Content */
-    .main-content {
-      margin-left: 280px;
-      margin-top: 80px;
-      padding: 40px;
-      max-width: calc(100vw - 320px);
-    }
-
-    .content-wrapper {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 60px 0 40px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
-    }
-
-    .hero-title {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1e40af 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-subtitle {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      max-width: 700px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* Quick Links Grid */
-    .quick-links {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 40px 0;
-    }
-
-    .link-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      text-align: center;
-    }
-
-    .link-card:hover {
-      border-color: var(--accent);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(59, 130, 246, 0.15);
-    }
-
-    .link-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .link-card h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--accent-light);
-    }
-
-    .link-card p {
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-      color: var(--text-secondary);
-    }
-
-    .link-card a {
-      display: inline-block;
-      padding: 8px 16px;
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-light);
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .link-card a:hover {
-      background: rgba(59, 130, 246, 0.2);
-    }
-
-    /* Content Sections */
-    .content-section {
-      margin-bottom: 48px;
-    }
-
-    .section-title {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: var(--accent-light);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title::before {
-      content: '';
-      width: 4px;
-      height: 28px;
-      background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
-      border-radius: 2px;
-    }
-
-    /* Typography */
-    p {
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-
-    strong {
-      color: var(--accent-light);
-      font-weight: 600;
-    }
-
-    /* Feature Grid */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 32px 0;
-    }
-
-    .feature-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .feature-card:hover {
-      border-color: var(--accent);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
-      transform: translateY(-8px);
-      box-shadow: 0 16px 32px rgba(59, 130, 246, 0.15);
-    }
-
-    .feature-card h4 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--accent-light);
-    }
-
-    .feature-card p {
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    /* Tables */
-    .table-container {
-      overflow-x: auto;
-      margin: 24px 0;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      background: var(--bg-secondary);
-    }
-
-    th {
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      text-align: left;
-      font-weight: 600;
-      color: var(--accent-light);
-    }
-
-    td {
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      color: var(--text-secondary);
-    }
-
-    tr:hover {
-      background: rgba(59, 130, 246, 0.05);
-    }
-
-    /* Mermaid Diagrams Container */
-    .mermaid-container {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      margin: 24px 0;
-      text-align: center;
-      color: var(--text-secondary);
-    }
-
-    /* Buttons */
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 24px 0;
-      justify-content: center;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      font-size: 0.95rem;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-    .btn-secondary {
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-light);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--accent);
-    }
-
-    /* Notices */
-    .notice {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
-      border-left: 4px solid var(--warning);
-      border-radius: 6px;
-      padding: 16px 20px;
-      margin: 20px 0;
-      border: 1px solid var(--border);
-    }
-
-    /* Footer */
-    footer {
-      margin-left: 280px;
-      padding: 32px 40px;
-      border-top: 1px solid var(--border);
-      color: var(--text-muted);
-      margin-top: 60px;
-    }
-
-    .footer-content {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-      .sidebar {
-        width: 240px;
-      }
-
-      .main-content {
-        margin-left: 240px;
-        max-width: calc(100vw - 240px);
-      }
-
-      footer {
-        margin-left: 240px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .nav-links {
-        order: -1;
-      }
-
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        top: auto;
-        margin-bottom: 32px;
-      }
-
-      .main-content {
-        margin-left: 0;
-        margin-top: 120px;
-        max-width: 100%;
-        padding: 20px;
-      }
-
-      footer {
-        margin-left: 0;
-        padding: 20px;
-      }
-
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .quick-links, .feature-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="header-content">
-      <a href="index.html" class="logo">📊 FileSense Research</a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="getting-started.html">Getting Started</a>
-        <a href="pipeline.html">Architecture</a>
-        <a href="metrics.html">Performance</a>
-        <a href="faq.html">FAQ</a>
-        <a href="../">← Back to Project</a>
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>FileSense Documentation - FileSense Documentation</title>
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="FileSense Documentation">
+<meta property="og:title" content="FileSense Documentation">
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/">
+
+
+  <meta property="og:description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/FileSense/feed.xml" type="application/atom+xml" rel="alternate" title="FileSense Documentation Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/FileSense/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+  
+    <script src="/FileSense/assets/css/custom.css"></script>
+  
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--splash">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/FileSense/">
+          FileSense Documentation
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
-  </header>
+  </div>
+</div>
 
-  <nav class="sidebar">
-    <h3>📑 Navigation</h3>
-    <ul class="sidebar-tree">
-      <li><a href="#overview" class="active">Overview</a></li>
-      <li><a href="#quick-links">Quick Links</a></li>
-      <li><a href="#features">Core Features</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#structure">Project Structure</a></li>
-      <li><a href="#performance">Performance</a></li>
-      <li><a href="#insights">Key Insights</a></li>
-      <li><a href="#sections">Documentation</a></li>
-    </ul>
-  </nav>
 
-  <main class="main-content">
-    <div class="content-wrapper">
-      <!-- Hero Section -->
-      <section class="hero">
-        <h1 class="hero-title">FileSense Research Documentation</h1>
-        <p class="hero-subtitle">
-          Comprehensive analysis and evaluation of a semantic document classification system utilizing Sentence-BERT embeddings and FAISS vector search.
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          FileSense Documentation
+
+        
+      </h1>
+      
+        <p class="page__lead">Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI
+</p>
+      
+      
+
+
+      
+        <p>
+        
+          <a href="/FileSense/wiki/getting-started/" class="btn btn--light-outline btn--large">🚀 Get Started</a>
+        
+          <a href="https://youtu.be/f27I2L7uoC8" class="btn btn--light-outline btn--large">📺 Watch Demo</a>
+        
         </p>
-      </section>
-
-      <!-- Quick Links -->
-      <section class="content-section" id="quick-links">
-        <h2 class="section-title">Quick Links</h2>
-        <div class="quick-links">
-          <div class="link-card">
-            <span class="icon">🚀</span>
-            <h3>Getting Started</h3>
-            <p>Install and run FileSense in 5 minutes</p>
-            <a href="getting-started.html">Start Here →</a>
-          </div>
-          <div class="link-card">
-            <span class="icon">📊</span>
-            <h3>Performance Metrics</h3>
-            <p>Benchmarks and accuracy analysis</p>
-            <a href="metrics.html">View Metrics →</a>
-          </div>
-          <div class="link-card">
-            <span class="icon">🏗️</span>
-            <h3>System Architecture</h3>
-            <p>How FileSense processes documents</p>
-            <a href="pipeline.html">Read Architecture →</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Overview -->
-      <section class="content-section" id="overview">
-        <h2 class="section-title">Overview</h2>
-        <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
-        <p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> to generate new categories automatically.</p>
-      </section>
-
-      <!-- Core Features -->
-      <section class="content-section" id="features">
-        <h2 class="section-title">Core Features</h2>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h4>🧠 Semantic Sorting</h4>
-            <p>Classifies by meaning (e.g., "Newton's Laws" → Physics)</p>
-          </div>
-          <div class="feature-card">
-            <h4>🤖 AI-Powered Labeling</h4>
-            <p>Uses Gemini to generate new categories automatically</p>
-          </div>
-          <div class="feature-card">
-            <h4>⚡ FAISS Vector Search</h4>
-            <p>Lightning-fast similarity matching with embeddings</p>
-          </div>
-          <div class="feature-card">
-            <h4>🔄 Self-Updating</h4>
-            <p>Automatically rebuilds index when new labels are created</p>
-          </div>
-          <div class="feature-card">
-            <h4>👀 OCR Support</h4>
-            <p>Extracts text from scanned PDFs and images</p>
-          </div>
-          <div class="feature-card">
-            <h4>🧩 Keyword Boosting</h4>
-            <p>Hybrid search: Vector similarity + keyword matching</p>
-          </div>
-          <div class="feature-card">
-            <h4>🖥️ GUI & CLI</h4>
-            <p>Desktop app with system tray + command-line interface</p>
-          </div>
-          <div class="feature-card">
-            <h4>🧵 Multithreading</h4>
-            <p>Process hundreds of files in parallel</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- How It Works -->
-      <section class="content-section" id="how-it-works">
-        <h2 class="section-title">How It Works</h2>
-        <div class="mermaid-container">
-          <p>Mermaid diagram would be displayed here</p>
-          <p>Flowchart: Input File → Text Extraction → SBERT Encoding → FAISS Search → Classification Decision → Move to Folder</p>
-        </div>
-      </section>
-
-      <!-- Project Structure -->
-      <section class="content-section" id="structure">
-        <h2 class="section-title">Project Structure</h2>
-        <div class="code-block">FileSense/
-├── scripts/
-│   ├── generate_label.py    # Interfaces with Gemini API
-│   ├── create_index.py      # Rebuilds FAISS index dynamically
-│   ├── process_file.py      # Main decision logic
-│   ├── script.py            # Bulk processor
-│   ├── watcher_script.py    # Watchdog implementation
-│   └── launcher.py          # Tkinter GUI
-├── folder_labels.json       # JSON database of labels & descriptions
-├── folder_embeddings.faiss  # Vector Index
-└── files/                   # Input zone</div>
-      </section>
-
-      <!-- Performance Highlights -->
-      <section class="content-section" id="performance">
-        <h2 class="section-title">Performance Highlights</h2>
-        <div class="table-container">
-          <table>
-            <tr>
-              <th>Metric</th>
-              <th>Value</th>
-            </tr>
-            <tr>
-              <td><strong>Accuracy (NCERT Test)</strong></td>
-              <td>56% with keywords</td>
-            </tr>
-            <tr>
-              <td><strong>Avg Similarity Score</strong></td>
-              <td>0.355</td>
-            </tr>
-            <tr>
-              <td><strong>Categorization Rate</strong></td>
-              <td>89% (11% uncategorized)</td>
-            </tr>
-            <tr>
-              <td><strong>Processing Speed</strong></td>
-              <td>~0.27s per file</td>
-            </tr>
-            <tr>
-              <td><strong>Embedding Model</strong></td>
-              <td>all-mpnet-base-v2 (768 dims)</td>
-            </tr>
-          </table>
-        </div>
-      </section>
-
-      <!-- Key Insights -->
-      <section class="content-section" id="insights">
-        <h2 class="section-title">Key Insights</h2>
-        <div class="notice">
-          <strong>Important discoveries from testing:</strong>
-          <ol>
-            <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
-            <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
-            <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
-            <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
-          </ol>
-        </div>
-        <p>See the <a href="metrics.html">Performance Metrics</a> for detailed analysis.</p>
-      </section>
-
-      <!-- Documentation Sections -->
-      <section class="content-section" id="sections">
-        <h2 class="section-title">Documentation Sections</h2>
-
-        <h3 style="color: var(--success); margin: 24px 0 12px 0;">For Users</h3>
-        <ul>
-          <li><strong><a href="getting-started.html">Getting Started</a></strong> - Installation and setup</li>
-          <li><strong><a href="faq.html">FAQ</a></strong> - Common questions and troubleshooting</li>
-        </ul>
-
-        <h3 style="color: var(--success); margin: 24px 0 12px 0;">For Developers</h3>
-        <ul>
-          <li><strong><a href="pipeline.html">Architecture</a></strong> - System design and data flow</li>
-          <li><strong><a href="metrics.html">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
-        </ul>
-
-        <h3 style="color: var(--success); margin: 24px 0 12px 0;">Research & Analysis</h3>
-        <ul>
-          <li><strong><a href="metrics.html">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
-        </ul>
-      </section>
-
-      <!-- Call to Action -->
-      <section style="text-align: center; margin: 60px 0;">
-        <h2 style="color: var(--accent-light); margin-bottom: 16px;">Ready to Get Started?</h2>
-        <p style="margin-bottom: 32px;">Explore the FileSense research documentation.</p>
-        <div class="btn-group">
-          <a href="getting-started.html" class="btn btn-primary">🚀 Get Started</a>
-          <a href="../" class="btn btn-secondary">← Back to Project</a>
-        </div>
-      </section>
+      
     </div>
-  </main>
+  
+  
+</div>
 
-  <footer>
-    <div class="footer-content">
-      <p>© 2025 Ayush Bhalerao | FileSense Research Documentation</p>
+
+
+<div id="main" role="main">
+  <article class="splash" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="FileSense Documentation">
+    <meta itemprop="description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
+    
+    
+
+    <section class="page__content" itemprop="text">
+      <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
+
+<p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> to generate new categories automatically.</p>
+
+<hr />
+
+<h2 id="-quick-links">⚡ Quick Links</h2>
+
+<div class="feature__wrapper">
+  <div class="feature__item">
+    <div class="archive__item">
+      <div class="archive__item-teaser">
+        <i class="fas fa-rocket fa-3x"></i>
+      </div>
+      <div class="archive__item-body">
+        <h2 class="archive__item-title">Getting Started</h2>
+        <div class="archive__item-excerpt">
+          <p>Install and run FileSense in 5 minutes</p>
+        </div>
+        <p><a href="/FileSense/wiki/getting-started/" class="btn btn--primary">Start Here →</a></p>
+      </div>
     </div>
-  </footer>
+  </div>
 
-  <script>
-    // Sidebar active link tracking
-    function updateActiveLink() {
-      const sidebarLinks = document.querySelectorAll('.sidebar-tree a');
+  <div class="feature__item">
+    <div class="archive__item">
+      <div class="archive__item-teaser">
+        <i class="fas fa-book fa-3x"></i>
+      </div>
+      <div class="archive__item-body">
+        <h2 class="archive__item-title">User Guide</h2>
+        <div class="archive__item-excerpt">
+          <p>Learn how to use all features effectively</p>
+        </div>
+        <p><a href="/FileSense/wiki/user-guide/" class="btn btn--primary">Read Guide →</a></p>
+      </div>
+    </div>
+  </div>
 
-      sidebarLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute('href'));
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-          }
-        }
-      });
-    }
+  <div class="feature__item">
+    <div class="archive__item">
+      <div class="archive__item-teaser">
+        <i class="fas fa-chart-line fa-3x"></i>
+      </div>
+      <div class="archive__item-body">
+        <h2 class="archive__item-title">Performance</h2>
+        <div class="archive__item-excerpt">
+          <p>See benchmarks and optimization studies</p>
+        </div>
+        <p><a href="/FileSense/wiki/metrics/" class="btn btn--primary">View Metrics →</a></p>
+      </div>
+    </div>
+  </div>
+</div>
 
-    window.addEventListener('scroll', updateActiveLink);
+<hr />
 
-    // Smooth scroll for sidebar links
-    document.querySelectorAll('.sidebar-tree a[href^="#"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
-</body>
+<h2 id="-core-features">🎯 Core Features</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>🧠 <strong>Semantic Sorting</strong></td>
+      <td>Classifies by meaning (e.g., “Newton’s Laws” → Physics)</td>
+    </tr>
+    <tr>
+      <td>🤖 <strong>AI-Powered Labeling</strong></td>
+      <td>Uses Gemini to generate new categories automatically</td>
+    </tr>
+    <tr>
+      <td>⚡ <strong>FAISS Vector Search</strong></td>
+      <td>Lightning-fast similarity matching with embeddings</td>
+    </tr>
+    <tr>
+      <td>🔄 <strong>Self-Updating</strong></td>
+      <td>Automatically rebuilds index when new labels are created</td>
+    </tr>
+    <tr>
+      <td>👀 <strong>OCR Support</strong></td>
+      <td>Extracts text from scanned PDFs and images</td>
+    </tr>
+    <tr>
+      <td>🧩 <strong>Keyword Boosting</strong></td>
+      <td>Hybrid approach: Vector similarity + keyword matching</td>
+    </tr>
+    <tr>
+      <td>🖥️ <strong>GUI &amp; CLI</strong></td>
+      <td>Desktop app with system tray + command-line interface</td>
+    </tr>
+    <tr>
+      <td>🧵 <strong>Multithreading</strong></td>
+      <td>Process hundreds of files in parallel</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-how-it-works">📊 How It Works</h2>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[📄 Input File] --&gt; B[📝 Extract Text]
+    B --&gt; C[🔢 Generate Embedding&lt;br/&gt;SBERT all-mpnet-base-v2]
+    C --&gt; D{🎯 Similarity ≥ 0.40?}
+    D --&gt;|Yes| E[✅ Classify to Existing Folder]
+    D --&gt;|No| F[🤖 Ask Gemini for Label]
+    F --&gt; G[💾 Update folder_labels.json]
+    G --&gt; H[🔄 Rebuild FAISS Index]
+    H --&gt; I[🔁 Re-classify File]
+    I --&gt; E
+    E --&gt; J[📁 Move to Sorted Folder]
+</code></pre>
+
+<hr />
+
+<h2 id="-quick-start">🚀 Quick Start</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Install dependencies</span>
+pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># 2. Set up API key</span>
+<span class="nb">echo</span> <span class="s2">"API_KEY=your_gemini_key"</span> <span class="o">&gt;</span> .env
+
+<span class="c"># 3. Create initial index</span>
+python scripts/create_index.py
+
+<span class="c"># 4. Run FileSense</span>
+python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">--threads</span> 6
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="-documentation-sections">📚 Documentation Sections</h2>
+
+<h3 id="-for-users">🎓 For Users</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong> - Installation and setup</li>
+  <li><strong><a href="/FileSense/wiki/user-guide/">User Guide</a></strong> - How to use FileSense effectively</li>
+  <li><strong><a href="/FileSense/wiki/faq/">FAQ</a></strong> - Common questions and troubleshooting</li>
+</ul>
+
+<h3 id="-for-developers">🔧 For Developers</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - System design and data flow</li>
+  <li><strong><a href="/FileSense/wiki/api-reference/">API Reference</a></strong> - Function documentation</li>
+  <li><strong><a href="/FileSense/wiki/code-structure/">Code Structure</a></strong> - Project organization</li>
+</ul>
+
+<h3 id="-research--analysis">📊 Research &amp; Analysis</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
+  <li><strong><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a></strong> - Comprehensive comparison</li>
+  <li><strong><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a></strong> - Key insights from development</li>
+</ul>
+
+<hr />
+
+<h2 id="-key-insights">🎓 Key Insights</h2>
+
+<p class="notice--warning"><strong>Important discoveries from testing:</strong></p>
+
+<ol>
+  <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
+  <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
+  <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
+  <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
+</ol>
+
+<p>See the <a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a> for detailed analysis.</p>
+
+<hr />
+
+<h2 id="-performance-highlights">📈 Performance Highlights</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Accuracy (NCERT Test)</strong></td>
+      <td>56% with keywords</td>
+    </tr>
+    <tr>
+      <td><strong>Avg Similarity Score</strong></td>
+      <td>0.355</td>
+    </tr>
+    <tr>
+      <td><strong>Categorization Rate</strong></td>
+      <td>89% (11% uncategorized)</td>
+    </tr>
+    <tr>
+      <td><strong>Processing Speed</strong></td>
+      <td>~0.27s per file</td>
+    </tr>
+    <tr>
+      <td><strong>Embedding Model</strong></td>
+      <td>all-mpnet-base-v2 (768 dims)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="-contributing">🤝 Contributing</h2>
+
+<p>FileSense is an open-source project. Contributions are welcome!</p>
+
+<ul>
+  <li><strong>GitHub:</strong> <a href="https://github.com/ahhyoushh/FileSense">ahhyoushh/FileSense</a></li>
+  <li><strong>Issues:</strong> Report bugs or request features</li>
+  <li><strong>Pull Requests:</strong> Submit improvements</li>
+</ul>
+
+<hr />
+
+<h2 id="-license">📝 License</h2>
+
+<p>MIT License © 2025 Ayush Bhalerao</p>
+
+<hr />
+
+<p class="notice--success"><strong>Ready to get started?</strong> → <a href="/FileSense/wiki/getting-started/">Installation Guide</a></p>
+
+    </section>
+  </article>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://github.com/ahhyoushh/FileSense" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://youtu.be/f27I2L7uoC8" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Demo Video</a></li>
+        
+      
+    
+
+    
+      <li><a href="/FileSense/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://ahhyoushh.github.io">FileSense Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/FileSense/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
 </html>
