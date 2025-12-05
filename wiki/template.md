@@ -1,168 +1,356 @@
-# FileSense Documentation Template
+---
+title: "Documentation Template"
+permalink: /wiki/template/
+---
+
+# 📝 FileSense Documentation Template
+
+Use this template when creating new wiki pages.
 
 ---
-title: "PAGE TITLE HERE"
-layout: single
+
+## Basic Page Structure
+
+```markdown
+---
+title: "Page Title"
 permalink: /wiki/page-slug/
-sidebar:
-  nav: wiki
 toc: true
 toc_sticky: true
+toc_label: "On This Page"
 ---
 
-# Page Title Here
-Short intro paragraph explaining what this page is about.
+# 🎯 Page Title
 
----
-
-# 🔥 Quick Summary
-
-- Bullet point 1  
-- Bullet point 2  
-- Bullet point 3  
+Brief introduction explaining what this page covers.
 
 ---
 
-# 🧩 Section Heading
-Explain something clearly.
+## Section Heading
 
-## Subsection
-Explain the subsection.
+Content goes here.
 
-```python
-# Code example
-def demo():
+### Subsection
+
+More detailed content.
+
+---
+
+## Code Examples
+
+\`\`\`python
+# Python code
+def example():
     return "Hello World"
-```
+\`\`\`
+
+\`\`\`bash
+# Bash commands
+python scripts/script.py --dir ./files
+\`\`\`
 
 ---
 
-# 💡 Tip / Note / Warning Blocks
+## Tables
 
-**Tip**
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Data 1   | Data 2   | Data 3   |
+| Data 4   | Data 5   | Data 6   |
+
+---
+
+## Notice Blocks
+
+**Info Block**
 {: .notice--info}
 
-**Note**
+**Success Block**
 {: .notice--success}
 
-**Warning**
+**Warning Block**
+{: .notice--warning}
+
+**Danger Block**
 {: .notice--danger}
 
 ---
 
-# 📁 Directory Structure Example
+## Mermaid Diagrams
 
-```text
-FileSense/
-├── landing/
-├── wiki/
-│   ├── index.md
-│   ├── template.md
-│   ├── usage.md
-│   └── ...
-└── folder_labels.json
-```
+\`\`\`mermaid
+flowchart LR
+    A[Start] --> B[Process]
+    B --> C[End]
+\`\`\`
 
 ---
 
-# 🧪 Code Blocks
+## Links
 
-```python
-print("Python")
+- Internal: [Getting Started](/FileSense/wiki/getting-started/)
+- External: [GitHub](https://github.com/ahhyoushh/FileSense)
+
+---
+
+[← Back to Home](/FileSense/wiki/)
+\`\`\`
+
+---
+
+## Styling Guidelines
+
+### Emojis for Visual Hierarchy
+
+Use emojis to make sections visually distinct:
+
+- 🎯 Goals/Objectives
+- 📊 Data/Metrics
+- 🔧 Technical Details
+- 💡 Tips/Insights
+- ⚠️ Warnings
+- ✅ Success/Best Practices
+- ❌ Failures/Don'ts
+- 🚀 Quick Start/Actions
+- 📚 Resources/References
+- 🎓 Learning/Education
+
+### Notice Blocks
+
+```markdown
+**This is important information**
+{: .notice--info}
+
+**This worked well**
+{: .notice--success}
+
+**Be careful about this**
+{: .notice--warning}
+
+**This is critical - don't ignore**
+{: .notice--danger}
 ```
 
-```bash
-pip install filesense
-```
+### Code Blocks with Language
 
-```json
+Always specify the language for syntax highlighting:
+
+```markdown
+\`\`\`python
+# Python code
+\`\`\`
+
+\`\`\`bash
+# Bash commands
+\`\`\`
+
+\`\`\`json
 {
-  "folder_label": "Physics",
-  "keywords": ["energy", "forces"]
+  "key": "value"
 }
+\`\`\`
+
+\`\`\`yaml
+key: value
+\`\`\`
 ```
 
-```yaml
-theme: minimal-mistakes-jekyll
+### Tables
+
+Use tables for structured data:
+
+```markdown
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
 ```
 
----
+### Mermaid Diagrams
 
-# 📌 Tables
+For flowcharts and diagrams:
 
-| Feature | Description |
-|--------|-------------|
-| Labeling | Assigns folder labels using vectors + LLM |
-| Merging | Ensures metadata is never lost |
-| Movement | Organizes files automatically |
-
----
-
-# 📥 Download Button Example
-
-<a href="/FileSense/assets/example.json" class="btn btn--primary">Download JSON</a>
-
----
-
-# 🖼️ Images
-
-Local:
-
-![Local image](/FileSense/wiki/assets/diagram.png)
-
-External:
-
-![External](https://example.com/image.png)
-
----
-
-# 🧠 Mermaid Diagram
-
-```mermaid
+```markdown
+\`\`\`mermaid
 flowchart TD
-    A[Extract Text] --> B[Embed with MPNet]
-    B --> C{Similarity >= Threshold?}
-    C -->|Yes| D[Assign Existing Label]
-    C -->|No| E[Ask Gemini for Label]
-    E --> F[Update folder_labels.json]
+    A[Input] --> B[Process]
+    B --> C{Decision}
+    C -->|Yes| D[Output A]
+    C -->|No| E[Output B]
+\`\`\`
 ```
 
 ---
 
-# 🧱 Callouts
+## Page Types
 
-> Important information here.
+### Tutorial Pages
+
+Structure:
+1. Introduction
+2. Prerequisites
+3. Step-by-step instructions
+4. Expected output
+5. Troubleshooting
+6. Next steps
+
+### Reference Pages
+
+Structure:
+1. Overview
+2. API/Function list
+3. Parameters
+4. Return values
+5. Examples
+6. Related functions
+
+### Concept Pages
+
+Structure:
+1. What is it?
+2. Why does it matter?
+3. How does it work?
+4. When to use it?
+5. Examples
+6. Further reading
 
 ---
 
-# 🔄 API Section Template
+## Checklist for New Pages
 
-## Function `generate_folder_label(text)`
+- [ ] Title and permalink set
+- [ ] TOC enabled
+- [ ] Introduction paragraph
+- [ ] Sections with clear headings
+- [ ] Code examples (if applicable)
+- [ ] Tables for structured data
+- [ ] Notice blocks for important info
+- [ ] Links to related pages
+- [ ] Back to home link at bottom
+- [ ] Spell-checked
+- [ ] Tested locally
 
-**Returns:**
+---
 
-```json
-{
-  "folder_label": "Physics",
-  "description": "mechanics, forces, motion",
-  "keywords": "physics, energy, force"
-}
+## Example Pages
+
+**Good Examples:**
+- [Getting Started](/FileSense/wiki/getting-started/) - Tutorial style
+- [Architecture](/FileSense/wiki/pipeline/) - Technical reference
+- [Lessons Learned](/FileSense/wiki/lessons-learned/) - Concept/insight page
+
+---
+
+## Tips for Writing
+
+### Be Concise
+
+❌ Bad:
+> "In this section, we will discuss the various different ways in which you can potentially configure the system settings to optimize performance."
+
+✅ Good:
+> "Configure these settings to optimize performance:"
+
+### Use Active Voice
+
+❌ Bad:
+> "The file is processed by the system."
+
+✅ Good:
+> "FileSense processes the file."
+
+### Show, Don't Just Tell
+
+❌ Bad:
+> "FileSense is fast."
+
+✅ Good:
+> "FileSense processes 75 files in 5 seconds (0.27s per file)."
+
+### Use Examples
+
+Always include:
+- Code examples
+- Command examples
+- Expected output
+- Common use cases
+
+---
+
+## Markdown Cheatsheet
+
+### Headers
+
+```markdown
+# H1
+## H2
+### H3
+#### H4
+```
+
+### Emphasis
+
+```markdown
+*italic*
+**bold**
+***bold italic***
+~~strikethrough~~
+```
+
+### Lists
+
+```markdown
+- Unordered item
+- Another item
+  - Nested item
+
+1. Ordered item
+2. Another item
+   1. Nested item
+```
+
+### Links
+
+```markdown
+[Link text](URL)
+[Internal link](/FileSense/wiki/page/)
+```
+
+### Images
+
+```markdown
+![Alt text](/path/to/image.png)
+```
+
+### Blockquotes
+
+```markdown
+> This is a quote
+```
+
+### Horizontal Rule
+
+```markdown
+---
 ```
 
 ---
 
-# 📦 Installation
+## Publishing Workflow
 
-```bash
-pip install -r requirements.txt
-```
-
-```env
-API_KEY=your_gemini_key
-```
+1. **Create** the markdown file in `wiki/`
+2. **Add** to navigation in `_data/navigation.yml`
+3. **Test** locally (if possible)
+4. **Commit** and push to GitHub
+5. **Verify** on GitHub Pages
 
 ---
 
-# 🧭 Navigation Footer
+## Questions?
 
-[← Back to Docs Overview](/FileSense/wiki/)
+- Check existing pages for examples
+- Review [Minimal Mistakes documentation](https://mmistakes.github.io/minimal-mistakes/)
+- Ask in GitHub discussions
+
+---
+
+[← Back to Home](/FileSense/wiki/)

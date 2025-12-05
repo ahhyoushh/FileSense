@@ -1,26 +1,42 @@
-title: "FileSense Docs"
+title: "FileSense Documentation"
+description: "Intelligent semantic file organizer powered by SBERT + Gemini"
+author: "Ayush Bhalerao"
 
-# Use Minimal Mistakes via remote theme
+# Theme Configuration
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin: "dark"
 
-# GitHub Pages project site
+# Site Settings
 url: "https://ahhyoushh.github.io"
-baseurl: "/FileSense"       # project root, NOT /FileSense/wiki
+baseurl: "/FileSense"
+repository: "ahhyoushh/FileSense"
 
+# Build Settings
 markdown: kramdown
 highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    block:
+      line_numbers: false
 
+# Plugins
 plugins:
   - jekyll-include-cache
   - jekyll-seo-tag
   - jekyll-remote-theme
+  - jekyll-sitemap
+  - jekyll-gist
 
+# Collections
 collections:
   wiki:
     output: true
     permalink: /wiki/:path/
 
+# Defaults
 defaults:
   - scope:
       path: ""
@@ -29,5 +45,28 @@ defaults:
       layout: single
       toc: true
       toc_sticky: true
+      toc_label: "On This Page"
+      toc_icon: "list"
       sidebar:
         nav: wiki
+      classes: wide
+
+# SEO
+logo: "/assets/images/logo.png"
+og_image: "/assets/images/og-image.png"
+
+# Analytics (optional)
+# analytics:
+#   provider: "google-gtag"
+#   google:
+#     tracking_id: "UA-XXXXXXXXX-X"
+
+# Footer
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ahhyoushh/FileSense"
+    - label: "Demo Video"
+      icon: "fab fa-fw fa-youtube"
+      url: "https://youtu.be/f27I2L7uoC8"

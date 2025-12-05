@@ -1,19 +1,83 @@
-.gitignore
-logs/**
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-evaluation/datasets/NCERT/ncert-all/
-evaluation/datasets/NCERT/ncert-all/**
-files/**
-files/
-test_files/
-test_files/**
-evaluation/datasets/**
-evaluation/datasets
-evaluate/datasets.7z
-
-folder_label_generator/clean_generated_data.py
-folder_label_generator/data_cleaned.jsonl
-folder_label_generator/data_fixedcommas.jsonl
-folder_label_generator/validate_split_data.py
-folder_label_generator/data.jsonl
+# Environment
 .env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific - Logs
+logs/**
+*.log
+
+# Datasets (large files)
+evaluation/datasets/NCERT/ncert-all/
+evaluation/datasets/**/*.pdf
+evaluation/datasets/**/*.txt
+evaluation/datasets/**/*.md
+
+# Generated files
+folder_embeddings.faiss
+comparison_results.json
+comparison_metrics.json
+
+# Temporary files
+files/
+sorted/
+test_files/
+temp/
+
+# Old/backup files
+*_backup.json
+*_old.*
+folder_labels_backup.json
+
+# Wiki build artifacts (Jekyll)
+wiki/_site/
+wiki/.jekyll-cache/
+wiki/.jekyll-metadata
+wiki/Gemfile.lock
+wiki/.sass-cache/
+
+# Documentation artifacts (keep source, ignore old reports)
+NCERT_COMPARISON_REPORT.md
+FINAL_VERDICT.md
+OPTIMIZATION_SUMMARY.md
+OPTIMIZATION_REPORT.md
+
+# Keep important files
+!README.md
+!wiki/**/*.md
+!evaluation/comprehensive_metrics.json

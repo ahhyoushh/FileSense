@@ -1,11 +1,42 @@
 wiki:
-  - title: "Overview"
-    url: /wiki/
-  - title: "Getting Started"
-    url: /wiki/getting-started/
-  - title: "Installation"
-    url: /wiki/installation/
-  - title: "Usage"
-    url: /wiki/usage/
-  - title: "FAQ"
-    url: /wiki/faq/
+  - title: "📚 Documentation"
+    children:
+      - title: "🏠 Home"
+        url: /wiki/
+      - title: "🚀 Getting Started"
+        url: /wiki/getting-started/
+      - title: "📖 User Guide"
+        url: /wiki/user-guide/
+      - title: "❓ FAQ"
+        url: /wiki/faq/
+
+  - title: "🔧 Technical"
+    children:
+      - title: "🏗️ Architecture"
+        url: /wiki/pipeline/
+      - title: "📊 Performance Metrics"
+        url: /wiki/metrics/
+      - title: "🧪 NL vs Keywords Study"
+        url: /wiki/NL_VS_OG/
+      - title: "⚙️ Configuration"
+        url: /wiki/configuration/
+
+  - title: "💻 Development"
+    children:
+      - title: "🛠️ API Reference"
+        url: /wiki/api-reference/
+      - title: "🧩 Code Structure"
+        url: /wiki/code-structure/
+      - title: "🔬 Testing"
+        url: /wiki/testing/
+      - title: "🚧 Roadmap"
+        url: /wiki/roadmap/
+
+  - title: "📝 Resources"
+    children:
+      - title: "🎓 Lessons Learned"
+        url: /wiki/lessons-learned/
+      - title: "📚 References"
+        url: /wiki/references/
+      - title: "🤝 Contributing"
+        url: /wiki/contributing/
