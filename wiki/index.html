@@ -26,8 +26,6 @@
 
 
 
-  <meta property="og:image" content="https://ahhyoushh.github.io/FileSense/assets/images/header.jpg">
-
 
 
 
@@ -68,6 +66,10 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
+  
+    <script src="/FileSense/assets/css/custom.css"></script>
+  
+
 
     <!-- start custom head snippets -->
 
@@ -92,8 +94,6 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
-        
-          <a class="site-logo" href="/FileSense/"><img src="/FileSense/assets/images/logo.png" alt="FileSense Documentation"></a>
         
         <a class="site-title" href="/FileSense/">
           FileSense Documentation
@@ -123,7 +123,7 @@
 
 
 <div class="page__hero--overlay"
-  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/FileSense/assets/images/header.jpg');"
+  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('');"
 >
   
     <div class="wrapper">
@@ -164,9 +164,7 @@
     
 
     <section class="page__content" itemprop="text">
-      <h1 id="️-filesense">🗂️ FileSense</h1>
-
-<p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
+      <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
 
 <p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> to generate new categories automatically.</p>
 
