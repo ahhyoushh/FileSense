@@ -1,7 +1,1 @@
-{
-  "English": "literature, essays, poetry, novels, grammar, reading comprehension, writing skills, linguistic analysis, shakespeare, book reports, creative writing, language arts, prose, fiction, storytelling Keywords: english, poem, story, essay, literature, novel, author, writing, project",
-  "Physics": "mechanics, thermodynamics, electromagnetism, optics, quantum physics, relativity, kinematics, forces, energy, laboratory experiments, scientific formulas, newtons laws, wave theory, hydrodynamics, fluid mechanics, induction, current, electricity, resistance, capacitance Keywords: physics, experiment, lab, formula, theory, science, prism, lens, circuit",
-  "Chemistry": "organic chemistry, inorganic chemistry, physical chemistry, chemical reactions, molecular structure, stoichiometry, titration, lab reports, synthesis, bonding, compounds, periodic table, acids, bases Keywords: chemistry, reaction, acid, base, chemical, solution, titration",
-  "Maths": "algebra, calculus, geometry, trigonometry, statistics, probability, linear algebra, differential equations, mathematical proofs, theorems, numerical analysis, formulas, derivatives, integrals Keywords: math, mathematics, equation, formula, calculation, graph",
-  "Computer Science": "programming, algorithms, data structures, software development, coding, python, java, machine learning, artificial intelligence, database management, networking, web development, informatics practices, ip Keywords: computer, code, python, program, software, network"
-}
+{}

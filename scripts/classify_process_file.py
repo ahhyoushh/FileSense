@@ -52,9 +52,48 @@ def load_index_and_labels():
 def classify_file(text, filename, allow_generation=True, TRAIN=False, retries=0):
     # --- SAFETY NET: MAX RETRIES ---
     MAX_RETRIES = 3
+
     if retries >= MAX_RETRIES:
-        print(f"[!] Max retries ({MAX_RETRIES}) reached for '{filename}'. Stopping recursion.")
-        return classify_file(text, filename, allow_generation=False, TRAIN=False, retries=0)
+        print(f"[!] Max retries reached for '{filename}'.")
+        print("Please manually input the folder label for this file.")
+        manual_label = input(f"Enter label for '{filename}': ").strip()
+        
+        while not manual_label:
+            print("Label cannot be empty.")
+            manual_label = input(f"Enter label for '{filename}': ").strip()
+
+        gen_desc = input("Generate description for this label? (y/n): ").strip().lower()
+
+        if gen_desc == 'y':
+            print(f"Generating description for '{manual_label}'...")
+            with CLASSIFICATION_LOCK:
+                new_label_info = generate_folder_label(text, forced_label=manual_label)
+                
+                if new_label_info and new_label_info.get("folder_label"):
+                     if create_faiss_index():
+                        load_index_and_labels()
+                        return manual_label, 1.0
+                
+                print("[!] Failed to generate description. Adding label without description.")
+        
+
+        print(f"Adding '{manual_label}' to folder labels without description (not indexed yet).")
+        
+        current_labels = {}
+        if LABELS_FILE.exists():
+            try:
+                with open(LABELS_FILE, "r", encoding="utf-8") as f:
+                    current_labels = json.load(f)
+            except Exception:
+                current_labels = {}
+        
+        if manual_label not in current_labels:
+            current_labels[manual_label] = f"{manual_label} Keywords: "
+            with open(LABELS_FILE, "w", encoding="utf-8") as f:
+                json.dump(current_labels, f, indent=2)
+        
+
+        return manual_label, 1.0
 
     if not model:
         load_index_and_labels()
@@ -155,15 +194,41 @@ def classify_file(text, filename, allow_generation=True, TRAIN=False, retries=0)
 def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
     start_time = time.time()
     filename = os.path.basename(file_path)
-    text = extract_text(file_path)
+    
+    text = extract_text(file_path, fallback=False)
 
     if not text.strip() or text == filename:
         text = filename.replace("_", " ").replace("-", " ")
 
     predicted_folder, similarity = classify_file(
-        text, filename, allow_generation=allow_generation, TRAIN=TRAIN
+        text, filename, allow_generation=False, TRAIN=TRAIN
     )
-    
+
+
+    if (predicted_folder == "Uncategorized" or similarity < 0.35) and os.path.exists(file_path):
+        print(f"[!] Low confidence ({similarity:.2f}) on first pass. Attempting Fallback Extraction...")
+        
+        fallback_text = extract_text(file_path, fallback=True)
+        
+        if fallback_text and len(fallback_text) > 50 and fallback_text != text:
+             new_folder, new_sim = classify_file(
+                fallback_text, filename, allow_generation=False, TRAIN=TRAIN
+             )
+             
+             if new_sim > similarity:
+                 print(f"   -> Fallback improved result: {new_folder} ({new_sim:.2f})")
+                 text = fallback_text
+                 predicted_folder = new_folder
+                 similarity = new_sim
+             else:
+                 print(f"   -> Fallback did not improve result.")
+
+
+    if allow_generation and (predicted_folder == "Uncategorized" or similarity < THRESHOLD):
+        predicted_folder, similarity = classify_file(
+            text, filename, allow_generation=True, TRAIN=TRAIN
+        )
+
     destination_folder = BASE_DIR / "sorted" / predicted_folder
     os.makedirs(destination_folder, exist_ok=True)
     

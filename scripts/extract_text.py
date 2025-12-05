@@ -16,9 +16,9 @@ except ImportError:
 # --- Configuration ---
 PDF_CONFIG = {
     'MAX_INPUT_CHARS': 2000,        
-    'QUALITY_THRESHOLD': 0.4,       # Min score for a page to be considered good
-    'START_PAGE_ASSUMPTION': 3,     # Assumes content starts around page 3-4
-    'HEADER_FOOTER_MARGIN': 70,     # Pixels from top/bottom to ignore for ocr
+    'QUALITY_THRESHOLD': 0.4,       
+    'START_PAGE_ASSUMPTION': 3,     
+    'HEADER_FOOTER_MARGIN': 70,     
     'MIN_LINE_LENGTH': 25,
     'MIN_TITLE_LINE_LENGTH': 10
 }
@@ -51,11 +51,9 @@ def score_page_quality(page_text):
     if len_lines < 5:
         return 0.1
 
-    # Calculate metrics
     total_chars = sum(len(l) for l in lines)
     avg_line_length = total_chars / len_lines
     
-    # Reward long, paragraph-like lines
     long_lines = sum(1 for line in lines if len(line) > 50)
     long_line_ratio = long_lines / len_lines
 
@@ -67,7 +65,6 @@ def clean_text_block(text):
     if not text:
         return ""
 
-    # Use pre-compiled regex
     text = RE_TABS_FF.sub(' ', text)
     text = RE_BROKEN_LINES.sub(r'\1 \2', text)
     
@@ -78,7 +75,6 @@ def clean_text_block(text):
         stripped = line.strip()
         if not stripped:
             continue
-        # Optimization: Combine checks
         if len(stripped) < PDF_CONFIG['MIN_LINE_LENGTH'] and not RE_UPPERCASE.search(stripped):
             continue
         good_lines.append(stripped)
@@ -86,7 +82,7 @@ def clean_text_block(text):
     return "\n".join(good_lines)
 
 
-def extract_text_from_pdf(file_path, filename):
+def extract_text_from_pdf(file_path, filename, fallback=False):
     if not PDFPLUMBER_AVAILABLE:
         print("pdfplumber library not found. Cannot process PDF.")
         return filename
@@ -97,34 +93,41 @@ def extract_text_from_pdf(file_path, filename):
 
     try:
         with pdfplumber.open(file_path) as pdf:
-            # Metadata extraction
-            if pdf.metadata:
+            if pdf.metadata and not fallback:
                 title = pdf.metadata.get("Title") or pdf.metadata.get("title")
                 if title and isinstance(title, str) and len(title.strip()) > 5:
                     pdf_meta_title = title.strip()
 
             total_pages = len(pdf.pages)
             
-            # Logic to check middle pages first (likely content), then start pages
-            start_page_index = min(PDF_CONFIG['START_PAGE_ASSUMPTION'], total_pages - 1)
-            
+            # --- Fallback Logic ---
+            if fallback and total_pages > 5:
+                # Start from the absolute middle of the document
+                start_page_index = total_pages // 2
+                print(f"   -> [PDF Fallback] Starting extraction at page {start_page_index} (Middle)")
+            else:
+                # Standard Logic: Start around page 3
+                start_page_index = min(PDF_CONFIG['START_PAGE_ASSUMPTION'], total_pages - 1)
+
             # Create iterator order
+            # If fallback, we read from middle to end, then beginning to middle
             page_order = list(range(start_page_index, total_pages)) + list(range(0, start_page_index))
 
             for page_index in page_order:
                 page = pdf.pages[page_index]
                 
-                # Crop header/footer
                 try:
                     core_page = page.crop((0, PDF_CONFIG['HEADER_FOOTER_MARGIN'], page.width, page.height - PDF_CONFIG['HEADER_FOOTER_MARGIN']))
                     page_text = core_page.extract_text(x_tolerance=2) or ""
                 except ValueError:
-                    # Fallback if cropping fails (e.g., page too small)
                     page_text = page.extract_text() or ""
                 
                 quality = score_page_quality(page_text)
                 
-                if quality > PDF_CONFIG['QUALITY_THRESHOLD']:
+                # In fallback mode, we might lower quality threshold slightly to ensure we get *something*
+                threshold = PDF_CONFIG['QUALITY_THRESHOLD'] * 0.8 if fallback else PDF_CONFIG['QUALITY_THRESHOLD']
+
+                if quality > threshold:
                     cleaned_block = clean_text_block(page_text)
                     if cleaned_block:
                         content_blocks.append(cleaned_block)
@@ -140,12 +143,14 @@ def extract_text_from_pdf(file_path, filename):
         return filename
 
     final_text = "\n\n".join(content_blocks)
-    if pdf_meta_title:
+    
+    # Only prepend metadata title on the standard attempt (avoid noise on fallback)
+    if pdf_meta_title and not fallback:
         final_text = pdf_meta_title + "\n\n" + final_text
 
     return final_text[:PDF_CONFIG['MAX_INPUT_CHARS']]
 
-def extract_text_from_docx(file_path, filename):
+def extract_text_from_docx(file_path, filename, fallback=False):
     if not DOCX_AVAILABLE:
         return filename
     try:
@@ -153,13 +158,22 @@ def extract_text_from_docx(file_path, filename):
         content_list = []
         current_length = 0
         
-        # Optimization: Iterate and break early instead of joining all paragraphs
-        for p in doc.paragraphs:
-            text = p.text
+        all_paras = doc.paragraphs
+        total_paras = len(all_paras)
+
+        # --- Fallback Logic ---
+        if fallback and total_paras > 20:
+            start_index = total_paras // 2
+            print(f"   -> [DOCX Fallback] Starting extraction at paragraph {start_index}")
+        else:
+            start_index = 0
+        
+        for i in range(start_index, total_paras):
+            text = all_paras[i].text
             if text:
                 content_list.append(text)
                 current_length += len(text)
-                if current_length > PDF_CONFIG['MAX_INPUT_CHARS'] * 1.2: # Small buffer
+                if current_length > PDF_CONFIG['MAX_INPUT_CHARS'] * 1.2:
                     break
         
         raw = "\n".join(content_list)
@@ -168,49 +182,42 @@ def extract_text_from_docx(file_path, filename):
         print(f"Failed to read DOCX {filename} — {e}")
         return filename
 
+def extract_text_from_txt(file_path, filename, fallback=False):
+    try:
+        file_size = os.path.getsize(file_path)
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            if fallback and file_size > PDF_CONFIG['MAX_INPUT_CHARS']:
+                # Seek to middle
+                f.seek(file_size // 2)
+                # Discard partial line
+                f.readline()
+                print(f"   -> [TXT Fallback] Starting extraction from middle of file")
+            
+            raw = f.read(PDF_CONFIG['MAX_INPUT_CHARS'] * 2) 
+            return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
+    except Exception as e:
+        print(f"Failed to read TXT {filename} — {e}")
+        return filename
+
 # -----------------------
 # MAIN DISPATCHER
 # -----------------------
-def extract_text(file_path):
-    """Main function to dispatch file processing based on extension."""
+def extract_text(file_path, fallback=False):
+    """
+    Main function to dispatch file processing.
+    :param fallback: If True, tries to extract text from the middle/end of the file 
+                     to avoid table of contents/cover pages.
+    """
     filename = os.path.basename(file_path)
     ext = os.path.splitext(filename)[1].lower()
 
     if ext == ".pdf":
-        return extract_text_from_pdf(file_path, filename)
+        return extract_text_from_pdf(file_path, filename, fallback=fallback)
 
     elif ext == ".docx":
-        return extract_text_from_docx(file_path, filename)
+        return extract_text_from_docx(file_path, filename, fallback=fallback)
 
     elif ext == ".txt":
-        try:
-            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                # Optimization: Read only what we need plus a safety buffer for cleaning
-                raw = f.read(PDF_CONFIG['MAX_INPUT_CHARS'] * 2) 
-                return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
-        except Exception as e:
-            print(f"Failed to read TXT {filename} — {e}")
-            return filename
+        return extract_text_from_txt(file_path, filename, fallback=fallback)
             
-    return filename 
-
-if __name__ == "__main__":
-    files_dir = "./files/"
-    if not os.path.exists(files_dir):
-        os.makedirs(files_dir)
-        print(f"Created directory '{files_dir}'. Please add files to test.")
-
-    files_to_process = [
-        os.path.join(files_dir, f)
-        for f in os.listdir(files_dir)
-        if os.path.isfile(os.path.join(files_dir, f)) and not f.endswith('.extracted.txt')
-    ]
-
-    for file_path in files_to_process:
-        print("-" * 60)
-        print(f"Processing: {os.path.basename(file_path)}")
-        
-        extracted_text = extract_text(file_path)
-        
-        print(f"Extracted text length: {len(extracted_text)}")
-        print(f"Preview: {extracted_text[:200]}...")
+    return filename

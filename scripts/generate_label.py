@@ -168,7 +168,7 @@ New Keywords: {new_kw}
         }
 
 
-def generate_folder_label(target_text: str):
+def generate_folder_label(target_text: str, forced_label: str = None):
     try:
         try:
             with open("folder_labels.json", "r", encoding="utf-8") as f:
@@ -178,7 +178,21 @@ def generate_folder_label(target_text: str):
         except (FileNotFoundError, json.JSONDecodeError):
             existing_labels_content = "{}"
 
-        prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
+        if forced_label:
+            prompt = f"""You are an expert file organization system.
+The user has MANUALLY assigned the label "{forced_label}" to this document.
+Your task is to generate a description and keywords for this SPECIFIC label based on the document text.
+
+--- CRITICAL RULE: USE FORCED LABEL ---
+*   **OUTPUT LABEL MUST BE:** "{forced_label}"
+*   Do NOT change the label.
+*   Generate a description and keywords that fit both the document AND the label "{forced_label}".
+
+--- USER DOCUMENT ---
+{target_text}
+"""
+        else:
+            prompt = f"""You are an expert file organization system. Analyze the provided document text and generate a classification JSON.
 
 --- CRITICAL RULE 1: BANNED WORDS (NEGATIVE CONSTRAINTS) ---
 *   **NEVER** include generic document types in `description` or `keywords`.
