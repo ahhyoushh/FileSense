@@ -5,7 +5,6 @@ permalink: /wiki/
 header:
   overlay_color: "#000"
   overlay_filter: "0.5"
-  overlay_image: /assets/images/header.jpg
   actions:
     - label: "🚀 Get Started"
       url: "/wiki/getting-started/"
@@ -13,8 +12,6 @@ header:
       url: "https://youtu.be/f27I2L7uoC8"
 excerpt: "Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI"
 ---
-
-# 🗂️ FileSense
 
 **Semantic document classifier that understands meaning, not just filenames.**
 

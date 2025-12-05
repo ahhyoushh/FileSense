@@ -52,8 +52,12 @@ defaults:
       classes: wide
 
 # SEO
-logo: "/assets/images/logo.png"
-og_image: "/assets/images/og-image.png"
+# logo: "/assets/images/logo.png"  # Commented out - file doesn't exist
+# og_image: "/assets/images/og-image.png"  # Commented out - file doesn't exist
+
+# Custom CSS
+head_scripts:
+  - /assets/css/custom.css
 
 # Analytics (optional)
 # analytics:
