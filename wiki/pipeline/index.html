@@ -68,10 +68,6 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
-  
-    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
-  
-
 
     <!-- start custom head snippets -->
 
@@ -475,30 +471,76 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
 
 <h3 id="time-complexity">Time Complexity</h3>
 
-<div class="content-section">
-
-| Operation | Complexity | Notes |
-|-----------|-----------|-------|
-| Text Extraction | O(n) | n = file size |
-| Embedding Generation | O(1) | Fixed for 2000 chars |
-| FAISS Search | O(k) | k = number of labels |
-| Label Generation | O(1) | API call latency |
-| Index Rebuild | O(k) | k = number of labels |
-
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Complexity</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Text Extraction</td>
+      <td>O(n)</td>
+      <td>n = file size</td>
+    </tr>
+    <tr>
+      <td>Embedding Generation</td>
+      <td>O(1)</td>
+      <td>Fixed for 2000 chars</td>
+    </tr>
+    <tr>
+      <td>FAISS Search</td>
+      <td>O(k)</td>
+      <td>k = number of labels</td>
+    </tr>
+    <tr>
+      <td>Label Generation</td>
+      <td>O(1)</td>
+      <td>API call latency</td>
+    </tr>
+    <tr>
+      <td>Index Rebuild</td>
+      <td>O(k)</td>
+      <td>k = number of labels</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="space-complexity">Space Complexity</h3>
 
-<div class="content-section">
-
-| Component | Size | Scaling |
-|-----------|------|---------|
-| Embedding Model | 420MB | One-time |
-| FAISS Index | ~3KB/label | Linear |
-| folder_labels.json | ~500B/label | Linear |
-| Logs | Variable | Can be disabled |
-
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Size</th>
+      <th>Scaling</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Embedding Model</td>
+      <td>420MB</td>
+      <td>One-time</td>
+    </tr>
+    <tr>
+      <td>FAISS Index</td>
+      <td>~3KB/label</td>
+      <td>Linear</td>
+    </tr>
+    <tr>
+      <td>folder_labels.json</td>
+      <td>~500B/label</td>
+      <td>Linear</td>
+    </tr>
+    <tr>
+      <td>Logs</td>
+      <td>Variable</td>
+      <td>Can be disabled</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="bottlenecks">Bottlenecks</h3>
 

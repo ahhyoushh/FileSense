@@ -68,10 +68,6 @@
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
 
-  
-    <script src="/FileSense/FileSense/wiki/assets/css/custom.css"></script>
-  
-
 
     <!-- start custom head snippets -->
 
@@ -131,15 +127,36 @@
 
 <p><strong>Result:</strong> ❌ <strong>Completely Wrong</strong></p>
 
-<div class="content-section">
-
-| Approach | Accuracy | Avg Similarity | Uncategorized |
-|----------|----------|----------------|---------------|
-| **Natural Language** | 24% | 0.104 | 71% |
-| **Keywords** | 56% | 0.355 | 11% |
-| **Difference** | **+32%** | **+241%** | **-60%** |
-
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Approach</th>
+      <th>Accuracy</th>
+      <th>Avg Similarity</th>
+      <th>Uncategorized</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Natural Language</strong></td>
+      <td>24%</td>
+      <td>0.104</td>
+      <td>71%</td>
+    </tr>
+    <tr>
+      <td><strong>Keywords</strong></td>
+      <td>56%</td>
+      <td>0.355</td>
+      <td>11%</td>
+    </tr>
+    <tr>
+      <td><strong>Difference</strong></td>
+      <td><strong>+32%</strong></td>
+      <td><strong>+241%</strong></td>
+      <td><strong>-60%</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 <p><strong>Why Keywords Won:</strong></p>
 
@@ -407,17 +424,36 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <p><strong>Discovery:</strong> Near-linear speedup up to 8 threads for I/O-bound workload.</p>
 
-<div class="content-section">
-
-| Threads | Speedup |
-|---------|---------|
-| 1 | 1.0x |
-| 2 | 1.8x |
-| 4 | 3.3x |
-| 6 | 4.0x |
-| 8 | 4.4x |
-
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>Threads</th>
+      <th>Speedup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1.0x</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.8x</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3.3x</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>4.0x</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>4.4x</td>
+    </tr>
+  </tbody>
+</table>
 
 <p><strong>Lesson:</strong> For I/O-bound tasks, multithreading provides excellent performance gains.</p>
 
