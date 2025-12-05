@@ -1,100 +1,6 @@
 /* FileSense Documentation - Professional Clean Minimal Theme */
 
 /* ============================================
-   STICKY NAVIGATION BAR
-   ============================================ */
-
-.wiki-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 30, 0.95));
-  border-bottom: 2px solid rgba(66, 133, 244, 0.3);
-  padding: 0.75rem 0;
-  margin-bottom: 2rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.wiki-nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.wiki-nav-brand {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #4285f4;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: color 0.3s ease;
-}
-
-.wiki-nav-brand:hover {
-  color: #5a9aff;
-  text-decoration: none;
-}
-
-.wiki-nav-links {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.wiki-nav-link {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.wiki-nav-link:hover {
-  background: rgba(66, 133, 244, 0.15);
-  color: #4285f4;
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-.wiki-nav-link.active {
-  background: rgba(66, 133, 244, 0.2);
-  color: #4285f4;
-  border: 1px solid rgba(66, 133, 244, 0.3);
-}
-
-/* Mobile responsive navigation */
-@media (max-width: 768px) {
-  .wiki-nav-container {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 1rem;
-  }
-
-  .wiki-nav-links {
-    width: 100%;
-    justify-content: space-around;
-    gap: 0.5rem;
-  }
-
-  .wiki-nav-link {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* ============================================
    GLOBAL LAYOUT & CONTAINER STYLES
    ============================================ */
 
@@ -118,12 +24,7 @@
    TYPOGRAPHY
    ============================================ */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   text-align: center;
   margin: 2rem 0 1.5rem 0;
   font-weight: 600;
@@ -289,8 +190,7 @@ pre code {
    LISTS
    ============================================ */
 
-ul,
-ol {
+ul, ol {
   margin: 1.5rem auto;
   max-width: 800px;
   padding-left: 2rem;
@@ -354,10 +254,12 @@ blockquote {
 hr {
   border: none;
   height: 1px;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2) 50%,
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent
+  );
   margin: 3rem auto;
   max-width: 600px;
 }
