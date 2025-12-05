@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ - FileSense Research</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-tertiary: #1a1a1a;
+      --text: #e5e7eb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --accent-dark: #1e40af;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.05);
+      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      --hover-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-light);
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 80px;
+      width: 280px;
+      height: calc(100vh - 80px);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 500;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    .sidebar h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .sidebar-tree {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar-tree li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar-tree a {
+      display: block;
+      padding: 8px 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      margin: 2px 0;
+    }
+
+    .sidebar-tree a:hover {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-light);
+      border-left-color: var(--accent);
+      padding-left: 16px;
+    }
+
+    .sidebar-tree a.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-light);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 280px;
+      margin-top: 80px;
+      padding: 40px;
+      max-width: calc(100vw - 320px);
+    }
+
+    .content-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Content Sections */
+    .content-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      scroll-margin-top: 100px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+      border-radius: 2px;
+    }
+
+    .subsection-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--success);
+      margin: 32px 0 16px 0;
+      scroll-margin-top: 100px;
+    }
+
+    /* Typography */
+    p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    strong {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      margin: 24px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: var(--bg-secondary);
+    }
+
+    th {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--accent-light);
+    }
+
+    td {
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      color: var(--text-secondary);
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #a1e5ff;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .code-block::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .code-block::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .code-block::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    /* Inline Code */
+    code {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    li strong {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    /* Notices/Alerts */
+    .notice {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-left: 4px solid var(--success);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+
+    .notice--warning {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-left-color: var(--warning);
+    }
+
+    .notice--info {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+      border-left-color: var(--accent);
+    }
+
+    .notice--danger {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border-left-color: var(--error);
+    }
+
+    /* Footer */
+    footer {
+      margin-left: 280px;
+      padding: 32px 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 240px;
+      }
+
+      .main-content {
+        margin-left: 240px;
+        max-width: calc(100vw - 240px);
+      }
+
+      footer {
+        margin-left: 240px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nav-links {
+        order: -1;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: auto;
+        margin-bottom: 32px;
+      }
+
+      .main-content {
+        margin-left: 0;
+        margin-top: 120px;
+        max-width: 100%;
+        padding: 20px;
+      }
+
+      footer {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">📊 FileSense Research</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="pipeline.html">Architecture</a>
+        <a href="metrics.html">Performance</a>
+        <a href="faq.html">FAQ</a>
+        <a href="../">← Back to Project</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="sidebar">
+    <h3>❓ FAQ</h3>
+    <ul class="sidebar-tree">
+      <li><a href="#general">General Questions</a></li>
+      <li><a href="#technical">Technical Questions</a></li>
+      <li><a href="#usage">Usage Questions</a></li>
+      <li><a href="#performance">Performance Questions</a></li>
+      <li><a href="#privacy">Privacy & Security</a></li>
+      <li><a href="#limitations">Known Limitations</a></li>
+      <li><a href="#contributing">Contributing</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h1 class="page-title">Frequently Asked Questions</h1>
+        <p class="page-subtitle">Common questions and answers about FileSense.</p>
+      </div>
+
+      <section class="content-section" id="general">
+        <h2 class="section-title">General Questions</h2>
+
+        <h3 class="subsection-title">What is FileSense?</h3>
+        <p>FileSense is an intelligent file organizer that classifies documents by their <strong>semantic meaning</strong> rather than just filenames or extensions. It uses:</p>
+        <ul>
+          <li><strong>SBERT</strong> (Sentence-BERT) for text embeddings</li>
+          <li><strong>FAISS</strong> for fast vector similarity search</li>
+          <li><strong>Google Gemini</strong> for generating new categories automatically</li>
+        </ul>
+
+        <h3 class="subsection-title">How is this different from traditional file organizers?</h3>
+        <div class="table-container">
+          <table>
+            <tr>
+              <th>Traditional Organizers</th>
+              <th>FileSense</th>
+            </tr>
+            <tr>
+              <td>Rules-based (file extension, name patterns)</td>
+              <td>Semantic understanding (actual content)</td>
+            </tr>
+            <tr>
+              <td>Manual category creation</td>
+              <td>AI-powered auto-generation</td>
+            </tr>
+            <tr>
+              <td>Keyword matching only</td>
+              <td>Vector embeddings + keywords</td>
+            </tr>
+            <tr>
+              <td>Static classification</td>
+              <td>Self-learning system</td>
+            </tr>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">Is my data sent to the cloud?</h3>
+        <p><strong>Partially.</strong> Here's what happens:</p>
+        <ul>
+          <li>✅ <strong>Local:</strong> Text extraction, embedding generation, vector search</li>
+          <li>☁️ <strong>Cloud:</strong> Only when generating new labels (Gemini API)</li>
+          <li>🔒 <strong>Privacy:</strong> File content is sent to Gemini only for classification, not stored</li>
+        </ul>
+        <div class="notice notice--info">
+          <strong>You can disable cloud features</strong> with <code>--no-generation</code> flag.
+        </div>
+      </section>
+
+      <section class="content-section" id="technical">
+        <h2 class="section-title">Technical Questions</h2>
+
+        <h3 class="subsection-title">What file types are supported?</h3>
+        <div class="table-container">
+          <table>
+            <tr>
+              <th>Format</th>
+              <th>Support</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td><strong>PDF</strong></td>
+              <td>✅ Full</td>
+              <td>Text-based and scanned (OCR)</td>
+            </tr>
+            <tr>
+              <td><strong>DOCX</strong></td>
+              <td>✅ Full</td>
+              <td>Microsoft Word documents</td>
+            </tr>
+            <tr>
+              <td><strong>TXT</strong></td>
+              <td>✅ Full</td>
+              <td>Plain text files</td>
+            </tr>
+            <tr>
+              <td><strong>MD</strong></td>
+              <td>✅ Full</td>
+              <td>Markdown files</td>
+            </tr>
+            <tr>
+              <td><strong>Images</strong></td>
+              <td>⚠️ Partial</td>
+              <td>OCR only (requires Tesseract)</td>
+            </tr>
+            <tr>
+              <td><strong>Others</strong></td>
+              <td>❌ No</td>
+              <td>Filename-based classification only</td>
+            </tr>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">How accurate is the classification?</h3>
+        <p><strong>Current performance (NCERT test dataset):</strong></p>
+        <ul>
+          <li><strong>Accuracy:</strong> 56% with keyword-based descriptions</li>
+          <li><strong>Categorization rate:</strong> 89% (only 11% uncategorized)</li>
+          <li><strong>Average similarity:</strong> 0.355</li>
+        </ul>
+
+        <p><strong>Factors affecting accuracy:</strong></p>
+        <ul>
+          <li>Quality of text extraction</li>
+          <li>Similarity to existing labels</li>
+          <li>Document length and clarity</li>
+          <li>Threshold settings (default: 0.40)</li>
+        </ul>
+
+        <h3 class="subsection-title">What embedding model is used?</h3>
+        <p><strong>Model:</strong> <code>all-mpnet-base-v2</code> (SentenceTransformers)</p>
+        <ul>
+          <li><strong>Dimensions:</strong> 768</li>
+          <li><strong>Performance:</strong> Best balance of speed and accuracy</li>
+          <li><strong>Size:</strong> ~420MB download on first run</li>
+        </ul>
+
+        <div class="notice notice--warning">
+          <strong>Why not use a lighter model?</strong><br>
+          Testing showed that lighter models performed <strong>significantly worse</strong>. The all-mpnet-base-v2 model is optimal for this use case.
+        </div>
+
+        <h3 class="subsection-title">Can I use a different embedding model?</h3>
+        <p><strong>Yes!</strong> Edit <code>scripts/create_index.py</code>:</p>
+        <div class="code-block">MODEL_NAME = "all-mpnet-base-v2"  # Change this</div>
+
+        <p><strong>Recommended alternatives:</strong></p>
+        <ul>
+          <li><code>all-MiniLM-L6-v2</code> - Faster, less accurate</li>
+          <li><code>all-mpnet-base-v2</code> - <strong>Best balance</strong> (recommended)</li>
+          <li><code>multi-qa-mpnet-base-dot-v1</code> - Better for Q&A documents</li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="usage">
+        <h2 class="section-title">Usage Questions</h2>
+
+        <h3 class="subsection-title">How do I organize my Downloads folder?</h3>
+        <p><strong>Option 1: One-time bulk sort</strong></p>
+        <div class="code-block">python scripts/script.py --dir ~/Downloads --threads 8</div>
+
+        <p><strong>Option 2: Real-time monitoring</strong></p>
+        <div class="code-block">python scripts/watcher_script.py --dir ~/Downloads</div>
+
+        <p>The watcher will automatically sort new files as they appear!</p>
+
+        <h3 class="subsection-title">Can I customize the categories?</h3>
+        <p><strong>Yes!</strong> Edit <code>folder_labels.json</code>:</p>
+        <div class="code-block">{
+  "Custom Category": "keyword1, keyword2, keyword3, related terms, synonyms Keywords: key1, key2, key3"
+}</div>
+
+        <p>Then rebuild the index:</p>
+        <div class="code-block">python scripts/create_index.py</div>
+
+        <h3 class="subsection-title">How do I adjust classification thresholds?</h3>
+        <p>Edit <code>scripts/classify_process_file.py</code>:</p>
+        <div class="code-block">THRESHOLD = 0.4              # Main threshold (increase for stricter)
+low_confidence_threshold = 0.35  # Fallback threshold</div>
+
+        <p><strong>Guidelines:</strong></p>
+        <ul>
+          <li><strong>0.30-0.35:</strong> More files categorized, less accurate</li>
+          <li><strong>0.40-0.45:</strong> Balanced (recommended)</li>
+          <li><strong>0.50+:</strong> Very strict, more uncategorized files</li>
+        </ul>
+
+        <h3 class="subsection-title">What happens to uncategorized files?</h3>
+        <p>Files that don't match any category (similarity &lt; threshold) are moved to <code>sorted/Uncategorized/</code>.</p>
+
+        <p><strong>To reduce uncategorized files:</strong></p>
+        <ol>
+          <li>Lower the threshold (e.g., 0.35)</li>
+          <li>Enable generation: Remove <code>--no-generation</code> flag</li>
+          <li>Add more diverse labels to <code>folder_labels.json</code></li>
+        </ol>
+      </section>
+
+      <section class="content-section" id="performance">
+        <h2 class="section-title">Performance Questions</h2>
+
+        <h3 class="subsection-title">Why do keyword descriptions work better than natural language?</h3>
+        <p><strong>Comprehensive testing showed:</strong></p>
+        <ul>
+          <li><strong>Keywords:</strong> 56% accuracy</li>
+          <li><strong>Natural Language:</strong> 24% accuracy</li>
+        </ul>
+
+        <p><strong>Reasons:</strong></p>
+        <ol>
+          <li>SBERT embeddings cluster keyword lists more effectively</li>
+          <li>Natural language adds grammatical noise</li>
+          <li>Keywords provide broader semantic coverage</li>
+          <li>Academic documents align well with keyword matching</li>
+        </ol>
+
+        <p>See the <a href="metrics.html">NL vs Keywords Study</a> for detailed analysis.</p>
+
+        <h3 class="subsection-title">What's the processing speed?</h3>
+        <p><strong>Benchmarks (NCERT dataset, 75 files):</strong></p>
+        <ul>
+          <li><strong>Average:</strong> 0.27s per file</li>
+          <li><strong>Total:</strong> ~20s for 75 files (6 threads)</li>
+          <li><strong>Bottleneck:</strong> Text extraction (especially OCR)</li>
+        </ul>
+
+        <p><strong>Optimization tips:</strong></p>
+        <ul>
+          <li>Use more threads for I/O-bound tasks</li>
+          <li>Pre-extract text for repeated processing</li>
+          <li>Use SSD storage</li>
+          <li>Disable fallback extraction if not needed</li>
+        </ul>
+
+        <h3 class="subsection-title">How much disk space does it need?</h3>
+        <p><strong>Minimal:</strong></p>
+        <ul>
+          <li><strong>Embedding model:</strong> ~420MB (one-time download)</li>
+          <li><strong>FAISS index:</strong> &lt;1MB per 100 labels</li>
+          <li><strong>Dependencies:</strong> ~500MB total</li>
+          <li><strong>Logs:</strong> Varies (can be disabled)</li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="privacy">
+        <h2 class="section-title">Privacy & Security</h2>
+
+        <h3 class="subsection-title">Is my data safe?</h3>
+        <p><strong>Local processing:</strong></p>
+        <ul>
+          <li>Text extraction happens locally</li>
+          <li>Embeddings generated locally</li>
+          <li>Vector search is local</li>
+        </ul>
+
+        <p><strong>Cloud processing:</strong></p>
+        <ul>
+          <li>Only when generating new labels</li>
+          <li>File content sent to Gemini API</li>
+          <li>Not stored by Google (per their policy)</li>
+        </ul>
+
+        <p><strong>Recommendations:</strong></p>
+        <ul>
+          <li>Use <code>--no-generation</code> for sensitive files</li>
+          <li>Review <code>folder_labels.json</code> before sharing</li>
+          <li>Keep <code>.env</code> file private</li>
+        </ul>
+
+        <h3 class="subsection-title">Can I use FileSense offline?</h3>
+        <p><strong>Partially:</strong></p>
+        <ul>
+          <li>✅ Classification works offline (after initial setup)</li>
+          <li>❌ New label generation requires internet (Gemini API)</li>
+        </ul>
+
+        <p><strong>Offline workflow:</strong></p>
+        <ol>
+          <li>Pre-generate all labels online</li>
+          <li>Use <code>--no-generation</code> flag</li>
+          <li>All classification happens locally</li>
+        </ol>
+      </section>
+
+      <section class="content-section" id="limitations">
+        <h2 class="section-title">Known Limitations</h2>
+
+        <div class="notice notice--warning">
+          <strong>Current Limitations</strong>
+        </div>
+
+        <ol>
+          <li><strong>Natural language descriptions perform worse</strong> than keywords
+            <ul>
+              <li>Tested extensively, keywords are superior</li>
+              <li>See <a href="metrics.html">NL vs OG study</a></li>
+            </ul>
+          </li>
+          <li><strong>Lighter models reduce accuracy significantly</strong>
+            <ul>
+              <li>Stick with all-mpnet-base-v2</li>
+              <li>Don't use smaller models for production</li>
+            </ul>
+          </li>
+          <li><strong>AG News dataset showed poor results</strong>
+            <ul>
+              <li>FileSense works best with academic/professional documents</li>
+              <li>News articles may need different approach</li>
+            </ul>
+          </li>
+          <li><strong>Text classification is inherently challenging</strong>
+            <ul>
+              <li>This might be an inefficient approach for some use cases</li>
+              <li>Consider as a learning experience</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="notice notice--warning">
+          <strong>These insights are from real testing and development.</strong>
+        </div>
+      </section>
+
+      <section class="content-section" id="contributing">
+        <h2 class="section-title">Contributing</h2>
+
+        <h3 class="subsection-title">How can I contribute?</h3>
+        <ol>
+          <li><strong>Report bugs:</strong> <a href="https://github.com/ahhyoushh/FileSense/issues">GitHub Issues</a></li>
+          <li><strong>Suggest features:</strong> Open a discussion</li>
+          <li><strong>Submit PRs:</strong> Fork, improve, and submit</li>
+          <li><strong>Improve docs:</strong> Help expand this wiki</li>
+        </ol>
+
+        <h3 class="subsection-title">Where can I get help?</h3>
+        <ul>
+          <li><strong>GitHub Issues:</strong> Technical problems</li>
+          <li><strong>Discussions:</strong> General questions</li>
+          <li><strong>Email:</strong> Contact the maintainer</li>
+        </ul>
+      </section>
+
+      <section style="margin: 40px 0; padding: 20px; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border);">
+        <h3 style="color: var(--text-secondary); margin-bottom: 12px;">Additional Resources</h3>
+        <ul style="color: var(--text-secondary);">
+          <li><strong><a href="getting-started.html">Getting Started</a></strong> - Installation guide</li>
+          <li><strong><a href="pipeline.html">User Guide</a></strong> - Detailed usage</li>
+          <li><strong><a href="metrics.html">Architecture</a></strong> - How it works</li>
+          <li><strong><a href="pipeline.html">Performance Metrics</a></strong> - Benchmarks</li>
+        </ul>
+      </section>
+
+      <section style="text-align: center; margin: 60px 0;">
+        <div class="notice notice--info" style="display: inline-block; max-width: 600px;">
+          <strong>Still have questions?</strong> Open an issue on <a href="https://github.com/ahhyoushh/FileSense/issues">GitHub</a>!
+        </div>
+
+        <p style="margin: 32px 0 16px;">Ready to explore more?</p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="getting-started.html" style="display: inline-block; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white;">🚀 Getting Started</a>
+          <a href="metrics.html" style="display: inline-block; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(255, 255, 255, 0.08);">📊 Performance</a>
+          <a href="index.html" style="display: inline-block; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(255, 255, 255, 0.08);">← Back to Home</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© 2025 Ayush Bhalerao | FileSense Research Documentation</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sidebar active link tracking
+    function updateActiveLink() {
+      const sidebarLinks = document.querySelectorAll('.sidebar-tree a');
+
+      sidebarLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink);
+
+    // Smooth scroll for sidebar links
+    document.querySelectorAll('.sidebar-tree a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
