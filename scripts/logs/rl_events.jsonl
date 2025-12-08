@@ -1,0 +1,1 @@
+{"interaction_id": "manual-1765203692", "event": "served", "timestamp": 1765203692, "file_path": "/tmp/test.pdf", "filename": "test.pdf", "policy_id": "policy_B", "predicted_label": "math", "similarity_top1": 0.87, "reward": null}
