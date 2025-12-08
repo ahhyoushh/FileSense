@@ -17,9 +17,6 @@
     </a><a href="/FileSense/wiki/getting-started/" class="">
       <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
       <span>Getting Started</span>
-    </a><a href="/FileSense/wiki/user-guide/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>User Guide</span>
     </a><a href="/FileSense/wiki/faq/" class="">
       <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
       <span>FAQ</span>
@@ -47,7 +44,7 @@
   
     <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
   
-  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/user-guide/">User Guide</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
+  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
   
 </header>
 
@@ -59,15 +56,15 @@
   <h1 id="natural-language-vs-original-keywords-comprehensive-analysis">Natural Language vs Original Keywords: Comprehensive Analysis</h1>
 
 <p><strong>Test Date:</strong> 2025-12-05<br />
-<strong>Project:</strong> FileSense - Intelligent File Organizer<br />
+<strong>commit id:</strong> 99d03e579a9fd413d7938f01559ebb0172a260e3
 <strong>Test Files:</strong> 75 NCERT textbook markdown files<br />
 <strong>Model:</strong> all-mpnet-base-v2 (SentenceTransformer)</p>
 
 <hr />
 
-<h2 id="-executive-summary">🎯 Executive Summary</h2>
+<h2 id="executive-summary">Executive Summary</h2>
 
-<h3 id="winner-original-keywords-approach-"><strong>WINNER: Original Keywords Approach</strong> 🏆</h3>
+<h3 id="winner-original-keywords-approach"><strong>WINNER: Original Keywords Approach</strong></h3>
 
 <p>The comprehensive testing revealed that <strong>comma-separated keyword terms dramatically outperform natural language descriptions</strong> for SBERT-based semantic matching with academic documents.</p>
 
@@ -83,8 +80,8 @@
   <tbody>
     <tr>
       <td><strong>Accuracy</strong></td>
-      <td>24.0% ❌</td>
-      <td><strong>56.0%</strong> ✅</td>
+      <td>24.0%</td>
+      <td><strong>56.0%</strong></td>
       <td><strong>+32.0%</strong></td>
     </tr>
     <tr>
@@ -95,20 +92,20 @@
     </tr>
     <tr>
       <td><strong>Uncategorized Files</strong></td>
-      <td>53/75 (71%) ❌</td>
-      <td>8/75 (11%) ✅</td>
+      <td>53/75 (71%)</td>
+      <td>8/75 (11%)</td>
       <td><strong>-60%</strong></td>
     </tr>
     <tr>
       <td><strong>Failed (0.00 sim)</strong></td>
-      <td>53 files ❌</td>
-      <td>8 files ✅</td>
+      <td>53 files</td>
+      <td>8 files</td>
       <td><strong>-45 files</strong></td>
     </tr>
     <tr>
       <td><strong>Avg Time/File</strong></td>
       <td>0.30s</td>
-      <td><strong>0.27s</strong> ⚡</td>
+      <td><strong>0.27s</strong></td>
       <td><strong>-10%</strong></td>
     </tr>
   </tbody>
@@ -118,11 +115,11 @@
 
 <hr />
 
-<h2 id="-test-configuration">📊 Test Configuration</h2>
+<h2 id="test-configuration">Test Configuration</h2>
 
 <h3 id="test-setup">Test Setup</h3>
 <ul>
-  <li><strong>Test Files:</strong> NCERT textbook markdown files (various subjects: Physics, Chemistry, Maths, Geography, History, etc.)</li>
+  <li><strong>Test Files:</strong> NCERT textbook markdown files (various subjects: Physics, Chemistry, Maths, Geography, Biology, civics)</li>
   <li><strong>Natural Language Test:</strong> NCERT_NL_TEST.log (Content-style descriptions)</li>
   <li><strong>Original Keyword Test:</strong> NCERT_OG_TEST.log (Comma-separated terms)</li>
   <li><strong>Total Files:</strong> 75 documents</li>
@@ -171,7 +168,7 @@ formulas, physical laws"
 
 <hr />
 
-<h2 id="-detailed-results">📈 Detailed Results</h2>
+<h2 id="detailed-results">Detailed Results</h2>
 
 <h3 id="overall-performance">Overall Performance</h3>
 
@@ -195,31 +192,31 @@ formulas, physical laws"
       <td><strong>Accuracy</strong></td>
       <td>24.0%</td>
       <td><strong>56.0%</strong></td>
-      <td>🏆 OG</td>
+      <td>OG</td>
     </tr>
     <tr>
       <td><strong>Avg Similarity</strong></td>
       <td>0.104</td>
       <td><strong>0.355</strong></td>
-      <td>🏆 OG</td>
+      <td>OG</td>
     </tr>
     <tr>
       <td><strong>Uncategorized</strong></td>
       <td>53</td>
       <td>8</td>
-      <td>✅ OG</td>
+      <td>OG</td>
     </tr>
     <tr>
       <td><strong>Low Confidence (&lt;0.40)</strong></td>
       <td>17</td>
       <td>40</td>
-      <td>✅ NL</td>
+      <td>NL</td>
     </tr>
     <tr>
       <td><strong>Avg Time/File</strong></td>
       <td>0.30s</td>
       <td><strong>0.27s</strong></td>
-      <td>⚡ OG</td>
+      <td>OG</td>
     </tr>
   </tbody>
 </table>
@@ -319,7 +316,7 @@ Original Keywords:
 <h3 id="1-too-specific--overfitted">1. <strong>Too Specific / Overfitted</strong></h3>
 <p>Natural language descriptions were too specific to the training examples:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❌ BAD: "Integration by parts where u equals x squared, dv equals e to the x dx. 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BAD: "Integration by parts where u equals x squared, dv equals e to the x dx. 
 Series convergence testing using ratio test, comparison test."
 </code></pre></div></div>
 
@@ -365,12 +362,12 @@ Keywords (40 terms):
 
 <hr />
 
-<h2 id="-analysis-why-keywords-succeeded">✅ Analysis: Why Keywords Succeeded</h2>
+<h2 id="analysis-why-keywords-succeeded">Analysis: Why Keywords Succeeded</h2>
 
 <h3 id="1-broader-semantic-coverage">1. <strong>Broader Semantic Coverage</strong></h3>
 <p>Keyword lists cover MORE semantic space with FEWER tokens:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ GOOD: "mechanics, thermodynamics, optics, electromagnetism, quantum physics, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> GOOD: "mechanics, thermodynamics, optics, electromagnetism, quantum physics, 
 relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 </code></pre></div></div>
 
@@ -408,7 +405,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <hr />
 
-<h2 id="-raw-data-summary">📊 Raw Data Summary</h2>
+<h2 id="raw-data-summary">Raw Data Summary</h2>
 
 <h3 id="natural-language-test">Natural Language Test</h3>
 <ul>
@@ -442,9 +439,9 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <hr />
 
-<h2 id="-best-practices--recommendations">💡 Best Practices &amp; Recommendations</h2>
+<h2 id="best-practices--recommendations">Best Practices &amp; Recommendations</h2>
 
-<h3 id="-do-use-keyword-based-descriptions">✅ <strong>DO: Use Keyword-Based Descriptions</strong></h3>
+<h3 id="do-use-keyword-based-descriptions"><strong>DO: Use Keyword-Based Descriptions</strong></h3>
 
 <h4 id="optimal-format">Optimal Format</h4>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
@@ -470,7 +467,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
   <li><strong>Dense terminology</strong> without filler words</li>
 </ol>
 
-<h3 id="-dont-use-natural-language-descriptions">❌ <strong>DON’T: Use Natural Language Descriptions</strong></h3>
+<h3 id="dont-use-natural-language-descriptions"><strong>DON’T: Use Natural Language Descriptions</strong></h3>
 
 <h4 id="avoid-this-format">Avoid This Format</h4>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
@@ -491,11 +488,11 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <hr />
 
-<h2 id="-key-insights">🎓 Key Insights</h2>
+<h2 id="key-insights">Key Insights</h2>
 
 <h3 id="for-sbert-based-semantic-matching">For SBERT-Based Semantic Matching</h3>
 
-<h4 id="-what-works">✅ <strong>What Works:</strong></h4>
+<h4 id="what-works"><strong>What Works:</strong></h4>
 <ol>
   <li><strong>Dense keyword lists</strong> (20-40 terms)</li>
   <li><strong>Domain-specific vocabulary</strong> (technical terms)</li>
@@ -504,7 +501,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
   <li><strong>No grammatical structure</strong> (pure semantic content)</li>
 </ol>
 
-<h4 id="-what-doesnt-work">❌ <strong>What Doesn’t Work:</strong></h4>
+<h4 id="what-doesnt-work"><strong>What Doesn’t Work:</strong></h4>
 <ol>
   <li><strong>Natural language sentences</strong> (too much noise)</li>
   <li><strong>Explanatory text</strong> (“Documents contain…”)</li>
@@ -533,7 +530,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <hr />
 
-<h2 id="-actionable-next-steps">🚀 Actionable Next Steps</h2>
+<h2 id="actionable-next-steps">Actionable Next Steps</h2>
 
 <h3 id="1-keep-using-keywords-confirmed-best-practice">1. <strong>Keep Using Keywords</strong> (Confirmed Best Practice)</h3>
 <p>✅ Continue with comma-separated keyword terms in descriptions<br />
@@ -660,7 +657,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
 
 <hr />
 
-<h2 id="-technical-details">🔬 Technical Details</h2>
+<h2 id="technical-details">Technical Details</h2>
 
 <h3 id="embedding-model">Embedding Model</h3>
 <ul>
@@ -700,7 +697,7 @@ Re-classify
 
 <hr />
 
-<h2 id="-lessons-learned">📚 Lessons Learned</h2>
+<h2 id="lessons-learned">Lessons Learned</h2>
 
 <h3 id="1-simpler-is-better">1. <strong>Simpler is Better</strong></h3>
 <p>For SBERT embeddings with academic content, simple keyword lists outperform complex natural language descriptions.</p>
@@ -725,7 +722,7 @@ Re-classify
 
 <hr />
 
-<h2 id="-final-recommendations">✅ Final Recommendations</h2>
+<h2 id="final-recommendations">Final Recommendations</h2>
 
 <h3 id="do"><strong>DO:</strong></h3>
 <ol>
