@@ -1,170 +1,62 @@
-<!doctype html>
-<!--
-  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
-  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
-  Free for personal and commercial use under the MIT license
-  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
--->
+<!DOCTYPE html>
+<html lang="">
 
-<html lang="en" class="no-js">
-  <head>
-    <meta charset="utf-8">
-
-<!-- begin _includes/seo.html --><title>FileSense Documentation - FileSense Documentation</title>
-<meta name="description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
-
-
-
-<meta property="og:type" content="website">
-<meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="FileSense Documentation">
-<meta property="og:title" content="FileSense Documentation">
-<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/">
-
-
-  <meta property="og:description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/">
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- end _includes/seo.html -->
-
-
-
-  <link href="/FileSense/feed.xml" type="application/atom+xml" rel="alternate" title="FileSense Documentation Feed">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script type="text/javascript">
-  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+<title>FileSense Documentation | FileSense Documentation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="Ayush Bhalerao">
+<meta name="generator" content="Jekyll v3.10.0">
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
+<aside style="display: none">
+  <nav>
   
-</script>
+  <a href="/FileSense/wiki/" class="selected">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Home</span>
+    </a><a href="/FileSense/wiki/getting-started/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Getting Started</span>
+    </a><a href="/FileSense/wiki/user-guide/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>User Guide</span>
+    </a><a href="/FileSense/wiki/faq/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>FAQ</span>
+    </a><a href="/FileSense/wiki/pipeline/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Architecture</span>
+    </a><a href="/FileSense/wiki/metrics/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Metrics</span>
+    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>NL vs Keywords</span>
+    </a><a href="/FileSense/wiki/lessons-learned/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Lessons Learned</span>
+    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
+      <span>GitHub</span>
+    </a></nav>
+  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
+</aside>
 
-<!-- For all browsers -->
-<link rel="stylesheet" href="/FileSense/assets/css/main.css">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
-
+<header class="hover smooth">
   
-    <script src="/FileSense/assets/css/custom.css"></script>
+    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
   
-
-
-    <!-- start custom head snippets -->
-
-<!-- insert favicons. use https://realfavicongenerator.net/ -->
-
-<!-- end custom head snippets -->
-
-  </head>
-
-  <body class="layout--splash">
-    <nav class="skip-links">
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    
-
-<div class="masthead">
-  <div class="masthead__inner-wrap">
-    <div class="masthead__menu">
-      <nav id="site-nav" class="greedy-nav">
-        
-        <a class="site-title" href="/FileSense/">
-          FileSense Documentation
-          
-        </a>
-        <ul class="visible-links"></ul>
-        
-        <button class="greedy-nav__toggle hidden" type="button">
-          <span class="visually-hidden">Toggle menu</span>
-          <div class="navicon"></div>
-        </button>
-        <ul class="hidden-links hidden"></ul>
-      </nav>
-    </div>
-  </div>
-</div>
-
-
-    <div class="initial-content">
-      
+  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/user-guide/">User Guide</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
   
+</header>
 
+<article>
+  <header>
+  <h1><a href="/FileSense/wiki/">FileSense Documentation</a></h1>
+</header>
 
-
-
-
-
-
-<div class="page__hero--overlay"
-  style="background-color: #000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('');"
->
-  
-    <div class="wrapper">
-      <h1 id="page-title" class="page__title" itemprop="headline">
-        
-          FileSense Documentation
-
-        
-      </h1>
-      
-        <p class="page__lead">Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI
-</p>
-      
-      
-
-
-      
-        <p>
-        
-          <a href="/FileSense/wiki/getting-started/" class="btn btn--light-outline btn--large">🚀 Get Started</a>
-        
-          <a href="https://youtu.be/f27I2L7uoC8" class="btn btn--light-outline btn--large">📺 Watch Demo</a>
-        
-        </p>
-      
-    </div>
-  
-  
-</div>
-
-
-
-<div id="main" role="main">
-  <article class="splash" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="FileSense Documentation">
-    <meta itemprop="description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI">
-    
-    
-
-    <section class="page__content" itemprop="text">
-      <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
+  <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
 
 <p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> to generate new categories automatically.</p>
 
@@ -172,52 +64,11 @@
 
 <h2 id="-quick-links">⚡ Quick Links</h2>
 
-<div class="feature__wrapper">
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-rocket fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">Getting Started</h2>
-        <div class="archive__item-excerpt">
-          <p>Install and run FileSense in 5 minutes</p>
-        </div>
-        <p><a href="/FileSense/wiki/getting-started/" class="btn btn--primary">Start Here →</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-book fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">User Guide</h2>
-        <div class="archive__item-excerpt">
-          <p>Learn how to use all features effectively</p>
-        </div>
-        <p><a href="/FileSense/wiki/user-guide/" class="btn btn--primary">Read Guide →</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-chart-line fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">Performance</h2>
-        <div class="archive__item-excerpt">
-          <p>See benchmarks and optimization studies</p>
-        </div>
-        <p><a href="/FileSense/wiki/metrics/" class="btn btn--primary">View Metrics →</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+<ul>
+  <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong>: Install and run FileSense in 5 minutes</li>
+  <li><strong><a href="/FileSense/wiki/user-guide/">User Guide</a></strong>: Learn how to use all features effectively</li>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong>: See benchmarks and optimization studies</li>
+</ul>
 
 <hr />
 
@@ -314,7 +165,6 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 <h3 id="-for-developers">🔧 For Developers</h3>
 <ul>
   <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - System design and data flow</li>
-  <li><strong><a href="/FileSense/wiki/api-reference/">API Reference</a></strong> - Function documentation</li>
   <li><strong><a href="/FileSense/wiki/code-structure/">Code Structure</a></strong> - Project organization</li>
 </ul>
 
@@ -329,14 +179,16 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <h2 id="-key-insights">🎓 Key Insights</h2>
 
-<p class="notice--warning"><strong>Important discoveries from testing:</strong></p>
+<blockquote>
+  <p><strong>Important discoveries from testing:</strong></p>
 
-<ol>
-  <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
-  <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
-  <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
-  <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
-</ol>
+  <ol>
+    <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
+    <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
+    <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
+    <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
+  </ol>
+</blockquote>
 
 <p>See the <a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a> for detailed analysis.</p>
 
@@ -395,59 +247,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <hr />
 
-<p class="notice--success"><strong>Ready to get started?</strong> → <a href="/FileSense/wiki/getting-started/">Installation Guide</a></p>
+<p><strong>Ready to get started?</strong> → <a href="/FileSense/wiki/getting-started/">Installation Guide</a></p>
 
-    </section>
-  </article>
-</div>
-
-      
-    </div>
-
-    
-
-    <div id="footer" class="page__footer">
-      <footer>
-        <!-- start custom footer snippets -->
-
-<!-- end custom footer snippets -->
-        <div class="page__footer-follow">
-  <ul class="social-icons">
-    
-
-    
-      
-        
-          <li><a href="https://github.com/ahhyoushh/FileSense" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
-        
-      
-        
-          <li><a href="https://youtu.be/f27I2L7uoC8" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Demo Video</a></li>
-        
-      
-    
-
-    
-      <li><a href="/FileSense/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
-    
-  </ul>
-</div>
-
-<div class="page__footer-copyright">&copy; 2025 <a href="https://ahhyoushh.github.io">FileSense Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
-
-      </footer>
-    </div>
-
-    
-  <script src="/FileSense/assets/js/main.min.js"></script>
-
-
-
-
-
-
-
-
-
-  </body>
+</article>
 </html>
