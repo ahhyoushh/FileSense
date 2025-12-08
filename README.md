@@ -6,7 +6,7 @@
 
 Unlike standard organizers that rely on hardcoded rules, FileSense uses **SentenceTransformers** and **FAISS** to understand the semantic context of your files. 
 
-**✨ New in v2.0:** It is now **Self-Organizing**. If FileSense encounters a document that doesn't fit any existing folder, it uses **Google Gemini (GenAI)** to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.
+**✨ New :** It is now **Self-Organizing**. If FileSense encounters a document that doesn't fit any existing folder, it uses **Google Gemini (GenAI)** to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.
 
 > 📺 **Overview Video**: [FileSense Demo](https://youtu.be/f27I2L7uoC8)
 > 
@@ -126,3 +126,4 @@ MIT License © 2025 Ayush Bhalerao
 1. Use the dateset with category labels for the data, make a script to general folder labels until the similarity crosses a certain threshold for all files in the train dataset. In this way the description and folders_labels.json would be most optimised.
 2. After the last update with gemini, make the model return the revised prompt and use the revised prompt so that the prompt self optimises.
 3. Setup RL: let the user upload logs that include text from the file and folder label given.
+4. explain why i used Sentence transformers rather than just using a tezt classifier
