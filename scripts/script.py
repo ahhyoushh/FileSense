@@ -3,7 +3,7 @@ import argparse
 import sys
 from multhread import process_multiple
 from classify_process_file import process_file, load_index_and_labels 
-from logger import setup_logger, get_logger, restore_stdout
+from scripts.logger.logger import setup_logger, get_logger, restore_stdout
 
 test = True
 parser = argparse.ArgumentParser(description="Process files in a directory concurrently.")
