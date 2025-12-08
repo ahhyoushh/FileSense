@@ -37,8 +37,6 @@ navigation:
     url: /wiki/
   - title: Getting Started
     url: /wiki/getting-started/
-  - title: User Guide
-    url: /wiki/user-guide/ # Based on index.md link, though file might not exist yet or user intends to create it.
   - title: FAQ
     url: /wiki/faq/
   - title: Architecture

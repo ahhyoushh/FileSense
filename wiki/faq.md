@@ -332,7 +332,6 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 ## 📚 Additional Resources
 
 - **[Getting Started](/FileSense/wiki/getting-started/)** - Installation guide
-- **[User Guide](/FileSense/wiki/user-guide/)** - Detailed usage
 - **[Architecture](/FileSense/wiki/pipeline/)** - How it works
 - **[Performance Metrics](/FileSense/wiki/metrics/)** - Benchmarks
 

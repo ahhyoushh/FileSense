@@ -7,34 +7,34 @@ permalink: /wiki/NL_VS_OG/
 # Natural Language vs Original Keywords: Comprehensive Analysis
 
 **Test Date:** 2025-12-05  
-**Project:** FileSense - Intelligent File Organizer  
+**commit id:** 99d03e579a9fd413d7938f01559ebb0172a260e3
 **Test Files:** 75 NCERT textbook markdown files  
 **Model:** all-mpnet-base-v2 (SentenceTransformer)  
 
 ---
 
-## 🎯 Executive Summary
+## Executive Summary
 
-### **WINNER: Original Keywords Approach** 🏆
+### **WINNER: Original Keywords Approach** 
 
 The comprehensive testing revealed that **comma-separated keyword terms dramatically outperform natural language descriptions** for SBERT-based semantic matching with academic documents.
 
 | Metric | Natural Language | Original Keywords | Difference |
 |--------|-----------------|-------------------|------------|
-| **Accuracy** | 24.0% ❌ | **56.0%** ✅ | **+32.0%** |
+| **Accuracy** | 24.0%  | **56.0%**  | **+32.0%** |
 | **Avg Similarity** | 0.104 | **0.355** | **+241%** |
-| **Uncategorized Files** | 53/75 (71%) ❌ | 8/75 (11%) ✅ | **-60%** |
-| **Failed (0.00 sim)** | 53 files ❌ | 8 files ✅ | **-45 files** |
-| **Avg Time/File** | 0.30s | **0.27s** ⚡ | **-10%** |
+| **Uncategorized Files** | 53/75 (71%)  | 8/75 (11%)  | **-60%** |
+| **Failed (0.00 sim)** | 53 files  | 8 files  | **-45 files** |
+| **Avg Time/File** | 0.30s | **0.27s**  | **-10%** |
 
 **Verdict:** Original keyword-based descriptions are **superior** for NCERT academic documents with SBERT embeddings.
 
 ---
 
-## 📊 Test Configuration
+##  Test Configuration
 
 ### Test Setup
-- **Test Files:** NCERT textbook markdown files (various subjects: Physics, Chemistry, Maths, Geography, History, etc.)
+- **Test Files:** NCERT textbook markdown files (various subjects: Physics, Chemistry, Maths, Geography, Biology, civics)
 - **Natural Language Test:** NCERT_NL_TEST.log (Content-style descriptions)
 - **Original Keyword Test:** NCERT_OG_TEST.log (Comma-separated terms)
 - **Total Files:** 75 documents
@@ -80,18 +80,18 @@ formulas, physical laws"
 
 ---
 
-## 📈 Detailed Results
+##  Detailed Results
 
 ### Overall Performance
 
 | Metric | Natural Language | Original Keywords | Winner |
 |--------|-----------------|-------------------|--------|
 | **Total Files** | 75 | 75 | - |
-| **Accuracy** | 24.0% | **56.0%** | 🏆 OG |
-| **Avg Similarity** | 0.104 | **0.355** | 🏆 OG |
-| **Uncategorized** | 53 | 8 | ✅ OG |
-| **Low Confidence (<0.40)** | 17 | 40 | ✅ NL |
-| **Avg Time/File** | 0.30s | **0.27s** | ⚡ OG |
+| **Accuracy** | 24.0% | **56.0%** |  OG |
+| **Avg Similarity** | 0.104 | **0.355** |  OG |
+| **Uncategorized** | 53 | 8 |  OG |
+| **Low Confidence (<0.40)** | 17 | 40 |  NL |
+| **Avg Time/File** | 0.30s | **0.27s** |  OG |
 
 ### Similarity Score Distribution
 
@@ -146,7 +146,7 @@ Original Keywords:
 Natural language descriptions were too specific to the training examples:
 
 ```
-❌ BAD: "Integration by parts where u equals x squared, dv equals e to the x dx. 
+BAD: "Integration by parts where u equals x squared, dv equals e to the x dx. 
 Series convergence testing using ratio test, comparison test."
 ```
 
@@ -187,13 +187,13 @@ Keywords (40 terms):
 
 ---
 
-## ✅ Analysis: Why Keywords Succeeded
+## Analysis: Why Keywords Succeeded
 
 ### 1. **Broader Semantic Coverage**
 Keyword lists cover MORE semantic space with FEWER tokens:
 
 ```
-✅ GOOD: "mechanics, thermodynamics, optics, electromagnetism, quantum physics, 
+ GOOD: "mechanics, thermodynamics, optics, electromagnetism, quantum physics, 
 relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 ```
 
@@ -226,7 +226,7 @@ Every token in keyword descriptions carries semantic weight:
 
 ---
 
-## 📊 Raw Data Summary
+## Raw Data Summary
 
 ### Natural Language Test
 - **Total Files:** 75
@@ -254,9 +254,9 @@ Every token in keyword descriptions carries semantic weight:
 
 ---
 
-## 💡 Best Practices & Recommendations
+## Best Practices & Recommendations
 
-### ✅ **DO: Use Keyword-Based Descriptions**
+### **DO: Use Keyword-Based Descriptions**
 
 #### Optimal Format
 ```json
@@ -278,7 +278,7 @@ Every token in keyword descriptions carries semantic weight:
 4. **No articles, verbs, or grammatical structure**
 5. **Dense terminology** without filler words
 
-### ❌ **DON'T: Use Natural Language Descriptions**
+### **DON'T: Use Natural Language Descriptions**
 
 #### Avoid This Format
 ```json
@@ -298,18 +298,18 @@ Every token in keyword descriptions carries semantic weight:
 
 ---
 
-## 🎓 Key Insights
+## Key Insights
 
 ### For SBERT-Based Semantic Matching
 
-#### ✅ **What Works:**
+####  **What Works:**
 1. **Dense keyword lists** (20-40 terms)
 2. **Domain-specific vocabulary** (technical terms)
 3. **Synonym inclusion** (multiple ways to express concepts)
 4. **Broad coverage** (core + sub-topics + related terms)
 5. **No grammatical structure** (pure semantic content)
 
-#### ❌ **What Doesn't Work:**
+#### **What Doesn't Work:**
 1. **Natural language sentences** (too much noise)
 2. **Explanatory text** ("Documents contain...")
 3. **Specific examples** (overfitting to training data)
@@ -332,7 +332,7 @@ Every token in keyword descriptions carries semantic weight:
 
 ---
 
-## 🚀 Actionable Next Steps
+## Actionable Next Steps
 
 ### 1. **Keep Using Keywords** (Confirmed Best Practice)
 ✅ Continue with comma-separated keyword terms in descriptions  
@@ -438,7 +438,7 @@ Consider expanding to:
 
 ---
 
-## 🔬 Technical Details
+##  Technical Details
 
 ### Embedding Model
 - **Model:** all-mpnet-base-v2
@@ -475,7 +475,7 @@ Re-classify
 
 ---
 
-## 📚 Lessons Learned
+## Lessons Learned
 
 ### 1. **Simpler is Better**
 For SBERT embeddings with academic content, simple keyword lists outperform complex natural language descriptions.
@@ -500,7 +500,7 @@ The initial keyword-based approach was optimal all along - sometimes the simples
 
 ---
 
-## ✅ Final Recommendations
+## Final Recommendations
 
 ### **DO:**
 1. ✅ Continue using **comma-separated keyword terms**

@@ -235,8 +235,6 @@ python scripts/script.py --dir ./files
 > **Congratulations! FileSense is now installed.** 🎉
 
 ### Learn More:
-- **[User Guide](/FileSense/wiki/user-guide/)** - Detailed usage instructions
-- **[Configuration](/FileSense/wiki/configuration/)** - Customize thresholds and settings
 - **[FAQ](/FileSense/wiki/faq/)** - Common questions and troubleshooting
 
 ### Advanced Topics:
@@ -283,4 +281,4 @@ pip install faiss-gpu
 
 ---
 
-[← Back to Home](/FileSense/wiki/) | [Next: User Guide →](/FileSense/wiki/user-guide/)
+[← Back to Home](/FileSense/wiki/) | [Next: FAQ →](/FileSense/wiki/faq/)

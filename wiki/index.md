@@ -14,7 +14,6 @@ FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to o
 ## ⚡ Quick Links
 
 *   **[Getting Started](/FileSense/wiki/getting-started/)**: Install and run FileSense in 5 minutes
-*   **[User Guide](/FileSense/wiki/user-guide/)**: Learn how to use all features effectively
 *   **[Performance Metrics](/FileSense/wiki/metrics/)**: See benchmarks and optimization studies
 
 ---
@@ -74,12 +73,11 @@ python scripts/script.py --dir ./files --threads 6
 
 ### 🎓 For Users
 - **[Getting Started](/FileSense/wiki/getting-started/)** - Installation and setup
-- **[User Guide](/FileSense/wiki/user-guide/)** - How to use FileSense effectively
 - **[FAQ](/FileSense/wiki/faq/)** - Common questions and troubleshooting
 
 ### 🔧 For Developers
 - **[Architecture](/FileSense/wiki/pipeline/)** - System design and data flow
-- **[Code Structure](/FileSense/wiki/code-structure/)** - Project organization
+
 
 ### 📊 Research & Analysis
 - **[Performance Metrics](/FileSense/wiki/metrics/)** - Benchmarks and accuracy
