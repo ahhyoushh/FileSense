@@ -8,7 +8,12 @@
 ---
 ### Policy: configuration 
 rl_config.py
-rl
+```bash
+POLICIES = {
+    "policy_A": {"THRESHOLD": 0.45, "LOW_CONF": 0.40, "FILENAME_BOOST": 0.15, "TEXT_BOOST": 0.08, "ALLOW_GENERATION": True},
+    "policy_B": {"THRESHOLD": 0.40, "LOW_CONF": 0.30, "FILENAME_BOOST": 0.20, "TEXT_BOOST": 0.10, "ALLOW_GENERATION": True},
+    "policy_C": {"THRESHOLD": 0.35, "LOW_CONF": 0.25, "FILENAME_BOOST": 0.25, "TEXT_BOOST": 0.12, "ALLOW_GENERATION": False},
+}```
 ---
 ## State: (optional at v1) Features recorded at first serve 
 ---
