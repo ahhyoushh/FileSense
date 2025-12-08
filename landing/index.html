@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -171,8 +172,15 @@
     }
 
     @keyframes float {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(30px, -30px); }
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(30px, -30px);
+      }
     }
 
     header h1 {
@@ -194,6 +202,7 @@
         opacity: 0;
         transform: translateY(-30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -232,6 +241,7 @@
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -259,11 +269,25 @@
       }
     }
 
-    section:nth-child(1) { animation-delay: 0.2s; }
-    section:nth-child(2) { animation-delay: 0.3s; }
-    section:nth-child(3) { animation-delay: 0.4s; }
-    section:nth-child(4) { animation-delay: 0.5s; }
-    section:nth-child(5) { animation-delay: 0.6s; }
+    section:nth-child(1) {
+      animation-delay: 0.2s;
+    }
+
+    section:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    section:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    section:nth-child(4) {
+      animation-delay: 0.5s;
+    }
+
+    section:nth-child(5) {
+      animation-delay: 0.6s;
+    }
 
     h2 {
       font-size: 2rem;
@@ -414,7 +438,8 @@
     }
 
     /* Lists */
-    ul, ol {
+    ul,
+    ol {
       margin-left: 24px;
       margin-bottom: 16px;
     }
@@ -650,13 +675,17 @@
     }
   </style>
 </head>
+
 <body>
   <a href="https://ahhyoushh.github.io" class="back-button" title="Back to Portfolio">← Back</a>
 
   <header>
     <div class="header-date">Updated: 2025</div>
     <h1>🗂️ FileSense</h1>
-    <p>Essentially a python script that generates generates vector embeddings using SentenceTransformers all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less than threshold) to classify, create folder label , and organize your files automatically by moving them in respective folders.</p>
+    <p>Essentially a python script that generates generates vector embeddings using SentenceTransformers
+      all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less
+      than threshold) to classify, create folder label , and organize your files automatically by moving them in
+      respective folders.</p>
   </header>
 
   <nav class="sidebar">
@@ -676,7 +705,10 @@
   <main>
     <section id="overview">
       <h2>Quick Overview</h2>
-      <p>FileSense isn't just a sorter; it's a taxonomist. If a file fits an existing folder, it moves it there. If it encounters a completely new topic (e.g., a "Quantum Mechanics" paper when you only have "Finance" folders), it detects the anomaly, uses <strong>Generative AI</strong> to create a new category, and rebuilds its own sorting index instantly.</p>
+      <p>FileSense isn't just a sorter; it's a taxonomist. If a file fits an existing folder, it moves it there. If it
+        encounters a completely new topic (e.g., a "Quantum Mechanics" paper when you only have "Finance" folders), it
+        detects the anomaly, uses <strong>Generative AI</strong> to create a new category, and rebuilds its own sorting
+        index instantly.</p>
 
       <div class="feature-grid">
         <div class="feature-card ai-card">
@@ -706,13 +738,10 @@
       </div>
 
       <div class="demo-container">
-        <iframe width="560" height="315"
-          src="https://www.youtube.com/embed/f27I2L7uoC8"
-          title="FileSense Demo Video"
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/f27I2L7uoC8" title="FileSense Demo Video"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          allowfullscreen style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
         </iframe>
       </div>
 
@@ -728,7 +757,9 @@
       <p>The system follows a decision pipeline: <strong>Identify → Search → Generate (if needed) → Move</strong>.</p>
 
       <h3 id="process-flow">1️⃣ Semantic Classification</h3>
-      <p>Files are read (via text or OCR), encoded into vectors, and compared against the <code>folder_embeddings.faiss</code> index. If similarity is high (>0.5), it moves to the existing folder.</p>
+      <p>Files are read (via text or OCR), encoded into vectors, and compared against the
+        <code>folder_embeddings.faiss</code> index. If similarity is high (>0.5), it moves to the existing folder.
+      </p>
 
       <h3 id="genai-integration">2️⃣ Generative Fallback (The AI Layer)</h3>
       <p>If confidence is low, the file content is sent to <strong>Google Gemini</strong> via the API. The LLM:</p>
@@ -740,12 +771,14 @@
       </ul>
 
       <h3 id="watch-folder">3️⃣ Real-time Watcher</h3>
-      <p>The system monitors directories for <code>Created</code> or <code>Moved</code> events, ignoring temporary download files (.crdownload) until they are fully written.</p>
+      <p>The system monitors directories for <code>Created</code> or <code>Moved</code> events, ignoring temporary
+        download files (.crdownload) until they are fully written.</p>
     </section>
 
     <section id="structure">
       <h2>Project Structure</h2>
-      <div class="structure-box"><pre>FileSense/
+      <div class="structure-box">
+        <pre>FileSense/
 ├── scripts/
 │   ├── generate_label.py    # Interfaces with Gemini API
 │   ├── create_index.py      # Rebuilds FAISS index dynamically
@@ -755,7 +788,8 @@
 │   └── launcher.py          # Tkinter GUI
 ├── folder_labels.json       # JSON database of labels & descriptions
 ├── folder_embeddings.faiss  # Vector Index
-└── files/                   # Input zone</pre></div>
+└── files/                   # Input zone</pre>
+      </div>
     </section>
 
     <section id="features">
@@ -800,8 +834,9 @@
       <h2>Installation & Setup</h2>
       <h3>Requirements</h3>
       <p>Python 3.8+, Google Cloud API Key, and Tesseract OCR.</p>
-      
-      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv</div>
+
+      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow
+        python-docx watchdog pystray google-genai python-dotenv</div>
 
       <h3>Environment Config</h3>
       <p>Create a <code>.env</code> file in the root:</p>
@@ -901,4 +936,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -57,3 +57,7 @@ defaults:
       path: ""
     values:
       layout: page
+
+# Custom CSS (Backwards compatibility / Theme specific)
+head_scripts:
+  - /assets/css/style.css
