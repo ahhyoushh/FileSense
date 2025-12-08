@@ -31,6 +31,11 @@ show_excerpts: true
 show_frame: false
 show_sidebar: true
 
+# Font Configuration
+sass:
+  sass_dir: _sass
+  style: compressed
+
 # Navigation
 navigation:
   - title: Home
@@ -57,7 +62,3 @@ defaults:
       path: ""
     values:
       layout: page
-
-# Custom CSS (Backwards compatibility / Theme specific)
-head_scripts:
-  - /assets/css/style.css

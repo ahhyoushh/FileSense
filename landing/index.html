@@ -705,10 +705,13 @@
   <main>
     <section id="overview">
       <h2>Quick Overview</h2>
-      <p>FileSense isn't just a sorter; it's a taxonomist. If a file fits an existing folder, it moves it there. If it
-        encounters a completely new topic (e.g., a "Quantum Mechanics" paper when you only have "Finance" folders), it
-        detects the anomaly, uses <strong>Generative AI</strong> to create a new category, and rebuilds its own sorting
-        index instantly.</p>
+      <p>FileSense is a <strong>Self-Organizing</strong> file organizer that sorts
+        documents by <strong>meaning</strong>, not just filenames. Unlike standard organizers, it uses
+        <strong>SentenceTransformers</strong> and <strong>FAISS</strong> to understand context.
+      </p>
+      <p style="margin-top: 10px;">If it encounters a file that doesn't fit any existing folder, it uses <strong>Google
+          Gemini (GenAI)</strong> to analyze the content, generate a new specific category, create the folder, and
+        update its own sorting logic automatically.</p>
 
       <div class="feature-grid">
         <div class="feature-card ai-card">
@@ -780,12 +783,13 @@
       <div class="structure-box">
         <pre>FileSense/
 ├── scripts/
-│   ├── generate_label.py    # Interfaces with Gemini API
-│   ├── create_index.py      # Rebuilds FAISS index dynamically
-│   ├── process_file.py      # Main decision logic
-│   ├── script.py            # Bulk processor
-│   ├── watcher_script.py    # Watchdog implementation
-│   └── launcher.py          # Tkinter GUI
+│   ├── process_file.py      # Core logic
+│   ├── generate_label.py    # Interfaces with Google Gemini
+│   ├── create_index.py      # Rebuilds FAISS index
+│   ├── extract_text.py      # Handles PDF, DOCX, TXT, OCR
+│   ├── script.py            # CLI runner
+│   ├── watcher_script.py    # Real-time monitoring
+│   └── launcher.py          # GUI Application
 ├── folder_labels.json       # JSON database of labels & descriptions
 ├── folder_embeddings.faiss  # Vector Index
 └── files/                   # Input zone</pre>
@@ -832,22 +836,32 @@
 
     <section id="installation">
       <h2>Installation & Setup</h2>
-      <h3>Requirements</h3>
-      <p>Python 3.8+, Google Cloud API Key, and Tesseract OCR.</p>
+      <h3>1. Prerequisites</h3>
+      <p>Python 3.8+ and a Google Cloud API Key.</p>
 
+      <h3>2. Install Dependencies</h3>
       <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow
         python-docx watchdog pystray google-genai python-dotenv</div>
 
-      <h3>Environment Config</h3>
-      <p>Create a <code>.env</code> file in the root:</p>
-      <div class="code-block">API_KEY=your_gemini_api_key_here</div>
+      <p><strong>Linux Users:</strong> Install Tesseract OCR: <code>sudo apt install tesseract-ocr</code></p>
 
-      <h3>Quick Start</h3>
-      <ol>
-        <li><strong>Clone:</strong> <code>git clone https://github.com/ahhyoushh/filesense.git</code></li>
-        <li><strong>Init:</strong> <code>python scripts/create_index.py</code> (Creates initial index)</li>
-        <li><strong>Run GUI:</strong> <code>python scripts/launcher.py</code></li>
-      </ol>
+      <h3>3. Environment Setup</h3>
+      <p>Create a <code>.env</code> file in the root:</p>
+      <div class="code-block">API_KEY=your_google_gemini_api_key_here</div>
+
+      <h3>4. Initialization</h3>
+      <div class="code-block">python scripts/create_index.py</div>
+
+      <h2 style="margin-top: 40px;">🚀 Usage</h2>
+
+      <h3>Option A: GUI Launcher (Recommended)</h3>
+      <div class="code-block">python scripts/launcher.py</div>
+
+      <h3>Option B: Real-Time Watcher</h3>
+      <div class="code-block">python scripts/watcher_script.py --dir ./Downloads</div>
+
+      <h3>Option C: Bulk Sort</h3>
+      <div class="code-block">python scripts/script.py --dir ./Downloads --threads 8</div>
     </section>
 
     <section id="learned">
