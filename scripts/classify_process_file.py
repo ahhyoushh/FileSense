@@ -49,7 +49,7 @@ def load_index_and_labels():
         print(f"[!] An error occurred while loading index or labels: {e}")
         return False
 
-def classify_file(text, filename, allow_generation=True, TRAIN=False, retries=0):
+def classify_file(text, filename, allow_generation=True, retries=0):
     # --- SAFETY NET: MAX RETRIES ---
     MAX_RETRIES = 3
 
@@ -164,7 +164,7 @@ def classify_file(text, filename, allow_generation=True, TRAIN=False, retries=0)
             with CLASSIFICATION_LOCK:
                 if index:
                     retry_label, retry_sim = classify_file(
-                        text, filename, allow_generation=False, TRAIN=TRAIN, retries=retries
+                        text, filename, allow_generation=False, retries=retries
                     )
                     if retry_label != "Uncategorized":
                         return retry_label, retry_sim
@@ -174,24 +174,17 @@ def classify_file(text, filename, allow_generation=True, TRAIN=False, retries=0)
                 
                 if new_label_info and new_label_info.get("folder_label"):
                     if create_faiss_index():
-                        load_index_and_labels()
-                        
-                        if TRAIN:
-                            print(f"[∞] [TRAIN MODE] Re-checking '{filename}'...")
-                            return classify_file(
-                                text, filename, allow_generation=True, TRAIN=True, retries=retries+1
-                            )
-                        else:
-                            print(f"[1] [ONE-SHOT] Re-checking '{filename}'...")
-                            return classify_file(
-                                text, filename, allow_generation=False, TRAIN=False, retries=retries+1
-                            )
+                        load_index_and_labels() 
+                        print(f"[1] [ONE-SHOT] Re-checking '{filename}'...")
+                        return classify_file(
+                            text, filename, allow_generation=allow_generation, retries=retries+1
+                        )
 
                 return classify_file(
-                    text, filename, allow_generation=False, TRAIN=TRAIN, retries=retries
+                    text, filename, allow_generation=False, retries=retries
                 )
 
-def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
+def process_file(file_path, testing=False, allow_generation=True):
     start_time = time.time()
     filename = os.path.basename(file_path)
     
@@ -201,7 +194,7 @@ def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
         text = filename.replace("_", " ").replace("-", " ")
 
     predicted_folder, similarity = classify_file(
-        text, filename, allow_generation=False, TRAIN=TRAIN
+        text, filename, allow_generation=False
     )
 
 
@@ -212,7 +205,7 @@ def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
         
         if fallback_text and len(fallback_text) > 50 and fallback_text != text:
              new_folder, new_sim = classify_file(
-                fallback_text, filename, allow_generation=False, TRAIN=TRAIN
+                fallback_text, filename, allow_generation=False
              )
              
              if new_sim > similarity:
@@ -226,7 +219,7 @@ def process_file(file_path, testing=False, allow_generation=True, TRAIN=False):
 
     if allow_generation and (predicted_folder == "Uncategorized" or similarity < THRESHOLD):
         predicted_folder, similarity = classify_file(
-            text, filename, allow_generation=True, TRAIN=TRAIN
+            text, filename, allow_generation=True
         )
 
     destination_folder = BASE_DIR / "sorted" / predicted_folder

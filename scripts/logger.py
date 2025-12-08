@@ -4,9 +4,6 @@ from pathlib import Path
 import threading
 
 class Logger:
-    """
-    A thread-safe logger that captures all print statements and optionally saves them to a file.
-    """
     def __init__(self):
         self.terminal = sys.stdout
         self.log_buffer = []
