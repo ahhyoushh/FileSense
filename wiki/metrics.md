@@ -1,8 +1,7 @@
 ---
 title: "Performance Metrics & Evaluation"
 permalink: /wiki/metrics/
-toc: true
-toc_sticky: true
+
 ---
 
 # Comprehensive Performance Evaluation

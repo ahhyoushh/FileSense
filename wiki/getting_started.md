@@ -1,9 +1,7 @@
 ---
 title: "Getting Started"
 permalink: /wiki/getting-started/
-toc: true
-toc_sticky: true
-toc_label: "Quick Start"
+
 ---
 
 # 🚀 Getting Started with FileSense
@@ -21,8 +19,7 @@ Before installing FileSense, ensure you have:
 - **Google Gemini API Key** ([Get one here](https://makersuite.google.com/app/apikey))
 - **(Linux only)** Tesseract OCR for scanned documents
 
-**Check your Python version:**
-{: .notice--info}
+> **Check your Python version:**
 
 ```bash
 python --version
@@ -93,8 +90,7 @@ Create a `.env` file in the project root:
 API_KEY=your_gemini_api_key_here
 ```
 
-**Security tip:** Never commit `.env` to version control!
-{: .notice--danger}
+> **Security tip:** Never commit `.env` to version control!
 
 ---
 
@@ -156,8 +152,7 @@ python scripts/script.py --dir ./files
 python scripts/script.py --dir ./files --threads 8 --no-generation
 ```
 
-**CLI Options:**
-{: .notice--info}
+> **CLI Options:**
 
 | Flag | Description | Default |
 |------|-------------|---------|
@@ -237,8 +232,7 @@ python scripts/script.py --dir ./files
 
 ## 🎓 Next Steps
 
-**Congratulations! FileSense is now installed.** 🎉
-{: .notice--success}
+> **Congratulations! FileSense is now installed.** 🎉
 
 ### Learn More:
 - **[User Guide](/FileSense/wiki/user-guide/)** - Detailed usage instructions

@@ -1,15 +1,7 @@
 ---
 title: "FileSense Documentation"
-layout: splash
+layout: page
 permalink: /wiki/
-header:
-  overlay_color: "#000"
-  overlay_filter: "0.5"
-  actions:
-    - label: "🚀 Get Started"
-      url: "/wiki/getting-started/"
-    - label: "📺 Watch Demo"
-      url: "https://youtu.be/f27I2L7uoC8"
 excerpt: "Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI"
 ---
 
@@ -21,52 +13,9 @@ FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to o
 
 ## ⚡ Quick Links
 
-<div class="feature__wrapper">
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-rocket fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">Getting Started</h2>
-        <div class="archive__item-excerpt">
-          <p>Install and run FileSense in 5 minutes</p>
-        </div>
-        <p><a href="/FileSense/wiki/getting-started/" class="btn btn--primary">Start Here →</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-book fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">User Guide</h2>
-        <div class="archive__item-excerpt">
-          <p>Learn how to use all features effectively</p>
-        </div>
-        <p><a href="/FileSense/wiki/user-guide/" class="btn btn--primary">Read Guide →</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="feature__item">
-    <div class="archive__item">
-      <div class="archive__item-teaser">
-        <i class="fas fa-chart-line fa-3x"></i>
-      </div>
-      <div class="archive__item-body">
-        <h2 class="archive__item-title">Performance</h2>
-        <div class="archive__item-excerpt">
-          <p>See benchmarks and optimization studies</p>
-        </div>
-        <p><a href="/FileSense/wiki/metrics/" class="btn btn--primary">View Metrics →</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+*   **[Getting Started](/FileSense/wiki/getting-started/)**: Install and run FileSense in 5 minutes
+*   **[User Guide](/FileSense/wiki/user-guide/)**: Learn how to use all features effectively
+*   **[Performance Metrics](/FileSense/wiki/metrics/)**: See benchmarks and optimization studies
 
 ---
 
@@ -130,7 +79,6 @@ python scripts/script.py --dir ./files --threads 6
 
 ### 🔧 For Developers
 - **[Architecture](/FileSense/wiki/pipeline/)** - System design and data flow
-- **[API Reference](/FileSense/wiki/api-reference/)** - Function documentation
 - **[Code Structure](/FileSense/wiki/code-structure/)** - Project organization
 
 ### 📊 Research & Analysis
@@ -142,13 +90,12 @@ python scripts/script.py --dir ./files --threads 6
 
 ## 🎓 Key Insights
 
-**Important discoveries from testing:**
-{: .notice--warning}
-
-1. **Keyword-based descriptions outperform natural language** for SBERT embeddings (+32% accuracy)
-2. **Semantic descriptions performed worse** than expected (24% vs 56% accuracy)
-3. **Lighter models significantly reduced performance** - stick with all-mpnet-base-v2
-4. **AG News dataset showed poor results** - academic documents work best
+> **Important discoveries from testing:**
+> 
+> 1. **Keyword-based descriptions outperform natural language** for SBERT embeddings (+32% accuracy)
+> 2. **Semantic descriptions performed worse** than expected (24% vs 56% accuracy)
+> 3. **Lighter models significantly reduced performance** - stick with all-mpnet-base-v2
+> 4. **AG News dataset showed poor results** - academic documents work best
 
 See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 
@@ -183,4 +130,3 @@ MIT License © 2025 Ayush Bhalerao
 ---
 
 **Ready to get started?** → [Installation Guide](/FileSense/wiki/getting-started/)
-{: .notice--success}

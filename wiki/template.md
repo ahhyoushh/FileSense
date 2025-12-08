@@ -15,9 +15,7 @@ Use this template when creating new wiki pages.
 ---
 title: "Page Title"
 permalink: /wiki/page-slug/
-toc: true
-toc_sticky: true
-toc_label: "On This Page"
+
 ---
 
 # 🎯 Page Title
@@ -62,17 +60,13 @@ python scripts/script.py --dir ./files
 
 ## Notice Blocks
 
-**Info Block**
-{: .notice--info}
-
-**Success Block**
-{: .notice--success}
-
-**Warning Block**
-{: .notice--warning}
-
-**Danger Block**
-{: .notice--danger}
+> **Info Block**
+>
+> **Success Block**
+>
+> **Warning Block**
+>
+> **Danger Block**
 
 ---
 
@@ -118,17 +112,13 @@ Use emojis to make sections visually distinct:
 ### Notice Blocks
 
 ```markdown
-**This is important information**
-{: .notice--info}
-
-**This worked well**
-{: .notice--success}
-
-**Be careful about this**
-{: .notice--warning}
-
-**This is critical - don't ignore**
-{: .notice--danger}
+> **This is important information**
+>
+> **This worked well**
+>
+> **Be careful about this**
+>
+> **This is critical - don't ignore**
 ```
 
 ### Code Blocks with Language
@@ -348,7 +338,7 @@ Always include:
 ## Questions?
 
 - Check existing pages for examples
-- Review [Minimal Mistakes documentation](https://mmistakes.github.io/minimal-mistakes/)
+- Review [Contrast Theme documentation](https://github.com/niklasbuschmann/contrast)
 - Ask in GitHub discussions
 
 ---

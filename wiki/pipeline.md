@@ -1,8 +1,7 @@
 ---
 title: "System Architecture & Pipeline"
 permalink: /wiki/pipeline/
-toc: true
-toc_sticky: true
+
 ---
 
 # 🏗️ System Architecture
@@ -119,10 +118,9 @@ text_emb = model.encode([text], normalize_embeddings=True)
 - **Performance:** ~0.1s per encoding
 - **Size:** 420MB (cached after first download)
 
-**Why this model?**
-{: .notice--info}
-
-Testing showed lighter models performed **significantly worse**. This model provides the best balance of speed and accuracy for document classification.
+> **Why this model?**
+>
+> Testing showed lighter models performed **significantly worse**. This model provides the best balance of speed and accuracy for document classification.
 
 ### Step 3: Vector Similarity Search
 
@@ -264,10 +262,9 @@ def create_faiss_index():
 - **Description:** 20-40 comma-separated terms
 - **Keywords:** 8-12 high-value search terms
 
-**Why keywords, not natural language?**
-{: .notice--warning}
-
-Extensive testing showed keyword-based descriptions outperform natural language by **+32% accuracy**. See [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/).
+> **Why keywords, not natural language?**
+>
+> Extensive testing showed keyword-based descriptions outperform natural language by **+32% accuracy**. See [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/).
 
 ### folder_embeddings.faiss
 

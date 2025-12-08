@@ -1,9 +1,7 @@
 ---
 title: "Natural Language vs Keywords Study"
 permalink: /wiki/NL_VS_OG/
-toc: true
-toc_sticky: true
-toc_label: "Contents"
+
 ---
 
 # Natural Language vs Original Keywords: Comprehensive Analysis

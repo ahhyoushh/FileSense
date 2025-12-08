@@ -1,8 +1,7 @@
 ---
 title: "Frequently Asked Questions"
 permalink: /wiki/faq/
-toc: true
-toc_sticky: true
+
 ---
 
 # ❓ Frequently Asked Questions
@@ -36,8 +35,7 @@ FileSense is an intelligent file organizer that classifies documents by their **
 - ☁️ **Cloud:** Only when generating new labels (Gemini API)
 - 🔒 **Privacy:** File content is sent to Gemini only for classification, not stored
 
-**You can disable cloud features** with `--no-generation` flag.
-{: .notice--info}
+> **Info:** **You can disable cloud features** with `--no-generation` flag.
 
 ---
 
@@ -74,10 +72,9 @@ FileSense is an intelligent file organizer that classifies documents by their **
 - **Performance:** Best balance of speed and accuracy
 - **Size:** ~420MB download on first run
 
-**Why not use a lighter model?**
-{: .notice--warning}
-
-Testing showed that lighter models performed **significantly worse**. The all-mpnet-base-v2 model is optimal for this use case.
+> **Warning:**
+>
+> Testing showed that lighter models performed **significantly worse**. The all-mpnet-base-v2 model is optimal for this use case.
 
 ### Can I use a different embedding model?
 
@@ -311,8 +308,7 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
    - This might be an inefficient approach for some use cases
    - Consider as a learning experience
 
-**These insights are from real testing and development.**
-{: .notice--warning}
+> **Warning:** **These insights are from real testing and development.**
 
 ---
 
@@ -342,8 +338,7 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 
 ---
 
-**Still have questions?** Open an issue on [GitHub](https://github.com/ahhyoushh/FileSense/issues)!
-{: .notice--info}
+> **Still have questions?** Open an issue on [GitHub](https://github.com/ahhyoushh/FileSense/issues)!
 
 ---
 

@@ -1,8 +1,7 @@
 ---
 title: "Lessons Learned"
 permalink: /wiki/lessons-learned/
-toc: true
-toc_sticky: true
+
 ---
 
 # 🎓 Lessons Learned
@@ -46,8 +45,7 @@ Key insights and discoveries from developing FileSense.
    - Natural language is overly specific
    - Synonyms naturally included in keyword lists
 
-**Lesson:** For SBERT-based classification, **simpler is better**. Don't overthink it.
-{: .notice--success}
+> **Lesson:** For SBERT-based classification, **simpler is better**. Don't overthink it.
 
 **Full analysis:** [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/)
 
@@ -64,8 +62,7 @@ Key insights and discoveries from developing FileSense.
 - `all-mpnet-base-v2` (768 dims, 420MB) - ✅ Best performance
 - `multi-qa-mpnet-base-dot-v1` (768 dims) - ⚠️ Moderate
 
-**Lesson:** The performance drop from lighter models is **not worth** the size/speed gains. Stick with `all-mpnet-base-v2`.
-{: .notice--danger}
+> **Lesson:** The performance drop from lighter models is **not worth** the size/speed gains. Stick with `all-mpnet-base-v2`.
 
 ---
 
@@ -86,8 +83,7 @@ Key insights and discoveries from developing FileSense.
 - Informal language patterns
 - Topic diversity vs academic consistency
 
-**Lesson:** FileSense is optimized for **structured, academic/professional documents**. Not a one-size-fits-all solution.
-{: .notice--warning}
+> **Lesson:** FileSense is optimized for **structured, academic/professional documents**. Not a one-size-fits-all solution.
 
 ---
 
@@ -104,8 +100,7 @@ Key insights and discoveries from developing FileSense.
 - Trade-offs exist between accuracy, speed, and complexity
 - FileSense works well for specific use cases, not all scenarios
 
-**Lesson:** Be realistic about limitations. This is a **learning project** that works well for certain document types.
-{: .notice--info}
+> **Lesson:** Be realistic about limitations. This is a **learning project** that works well for certain document types.
 
 ---
 
@@ -146,8 +141,7 @@ Key insights and discoveries from developing FileSense.
 - **Scaling:** Linear with number of labels
 - **Memory:** Minimal overhead
 
-**Lesson:** FAISS is perfect for local, offline vector search. No need for complex vector databases.
-{: .notice--success}
+> **Lesson:** FAISS is perfect for local, offline vector search. No need for complex vector databases.
 
 ---
 
