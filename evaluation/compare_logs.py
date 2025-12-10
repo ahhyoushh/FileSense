@@ -280,7 +280,8 @@ Content includes laboratory observations and scientific principles."
     return report
 
 if __name__ == "__main__":
-    logs_dir = Path("logs")
+    BASE_DIR = Path(__file__).resolve().parent
+    logs_dir = BASE_DIR / "logs"
     
     nl_log = logs_dir / "NCERT_NL_TEST.log"
     og_log = logs_dir / "NCERT_OG_TEST.log"
@@ -304,14 +305,14 @@ if __name__ == "__main__":
     report = generate_comparison_report(nl_metrics, og_metrics)
     
     # Save report
-    report_path = Path("NCERT_COMPARISON_REPORT.md")
+    report_path = BASE_DIR / "NCERT_COMPARISON_REPORT.md"
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report)
     
     print(f"\n✅ Report saved to: {report_path}")
     
     # Save raw metrics as JSON
-    metrics_path = Path("comparison_metrics.json")
+    metrics_path = BASE_DIR / "comparison_metrics.json"
     with open(metrics_path, 'w', encoding='utf-8') as f:
         json.dump({
             'natural_language': nl_metrics,

@@ -3,7 +3,7 @@ from google.genai.errors import APIError
 import json
 from dotenv import load_dotenv
 import os
-
+from pathlib import Path
 load_dotenv()
 client = genai.Client(api_key=os.getenv("API_KEY"))
 MODEL = "gemini-2.5-flash"
@@ -169,13 +169,17 @@ New Keywords: {new_kw}
 
 
 def generate_folder_label(target_text: str, forced_label: str = None):
+    LABELS_FILE = Path(__file__).resolve().parent.parent / "folder_labels.json"
     try:
         try:
-            with open("folder_labels.json", "r", encoding="utf-8") as f:
-                existing_labels_content = f.read()
-                if not existing_labels_content.strip():
-                    existing_labels_content = "{}"
-        except (FileNotFoundError, json.JSONDecodeError):
+            if LABELS_FILE.exists():
+                with open(LABELS_FILE, "r", encoding="utf-8") as f:
+                    existing_labels_content = f.read()
+                    if not existing_labels_content.strip():
+                        existing_labels_content = "{}"
+            else:
+                existing_labels_content = "{}"
+        except (OSError, json.JSONDecodeError):
             existing_labels_content = "{}"
 
         if forced_label:

@@ -47,7 +47,8 @@ evaluation/datasets/NCERT/ncert-all/
 evaluation/datasets/**/*.pdf
 evaluation/datasets/**/*.txt
 evaluation/datasets/**/*.md
-
+evaluation/datasets/NCERT_DATA/**
+evaluation/datasets/NCERT_DATA/
 # Generated files
 folder_embeddings.faiss
 comparison_results.json

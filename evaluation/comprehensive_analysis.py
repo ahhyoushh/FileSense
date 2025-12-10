@@ -376,7 +376,11 @@ This evaluation provides empirical evidence for the superiority of keyword-based
     return report
 
 if __name__ == "__main__":
-    logs_dir = Path("evaluation/logs")
+    BASE_DIR = Path(__file__).resolve().parent
+    ROOT_DIR = BASE_DIR.parent
+
+    # logs are in evaluation/logs
+    logs_dir = BASE_DIR / "logs"
     
     # Parse all logs
     metrics = {}
@@ -406,7 +410,12 @@ if __name__ == "__main__":
     report = generate_professional_report(metrics)
     
     # Save report
-    report_path = Path("wiki/metrics.md")
+    # wiki is in ROOT/wiki
+    report_path = ROOT_DIR / "wiki" / "metrics.md"
+    
+    # Ensure dir exists just in case
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
     with open(report_path, 'w', encoding='utf-8') as f:
         # Add frontmatter
         f.write("---\n")
@@ -420,7 +429,7 @@ if __name__ == "__main__":
     print(f"✅ Report saved to: {report_path}")
     
     # Save raw metrics
-    metrics_json = Path("evaluation/comprehensive_metrics.json")
+    metrics_json = BASE_DIR / "comprehensive_metrics.json"
     with open(metrics_json, 'w', encoding='utf-8') as f:
         json.dump(metrics, f, indent=2, default=str)
     
