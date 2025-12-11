@@ -31,10 +31,6 @@ show_excerpts: true
 show_frame: false
 show_sidebar: true
 
-# Font Configuration
-sass:
-  sass_dir: _sass
-  style: compressed
 
 # Navigation
 navigation:
