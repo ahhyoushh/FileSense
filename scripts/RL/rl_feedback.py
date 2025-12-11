@@ -1,10 +1,13 @@
 import time
 import sys
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 import json
+from dotenv import load_dotenv
 
-# Setup sys.path to include project root (FileSense)
+# load environment variables from .env
+load_dotenv()
+
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -14,28 +17,37 @@ from scripts.RL.rl_policy import update_policy, _load_stats
 from scripts.RL.rl_config import GRACE_SECONDS, RL_POLICY_STATS_FILE
 from scripts.RL.rl_supabase import upload_policy_stats
 
-def find_file_by_name(filename: str, sorted_dir: Path) -> Path | None:
+
+def find_file_by_name(filename: str, sorted_dir: Path) -> Optional[Path]:
+    if not sorted_dir.exists():
+        return None
     for p in sorted_dir.rglob(filename):
         return p
     return None
 
 
-def reward_event(current_label: str, predicted: str, retries: int, manual_labelled) -> float:
+def reward_event(current_label: str, predicted: str, retries: int, manual_labelled: bool) -> float:
     reward = 0.0
     if current_label == predicted:
         reward += 1.0
-    if retries > 0:
-        reward -= 0.1 * retries
+    if retries and retries > 0:
+        reward -= 0.1 * float(retries)
     if manual_labelled:
         reward -= 0.3
-    return max(0.0, reward)
+    return max(0.0, float(reward))
 
 
-def run_audit(sorted_dir_path: str | None = None) -> Tuple[int, int]:
+def run_audit(sorted_dir_path: Optional[str] = None) -> Tuple[int, int]:
     rl = get_rl_logger()
     events = rl.load_events()
     now = int(time.time())
-    sorted_dir = Path(sorted_dir_path) if sorted_dir_path else Path(__file__).resolve().parent.parent / "sorted"
+
+    if sorted_dir_path:
+        sorted_dir = Path(sorted_dir_path)
+    else:
+        PROJECT_ROOT = Path(__file__).resolve().parents[2]
+        sorted_dir = PROJECT_ROOT / "sorted"
+
     updated: List[Dict] = []
     rewards_filled = 0
 
@@ -44,7 +56,7 @@ def run_audit(sorted_dir_path: str | None = None) -> Tuple[int, int]:
             updated.append(ev)
             continue
 
-        if now - ev.get("timestamp", 0) < GRACE_SECONDS:
+        if now - int(ev.get("timestamp", 0)) < GRACE_SECONDS:
             updated.append(ev)
             continue
 
@@ -54,13 +66,18 @@ def run_audit(sorted_dir_path: str | None = None) -> Tuple[int, int]:
             updated.append(ev)
             continue
 
-        path_found = None
+        # Try original path first (fast)
+        path_found: Optional[Path] = None
         orig = ev.get("file_path")
         if orig:
-            p = Path(orig)
-            if p.exists():
-                path_found = p
+            try:
+                p = Path(orig)
+                if p.exists():
+                    path_found = p
+            except Exception:
+                path_found = None
 
+        # If not found at original path, search under sorted_dir
         if not path_found:
             path_found = find_file_by_name(filename, sorted_dir)
 
@@ -69,21 +86,30 @@ def run_audit(sorted_dir_path: str | None = None) -> Tuple[int, int]:
             updated.append(ev)
             continue
 
+        # Compute reward and update event
         current_label = path_found.parent.name
         predicted = ev.get("predicted_label")
-        reward = reward_event(current_label, predicted, ev.get("retries", 0), ev.get("manual_labeled"))
+        retries = int(ev.get("retries", 0) or 0)
+        manual_flag = bool(ev.get("manual_labeled", False))
+
+        reward = reward_event(current_label, predicted, retries, manual_flag)
         ev["reward"] = float(reward)
         ev["reward_timestamp"] = int(time.time())
 
         policy_id = ev.get("policy_id") or "policy_unknown"
-        update_policy(policy_id, reward)
+        try:
+            update_policy(policy_id, reward)
+        except Exception as e:
+            # don't abort audit if policy update fails
+            print(f"[rl_feedback] warning: update_policy failed for '{policy_id}': {e}")
+
         rewards_filled += 1
         updated.append(ev)
 
-    # write back updated events
+    # Overwrite local events with updated entries
     rl.overwrite_events(updated)
 
-    # optionally push policy stats to Supabase
+    # Push policy stats to Supabase (optional; requires env vars to be set)
     try:
         stats = _load_stats()
         ok, err = upload_policy_stats(stats)
@@ -93,6 +119,7 @@ def run_audit(sorted_dir_path: str | None = None) -> Tuple[int, int]:
         print("[rl_feedback] warning: failed to push stats to supabase:", e)
 
     return len(events), rewards_filled
+
 
 if __name__ == "__main__":
     total, filled = run_audit()

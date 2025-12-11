@@ -40,7 +40,8 @@ Thumbs.db
 
 # Project Specific - Logs
 logs/**
-*.log
+
+evaluation/logs/**
 
 # Datasets (large files)
 evaluation/datasets/NCERT/ncert-all/

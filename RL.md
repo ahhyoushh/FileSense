@@ -1,5 +1,5 @@
 # Reinforcement Learning
-
+## Reason: Gemini incease rate limit for api calls :(
 ## Events:
 ### classification: action chosen, prediction done.(null reward )(served)
 ### feedback: Fill reward on previous event by user action(audit)

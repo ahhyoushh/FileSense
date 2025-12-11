@@ -1,1 +1,17 @@
-{"policy_A": {"count": 0, "total_reward": 0.0, "last_updated": null}, "policy_B": {"count": 0, "total_reward": 0.0, "last_updated": null}, "policy_C": {"count": 0, "total_reward": 0.0, "last_updated": null}}
+{
+  "policy_C": {
+    "count": 1,
+    "total_reward": 1.0,
+    "last_updated": 1765477370
+  },
+  "policy_B": {
+    "count": 1,
+    "total_reward": 0.39999999999999997,
+    "last_updated": 1765477370
+  },
+  "policy_A": {
+    "count": 17,
+    "total_reward": 14.400000000000002,
+    "last_updated": 1765477370
+  }
+}

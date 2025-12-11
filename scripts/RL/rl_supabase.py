@@ -4,6 +4,9 @@ import time
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import requests
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")

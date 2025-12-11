@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent
 CSV_PATH = BASE_DIR / 'datasets' / 'STEM.csv'
 
 # How many text files you want to generate
-NUM_FILES = 10  # <- change as needed
+NUM_FILES = 50  # <- change as needed
 
 def main():
     data = []

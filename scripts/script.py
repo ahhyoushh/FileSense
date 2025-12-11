@@ -42,7 +42,7 @@ def prompt_save_logs(logger):
 
 if __name__ == "__main__":
     logger = None
-    testing = True
+    testing = False
 
     if not args.no_logs:
         logger = setup_logger()

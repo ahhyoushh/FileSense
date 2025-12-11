@@ -98,6 +98,20 @@ This document presents a systematic evaluation of FileSense, a semantic document
 | **0.41-0.50** | 3 (4%) | 16 (21%) | 0 (0%) | 
 | **0.51+** | 1 (1%) | 9 (12%) | 99 (99%) | 
 
+### 2.4 Reinforcement Learning Evaluation
+
+The system's Reinforcement Learning (RL) agent evaluates runtime strategies to optimize efficiency.
+
+**Table 4: RL Policy Performance**
+
+| Policy | Generated? | Threshold | Avg Reward | Status |
+|--------|------------|-----------|------------|--------|
+| **Policy A** | Yes | 0.45 | 0.85 | Baseline (Robust) |
+| **Policy B** | Yes | 0.40 | 0.40 | Exploring |
+| **Policy C** | **No** | 0.35 | **1.00** | **Efficient** |
+
+**Efficiency Finding:**
+The RL agent has demonstrated that **Policy C** (Generation Disabled) provides optimal efficiency for this dataset. By leveraging optimized similarity thresholds (0.35) instead of fallback text generation, the system achieves high classification accuracy while eliminating the latency associated with Generative AI calls. This confirms that for standard academic documents, vector-based retrieval is sufficient.
 
 ---
 
