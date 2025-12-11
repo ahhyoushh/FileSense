@@ -682,6 +682,19 @@
   <header>
     <div class="header-date">Updated: 2025</div>
     <h1>🗂️ FileSense</h1>
+
+    <div
+      style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--warning); border-radius: 8px; padding: 16px; margin: 24px auto; max-width: 680px; text-align: left;">
+      <strong style="color: var(--warning); display: block; margin-bottom: 8px;">⚠️ Gemini API Rate Limit
+        Update</strong>
+      <p style="margin: 0; font-size: 0.9rem; color: var(--text);">
+        Recent increases in Gemini API rate limits have necessitated a shift in strategy :(
+        FileSense now employs a <strong>Reinforcement Learning (RL)</strong> agent to dynamically minimize generative
+        calls,
+        prioritizing vector-based retrieval (Policy C) which vastly improves efficiency and reduces latency.
+      </p>
+    </div>
+
     <p>Essentially a python script that generates generates vector embeddings using SentenceTransformers
       all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less
       than threshold) to classify, create folder label , and organize your files automatically by moving them in
