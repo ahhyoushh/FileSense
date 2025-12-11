@@ -46,6 +46,8 @@ navigation:
     url: /wiki/faq/
   - title: Architecture
     url: /wiki/pipeline/
+  - title: Reinforcement Learning
+    url: /wiki/rl/
   - title: Metrics
     url: /wiki/metrics/
   - title: "NL vs Keywords"

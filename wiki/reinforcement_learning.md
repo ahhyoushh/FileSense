@@ -1,6 +1,6 @@
 ---
 title: "Reinforcement Learning Architecture"
-permalink: /wiki/reinforcement_learning/
+permalink: /wiki/rl/
 ---
 
 # Reinforcement Learning Architecture
