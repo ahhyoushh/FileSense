@@ -11,6 +11,28 @@ FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to o
 
 ---
 
+## ⚠️ MAJOR UPDATE: The Shift to SFT
+
+**TL;DR: API Rate limits have broken the real-time workflow. I am pivoting to Supervised Fine-Tuning (SFT).**
+
+### The Rate Limit Bottleneck
+As documented in recent logs (`RL_RATE_LIMIT_RAGEBAIT.log`), relying on the free/standard tier of the Gemini API has become untenable for a high-volume file organizer.
+
+*   **Massive Delays:** The API is enforcing severe backoff times.
+    > `[!] Rate Limit Hit on attempt 2/5 ... Google requested wait: 59.55s`
+*   **Pipeline Freezes:** When organizing batches of files (e.g., 8-10 files), the script spends more time sleeping than processing.
+*   **Fallback Failures:** Even with retries, many requests eventually degrade to non-interactive mode or fail completely, requiring manual intervention.
+
+### The Resolution: Local SFT
+Instead of optimizing prompt engineering or RL agents to *minimize* calls, the only robust solution is to **remove the dependency entirely**.
+
+I am now collecting the high-quality labeled data generated so far to **Supervised Fine-Tune (SFT)** a truncated, local model (Small Language Model). This will allow FileSense to:
+1.  **Run Offline:** Zero internet dependency.
+2.  **Zero Latency:** No HTTP requests or 60s wait times.
+3.  **Privacy:** No file content leaves your machine.
+
+---
+
 ## ⚡ Quick Links
 
 *   **[Getting Started](/FileSense/wiki/getting-started/)**: Install and run FileSense in 5 minutes

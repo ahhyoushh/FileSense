@@ -28,7 +28,13 @@ TEMP_SUFFIXES = (".crdownload", ".part", ".tmp", ".partial", ".download", ".~dow
 def looks_temporary(name):
     return name.lower().endswith(TEMP_SUFFIXES)
 
+import concurrent.futures
+
 class Watcher(FileSystemEventHandler):
+    def __init__(self):
+        super().__init__()
+        self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
+
     def _wait_and_process(self, path):
         """Inline simple waiter: block until file size stabilizes or timeout, then process."""
         name = os.path.basename(path)
@@ -67,7 +73,7 @@ class Watcher(FileSystemEventHandler):
             return
         path = event.src_path
         print(f"[+] Created event: {os.path.basename(path)}")
-        self._wait_and_process(path)
+        self.executor.submit(self._wait_and_process, path)
 
     def on_moved(self, event):
         if event.is_directory:
@@ -75,7 +81,7 @@ class Watcher(FileSystemEventHandler):
         dest = getattr(event, "dest_path", None) or getattr(event, "dest_path", None)
         if dest:
             print(f"[+] Moved event: {os.path.basename(event.src_path)} -> {os.path.basename(dest)}")
-            self._wait_and_process(dest)
+            self.executor.submit(self._wait_and_process, dest)
 
 if __name__ == "__main__":
     BASE_DIR = Path(__file__).resolve().parent.parent

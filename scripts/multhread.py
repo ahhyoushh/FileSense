@@ -1,4 +1,4 @@
-import threading
+import concurrent.futures
 import os
 from classify_process_file import process_file
 import time
@@ -13,20 +13,23 @@ def process_multiple(files_dir, MAX_THREADS, testing=False, allow_generation=Tru
     print(f"Found {len(files)} files to process.\n")
 
     start_time = time.time()
-    threads = []
-    for file_path in files:
-        while threading.active_count() > MAX_THREADS:
-            time.sleep(0.1)
 
-        t = threading.Thread(target=process_file, args=(file_path,testing, allow_generation))
-        t.start()
-        threads.append(t)
+    # Use ThreadPoolExecutor for efficient thread management
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
+        futures = []
+        for file_path in files:
+            # Submit tasks to the pool
+            futures.append(
+                executor.submit(process_file, file_path, testing, allow_generation)
+            )
+            print(f"[+] Queued: {os.path.basename(file_path)}")
 
-        active = threading.active_count() - 1
-        print(f"[+] Started thread for {os.path.basename(file_path)} | Active threads: {active}")
-
-    for t in threads:
-        t.join()
+        # Wait for all to complete
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()  # raise exceptions if any occurred in the thread
+            except Exception as e:
+                print(f"[!] Error in thread: {e}")
 
     print(f"\n All files processed in {time.time() - start_time:.2f}s\n")
 

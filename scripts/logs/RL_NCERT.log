@@ -1,0 +1,81 @@
+[*] Logging enabled. Output is being captured.
+
+[rl] Synced local events to Supabase: 69 uploaded, 0 failed.
+Processing with 6 threads.
+Found 22 files to process.
+
+[+] Queued: biotech__biotech_12_13.md
+[+] Queued: biotech__biotech_12_6.md
+[+] Queued: bio__bio_11_11.md
+[+] Queued: bio__bio_11_16.md
+[+] Queued: chem__chem_11_1.md
+[+] Queued: chem__chem_12_9.md
+[+] Queued: comp__comp_11_6.md
+[+] Queued: comp__comp_11_9.md
+[+] Queued: english2__english2_11_w2.md
+[+] Queued: english2__english2_9_6.md
+[+] Queued: english3__english3_10_3.md
+[+] Queued: english3__english3_10_7.md
+[+] Queued: english__english_10_3.md
+[+] Queued: english__english_12_nf4.md
+[+] Queued: history__history_8_8.md
+[+] Queued: history__history_9_1.md
+[+] Queued: math__math_10_a1.md
+[+] Queued: math__math_12_4.md
+[+] Queued: phy__phy_11_12.md
+[+] Queued: phy__phy_12_12.md
+[+] Queued: sci__sci_8_12.md
+[+] Queued: sci__sci_9_8.md
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+
+
+
+
+[1] Processed: bio__bio_11_16.md -> Uncategorized (sim=0.00) in 0.02s
+[1] Processed: biotech__biotech_12_13.md -> Uncategorized (sim=0.00) in 0.02s
+[1] Processed: chem__chem_11_1.md -> Uncategorized (sim=0.00) in 0.02s[1] Processed: biotech__biotech_12_6.md -> Uncategorized (sim=0.00) in 0.02s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[1] Processed: bio__bio_11_11.md -> Uncategorized (sim=0.00) in 0.02s[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: chem__chem_12_9.md -> Uncategorized (sim=0.00) in 0.02s
+
+
+[1] Processed: comp__comp_11_9.md -> Uncategorized (sim=0.00) in 0.01s[!] Max retries reached for 'english3__english3_10_3.md'. Using non-interactive fallback.
+
+
+[1] Processed: english2__english2_11_w2.md -> Uncategorized (sim=0.00) in 0.01s
+
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[1] Processed: comp__comp_11_6.md -> Uncategorized (sim=0.00) in 0.01s[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+
+
+[1] Processed: english2__english2_9_6.md -> Uncategorized (sim=0.00) in 0.03s
+
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: english3__english3_10_7.md -> Uncategorized (sim=0.00) in 0.03s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: english__english_12_nf4.md -> Uncategorized (sim=0.00) in 0.03s
+[1] Processed: english__english_10_3.md -> Uncategorized (sim=0.00) in 0.03s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: history__history_8_8.md -> Uncategorized (sim=0.00) in 0.01s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[1] Processed: history__history_9_1.md -> Uncategorized (sim=0.00) in 0.01s
+[1] Processed: math__math_10_a1.md -> Uncategorized (sim=0.00) in 0.01s
+
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...[1] Processed: math__math_12_4.md -> Uncategorized (sim=0.00) in 0.01s
+
+[1] Processed: phy__phy_11_12.md -> Uncategorized (sim=0.00) in 0.01s
+
+[1] Processed: phy__phy_12_12.md -> Uncategorized (sim=0.00) in 0.00s
+[1] Processed: sci__sci_8_12.md -> Uncategorized (sim=0.00) in 0.00s
+[1] Processed: sci__sci_9_8.md -> Uncategorized (sim=0.00) in 0.00s
+Generated new folder label: English
+Found 1 folder labels for indexing.
+Generating Embeddings with all-mpnet-base-v2 model...
+Embeddings generated in 2.22 seconds.
+Creating FAISS index...
+[1] FAISS index saved to C:\Users\bhale\OneDrive\Desktop\FileSense\folder_embeddings.faiss
+[1] Processed: english3__english3_10_3.md -> English (sim=1.00) in 12.20s
+
+ All files processed in 12.23s
+

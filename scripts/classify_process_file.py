@@ -8,7 +8,6 @@ import re
 import shutil
 import json
 import time
-from pathlib import Path
 import threading
 
 import faiss
@@ -18,7 +17,7 @@ from sentence_transformers import SentenceTransformer
 from generate_label import generate_folder_label
 from create_index import create_faiss_index, MODEL_NAME
 from extract_text import extract_text
-
+import concurrent
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -26,11 +25,15 @@ load_dotenv()
 from scripts.RL.rl_supabase import sync_local_to_supabase, upload_event
 
 print("[rl] RL Supabase uploader loaded.")
-try:
-    uploaded, failed = sync_local_to_supabase()
-    print(f"[rl] Synced local events to Supabase: {uploaded} uploaded, {failed} failed.")
-except Exception as e:
-    print("[rl] startup sync error:", e)
+def _startup_sync():
+    try:
+        uploaded, failed = sync_local_to_supabase()
+        print(f"[rl] Synced local events to Supabase: {uploaded} uploaded, {failed} failed.")
+    except Exception as e:
+        print("[rl] startup sync error:", e)
+
+# Run startup sync in background to avoid blocking import/startup
+threading.Thread(target=_startup_sync, daemon=True).start()
 
 
 from scripts.logger.rl_logger import get_rl_logger
@@ -50,6 +53,8 @@ model = None
 
 # Rlock for thread safety - was fun to debug
 CLASSIFICATION_LOCK = threading.RLock()
+# Executor for background uploads to avoid spawning unlimited threads
+UPLOAD_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 
 def load_index_and_labels():
@@ -87,46 +92,52 @@ def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
     # --- SAFETY NET: MAX RETRIES ---
     MAX_RETRIES = 3
 
-    # If retries exceeded -> manual labeling flow
+    # If retries exceeded -> non-interactive fallback (try auto-generation, else Uncategorized)
     if retries >= MAX_RETRIES:
-        print(f"[!] Max retries reached for '{filename}'.")
-        print("Please manually input the folder label for this file.")
-        manual_label = input(f"Enter label for '{filename}': ").strip()
+        print(f"[!] Max retries reached for '{filename}'. Using non-interactive fallback.")
+        # Try to auto-generate a label without user interaction
+        # OUTSIDE LOCK: expensive generation
+        try:
+            new_label_info = generate_folder_label(text)
+        except Exception as e:
+            print(f"[!] generate_folder_label exception during fallback: {e}")
+            new_label_info = None
 
-        while not manual_label:
-            print("Label cannot be empty.")
-            manual_label = input(f"Enter label for '{filename}': ").strip()
-
-        gen_desc = input("Generate description for this label? (y/n): ").strip().lower()
-
-        if gen_desc == 'y':
-            print(f"Generating description for '{manual_label}'...")
+        if new_label_info and new_label_info.get("folder_label"):
+            forced_label = new_label_info.get("folder_label").strip()
+            
+            # INSIDE LOCK: Metadata updates
             with CLASSIFICATION_LOCK:
-                new_label_info = generate_folder_label(text, forced_label=manual_label)
+                # Persist label to LABELS_FILE if not present
+                current_labels = {}
+                if LABELS_FILE.exists():
+                    try:
+                        with open(LABELS_FILE, "r", encoding="utf-8") as f:
+                            current_labels = json.load(f)
+                    except Exception:
+                        current_labels = {}
 
-                if new_label_info and new_label_info.get("folder_label"):
+                if forced_label and forced_label not in current_labels:
+                    # try to get a decent description if available
+                    description = new_label_info.get("description") or f"{forced_label} Keywords: "
+                    current_labels[forced_label] = description
+                    try:
+                        with open(LABELS_FILE, "w", encoding="utf-8") as f:
+                            json.dump(current_labels, f, indent=2)
+                    except Exception as e:
+                        print(f"[!] Failed to write LABELS_FILE during fallback: {e}")
+
+                # try to rebuild index and reload labels
+                try:
                     if create_faiss_index():
                         load_index_and_labels()
-                        return _ret(manual_label, 1.0, retries, [1.0, 0.0, 0.0], manual=True)
+                        return _ret(forced_label, 1.0, retries, [1.0, 0.0, 0.0], manual=True)
+                except Exception as e:
+                    print(f"[!] Failed to create/reload faiss index during fallback: {e}")
 
-                print("[!] Failed to generate description. Adding label without description.")
-
-        print(f"Adding '{manual_label}' to folder labels without description (not indexed yet).")
-
-        current_labels = {}
-        if LABELS_FILE.exists():
-            try:
-                with open(LABELS_FILE, "r", encoding="utf-8") as f:
-                    current_labels = json.load(f)
-            except Exception:
-                current_labels = {}
-
-        if manual_label not in current_labels:
-            current_labels[manual_label] = f"{manual_label} Keywords: "
-            with open(LABELS_FILE, "w", encoding="utf-8") as f:
-                json.dump(current_labels, f, indent=2)
-
-        return _ret(manual_label, 1.0, retries, [1.0, 0.0, 0.0], manual=True)
+        # If auto-generation failed, return Uncategorized non-interactively
+        print(f"[!] Fallback auto-generation failed for '{filename}'. Marking as 'Uncategorized'.")
+        return _ret("Uncategorized", 0.0, retries, [0.0, 0.0, 0.0], manual=False)
 
     # ensure index/model loaded
     if model is None:
@@ -216,23 +227,50 @@ def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
                 return _ret("Uncategorized", 0.0, retries, [0.0, 0.0, 0.0], manual=False)
 
         if allow_generation_local:
-            with CLASSIFICATION_LOCK:
-                # first try a no-generation retry using cfg (increase retries counter)
-                if index:
-                    retry_label, retry_sim, retry_used, retry_top3, retry_manual = classify_file(
-                        text, filename, allow_generation=False, retries=retries + 1, cfg=cfg
-                    )
-                    if retry_label != "Uncategorized":
-                        # propagate retries and top3 upward
-                        return _ret(retry_label, retry_sim, retry_used, retry_top3, retry_manual)
+            # first try a no-generation retry using cfg 
+            if index:
+                retry_label, retry_sim, retry_used, retry_top3, retry_manual = classify_file(
+                    text, filename, allow_generation=False, retries=retries + 1, cfg=cfg
+                )
+                if retry_label != "Uncategorized":
+                    return _ret(retry_label, retry_sim, retry_used, retry_top3, retry_manual)
 
-                print(f"[?] Low confidence ({best_sim:.2f}) for '{filename}'. Generating label (Attempt {retries+1})...")
+            print(f"[?] Low confidence ({best_sim:.2f}) for '{filename}'. Generating label (Attempt {retries+1})...")
+            
+            # OUTSIDE LOCK: generation
+            try:
                 new_label_info = generate_folder_label(text)
+            except Exception as e:
+                print(f"[!] generate_folder_label exception: {e}")
+                new_label_info = None
 
-                if new_label_info and new_label_info.get("folder_label"):
+            if new_label_info and new_label_info.get("folder_label"):
+                forced_label = new_label_info.get("folder_label").strip()
+                
+                # INSIDE LOCK: writes
+                with CLASSIFICATION_LOCK:
+                    # persist label if missing
+                    current_labels = {}
+                    if LABELS_FILE.exists():
+                        try:
+                            with open(LABELS_FILE, "r", encoding="utf-8") as f:
+                                current_labels = json.load(f)
+                        except Exception:
+                            current_labels = {}
+
+                    if forced_label and forced_label not in current_labels:
+                        description = new_label_info.get("description") or f"{forced_label} Keywords: "
+                        current_labels[forced_label] = description
+                        try:
+                            with open(LABELS_FILE, "w", encoding="utf-8") as f:
+                                json.dump(current_labels, f, indent=2)
+                        except Exception as e:
+                            print(f"[!] Failed to write LABELS_FILE: {e}")
+
                     if create_faiss_index():
                         load_index_and_labels()
                         print(f"[1] [ONE-SHOT] Re-checking '{filename}'...")
+                        # Recurse (lock is released now, so fine)
                         return classify_file(
                             text, filename, allow_generation=allow_generation, retries=retries + 1, cfg=cfg
                         )
@@ -338,7 +376,8 @@ def process_file(file_path, testing=False, allow_generation=True):
         except Exception as e:
             print("[supabase] upload exception:", e)
 
-    threading.Thread(target=_bg_upload, args=(event,), daemon=True).start()
+    # async upload using shared executor
+    UPLOAD_EXECUTOR.submit(_bg_upload, event)
 
     # move file to predicted folder
     destination_folder = BASE_DIR / "sorted" / predicted_folder

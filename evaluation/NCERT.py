@@ -3,15 +3,15 @@ import shutil
 import random
 
 # how many files per prefix/category
-N_PER_CATEGORY = 5   # set to 1 if you want exactly one per acc/physics/etc
+N_PER_CATEGORY = 2   # set to 1 if you want exactly one per acc/physics/etc
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # NCERT/dataset/*.md  (one level up from evaluation/)
-SOURCE_DIR = os.path.abspath(os.path.join(BASE_DIR,"datasets" ,"NCERT", "dataset"))
+SOURCE_DIR = os.path.abspath(os.path.join(BASE_DIR,"datasets" ,"NCERT_DATA"))
 
 # files/ (also one level up from evaluation/)
-OUTPUT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "test_files"))
+OUTPUT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "files"))
 
 print("BASE_DIR:", BASE_DIR)
 print("SOURCE_DIR:", SOURCE_DIR)

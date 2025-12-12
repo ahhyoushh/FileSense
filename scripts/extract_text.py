@@ -1,6 +1,10 @@
 import os
 import re
+import csv
+import sys
+from pathlib import Path
 
+# --- Optional Imports ---
 try:
     import pdfplumber
     PDFPLUMBER_AVAILABLE = True
@@ -104,13 +108,12 @@ def extract_text_from_pdf(file_path, filename, fallback=False):
             if fallback and total_pages > 5:
                 # Start from the absolute middle of the document
                 start_page_index = total_pages // 2
-                print(f"   -> [PDF Fallback] Starting extraction at page {start_page_index} (Middle)")
+                if PRINT_DEBUG: print(f"   -> [PDF Fallback] Starting extraction at page {start_page_index} (Middle)")
             else:
                 # Standard Logic: Start around page 3
                 start_page_index = min(PDF_CONFIG['START_PAGE_ASSUMPTION'], total_pages - 1)
 
             # Create iterator order
-            # If fallback, we read from middle to end, then beginning to middle
             page_order = list(range(start_page_index, total_pages)) + list(range(0, start_page_index))
 
             for page_index in page_order:
@@ -124,7 +127,6 @@ def extract_text_from_pdf(file_path, filename, fallback=False):
                 
                 quality = score_page_quality(page_text)
                 
-                # In fallback mode, we might lower quality threshold slightly to ensure we get *something*
                 threshold = PDF_CONFIG['QUALITY_THRESHOLD'] * 0.8 if fallback else PDF_CONFIG['QUALITY_THRESHOLD']
 
                 if quality > threshold:
@@ -144,7 +146,6 @@ def extract_text_from_pdf(file_path, filename, fallback=False):
 
     final_text = "\n\n".join(content_blocks)
     
-    # Only prepend metadata title on the standard attempt (avoid noise on fallback)
     if pdf_meta_title and not fallback:
         final_text = pdf_meta_title + "\n\n" + final_text
 
@@ -161,10 +162,9 @@ def extract_text_from_docx(file_path, filename, fallback=False):
         all_paras = doc.paragraphs
         total_paras = len(all_paras)
 
-        # --- Fallback Logic ---
         if fallback and total_paras > 20:
             start_index = total_paras // 2
-            print(f"   -> [DOCX Fallback] Starting extraction at paragraph {start_index}")
+            if PRINT_DEBUG: print(f"   -> [DOCX Fallback] Starting extraction at paragraph {start_index}")
         else:
             start_index = 0
         
@@ -187,11 +187,9 @@ def extract_text_from_txt(file_path, filename, fallback=False):
         file_size = os.path.getsize(file_path)
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
             if fallback and file_size > PDF_CONFIG['MAX_INPUT_CHARS']:
-                # Seek to middle
                 f.seek(file_size // 2)
-                # Discard partial line
                 f.readline()
-                print(f"   -> [TXT Fallback] Starting extraction from middle of file")
+                if PRINT_DEBUG: print(f"   -> [TXT Fallback] Starting extraction from middle of file")
             
             raw = f.read(PDF_CONFIG['MAX_INPUT_CHARS'] * 2) 
             return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
@@ -205,8 +203,6 @@ def extract_text_from_txt(file_path, filename, fallback=False):
 def extract_text(file_path, fallback=False):
     """
     Main function to dispatch file processing.
-    :param fallback: If True, tries to extract text from the middle/end of the file 
-                     to avoid table of contents/cover pages.
     """
     filename = os.path.basename(file_path)
     ext = os.path.splitext(filename)[1].lower()
@@ -221,3 +217,89 @@ def extract_text(file_path, fallback=False):
         return extract_text_from_txt(file_path, filename, fallback=fallback)
             
     return filename
+
+# -----------------------
+# DATASET GENERATION MODE
+# -----------------------
+if __name__ == "__main__":
+    # --- Paths Setup ---
+    # Assuming script is in FileSense/scripts/
+    # We want to scan FileSense/sorted/
+    BASE_DIR = Path(__file__).resolve().parent.parent # Go up to FileSense root
+    SORTED_DIR = BASE_DIR / "sorted"
+    OUTPUT_CSV = BASE_DIR / "dataset.csv"
+
+    # SFT Instruction
+    SYSTEM_INSTRUCTION = (
+        "Analyze the text and classify into JSON with keys: 'folder_label', 'description', 'keywords'. "
+        "Banned words: project, assignment, file, pdf, report."
+    )
+
+    print(f"--- Scanning directory: {SORTED_DIR} ---")
+    
+    if not SORTED_DIR.exists():
+        print(f"ERROR: The directory '{SORTED_DIR}' does not exist.")
+        sys.exit(1)
+
+    rows = []
+    processed_count = 0
+    
+    # Walk through directory
+    for root, dirs, files in os.walk(SORTED_DIR):
+        # Determine the folder label from the directory name
+        # root is 'FileSense/sorted/Physics', so label is 'Physics'
+        current_folder_path = Path(root)
+        
+        # Skip the root 'sorted' folder itself if files are loose inside it
+        if current_folder_path == SORTED_DIR:
+            folder_label = "Unclassified" # Or skip files in root
+        else:
+            folder_label = current_folder_path.name
+        
+        for file in files:
+            if file.lower().endswith(('.pdf', '.docx', '.txt')):
+                full_path = os.path.join(root, file)
+                print(f"Processing [{folder_label}]: {file}...", end="\r")
+                
+                extracted_text = extract_text(full_path)
+                
+                # Check quality
+                if extracted_text and extracted_text != file and len(extracted_text) > 100:
+                    # Pre-fill the JSON structure partially
+                    partial_json = f'{{"folder_label": "{folder_label}", "description": "", "keywords": ""}}'
+                    
+                    rows.append({
+                        "instruction": SYSTEM_INSTRUCTION,
+                        "input": extracted_text.replace('"', "'"), # Escape quotes in text
+                        "output": partial_json 
+                    })
+                    processed_count += 1
+                else:
+                    # Retry with fallback
+                    extracted_text = extract_text(full_path, fallback=True)
+                    if extracted_text and extracted_text != file and len(extracted_text) > 100:
+                        partial_json = f'{{"folder_label": "{folder_label}", "description": "", "keywords": ""}}'
+                        
+                        rows.append({
+                            "instruction": SYSTEM_INSTRUCTION,
+                            "input": extracted_text.replace('"', "'"),
+                            "output": partial_json
+                        })
+                        processed_count += 1
+
+    print(f"\n\nProcessing complete. Found {processed_count} documents.")
+    
+    if rows:
+        try:
+            with open(OUTPUT_CSV, mode='w', newline='', encoding='utf-8') as csv_file:
+                fieldnames = ['instruction', 'input', 'output']
+                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                
+                writer.writeheader()
+                writer.writerows(rows)
+            
+            print(f"SUCCESS: Dataset saved to '{OUTPUT_CSV}'.")
+        except IOError as e:
+            print(f"ERROR: Could not write to file. {e}")
+    else:
+        print("WARNING: No valid documents found.")

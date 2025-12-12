@@ -30,6 +30,8 @@ def reward_event(current_label: str, predicted: str, retries: int, manual_labell
     reward = 0.0
     if current_label == predicted:
         reward += 1.0
+    if predicted == "Uncategorized":
+        reward -= 1.0
     if retries and retries > 0:
         reward -= 0.1 * float(retries)
     if manual_labelled:

@@ -1,148 +1,68 @@
-# Reinforcement Learning
-## Reason: Gemini incease rate limit for api calls :(
-## Events:
-### classification: action chosen, prediction done.(null reward )(served)
-### feedback: Fill reward on previous event by user action(audit)
----
-## Action: Chosen policy by the system
----
-### Policy: configuration 
-rl_config.py
-```bash
-POLICIES = {
-    "policy_A": {"THRESHOLD": 0.45, "LOW_CONF": 0.40, "FILENAME_BOOST": 0.15, "TEXT_BOOST": 0.08, "ALLOW_GENERATION": True},
-    "policy_B": {"THRESHOLD": 0.40, "LOW_CONF": 0.30, "FILENAME_BOOST": 0.20, "TEXT_BOOST": 0.10, "ALLOW_GENERATION": True},
-    "policy_C": {"THRESHOLD": 0.35, "LOW_CONF": 0.25, "FILENAME_BOOST": 0.25, "TEXT_BOOST": 0.12, "ALLOW_GENERATION": False},
-}```
----
-## State: (optional at v1) Features recorded at first serve 
----
-### Features: file_ext, text length, file_name_labels,timestamps,et 
----
-## Agent/Bandit: Simple decision maker **(epsilon-greedy)**
----
-## Log store: rl_events.jsonl, rl_policy_status.jsonl , etc
----
+# Reinforcement Learning & The Rate Limit Bottleneck
 
-# FLOW
+## 🚨 Critical Analysis: Why the API Approach Failed
 
-                 ┌────────────────────┐
-                 │ 1. Choose Policy   │
-                 │  (ε-greedy bandit) │
-                 └─────────┬──────────┘
-                           │
-                           ▼
-                 ┌────────────────────┐
-                 │ 2. Run FileSense   │
-                 │  Classification     │
-                 └─────────┬──────────┘
-                           │
-                           ▼
-                 ┌────────────────────┐
-                 │ 3. Get Prediction  │
-                 │  (label + sim)     │
-                 └─────────┬──────────┘
-                           │
-                           ▼
-                 ┌──────────────────────────┐
-                 │ 4. Log "served" event    │
-                 │  (interaction_id,        │
-                 │   policy, prediction,    │
-                 │   reward = null)         │
-                 └─────────┬───────────────┘
-                           │
-                           ▼
-                 ┌────────────────────┐
-                 │ 5. Move File       │
-                 └─────────┬──────────┘
-                           │
-                           ▼
-        ┌──────────────────────────────────────────┐
-        │ 6. Audit Phase (later)                   │
-        │   - Find current file location           │
-        │   - Compare with predicted label         │
-        │   - Compute reward (1 or 0)              │
-        └─────────┬────────────────────────────────┘
-                  │
-                  ▼
-        ┌──────────────────────────────────────────┐
-        │ 7. Update Event + Policy Stats           │
-        │   - Write reward back to log             │
-        │   - Update bandit stats for policy       │
-        └─────────┬────────────────────────────────┘
-                  │
-                  ▼
-        ┌──────────────────────────────────────────┐
-        │ 8. Next Classification Uses Updated Stats │
-        │   → Better policies chosen more often     │
-        └──────────────────────────────────────────┘
+### 1. The Bottleneck: API Quotas & Latency
+Despite implementing an intelligent RL agent (Epsilon-Greedy Bandit) to minimize API calls (Policy C), the dependency on Google Gemini's API proved fatal for the project's scalability.
+
+**Evidence from Logs (`RL_init.log`, `RL_RATE_LIMIT_RAGEBAIT.log`):**
+*   **Severe Rate Limiting (429 RESOURCE_EXHAUSTED):**
+    > `Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s`
+    The free/standard tier limits are far too low for a file organizer that might process hundreds of files. A limit of ~20 requests forces the system to sleep more than it works.
+
+*   **Service Unavailability (503 UNAVAILABLE):**
+    > `Error: 503 UNAVAILABLE ... The model is overloaded.`
+    Even within the quota, the model frequently failed to respond, triggering retry loops that added 10-20 seconds of delay per file.
+
+*   **Unacceptable Latency:**
+    The retry logic and backoff strategies blew up processing times:
+    *   `file_005.txt`: **57.45s**
+    *   `file_003.txt`: **70.12s**
+    *   `file_004.txt`: **96.77s**
+    *   `file_007.txt`: **123.44s**
+    
+    *Compare this to Vector Search (Policy C):* `~0.50s` per file.
+
+### 2. Failure of the RL "Fix"
+The RL agent correctly identified **Policy C (No GenAI)** as the optimal policy because it had the highest reward (speed + no errors). However, when the system *did* need to generate a new label (Exploration or Low Confidence), the API failure broke the entire loop.
+
+*   **The "Gap":** We cannot rely on the API even for the 10% "Explore" cases without risking a 60-second freeze.
+*   **Manual Fallback:** The logs show the system constantly asking the user for manual input (`Please manually input the folder label`), essentially defeating the purpose of an *automatic* organizer.
 
 ---
 
-## PSUEDO CODE
-```bash
-# serve time
-interaction_id = f"{filename}|{now}"
-policy = choose_policy()             # ε-greedy
-cfg = POLICIES[policy]
-predicted, sim = classify_with_cfg(text, filename, cfg)
-log_event({..., "interaction_id": interaction_id, "policy_id": policy, "predicted_label": predicted, "similarity": sim, "reward": None})
-move_file_to_sorted(file_path, predicted)
+## 🛑 Strategic Shift: Supervised Fine-Tuning (SFT)
 
-# audit (periodic)
-events = load_events()
-for ev in events with ev["reward"] is None and now - ev["timestamp"] > GRACE:
-    path_found = find_file(ev["filename"])
-    if not found: continue
-    current_label = parent_folder(path_found)
-    reward = 1.0 if current_label == ev["predicted_label"] else 0.0
-    ev["reward"] = reward
-    update_policy(ev["policy_id"], reward)
-save_events(events)
-```
+**Problem:** We need the intelligence of an LLM to generate labels for unknown files, but we cannot afford the latency or rate limits of an API.
+**Solution:** **Supervised Fine-Tuning (SFT)** a local Small Language Model (SLM).
+
+### Why SFT?
+1.  **Zero Latency:** A local model (e.g., Llama-3-8B-Quantized or TinyLlama) running on the GPU/CPU has no network overhead.
+2.  **No Rate Limits:** We can classify 10,000 files in a row without asking permission or waiting for quotas.
+3.  **Privacy:** File contents never leave the user's machine.
+
+### The Plan
+1.  **Data Collection:** We have collected high-quality "Event" data in `rl_events.jsonl` (Input Text -> Predicted Label).
+2.  **Dataset Creation:** Format these events into an SFT dataset (Instruction Tuning format).
+    *   *Input:* "Classify this text: {content_summary}"
+    *   *Output:* "{label}"
+3.  **Fine-Tuning:** Train a small, efficient model to replicate the decision-making of the larger Gemini model.
+4.  **Deployment:** Replace the `generate_label.py` API calls with a local inference function.
 
 ---
 
-## EPSILON GREEDY
-### What is ε-Greedy? (Simple Explanation)
+## 📜 Original Architecture (Reference)
 
-#### ε-greedy (epsilon-greedy) is the simplest and most practical reinforcement learning strategy for real apps like FileSense.
+### Strategy: Epsilon-Greedy Bandit
+*   **Action:** Choose a Policy (A, B, or C).
+*   **Reward:** 1 (Success/Correct Sort) or 0 (Failure/Manual Fix).
+*   **Goal:** Maximize cumulative reward over time.
 
-### It works like this:
+### Policies
+| Policy | Threshold | Allow GenAI? | Description |
+|:---:|:---:|:---:|---|
+| **A** | 0.45 | **Yes** | Conservative. High overlap required. |
+| **B** | 0.40 | **Yes** | Balanced. |
+| **C** | 0.35 | **No**  | **Efficient.** Aggressive matching. Pure Vector Search. |
 
-#### At each decision:
-
-#### With probability ε (epsilon):
-```
-→ Explore → pick a random policy
-```
-### With probability 1 - ε:
-```
-→ Exploit → pick the best-performing policy so far
-```
-### Example:
-```
-If ε = 0.10 (10%):
-
-10% of the time you try a random policy
-
-90% of the time you pick the policy with the highest average reward
-```
-### Why it works:
-```
-Exploration ensures you don’t get stuck using a suboptimal policy
-
-Exploitation ensures you use the best-known policy most of the time
-
-Over time, the system learns which policies work best
-
-In FileSense:
-
-ε-greedy controls:
-
-How aggressive or conservative the classification should be
-
-Which threshold/boost configuration produces the most accurate results
-
-Continual improvement with zero developer tuning
-```
+*(Note: While logical, this architecture is currently paused in favor of the SFT migration.)*
