@@ -62,6 +62,35 @@
 
 <hr />
 
+<h2 id="️-major-update-the-shift-to-sft">⚠️ MAJOR UPDATE: The Shift to SFT</h2>
+
+<p><strong>TL;DR: API Rate limits have broken the real-time workflow. I am pivoting to Supervised Fine-Tuning (SFT).</strong></p>
+
+<h3 id="the-rate-limit-bottleneck">The Rate Limit Bottleneck</h3>
+<p>As documented in recent logs (<code class="language-plaintext highlighter-rouge">RL_RATE_LIMIT_RAGEBAIT.log</code>), relying on the free/standard tier of the Gemini API has become untenable for a high-volume file organizer.</p>
+
+<ul>
+  <li><strong>Massive Delays:</strong> The API is enforcing severe backoff times.
+    <blockquote>
+      <p><code class="language-plaintext highlighter-rouge">[!] Rate Limit Hit on attempt 2/5 ... Google requested wait: 59.55s</code></p>
+    </blockquote>
+  </li>
+  <li><strong>Pipeline Freezes:</strong> When organizing batches of files (e.g., 8-10 files), the script spends more time sleeping than processing.</li>
+  <li><strong>Fallback Failures:</strong> Even with retries, many requests eventually degrade to non-interactive mode or fail completely, requiring manual intervention.</li>
+</ul>
+
+<h3 id="the-resolution-local-sft">The Resolution: Local SFT</h3>
+<p>Instead of optimizing prompt engineering or RL agents to <em>minimize</em> calls, the only robust solution is to <strong>remove the dependency entirely</strong>.</p>
+
+<p>I am now collecting the high-quality labeled data generated so far to <strong>Supervised Fine-Tune (SFT)</strong> a truncated, local model (Small Language Model). This will allow FileSense to:</p>
+<ol>
+  <li><strong>Run Offline:</strong> Zero internet dependency.</li>
+  <li><strong>Zero Latency:</strong> No HTTP requests or 60s wait times.</li>
+  <li><strong>Privacy:</strong> No file content leaves your machine.</li>
+</ol>
+
+<hr />
+
 <h2 id="-quick-links">⚡ Quick Links</h2>
 
 <ul>

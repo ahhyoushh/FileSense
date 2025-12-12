@@ -56,143 +56,94 @@
   <h1><a href="/FileSense/wiki/rl/">Reinforcement Learning Architecture</a></h1>
 </header>
 
-  <h1 id="reinforcement-learning-architecture">Reinforcement Learning Architecture</h1>
+  <h1 id="reinforcement-learning--the-rate-limit-bottleneck">Reinforcement Learning &amp; The Rate Limit Bottleneck</h1>
 
-<h2 id="overview">Overview</h2>
-<p>To optimize the trade-off between classification accuracy and system efficiency (latency/cost), FileSense utilizes a <strong>Reinforcement Learning (RL)</strong> agent. The agent dynamically selects the best configuration policy for classifying documents based on historical rewards.</p>
+<p>## 🚨 Critical Analysis: Why the API Approach Failed</p>
 
-<h2 id="1-strategy-epsilon-greedy-bandit">1. Strategy: Epsilon-Greedy Bandit</h2>
-<p>The system uses an <strong>ε-greedy (epsilon-greedy)</strong> bandit algorithm, a practical and robust strategy for online decision making.</p>
+<p>### 1. The Bottleneck: API Quotas &amp; Latency
+ Despite implementing an intelligent RL agent (Epsilon-Greedy Bandit) to minimize API calls (Policy C), the dependency on Google Gemini’s API proved fatal for the project’s scalability.</p>
 
-<h3 id="how-it-works">How it Works</h3>
-<p>At each decision point (serving a file):</p>
+<p><strong>Evidence from Logs (<code class="language-plaintext highlighter-rouge">RL_init.log</code>, <code class="language-plaintext highlighter-rouge">RL_RATE_LIMIT_RAGEBAIT.log</code>):</strong></p>
 <ul>
-  <li><strong>Exploration (ε = 0.10):</strong> With 10% probability, the agent picks a random policy to discover potential improvements.</li>
-  <li><strong>Exploitation (1 - ε = 0.90):</strong> With 90% probability, the agent picks the best-performing policy based on historical average rewards.</li>
+  <li><strong>Severe Rate Limiting (429 RESOURCE_EXHAUSTED):</strong>
+    <blockquote>
+      <p><code class="language-plaintext highlighter-rouge">Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s</code>
+The free/standard tier limits are far too low for a file organizer that might process hundreds of files. A limit of ~20 requests forces the system to sleep more than it works.</p>
+    </blockquote>
+  </li>
+  <li><strong>Service Unavailability (503 UNAVAILABLE):</strong>
+    <blockquote>
+      <p><code class="language-plaintext highlighter-rouge">Error: 503 UNAVAILABLE ... The model is overloaded.</code>
+Even within the quota, the model frequently failed to respond, triggering retry loops that added 10-20 seconds of delay per file.</p>
+    </blockquote>
+  </li>
+  <li><strong>Unacceptable Latency:</strong>
+The retry logic and backoff strategies blew up processing times:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">file_005.txt</code>: <strong>57.45s</strong></li>
+      <li><code class="language-plaintext highlighter-rouge">file_003.txt</code>: <strong>70.12s</strong></li>
+      <li><code class="language-plaintext highlighter-rouge">file_004.txt</code>: <strong>96.77s</strong></li>
+      <li><code class="language-plaintext highlighter-rouge">file_007.txt</code>: <strong>123.44s</strong></li>
+    </ul>
+
+    <p><em>Compare this to Vector Search (Policy C):</em> <code class="language-plaintext highlighter-rouge">~0.50s</code> per file.</p>
+  </li>
 </ul>
 
-<p>This ensures the system mostly uses the optimal configuration while never stopping the search for a better one.</p>
+<p>### 2. Failure of the RL “Fix”
+ The RL agent correctly identified <strong>Policy C (No GenAI)</strong> as the optimal policy because it had the highest reward (speed + no errors). However, when the system <em>did</em> need to generate a new label (Exploration or Low Confidence), the API failure broke the entire loop.</p>
 
-<hr />
-
-<h2 id="2-policies">2. Policies</h2>
-<p>The policies represent different configurations of the classification engine. They vary in aggressiveness (thresholds) and cost (whether generation is allowed).</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Policy ID</th>
-      <th>Threshold</th>
-      <th>Low Conf.</th>
-      <th>Generative?</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Policy A</strong></td>
-      <td>0.45</td>
-      <td>0.40</td>
-      <td><strong>Yes</strong></td>
-      <td>Conservative. High overlap required. Falls back to LLM generation if needed.</td>
-    </tr>
-    <tr>
-      <td><strong>Policy B</strong></td>
-      <td>0.40</td>
-      <td>0.30</td>
-      <td><strong>Yes</strong></td>
-      <td>Balanced. Moderate overlap accepted. LLM generation allowed.</td>
-    </tr>
-    <tr>
-      <td><strong>Policy C</strong></td>
-      <td>0.35</td>
-      <td>0.25</td>
-      <td><strong>No</strong></td>
-      <td><strong>Efficient.</strong> Aggressive matching. <strong>LLM Generation Disabled.</strong> Relies purely on embeddings.</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-
-<h2 id="3-efficiency-analysis-generation-free-classification">3. Efficiency Analysis: Generation-Free Classification</h2>
-<p>A key goal of the RL agent is to identify if and when expensive Generative AI calls can be avoided.</p>
-
-<p><strong>Policy C</strong> is designed specifically for this purpose. It disables <code class="language-plaintext highlighter-rouge">ALLOW_GENERATION</code>, forcing the system to rely solely on vector similarity scores and lower thresholds.</p>
-
-<h3 id="success-without-generation">Success without Generation</h3>
-<p>Initial evaluation logs demonstrate that <strong>Policy C</strong> is highly effective for standard academic datasets (e.g., NCERT, STEM).</p>
 <ul>
-  <li><strong>Efficiency:</strong> By skipping the generation step, Policy C reduces processing time per file significantly (removing the 2-5s latency of LLM calls).</li>
-  <li><strong>Accuracy:</strong> Despite the lack of generation, the adjusted thresholds (0.35) allow for successful classification purely based on semantic alignment between document text and folder labels.</li>
+  <li><strong>The “Gap”:</strong> We cannot rely on the API even for the 10% “Explore” cases without risking a 60-second freeze.</li>
+  <li><strong>Manual Fallback:</strong> The logs show the system constantly asking the user for manual input (<code class="language-plaintext highlighter-rouge">Please manually input the folder label</code>), essentially defeating the purpose of an <em>automatic</em> organizer.</li>
 </ul>
 
-<p><strong>Conclusion:</strong> The RL agent successfully identifies that for well-defined domains, <strong>retrieval-based classification (Policy C)</strong> is sufficient and far more efficient than generative approaches.</p>
+<hr />
+
+<p>## 🛑 Strategic Shift: Supervised Fine-Tuning (SFT)</p>
+
+<p><strong>Problem:</strong> We need the intelligence of an LLM to generate labels for unknown files, but we cannot afford the latency or rate limits of an API.
+ <strong>Solution:</strong> <strong>Supervised Fine-Tuning (SFT)</strong> a local Small Language Model (SLM).</p>
+
+<p>### Why SFT?</p>
+<ol>
+  <li><strong>Zero Latency:</strong> A local model (e.g., Llama-3-8B-Quantized or TinyLlama) running on the GPU/CPU has no network overhead.</li>
+  <li><strong>No Rate Limits:</strong> We can classify 10,000 files in a row without asking permission or waiting for quotas.</li>
+  <li><strong>Privacy:</strong> File contents never leave the user’s machine.</li>
+</ol>
+
+<p>### The Plan</p>
+<ol>
+  <li><strong>Data Collection:</strong> We have collected high-quality “Event” data in <code class="language-plaintext highlighter-rouge">rl_events.jsonl</code> (Input Text -&gt; Predicted Label).</li>
+  <li><strong>Dataset Creation:</strong> Format these events into an SFT dataset (Instruction Tuning format).
+    <ul>
+      <li><em>Input:</em> “Classify this text: {content_summary}”</li>
+      <li><em>Output:</em> “{label}”</li>
+    </ul>
+  </li>
+  <li><strong>Fine-Tuning:</strong> Train a small, efficient model to replicate the decision-making of the larger Gemini model.</li>
+  <li><strong>Deployment:</strong> Replace the <code class="language-plaintext highlighter-rouge">generate_label.py</code> API calls with a local inference function.</li>
+</ol>
 
 <hr />
 
-<h2 id="4-work-flow">4. Work Flow</h2>
+<p>## 📜 Original Architecture (Reference)</p>
 
-<p>The RL decision process follows this loop:</p>
+<p>### Strategy: Epsilon-Greedy Bandit</p>
+<ul>
+  <li><strong>Action:</strong> Choose a Policy (A, B, or C).</li>
+  <li><strong>Reward:</strong> 1 (Success/Correct Sort) or 0 (Failure/Manual Fix).</li>
+  <li><strong>Goal:</strong> Maximize cumulative reward over time.</li>
+</ul>
 
-<pre><code class="language-mermaid">graph TD
-    A[Start: Serve File] --&gt; B{Choose Policy}
-    B -- Exploit (90%) --&gt; C[Best Known Policy]
-    B -- Explore (10%) --&gt; D[Random Policy]
-    C --&gt; E[Run FileSense Classification]
-    D --&gt; E
-    E --&gt; F[Log 'Served' Event]
-    F --&gt; G[Move File]
-    G --&gt; H[Audit Phase]
-    H --&gt; I{Correct Label?}
-    I -- Yes --&gt; J[Reward = 1.0]
-    I -- No --&gt; K[Reward = 0.0]
-    J --&gt; L[Update Policy Stats]
-    K --&gt; L
-    L --&gt; M[Next Decision Uses Updated Stats]
-</code></pre>
+<p>### Policies
+ | Policy | Threshold | Allow GenAI? | Description |
+ |:—:|:—:|:—:|—|
+ | <strong>A</strong> | 0.45 | <strong>Yes</strong> | Conservative. High overlap required. |
+ | <strong>B</strong> | 0.40 | <strong>Yes</strong> | Balanced. |
+ | <strong>C</strong> | 0.35 | <strong>No</strong>  | <strong>Efficient.</strong> Aggressive matching. Pure Vector Search. |</p>
 
-<hr />
-
-<h2 id="5-performance-stats">5. Performance Stats</h2>
-<p><em>Snapshot from <code class="language-plaintext highlighter-rouge">rl_policy_stats.json</code></em></p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Policy</th>
-      <th>Count</th>
-      <th>Total Reward</th>
-      <th>Avg Reward</th>
-      <th>Evaluation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Policy A</strong></td>
-      <td>17</td>
-      <td>14.4</td>
-      <td><strong>0.85</strong></td>
-      <td>Stable, reliable, high cost.</td>
-    </tr>
-    <tr>
-      <td><strong>Policy B</strong></td>
-      <td>1</td>
-      <td>0.4</td>
-      <td><strong>0.40</strong></td>
-      <td>Underperforming in current tests.</td>
-    </tr>
-    <tr>
-      <td><strong>Policy C</strong></td>
-      <td>High*</td>
-      <td>High*</td>
-      <td><strong>1.00</strong></td>
-      <td><strong>Optimal Efficiency.</strong> High usage in recent events.</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><em>*Note: Recent logs show a surge in Policy C usage, indicating the agent is converging on this efficient strategy.</em></p>
+<p><em>(Note: While logical, this architecture is currently paused in favor of the SFT migration.)</em></p>
 
 </article>
 </html>
