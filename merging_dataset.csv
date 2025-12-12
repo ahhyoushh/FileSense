@@ -1,0 +1,33 @@
+instruction,input,output
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""kinematics, velocity"",
+""keywords"": ""motion"" } NEW: { ""description"": ""newton laws, force"", ""keywords"": ""dynamics""
+}","{""merged_description"": ""kinematics, velocity, newton laws, force, dynamics"", ""merged_keywords"": ""motion, dynamics,force""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""cellular respiration"",
+""keywords"": ""biology"" } NEW: { ""description"": ""photosynthesis, light energy"", ""keywords"": ""plants""
+}","{""merged_description"": ""cellular respiration, photosynthesis, light energy, metabolism"", ""merged_keywords"":
+""biology, plants, metabolism""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""algorithms"", ""keywords"":
+""coding"" } NEW: { ""description"": ""trees, graphs"", ""keywords"": ""cs"" }","{""merged_description"": ""algorithms, trees,
+graphs, data structures"", ""merged_keywords"": ""coding, cs, algorithms""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""organic chemistry"", ""keywords"":
+""chemistry"" } NEW: { ""description"": ""alkanes, alkenes"", ""keywords"": ""molecules"" }","{""merged_description"":
+""organic chemistry, alkanes, alkenes, molecular structure"", ""merged_keywords"": ""chemistry, molecules, organic""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""calculus"", ""keywords"": ""math"" }
+NEW: { ""description"": ""integrals, area"", ""keywords"": ""calculus"" }","{""merged_description"": ""calculus, derivatives,
+integrals, area under curve"", ""merged_keywords"": ""math, calculus, area""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""world war 1"", ""keywords"":
+""history"" } NEW: { ""description"": ""treaty of versailles"", ""keywords"": ""war"" }","{""merged_description"": ""world war
+1, treaty of versailles, 20th century conflict"", ""merged_keywords"": ""history, war, conflict""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""neural networks"", ""keywords"":
+""ai"" } NEW: { ""description"": ""deep learning, tensors"", ""keywords"": ""data"" }","{""merged_description"": ""neural
+networks, deep learning, tensors, ai"", ""merged_keywords"": ""ai, data, deep learning""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""thermodynamics"", ""keywords"":
+""heat"" } NEW: { ""description"": ""entropy, carnot cycle"", ""keywords"": ""energy"" }","{""merged_description"":
+""thermodynamics, entropy, carnot cycle, thermal physics"", ""merged_keywords"": ""heat, energy, thermodynamics""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""stocks"", ""keywords"": ""finance""
+} NEW: { ""description"": ""bonds, risk"", ""keywords"": ""investing"" }","{""merged_description"": ""stocks, bonds, risk
+management, investment"", ""merged_keywords"": ""finance, investing, stocks""}"
+"Merge the following metadata into a single JSON object.","EXISTING: { ""description"": ""poetry"", ""keywords"": ""english""
+} NEW: { ""description"": ""sonnets, shakespeare"", ""keywords"": ""literature"" }","{""merged_description"": ""poetry,
+sonnets, shakespeare, literary analysis"", ""merged_keywords"": ""english, literature, poetry""}"
+Page 2
