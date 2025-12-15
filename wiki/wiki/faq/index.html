@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Frequently Asked Questions | FileSense</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Frequently Asked Questions" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="FileSense" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Frequently Asked Questions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Frequently Asked Questions","url":"/wiki/faq/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ff113580487d33068b3216f649af5514f0da9c75">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="/">FileSense</a></h1>
+      
+
+      <h1 id="-frequently-asked-questions">❓ Frequently Asked Questions</h1>
+
+<p>No one asked 🥀</p>
+
+<hr />
+
+<h2 id="-general-questions">🎯 General Questions</h2>
+
+<h3 id="what-is-filesense">What is FileSense?</h3>
+
+<p>FileSense is an intelligent file organizer that classifies documents by their <strong>semantic meaning</strong> rather than just filenames or extensions. It uses:</p>
+<ul>
+  <li><strong>SBERT</strong> (Sentence-BERT) for text embeddings</li>
+  <li><strong>FAISS</strong> for fast vector similarity search</li>
+  <li><strong>Google Gemini</strong> for generating new categories</li>
+  <li><strong>RL agent</strong> for managing lesser api calls</li>
+</ul>
+
+<h3 id="how-is-this-different-from-traditional-file-organizers">How is this different from traditional file organizers?</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Traditional Organizers</th>
+      <th>FileSense</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rules-based (file extension, name patterns)</td>
+      <td>Semantic understanding (actual content)</td>
+    </tr>
+    <tr>
+      <td>Manual category creation</td>
+      <td>AI-powered auto-generation</td>
+    </tr>
+    <tr>
+      <td>Keyword matching only</td>
+      <td>Vector embeddings + keywords</td>
+    </tr>
+    <tr>
+      <td>Static classification</td>
+      <td>Self-learning system</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="is-my-data-sent-to-the-cloud">Is my data sent to the cloud?</h3>
+
+<p><strong>Partially.</strong> Here’s what happens:</p>
+<ul>
+  <li>✅ <strong>Local:</strong> Text extraction, embedding generation, vector search</li>
+  <li>☁️ <strong>Cloud:</strong> Only when generating new labels (Gemini API)</li>
+  <li>🔒 <strong>Privacy:</strong> File content is sent to Gemini only for classification, not stored</li>
+  <li>🪵 <strong>logs:</strong> all rl logs are sent to supabase storage
+    <blockquote>
+      <p><strong>Info:</strong> <strong>You can disable cloud features</strong> with <code class="language-plaintext highlighter-rouge">--no-generation</code> flag.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="-technical-questions">🔧 Technical Questions</h2>
+
+<h3 id="what-file-types-are-supported">What file types are supported?</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Format</th>
+      <th>Support</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>PDF</strong></td>
+      <td>✅ Full</td>
+      <td>Text-based and scanned (OCR)</td>
+    </tr>
+    <tr>
+      <td><strong>DOCX</strong></td>
+      <td>✅ Full</td>
+      <td>Microsoft Word documents</td>
+    </tr>
+    <tr>
+      <td><strong>TXT</strong></td>
+      <td>✅ Full</td>
+      <td>Plain text files</td>
+    </tr>
+    <tr>
+      <td><strong>MD</strong></td>
+      <td>✅ Full</td>
+      <td>Markdown files</td>
+    </tr>
+    <tr>
+      <td><strong>Images</strong></td>
+      <td>⚠️ Partial</td>
+      <td>OCR only (requires Tesseract)</td>
+    </tr>
+    <tr>
+      <td><strong>Others</strong></td>
+      <td>❌ No</td>
+      <td>Filename-based classification only</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="how-accurate-is-the-classification">How accurate is the classification?</h3>
+
+<p><strong>Current performance (NCERT test dataset):</strong></p>
+<ul>
+  <li><strong>Accuracy:</strong> 56% with keyword-based descriptions</li>
+  <li><strong>Categorization rate:</strong> 89% (only 11% uncategorized)</li>
+  <li><strong>Average similarity:</strong> 0.355</li>
+</ul>
+
+<p><strong>Factors affecting accuracy:</strong></p>
+<ul>
+  <li>Quality of text extraction</li>
+  <li>Similarity to existing labels</li>
+  <li>Document length and clarity</li>
+  <li>Threshold settings (default: 0.40)</li>
+</ul>
+
+<h3 id="what-embedding-model-is-used">What embedding model is used?</h3>
+
+<p><strong>Model:</strong> <code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> (SentenceTransformers)</p>
+<ul>
+  <li><strong>Dimensions:</strong> 768</li>
+  <li><strong>Performance:</strong> Best balance of speed and accuracy</li>
+  <li><strong>Size:</strong> ~420MB download on first run</li>
+</ul>
+
+<blockquote>
+  <p><strong>Warning:</strong></p>
+
+  <p>Testing showed that lighter models performed <strong>significantly worse</strong>. The all-mpnet-base-v2 model is optimal for this use case.</p>
+</blockquote>
+
+<h3 id="can-i-use-a-different-embedding-model">Can I use a different embedding model?</h3>
+
+<p>Yes! Edit <code class="language-plaintext highlighter-rouge">scripts/create_index.py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"all-mpnet-base-v2"</span>  <span class="c1"># Change this
+</span></code></pre></div></div>
+
+<p><strong>Recommended alternatives:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">all-MiniLM-L6-v2</code> - Faster, less accurate</li>
+  <li><code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> - <strong>Best balance</strong> (recommended)</li>
+  <li><code class="language-plaintext highlighter-rouge">multi-qa-mpnet-base-dot-v1</code> - Better for Q&amp;A documents</li>
+</ul>
+
+<hr />
+
+<h2 id="-usage-questions">🚀 Usage Questions</h2>
+
+<h3 id="how-do-i-organize-my-downloads-folder">How do I organize my Downloads folder?</h3>
+
+<p><strong>Option 1: One-time bulk sort</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/script.py <span class="nt">--dir</span> ~/Downloads <span class="nt">--threads</span> 8
+</code></pre></div></div>
+
+<p><strong>Option 2: Real-time monitoring</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/watcher_script.py <span class="nt">--dir</span> ~/Downloads
+</code></pre></div></div>
+
+<p>The watcher will automatically sort new files as they appear!</p>
+
+<h3 id="can-i-customize-the-categories">Can I customize the categories?</h3>
+
+<p><strong>Yes!</strong> Edit <code class="language-plaintext highlighter-rouge">folder_labels.json</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"Custom Category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keyword1, keyword2, keyword3, related terms, synonyms Keywords: key1, key2, key3"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then rebuild the index:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/create_index.py
+</code></pre></div></div>
+
+<h3 id="how-do-i-adjust-classification-thresholds">How do I adjust classification thresholds?</h3>
+
+<p>Edit <code class="language-plaintext highlighter-rouge">scripts/classify_process_file.py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">THRESHOLD</span> <span class="o">=</span> <span class="mf">0.4</span>              <span class="c1"># Main threshold (increase for stricter)
+</span><span class="n">low_confidence_threshold</span> <span class="o">=</span> <span class="mf">0.35</span>  <span class="c1"># Fallback threshold
+</span></code></pre></div></div>
+
+<p><strong>Guidelines:</strong></p>
+<ul>
+  <li><strong>0.30-0.35:</strong> More files categorized, less accurate</li>
+  <li><strong>0.40-0.45:</strong> Balanced (recommended)</li>
+  <li><strong>0.50+:</strong> Very strict, more uncategorized files</li>
+</ul>
+
+<h3 id="what-happens-to-uncategorized-files">What happens to uncategorized files?</h3>
+
+<p>Files that don’t match any category (similarity &lt; threshold) are moved to <code class="language-plaintext highlighter-rouge">sorted/Uncategorized/</code>.</p>
+
+<p><strong>To reduce uncategorized files:</strong></p>
+<ol>
+  <li>Lower the threshold (e.g., 0.35)</li>
+  <li>Enable generation: Remove <code class="language-plaintext highlighter-rouge">--no-generation</code> flag</li>
+  <li>Add more diverse labels to <code class="language-plaintext highlighter-rouge">folder_labels.json</code></li>
+</ol>
+
+<hr />
+
+<h2 id="-troubleshooting">🐛 Troubleshooting</h2>
+
+<h3 id="files-are-not-being-classified-correctly">Files are not being classified correctly</h3>
+
+<p><strong>Possible causes:</strong></p>
+
+<ol>
+  <li><strong>Poor text extraction</strong>
+    <ul>
+      <li>Check if PDF is scanned (needs OCR)</li>
+      <li>Verify Tesseract is installed for images</li>
+      <li>Try fallback extraction: <code class="language-plaintext highlighter-rouge">extract_text(file, fallback=True)</code></li>
+    </ul>
+  </li>
+  <li><strong>No matching labels</strong>
+    <ul>
+      <li>Add relevant categories to <code class="language-plaintext highlighter-rouge">folder_labels.json</code></li>
+      <li>Enable generation to create new labels</li>
+      <li>Check similarity scores in logs</li>
+    </ul>
+  </li>
+  <li><strong>Threshold too high</strong>
+    <ul>
+      <li>Lower <code class="language-plaintext highlighter-rouge">THRESHOLD</code> in <code class="language-plaintext highlighter-rouge">classify_process_file.py</code></li>
+      <li>Check average similarities in your dataset</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="gemini-api-errors">Gemini API errors</h3>
+
+<p><strong>“API key not valid”</strong></p>
+<ul>
+  <li>Verify <code class="language-plaintext highlighter-rouge">.env</code> file exists and contains valid key</li>
+  <li>Check for extra spaces or quotes in <code class="language-plaintext highlighter-rouge">.env</code></li>
+  <li>Regenerate key at <a href="https://makersuite.google.com/">Google AI Studio</a></li>
+</ul>
+
+<p><strong>“Rate limit exceeded”</strong></p>
+<ul>
+  <li>Gemini has usage limits on free tier</li>
+  <li>Add delays between requests</li>
+  <li>Consider upgrading to paid tier</li>
+</ul>
+
+<p><strong>“Model not found”</strong></p>
+<ul>
+  <li>Ensure you’re using <code class="language-plaintext highlighter-rouge">gemini-2.5-flash</code> (current model)</li>
+  <li>Check Google AI Studio for model availability</li>
+</ul>
+
+<h3 id="faiss-index-errors">FAISS index errors</h3>
+
+<p><strong>“Index file not found”</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/create_index.py
+</code></pre></div></div>
+
+<p><strong>“Dimension mismatch”</strong></p>
+<ul>
+  <li>Delete <code class="language-plaintext highlighter-rouge">folder_embeddings.faiss</code></li>
+  <li>Rebuild index with correct model</li>
+</ul>
+
+<p><strong>“Empty index”</strong></p>
+<ul>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">folder_labels.json</code> has at least one label</li>
+  <li>Check JSON file is valid (no syntax errors)</li>
+</ul>
+
+<h3 id="performance-issues">Performance issues</h3>
+
+<p><strong>Slow processing</strong></p>
+<ul>
+  <li>Increase threads: <code class="language-plaintext highlighter-rouge">--threads 12</code></li>
+  <li>Use SSD for faster file I/O</li>
+  <li>Disable logging: <code class="language-plaintext highlighter-rouge">--no-logs</code></li>
+</ul>
+
+<p><strong>High memory usage</strong></p>
+<ul>
+  <li>Reduce concurrent threads</li>
+  <li>Process files in smaller batches</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">--single-thread</code> for large files</li>
+</ul>
+
+<p><strong>Embedding model download stuck</strong></p>
+<ul>
+  <li>Check internet connection</li>
+  <li>Manually download from <a href="https://huggingface.co/sentence-transformers/all-mpnet-base-v2">HuggingFace</a></li>
+  <li>Place in <code class="language-plaintext highlighter-rouge">~/.cache/torch/sentence_transformers/</code></li>
+</ul>
+
+<hr />
+
+<h2 id="-performance-questions">📊 Performance Questions</h2>
+
+<h3 id="why-do-keyword-descriptions-work-better-than-natural-language">Why do keyword descriptions work better than natural language?</h3>
+
+<p><strong>Comprehensive testing showed:</strong></p>
+<ul>
+  <li><strong>Keywords:</strong> 56% accuracy</li>
+  <li><strong>Natural Language:</strong> 24% accuracy</li>
+</ul>
+
+<p><strong>Reasons:</strong></p>
+<ol>
+  <li>SBERT embeddings cluster keyword lists more effectively</li>
+  <li>Natural language adds grammatical noise</li>
+  <li>Keywords provide broader semantic coverage</li>
+  <li>Academic documents align well with keyword matching</li>
+</ol>
+
+<p>See the <a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a> for detailed analysis.</p>
+
+<h3 id="whats-the-processing-speed">What’s the processing speed?</h3>
+
+<p><strong>Benchmarks (NCERT dataset, 75 files):</strong></p>
+<ul>
+  <li><strong>Average:</strong> 0.27s per file</li>
+  <li><strong>Total:</strong> ~20s for 75 files (6 threads)</li>
+  <li><strong>Bottleneck:</strong> Text extraction (especially OCR)</li>
+</ul>
+
+<p><strong>Optimization tips:</strong></p>
+<ul>
+  <li>Use more threads for I/O-bound tasks</li>
+  <li>Pre-extract text for repeated processing</li>
+  <li>Use SSD storage</li>
+  <li>Disable fallback extraction if not needed</li>
+</ul>
+
+<h3 id="how-much-disk-space-does-it-need">How much disk space does it need?</h3>
+
+<p><strong>Minimal:</strong></p>
+<ul>
+  <li><strong>Embedding model:</strong> ~420MB (one-time download)</li>
+  <li><strong>FAISS index:</strong> &lt;1MB per 100 labels</li>
+  <li><strong>Dependencies:</strong> ~500MB total</li>
+  <li><strong>Logs:</strong> Varies (can be disabled)</li>
+</ul>
+
+<hr />
+
+<h2 id="-privacy--security">🔒 Privacy &amp; Security</h2>
+
+<h3 id="is-my-data-safe">Is my data safe?</h3>
+
+<p><strong>Local processing:</strong></p>
+<ul>
+  <li>Text extraction happens locally</li>
+  <li>Embeddings generated locally</li>
+  <li>Vector search is local</li>
+</ul>
+
+<p><strong>Cloud processing:</strong></p>
+<ul>
+  <li>Only when generating new labels</li>
+  <li>File content sent to Gemini API</li>
+  <li>Not stored by Google (per their policy)</li>
+</ul>
+
+<p><strong>Recommendations:</strong></p>
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">--no-generation</code> for sensitive files</li>
+  <li>Review <code class="language-plaintext highlighter-rouge">folder_labels.json</code> before sharing</li>
+  <li>Keep <code class="language-plaintext highlighter-rouge">.env</code> file private</li>
+</ul>
+
+<h3 id="can-i-use-filesense-offline">Can I use FileSense offline?</h3>
+
+<p><strong>Partially:</strong></p>
+<ul>
+  <li>✅ Classification works offline (after initial setup)</li>
+  <li>❌ New label generation requires internet (Gemini API)</li>
+</ul>
+
+<p><strong>Offline workflow:</strong></p>
+<ol>
+  <li>Pre-generate all labels online</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">--no-generation</code> flag</li>
+  <li>All classification happens locally</li>
+</ol>
+
+<hr />
+
+<h2 id="-known-limitations">🚧 Known Limitations</h2>
+
+<h3 id="current-limitations">Current Limitations</h3>
+
+<ol>
+  <li><strong>Natural language descriptions perform worse</strong> than keywords
+    <ul>
+      <li>Tested extensively, keywords are superior</li>
+      <li>See <a href="/FileSense/wiki/NL_VS_OG/">NL vs OG study</a></li>
+    </ul>
+  </li>
+  <li><strong>Lighter models reduce accuracy significantly</strong>
+    <ul>
+      <li>Stick with all-mpnet-base-v2</li>
+      <li>Don’t use smaller models for production</li>
+    </ul>
+  </li>
+  <li><strong>AG News dataset showed poor results</strong>
+    <ul>
+      <li>FileSense works best with academic/professional documents</li>
+      <li>News articles may need different approach</li>
+    </ul>
+  </li>
+  <li><strong>Text classification is inherently challenging</strong>
+    <ul>
+      <li>This might be an inefficient approach for some use cases</li>
+      <li>Consider as a learning experience</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Warning:</strong> <strong>These insights are from real testing and development.</strong></p>
+</blockquote>
+
+<hr />
+
+<h2 id="-contributing">🤝 Contributing</h2>
+
+<h3 id="how-can-i-contribute">How can I contribute?</h3>
+
+<ol>
+  <li><strong>Report bugs:</strong> <a href="https://github.com/ahhyoushh/FileSense/issues">GitHub Issues</a></li>
+  <li><strong>Suggest features:</strong> Open a discussion</li>
+  <li><strong>Submit PRs:</strong> Fork, improve, and submit</li>
+  <li><strong>Improve docs:</strong> Help expand this wiki</li>
+</ol>
+
+<h3 id="where-can-i-get-help">Where can I get help?</h3>
+
+<ul>
+  <li><strong>GitHub Issues:</strong> Technical problems</li>
+  <li><strong>Discussions:</strong> General questions</li>
+  <li><strong>Email:</strong> Contact the maintainer</li>
+</ul>
+
+<hr />
+
+<h2 id="-additional-resources">📚 Additional Resources</h2>
+
+<ul>
+  <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong> - Installation guide</li>
+  <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - How it works</li>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks</li>
+</ul>
+
+<hr />
+
+<blockquote>
+  <p><strong>Still have questions?</strong> Open an issue on <a href="https://github.com/ahhyoushh/FileSense/issues">GitHub</a>!</p>
+</blockquote>
+
+<hr />
+
+<p><a href="/FileSense/wiki/">← Back to Home</a></p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

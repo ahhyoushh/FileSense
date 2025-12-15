@@ -1,0 +1,36 @@
+instruction,input,output
+"Analyze the text and classify into JSON. Banned: project, assignment.","In multicellular organisms cells are organised into
+tissues, organs and organ systems that coordinate specific functions. Evolution explains both the unity and diversity of
+life.","{""folder_label"": ""Biology"", ""description"": ""cell biology, evolutionary theory, natural selection,
+homeostasis"", ""keywords"": ""cells, evolution, tissues, biology""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","The rate of a reaction depends on concentration,
+temperature, presence of catalyst. In aqueous solutions we frequently work with concepts like molarity.","{""folder_label"":
+""Chemistry"", ""description"": ""chemical kinetics, solution concentration, thermodynamics"", ""keywords"": ""reaction rate,
+molarity, chemistry""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Sorting algorithms reorder elements in a collection.
+Graph algorithms often rely on traversal strategies such as depth first search.","{""folder_label"": ""Computer Science"",
+""description"": ""algorithms, data structures, sorting, graph theory, dfs, bfs"", ""keywords"": ""sorting, graphs,
+programming, optimization""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Basic differentiation rules allow us to compute
+derivatives. The derivative of a function at a point is defined as the limit of the difference quotient.","{""folder_label"":
+""Mathematics"", ""description"": ""calculus, differentiation, limits, derivatives"", ""keywords"": ""calculus, derivatives,
+math, analysis""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Newton's laws are used as a starting point to connect
+the net force on an object with its acceleration. Momentum conservation is useful in collisions.","{""folder_label"":
+""Physics"", ""description"": ""newtonian mechanics, momentum, force, dynamics"", ""keywords"": ""force, newton, mechanics,
+physics""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Market capitalization refers to the total dollar
+market value of a company's outstanding shares.","{""folder_label"": ""Finance"", ""description"": ""stock market, valuation,
+equity, corporate finance"", ""keywords"": ""market cap, stocks, finance, investing""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Romanticism was an artistic, literary, musical, and
+intellectual movement that originated in Europe.","{""folder_label"": ""Literature"", ""description"": ""literary movements,
+18th century art, european history, emotion"", ""keywords"": ""romanticism, literature, art, history""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Machine learning involves the study of computer
+algorithms that improve automatically through experience.","{""folder_label"": ""Computer Science"", ""description"":
+""artificial intelligence, predictive modeling, neural networks"", ""keywords"": ""machine learning, ai, algorithms""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","Plate tectonics is a scientific theory describing the
+large-scale motion of plates of the Earth's lithosphere.","{""folder_label"": ""Geology"", ""description"": ""earth science,
+lithosphere, tectonic plates, geophysics"", ""keywords"": ""plate tectonics, geology, earth""}"
+"Analyze the text and classify into JSON. Banned: project, assignment.","The Great Depression was a severe worldwide economic
+depression that took place mostly during the 1930s.","{""folder_label"": ""History"", ""description"": ""economic history,
+1930s, global economy, recession"", ""keywords"": ""great depression, economics, history""}"

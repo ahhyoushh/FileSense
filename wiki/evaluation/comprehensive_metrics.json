@@ -1,0 +1,1832 @@
+{
+  "NCERT_NL": {
+    "total_files": 75,
+    "correct": 18,
+    "uncategorized": 53,
+    "accuracy": 24.0,
+    "categorization_rate": 29.333333333333332,
+    "avg_similarity": 0.1044,
+    "avg_time": 0.30333333333333334,
+    "label_counts": {
+      "Biotechnology": 9,
+      "Uncategorized": 53,
+      "Chemistry": 5,
+      "Civics": 5,
+      "English": 3
+    },
+    "similarity_distribution": {
+      "0.00": 53,
+      "0.01-0.20": 0,
+      "0.21-0.30": 4,
+      "0.31-0.40": 14,
+      "0.41-0.50": 3,
+      "0.51+": 1
+    },
+    "results": [
+      {
+        "filename": "bio__bio_11_13_bio_11_13.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.3,
+        "time": 0.39,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "biotech__biotech_11_4_biotech_11_4.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.32,
+        "time": 0.41,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_3_biotech_11_3.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.33,
+        "time": 0.42,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_5_biotech_11_5.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.3,
+        "time": 0.41,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_1_biotech_11_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.33,
+        "time": 0.42,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_12_9_biotech_12_9.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.34,
+        "time": 0.43,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "bio__bio_11_16_bio_11_16.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.29,
+        "time": 0.32,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "bio__bio_12_1_bio_12_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.32,
+        "time": 0.32,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "bio__bio_11_5_bio_11_5.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.33,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "bio__bio_11_1_bio_11_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.33,
+        "time": 0.34,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "chem__chem_11_3_chem_11_3.md",
+        "predicted_label": "Chemistry",
+        "similarity": 0.37,
+        "time": 0.33,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "chem__chem_11_8_chem_11_8.md",
+        "predicted_label": "Chemistry",
+        "similarity": 0.35,
+        "time": 0.2,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "civics__civics_10_1_civics_10_1.md",
+        "predicted_label": "Civics",
+        "similarity": 0.42,
+        "time": 0.43,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "chem__chem_12_3_chem_12_3.md",
+        "predicted_label": "Chemistry",
+        "similarity": 0.39,
+        "time": 0.43,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "chem__chem_11_a1_chem_11_a1.md",
+        "predicted_label": "Chemistry",
+        "similarity": 0.33,
+        "time": 0.54,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "chem__chem_12_2_chem_12_2.md",
+        "predicted_label": "Chemistry",
+        "similarity": 0.37,
+        "time": 0.46,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "civics__civics_10_4_civics_10_4.md",
+        "predicted_label": "Civics",
+        "similarity": 0.43,
+        "time": 0.41,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "civics__civics_10_5_civics_10_5.md",
+        "predicted_label": "Civics",
+        "similarity": 0.42,
+        "time": 0.29,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "comp__comp_11_3_comp_11_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.28,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "civics__civics_8_2_civics_8_2.md",
+        "predicted_label": "Civics",
+        "similarity": 0.4,
+        "time": 0.29,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "civics__civics_9_1_civics_9_1.md",
+        "predicted_label": "Civics",
+        "similarity": 0.51,
+        "time": 0.29,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "comp__comp_11_11_comp_11_11.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "english2__english2_11_w1_english2_11_w1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "English"
+      },
+      {
+        "filename": "comp__comp_12_6_comp_12_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "comp__comp_11_6_comp_11_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "comp__comp_12_12_comp_12_12.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "english2__english2_12_po5_english2_12_po5.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english2__english2_9_7_english2_9_7.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english2__english2_8_2_english2_8_2.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english3__english3_10_7_english3_10_7.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english2__english2_12_pr7_english2_12_pr7.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english3__english3_10_4_english3_10_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english3__english3_12_6_english3_12_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english3__english3_11_3_english3_11_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english3__english3_11_1_english3_11_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english__english_11_p7_english_11_p7.md",
+        "predicted_label": "English",
+        "similarity": 0.35,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_10_3_english_10_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_8_4_english_8_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_9_7_english_9_7.md",
+        "predicted_label": "English",
+        "similarity": 0.28,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_11_p9_english_11_p9.md",
+        "predicted_label": "English",
+        "similarity": 0.35,
+        "time": 0.3,
+        "expected_label": "English"
+      },
+      {
+        "filename": "geo2__geo2_11_1_geo2_11_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_11_6_geo2_11_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_11_1_geo3_11_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_12_1_geo2_12_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_12_2_geo2_12_2.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_11_2_geo3_11_2.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_12_4_geo2_12_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_6_geo3_12_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_11_10_geo_11_10.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_10_1_geo_10_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.3,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_3_geo3_12_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_4_geo3_12_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.31,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "history__history_10_1_history_10_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.25,
+        "expected_label": "History"
+      },
+      {
+        "filename": "geo__geo_8_2_geo_8_2.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_11_glo_geo_11_glo.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_12_a1_geo_12_a1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "history__history_10_3_history_10_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "History"
+      },
+      {
+        "filename": "history__history_9_3_history_9_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.25,
+        "expected_label": "History"
+      },
+      {
+        "filename": "history__history_8_3_history_8_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.25,
+        "expected_label": "History"
+      },
+      {
+        "filename": "history__history_8_1_history_8_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "History"
+      },
+      {
+        "filename": "math__math_11_12_math_11_12.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_10_3_math_10_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_11_4_math_11_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "phy__phy_11_10_phy_11_10.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "math__math_8_9_math_8_9.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_8_5_math_8_5.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.28,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "phy__phy_11_4_phy_11_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.28,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "phy__phy_12_1_phy_12_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "sci__sci_8_5_sci_8_5.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_10_10_sci_10_10.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.28,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "phy__phy_11_7_phy_11_7.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "phy__phy_12_4_phy_12_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "sci__sci_9_9_sci_9_9.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.16,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_8_6_sci_8_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.17,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_8_8_sci_8_8.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.17,
+        "expected_label": "Science"
+      }
+    ]
+  },
+  "NCERT_OG": {
+    "total_files": 75,
+    "correct": 42,
+    "uncategorized": 8,
+    "accuracy": 56.00000000000001,
+    "categorization_rate": 89.33333333333333,
+    "avg_similarity": 0.3546666666666667,
+    "avg_time": 0.2717333333333333,
+    "label_counts": {
+      "Biotechnology": 14,
+      "Physics": 14,
+      "Civics": 5,
+      "Uncategorized": 8,
+      "English": 15,
+      "Geography": 19
+    },
+    "similarity_distribution": {
+      "0.00": 8,
+      "0.01-0.20": 0,
+      "0.21-0.30": 8,
+      "0.31-0.40": 34,
+      "0.41-0.50": 16,
+      "0.51+": 9
+    },
+    "results": [
+      {
+        "filename": "bio__bio_11_13_bio_11_13.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.48,
+        "time": 0.35,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "biotech__biotech_11_3_biotech_11_3.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.57,
+        "time": 0.36,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_4_biotech_11_4.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.56,
+        "time": 0.36,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_1_biotech_11_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.56,
+        "time": 0.37,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_12_9_biotech_12_9.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.58,
+        "time": 0.36,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "biotech__biotech_11_5_biotech_11_5.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.55,
+        "time": 0.37,
+        "expected_label": "Biotechnology"
+      },
+      {
+        "filename": "bio__bio_11_16_bio_11_16.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.51,
+        "time": 0.27,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "bio__bio_11_1_bio_11_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.48,
+        "time": 0.28,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "chem__chem_11_3_chem_11_3.md",
+        "predicted_label": "Physics",
+        "similarity": 0.38,
+        "time": 0.27,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "bio__bio_12_1_bio_12_1.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.48,
+        "time": 0.28,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "bio__bio_11_5_bio_11_5.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.45,
+        "time": 0.28,
+        "expected_label": "Biology"
+      },
+      {
+        "filename": "chem__chem_12_3_chem_12_3.md",
+        "predicted_label": "Physics",
+        "similarity": 0.37,
+        "time": 0.29,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "chem__chem_11_8_chem_11_8.md",
+        "predicted_label": "Physics",
+        "similarity": 0.39,
+        "time": 0.31,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "chem__chem_11_a1_chem_11_a1.md",
+        "predicted_label": "Physics",
+        "similarity": 0.35,
+        "time": 0.32,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "civics__civics_10_1_civics_10_1.md",
+        "predicted_label": "Civics",
+        "similarity": 0.49,
+        "time": 0.32,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "chem__chem_12_2_chem_12_2.md",
+        "predicted_label": "Physics",
+        "similarity": 0.37,
+        "time": 0.33,
+        "expected_label": "Chemistry"
+      },
+      {
+        "filename": "civics__civics_10_5_civics_10_5.md",
+        "predicted_label": "Civics",
+        "similarity": 0.47,
+        "time": 0.16,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "civics__civics_10_4_civics_10_4.md",
+        "predicted_label": "Civics",
+        "similarity": 0.48,
+        "time": 0.16,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "civics__civics_8_2_civics_8_2.md",
+        "predicted_label": "Civics",
+        "similarity": 0.42,
+        "time": 0.24,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "civics__civics_9_1_civics_9_1.md",
+        "predicted_label": "Civics",
+        "similarity": 0.54,
+        "time": 0.25,
+        "expected_label": "Civics"
+      },
+      {
+        "filename": "comp__comp_11_11_comp_11_11.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "comp__comp_11_3_comp_11_3.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.22,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "comp__comp_11_6_comp_11_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.23,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "comp__comp_12_12_comp_12_12.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.27,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "english2__english2_12_po5_english2_12_po5.md",
+        "predicted_label": "English",
+        "similarity": 0.31,
+        "time": 0.26,
+        "expected_label": "English"
+      },
+      {
+        "filename": "comp__comp_12_6_comp_12_6.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Computer Science"
+      },
+      {
+        "filename": "english2__english2_11_w1_english2_11_w1.md",
+        "predicted_label": "English",
+        "similarity": 0.37,
+        "time": 0.28,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english2__english2_12_pr7_english2_12_pr7.md",
+        "predicted_label": "English",
+        "similarity": 0.46,
+        "time": 0.2,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english3__english3_10_4_english3_10_4.md",
+        "predicted_label": "English",
+        "similarity": 0.39,
+        "time": 0.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english3__english3_10_7_english3_10_7.md",
+        "predicted_label": "English",
+        "similarity": 0.37,
+        "time": 0.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english2__english2_8_2_english2_8_2.md",
+        "predicted_label": "English",
+        "similarity": 0.41,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english2__english2_9_7_english2_9_7.md",
+        "predicted_label": "English",
+        "similarity": 0.4,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english3__english3_11_1_english3_11_1.md",
+        "predicted_label": "English",
+        "similarity": 0.34,
+        "time": 0.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english3__english3_12_6_english3_12_6.md",
+        "predicted_label": "English",
+        "similarity": 0.37,
+        "time": 0.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english__english_10_3_english_10_3.md",
+        "predicted_label": "English",
+        "similarity": 0.5,
+        "time": 0.27,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_11_p9_english_11_p9.md",
+        "predicted_label": "English",
+        "similarity": 0.55,
+        "time": 0.28,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english3__english3_11_3_english3_11_3.md",
+        "predicted_label": "English",
+        "similarity": 0.37,
+        "time": 0.31,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "english__english_11_p7_english_11_p7.md",
+        "predicted_label": "English",
+        "similarity": 0.54,
+        "time": 0.29,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_8_4_english_8_4.md",
+        "predicted_label": "English",
+        "similarity": 0.49,
+        "time": 0.27,
+        "expected_label": "English"
+      },
+      {
+        "filename": "english__english_9_7_english_9_7.md",
+        "predicted_label": "English",
+        "similarity": 0.47,
+        "time": 0.27,
+        "expected_label": "English"
+      },
+      {
+        "filename": "geo2__geo2_12_1_geo2_12_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.32,
+        "time": 0.27,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_11_6_geo2_11_6.md",
+        "predicted_label": "Geography",
+        "similarity": 0.33,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_11_1_geo2_11_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.29,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_3_geo3_12_3.md",
+        "predicted_label": "Geography",
+        "similarity": 0.3,
+        "time": 0.25,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_11_2_geo3_11_2.md",
+        "predicted_label": "Geography",
+        "similarity": 0.31,
+        "time": 0.26,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_12_2_geo2_12_2.md",
+        "predicted_label": "Geography",
+        "similarity": 0.35,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo2__geo2_12_4_geo2_12_4.md",
+        "predicted_label": "Geography",
+        "similarity": 0.38,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_11_1_geo3_11_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.27,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_11_10_geo_11_10.md",
+        "predicted_label": "Geography",
+        "similarity": 0.36,
+        "time": 0.25,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_10_1_geo_10_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.37,
+        "time": 0.26,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_4_geo3_12_4.md",
+        "predicted_label": "Geography",
+        "similarity": 0.36,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo3__geo3_12_6_geo3_12_6.md",
+        "predicted_label": "Geography",
+        "similarity": 0.3,
+        "time": 0.29,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_11_glo_geo_11_glo.md",
+        "predicted_label": "Geography",
+        "similarity": 0.24,
+        "time": 0.28,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "history__history_10_1_history_10_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.31,
+        "time": 0.26,
+        "expected_label": "History"
+      },
+      {
+        "filename": "geo__geo_8_2_geo_8_2.md",
+        "predicted_label": "Geography",
+        "similarity": 0.39,
+        "time": 0.26,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "geo__geo_12_a1_geo_12_a1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.31,
+        "time": 0.27,
+        "expected_label": "Geography"
+      },
+      {
+        "filename": "history__history_8_1_history_8_1.md",
+        "predicted_label": "Geography",
+        "similarity": 0.32,
+        "time": 0.26,
+        "expected_label": "History"
+      },
+      {
+        "filename": "history__history_10_3_history_10_3.md",
+        "predicted_label": "Geography",
+        "similarity": 0.33,
+        "time": 0.26,
+        "expected_label": "History"
+      },
+      {
+        "filename": "math__math_11_4_math_11_4.md",
+        "predicted_label": "Physics",
+        "similarity": 0.39,
+        "time": 0.25,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "history__history_9_3_history_9_3.md",
+        "predicted_label": "Physics",
+        "similarity": 0.3,
+        "time": 0.27,
+        "expected_label": "History"
+      },
+      {
+        "filename": "history__history_8_3_history_8_3.md",
+        "predicted_label": "Geography",
+        "similarity": 0.31,
+        "time": 0.27,
+        "expected_label": "History"
+      },
+      {
+        "filename": "math__math_11_12_math_11_12.md",
+        "predicted_label": "Physics",
+        "similarity": 0.4,
+        "time": 0.27,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_10_3_math_10_3.md",
+        "predicted_label": "Physics",
+        "similarity": 0.36,
+        "time": 0.27,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_8_9_math_8_9.md",
+        "predicted_label": "Physics",
+        "similarity": 0.34,
+        "time": 0.25,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "math__math_8_5_math_8_5.md",
+        "predicted_label": "Physics",
+        "similarity": 0.32,
+        "time": 0.26,
+        "expected_label": "Maths"
+      },
+      {
+        "filename": "phy__phy_11_7_phy_11_7.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.25,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "phy__phy_11_4_phy_11_4.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.26,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "phy__phy_11_10_phy_11_10.md",
+        "predicted_label": "Physics",
+        "similarity": 0.24,
+        "time": 0.26,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "sci__sci_8_5_sci_8_5.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.41,
+        "time": 0.24,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_10_10_sci_10_10.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.36,
+        "time": 0.26,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_8_6_sci_8_6.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.42,
+        "time": 0.27,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "phy__phy_12_4_phy_12_4.md",
+        "predicted_label": "Physics",
+        "similarity": 0.27,
+        "time": 0.28,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "phy__phy_12_1_phy_12_1.md",
+        "predicted_label": "Uncategorized",
+        "similarity": 0.0,
+        "time": 0.29,
+        "expected_label": "Physics"
+      },
+      {
+        "filename": "sci__sci_9_9_sci_9_9.md",
+        "predicted_label": "Biotechnology",
+        "similarity": 0.39,
+        "time": 0.12,
+        "expected_label": "Science"
+      },
+      {
+        "filename": "sci__sci_8_8_sci_8_8.md",
+        "predicted_label": "Physics",
+        "similarity": 0.43,
+        "time": 0.12,
+        "expected_label": "Science"
+      }
+    ]
+  },
+  "STEM": {
+    "total_files": 100,
+    "correct": 0,
+    "uncategorized": 0,
+    "accuracy": 0.0,
+    "categorization_rate": 100.0,
+    "avg_similarity": 0.6758,
+    "avg_time": 6.742000000000001,
+    "label_counts": {
+      "Biology": 22,
+      "Maths": 16,
+      "Computer Science": 16,
+      "Chemistry": 24,
+      "Physics": 22
+    },
+    "similarity_distribution": {
+      "0.00": 0,
+      "0.01-0.20": 0,
+      "0.21-0.30": 0,
+      "0.31-0.40": 1,
+      "0.41-0.50": 0,
+      "0.51+": 99
+    },
+    "results": [
+      {
+        "filename": "train_file_003.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.68,
+        "time": 17.84,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_002.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.73,
+        "time": 31.81,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_001.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.57,
+        "time": 47.15,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_006.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 63.67,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_005.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.4,
+        "time": 64.59,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_009.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 0.93,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_010.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.69,
+        "time": 1.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_011.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.7,
+        "time": 1.3,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_013.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.75,
+        "time": 0.97,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_012.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.74,
+        "time": 0.97,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_004.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 88.23,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_007.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.6,
+        "time": 57.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_016.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.71,
+        "time": 1.08,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_008.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 43.37,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_017.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 1.43,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_018.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.71,
+        "time": 1.54,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_014.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.6,
+        "time": 24.86,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_019.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.53,
+        "time": 1.44,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_020.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.69,
+        "time": 1.41,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "train_file_015.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 25.58,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_022.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.61,
+        "time": 2.53,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_026.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.72,
+        "time": 2.53,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_025.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.73,
+        "time": 2.54,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_023.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.79,
+        "time": 2.6,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_024.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.73,
+        "time": 2.61,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_021.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.75,
+        "time": 2.64,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_027.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.62,
+        "time": 1.96,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_028.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.69,
+        "time": 2.0,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_029.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 2.14,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_031.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 2.23,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_030.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.62,
+        "time": 2.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_033.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.61,
+        "time": 2.34,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_032.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.47,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_035.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.6,
+        "time": 2.19,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_034.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.74,
+        "time": 2.39,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_036.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.39,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_039.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.71,
+        "time": 2.31,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_037.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.76,
+        "time": 2.61,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_040.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.58,
+        "time": 2.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_038.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.6,
+        "time": 2.6,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_041.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 2.45,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_043.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.73,
+        "time": 2.06,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_044.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.72,
+        "time": 2.12,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_042.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 2.38,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_045.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.72,
+        "time": 2.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_046.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.72,
+        "time": 2.19,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_047.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 2.46,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_048.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.78,
+        "time": 2.5,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_049.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.72,
+        "time": 2.68,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_050.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.59,
+        "time": 2.78,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_051.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.63,
+        "time": 2.84,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_052.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.69,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_053.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.71,
+        "time": 3.1,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_055.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.67,
+        "time": 2.97,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_054.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 3.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_056.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.59,
+        "time": 3.1,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_058.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.71,
+        "time": 2.71,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_057.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 3.31,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_059.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 2.6,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_060.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 2.77,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_061.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.71,
+        "time": 2.87,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_063.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.59,
+        "time": 2.25,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_062.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.59,
+        "time": 2.57,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_064.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.7,
+        "time": 2.5,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_065.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.51,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_066.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 2.64,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_067.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.69,
+        "time": 2.36,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_068.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.76,
+        "time": 2.23,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_070.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.68,
+        "time": 2.2,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_069.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.6,
+        "time": 2.46,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_071.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.78,
+        "time": 2.56,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_072.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.71,
+        "time": 2.41,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_073.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.71,
+        "time": 2.77,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_075.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.76,
+        "time": 2.65,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_074.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 2.68,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_076.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.73,
+        "time": 2.59,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_077.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.77,
+        "time": 2.63,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_078.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.71,
+        "time": 2.34,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_079.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.64,
+        "time": 2.1,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_080.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.62,
+        "time": 2.21,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_081.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.41,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_082.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.74,
+        "time": 2.35,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_083.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.59,
+        "time": 2.18,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_084.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.73,
+        "time": 2.33,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_085.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.6,
+        "time": 2.41,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_086.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.72,
+        "time": 2.57,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_087.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.62,
+        "time": 2.27,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_088.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.76,
+        "time": 2.5,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_089.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.71,
+        "time": 2.53,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_090.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.61,
+        "time": 2.74,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_091.txt",
+        "predicted_label": "Chemistry",
+        "similarity": 0.79,
+        "time": 2.64,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_092.txt",
+        "predicted_label": "Biology",
+        "similarity": 0.7,
+        "time": 2.11,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_093.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.63,
+        "time": 2.59,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_094.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.72,
+        "time": 2.45,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_095.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.7,
+        "time": 2.22,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_096.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.59,
+        "time": 2.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_097.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.58,
+        "time": 2.32,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_098.txt",
+        "predicted_label": "Maths",
+        "similarity": 0.72,
+        "time": 2.12,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_099.txt",
+        "predicted_label": "Physics",
+        "similarity": 0.63,
+        "time": 1.98,
+        "expected_label": "Unknown"
+      },
+      {
+        "filename": "test_file_100.txt",
+        "predicted_label": "Computer Science",
+        "similarity": 0.63,
+        "time": 1.9,
+        "expected_label": "Unknown"
+      }
+    ]
+  },
+  "ag_news": null
+}

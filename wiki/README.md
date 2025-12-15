@@ -1,162 +1,141 @@
-# 📚 FileSense Wiki
+# 🗂️ FileSense - File Sorter
 
-Comprehensive documentation for the FileSense intelligent file organizer.
+## 🔍 Overview
 
----
+**FileSense** is an intelligent, local file organizer that sorts documents by **meaning**, not just by name or extension.
 
-## 🎯 Quick Navigation
+Unlike standard organizers that rely on hardcoded rules, FileSense uses **SentenceTransformers** and **FAISS** to understand the semantic context of your files. 
 
-### 📖 For Users
-- **[Home](index.md)** - Project overview and quick links
-- **[Getting Started](getting_started.md)** - Installation and setup
-- **[User Guide](user-guide.md)** - How to use FileSense (coming soon)
-- **[FAQ](faq.md)** - Common questions and troubleshooting
+**✨ New :** It is now **Self-Organizing**. If FileSense encounters a document that doesn't fit any existing folder, it uses **Google Gemini (GenAI)** to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.
 
-### 🔧 For Developers
-- **[Architecture](pipeline.md)** - System design and data flow
-- **[API Reference](api-reference.md)** - Function documentation (coming soon)
-- **[Code Structure](code-structure.md)** - Project organization (coming soon)
-
-### 📊 Research & Analysis
-- **[Performance Metrics](metrics.md)** - Benchmarks and accuracy
-- **[NL vs Keywords Study](NL_VS_OG.md)** - Comprehensive comparison
-- **[Lessons Learned](lessons-learned.md)** - Key insights from development
-
-### 🛠️ Resources
-- **[Template](template.md)** - Guide for creating new wiki pages
-- **[Configuration](configuration.md)** - Settings and customization (coming soon)
-- **[Roadmap](roadmap.md)** - Future plans (coming soon)
+> 📺 **Overview Video**: [FileSense Demo](https://youtu.be/f27I2L7uoC8)
+> 
+> 🎥 **Webpage:** [ahhyoushh.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
 
 ---
 
-## 🌐 Viewing the Wiki
+## ⚙️ Core Features
 
-### Online (GitHub Pages)
-Visit: [ahhyoushh.github.io/FileSense/wiki](https://ahhyoushh.github.io/FileSense/wiki/)
-
-### Locally
-1. Install Jekyll: `gem install jekyll bundler`
-2. Navigate to wiki directory: `cd wiki`
-3. Run: `bundle exec jekyll serve`
-4. Open: `http://localhost:4000/FileSense/wiki/`
-
----
-
-## 📝 Contributing to the Wiki
-
-### Adding a New Page
-
-1. **Create** a new `.md` file in `wiki/`
-2. **Use the template** from `template.md`
-3. **Add to navigation** in `_data/navigation.yml`
-4. **Follow style guide** (see template.md)
-5. **Submit PR** with your changes
-
-### Updating Existing Pages
-
-1. **Edit** the markdown file
-2. **Test** locally if possible
-3. **Submit PR** with clear description
+| Feature | Description |
+|----------|-------------|
+| 🧠 **Semantic Sorting** | Sorts by meaning (e.g., "Newton's Laws" → "Physics"), not just keywords. |
+| 🤖 **Generative Labeling** | **(New)** Uses Google Gemini to auto-generate new categories/folders for unknown file types. |
+| ⚡ **FAISS Indexing** | Uses vector databases for lightning-fast similarity searches. |
+| 🔄 **Self-Updating** | When a new label is generated, the AI creates the folder and rebuilds the index automatically. |
+| 👀 **OCR Support** | Extracts text from scanned PDFs and images using `pdfplumber` and `pytesseract`. |
+| 🧩 **Keyword Boosting** | Hybrid search approach: Vector Similarity + Keyword weighting for maximum accuracy. |
+| 🖥️ **GUI Launcher** | Desktop interface with real-time logs, system tray support, and process management. |
+| 🧵 **Multithreading** | Sorts massive directories in parallel for high performance. |
 
 ---
 
-## 🎨 Wiki Structure
-
+## 📁 Folder Structure
 ```
-wiki/
-├── _config.yml              # Jekyll configuration
-├── _data/
-│   └── navigation.yml       # Sidebar navigation
-├── index.md                 # Homepage
-├── getting_started.md       # Installation guide
-├── faq.md                   # FAQ
-├── pipeline.md              # Architecture
-├── metrics.md               # Performance benchmarks
-├── NL_VS_OG.md             # Research study
-├── lessons-learned.md       # Development insights
-├── template.md              # Page template
-└── README.md               # This file
+FileSense/
+│
+├── scripts/
+│   ├── RL/                       # Reinforcement Learning Module
+│   ├── RL/                       # Reinforcement Learning & SFT
+│   │   ├── rl_policy.py          # Epsilon-Greedy Agent
+│   │   ├── rl_feedback.py        # Feedback & Rewards
+│   │   ├── rl_config.py          # Hyperparameters
+│   │   ├── rl_supabase.py        # Cloud Logging
+│   │   └── rl_audit_safe.py      # Safety Audits
+│   ├── logger/                   # Logging System
+│   │   ├── logger.py             # Main Logger
+│   │   └── rl_logger.py          # RL-Specific Logger
+│   ├── classify_process_file.py  # Core Logic: Embedding & Classification
+│   ├── generate_label.py         # GenAI Interface (Gemini)
+│   ├── create_index.py           # FAISS Index Manager
+│   ├── extract_text.py           # OCR & Text Extraction
+│   ├── multhread.py              # Multithreading Manager
+│   ├── launcher.py               # System Tray GUI
+│   ├── script.py                 # CLI Entry Point
+│   └── watcher_script.py         # Real-time Monitor
+│
+├── folder_labels.json            # Semantic Knowledge Base
+├── folder_embeddings.faiss       # Vector Index
+├── evaluation/                   # Metrics & Logs
+└── files/                        # Default Input Directory
 ```
 
 ---
 
-## 🎯 Key Insights (from Development)
+## 🔬 How It Works
 
-The wiki incorporates important lessons learned:
+### 1️⃣ Text Extraction
+FileSense reads the file. If it's a text-based PDF/DOCX, it extracts raw text. If it's a scanned document, it applies OCR/Image processing to read the content.
 
-### ✅ What Works
-1. **Keyword-based descriptions** outperform natural language (+32% accuracy)
-2. **all-mpnet-base-v2** is the optimal embedding model
-3. **FAISS vector search** is fast and efficient
-4. **Academic documents** are the sweet spot for FileSense
+### 2️⃣ Semantic Search
+It converts the document text into a vector embedding and searches the local `folder_embeddings.faiss` index.
+- **High Confidence (≥ 0.5):** The file is moved to the matching folder.
+- **Low Confidence:** The system assumes no suitable folder exists.
 
-### ❌ What Doesn't Work
-1. **Natural language descriptions** performed worse (24% vs 56% accuracy)
-2. **Lighter embedding models** significantly reduced performance
-3. **AG News dataset** showed poor results
-4. **One-size-fits-all** approach doesn't work
-
-These insights are documented throughout the wiki, especially in:
-- [Lessons Learned](lessons-learned.md)
-- [Performance Metrics](metrics.md)
-- [NL vs Keywords Study](NL_VS_OG.md)
+### 3️⃣ Generative Classification (The "AI" Step)
+If confidence is low:
+1. The text is sent to **Google Gemini**.(Optional)
+2. Gemini analyzes the content and determines a broad category (e.g., "Quantum Mechanics") and specific keywords.
+3. It updates `folder_labels.json` (merging with existing data if needed).
+4. FileSense **rebuilds the FAISS index** on the fly and classifies the file again with the new knowledge.
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ Installation & Setup
 
-**New to FileSense?** Start here:
+### 1. Prerequisites
+- Python 3.8+
+- A Google Cloud API Key (for Gemini)
 
-1. Read the [Home](index.md) page for an overview
-2. Follow the [Getting Started](getting_started.md) guide
-3. Check the [FAQ](faq.md) for common questions
-4. Explore [Architecture](pipeline.md) to understand how it works
-
-**Want to contribute?** See the [Template](template.md) for guidelines.
-
+### 2. Install Dependencies
+```bash
+pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv
+```
+## Linux Users
+Install Tesseract OCR:
+```bash
+sudo apt install tesseract-ocr
+```
 ---
 
-## 📊 Wiki Statistics
-
-- **Total Pages:** 10+ (and growing)
-- **Last Updated:** 2025-12-05
-- **Theme:** Minimal Mistakes (Dark Mode)
-- **Format:** Markdown + Jekyll
-
+## 3. Environment Setup
+Create a `.env` file in the root directory and add your Google API key:
+```bash
+API_KEY=your_google_gemini_api_key_here
+```
 ---
 
-## 🤝 Contributing
-
-We welcome contributions to improve the documentation!
-
-**Ways to contribute:**
-- Fix typos or improve clarity
-- Add missing documentation
-- Create tutorials or guides
-- Share your use cases
-- Suggest improvements
-
-**How to contribute:**
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Submit a pull request
-
+## 4. Initialization
+Create the initial index (even if empty):
+```bash
+python scripts/create_index.py
+```
 ---
 
-## 📚 External Resources
+# 🚀 Usage
 
-- **GitHub Repository:** [ahhyoushh/FileSense](https://github.com/ahhyoushh/FileSense)
-- **Demo Video:** [YouTube](https://youtu.be/f27I2L7uoC8)
-- **Project Website:** [ahhyoushh.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
-
+## Option A: GUI Launcher (Recommended)
+Run the desktop app to manage everything visually.
+```bash
+python scripts/launcher.py
+```
+## Option B: Real-Time Watcher
+Keep it running in the background to sort files as you download them.
+```bash
+python scripts/watcher_script.py --dir ./Downloads
+```
+## Option C: Bulk Sort
+Sort an existing mess of files once.
+```bash
+python scripts/script.py --dir ./Downloads --threads 8
+```
 ---
 
-## 📝 License
+## 🧾 License
+MIT License © 2025 Ayush Bhalerao
 
-Documentation is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
-Code is licensed under MIT License © 2025 Ayush Bhalerao
 
----
-
-**Questions?** Open an issue on [GitHub](https://github.com/ahhyoushh/FileSense/issues)!
+# IDEAS TO IMPLEMENT
+1. Use the dateset with category labels for the data, make a script to general folder labels until the similarity crosses a certain threshold for all files in the train dataset. In this way the description and folders_labels.json would be most optimised.
+2. After the last update with gemini, make the model return the revised prompt and use the revised prompt so that the prompt self optimises.
+3. Setup RL: let the user upload logs that include text from the file and folder label given.
+4. explain why i used Sentence transformers rather than just using a tezt classifier

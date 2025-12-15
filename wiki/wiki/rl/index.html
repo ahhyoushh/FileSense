@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Reinforcement Learning Architecture | FileSense</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Reinforcement Learning Architecture" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="FileSense" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Reinforcement Learning Architecture" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Reinforcement Learning Architecture","url":"/wiki/rl/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ff113580487d33068b3216f649af5514f0da9c75">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="/">FileSense</a></h1>
+      
+
+      <h1 id="reinforcement-learning-integration">Reinforcement Learning Integration</h1>
+
+<h2 id="-the-epsilon-greedy-bandit-agent">🧠 The Epsilon-Greedy Bandit Agent</h2>
+<p>FileSense has permanently evolved from a static script to an <strong>adaptive intelligent system</strong>. Integrated a <strong>Reinforcement Learning (RL)</strong> agent based on the <strong>Epsilon-Greedy Bandit</strong> algorithm.</p>
+
+<h3 id="core-logic">Core Logic</h3>
+<p>The agent’s goal is to maximize <strong>Accuracy</strong> while minimizing <strong>Latency</strong> and <strong>API Costs</strong>. It achieves this by dynamically choosing between three operating policies for every file it encounters:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Policy</th>
+      <th style="text-align: center">Threshold</th>
+      <th style="text-align: center">Allow GenAI?</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong>A</strong></td>
+      <td style="text-align: center">0.45</td>
+      <td style="text-align: center"><strong>Yes</strong></td>
+      <td><strong>Conservative.</strong> Requires high similarity to exist. Uses API frequently for new concepts.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>B</strong></td>
+      <td style="text-align: center">0.40</td>
+      <td style="text-align: center"><strong>Yes</strong></td>
+      <td><strong>Balanced.</strong> A middle ground between strictness and autonomy.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>C</strong></td>
+      <td style="text-align: center">0.35</td>
+      <td style="text-align: center"><strong>No</strong></td>
+      <td><strong>Efficient.</strong> Aggressive vector matching. Strictly forbids API calls to ensure speed.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="the-learning-loop">The Learning Loop</h3>
+<ol>
+  <li><strong>State:</strong> The system observes a new file.</li>
+  <li><strong>Action:</strong> The Agent selects a policy (A, B, or C).
+    <ul>
+      <li><em>Exploration:</em> Tries random policies to discover new efficiencies (Epsilon = 10%).</li>
+      <li><em>Exploitation:</em> Chooses the best-known policy for reliability (90%).</li>
+    </ul>
+  </li>
+  <li><strong>Reward:</strong>
+    <ul>
+      <li><strong>+1 (Success):</strong> File was sorted correctly without manual intervention.</li>
+      <li><strong>0 (Failure):</strong> File required manual sorting or API failed.</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="-the-rate-limit-bottleneck-why-paused">🚧 The Rate Limit Bottleneck (Why paused)</h2>
+
+<p>While the RL architecture is sound and fully implemented, I hit a <strong>hard external constraint</strong> during real-world testing.</p>
+
+<h3 id="the-conflict-rl-speed-vs-api-limits">The Conflict: RL Speed vs. API Limits</h3>
+<p>Reinforcement Learning requires rapid feedback loops (trial and error) to converge on an optimal policy. However, the <strong>free tier of Google Gemini API</strong> imposes severe rate limits (~15 RPM or fewer depending on load).</p>
+
+<p><strong>Evidence from Logs:</strong></p>
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s</code></p>
+</blockquote>
+
+<p>When the RL agent attempted to “Explore” (use GenAI) or when valid files needed labeling, the API would block the request for 40–60 seconds. This destroyed the reward signal:</p>
+<ul>
+  <li>The Agent successfully prioritized <strong>Policy C</strong> (No API) because it was the only one that didn’t crash.</li>
+  <li>However, GenAI is still required for unknown files and cannot be disabled entirely.</li>
+</ul>
+
+<h3 id="conclusion-the-architecture-works-the-infrastructure-failed">Conclusion: The Architecture works, the Infrastructure failed.</h3>
+<p>The RL implementation correctly identified API calls as expensive. The issue was infrastructure-level latency, not algorithmic design.</p>
+
+<hr />
+
+<h2 id="-architectural-refinement-event-only-logging">🔄 Architectural Refinement: Event-Only Logging</h2>
+
+<p>The system now follows a <strong>strict event-first design</strong>:</p>
+<ul>
+  <li>File processing only emits immutable <code class="language-plaintext highlighter-rouge">served</code> events</li>
+  <li>Rewards are not computed inline</li>
+  <li>Policy updates are deferred to an explicit rebuild phase</li>
+</ul>
+
+<p>This ensures determinism, thread safety, and auditability.</p>
+
+<hr />
+
+<h2 id="-offline-policy-rebuild">🧮 Offline Policy Rebuild</h2>
+
+<p>Policy learning is performed via:
+<code class="language-plaintext highlighter-rouge">scripts/RL/rebuild_policy_stats.py</code></p>
+
+<p>This script:</p>
+<ol>
+  <li>Reads historical events</li>
+  <li>Computes rewards</li>
+  <li>Rebuilds policy statistics from scratch</li>
+</ol>
+
+<p>This batch-oriented approach avoids inconsistent partial updates and enables reproducible learning.</p>
+
+<hr />
+
+<h2 id="-manual-feedback-control">👤 Manual Feedback Control</h2>
+
+<p>Feedback and learning are intentionally <strong>manual</strong>:</p>
+<ul>
+  <li>Prevents silent policy poisoning</li>
+  <li>Ensures user intent</li>
+  <li>Supports multi-user environments</li>
+</ul>
+
+<p>A single command can now:</p>
+<ul>
+  <li>Apply feedback</li>
+  <li>Rebuild policy stats</li>
+  <li>Update future policy selection</li>
+</ul>
+
+<p>This design mirrors production ML telemetry systems.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

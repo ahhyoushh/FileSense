@@ -1,0 +1,10 @@
+faiss-cpu
+sentence-transformers
+numpy
+pdfplumber
+pytesseract
+Pillow
+python-docx
+watchdog
+pystray
+tk

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Getting Started | FileSense</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Getting Started" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="FileSense" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Getting Started" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Getting Started","url":"/wiki/getting-started/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ff113580487d33068b3216f649af5514f0da9c75">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="/">FileSense</a></h1>
+      
+
+      <h1 id="-getting-started-with-filesense">🚀 Getting Started with FileSense</h1>
+
+<p>Get FileSense up and running in <strong>5 minutes</strong>.</p>
+
+<hr />
+
+<h2 id="-prerequisites">📋 Prerequisites</h2>
+
+<p>Before installing FileSense, ensure you have:</p>
+
+<ul>
+  <li><strong>Python 3.8+</strong> installed</li>
+  <li><strong>pip</strong> package manager</li>
+  <li><strong>Google Gemini API Key</strong> (<a href="https://makersuite.google.com/app/apikey">Get one here</a>)</li>
+  <li><strong>(Linux only)</strong> Tesseract OCR for scanned documents</li>
+</ul>
+
+<blockquote>
+  <p><strong>Check your Python version:</strong></p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">--version</span>
+<span class="c"># Should show Python 3.8 or higher</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="-installation">📦 Installation</h2>
+
+<h3 id="step-1-clone-the-repository">Step 1: Clone the Repository</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/ahhyoushh/FileSense.git
+<span class="nb">cd </span>FileSense
+</code></pre></div></div>
+
+<h3 id="step-2-install-dependencies">Step 2: Install Dependencies</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<p><strong>Required packages:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sentence-transformers</code> - SBERT embeddings</li>
+  <li><code class="language-plaintext highlighter-rouge">faiss-cpu</code> - Vector similarity search</li>
+  <li><code class="language-plaintext highlighter-rouge">google-genai</code> - Gemini API client</li>
+  <li><code class="language-plaintext highlighter-rouge">pdfplumber</code> - PDF text extraction</li>
+  <li><code class="language-plaintext highlighter-rouge">python-docx</code> - DOCX file handling</li>
+  <li><code class="language-plaintext highlighter-rouge">pytesseract</code> - OCR support</li>
+  <li><code class="language-plaintext highlighter-rouge">watchdog</code> - File system monitoring</li>
+  <li><code class="language-plaintext highlighter-rouge">pystray</code> - System tray integration</li>
+  <li><code class="language-plaintext highlighter-rouge">python-dotenv</code> - Environment variables</li>
+</ul>
+
+<h3 id="step-3-install-tesseract-ocr-linux">Step 3: Install Tesseract OCR (Linux)</h3>
+
+<p><strong>Ubuntu/Debian:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>tesseract-ocr
+</code></pre></div></div>
+
+<p><strong>macOS:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>tesseract
+</code></pre></div></div>
+
+<p><strong>Windows:</strong>
+Download from <a href="https://github.com/UB-Mannheim/tesseract/wiki">GitHub Releases</a></p>
+
+<hr />
+
+<h2 id="-api-key-setup">🔑 API Key Setup</h2>
+
+<h3 id="get-your-gemini-api-key">Get Your Gemini API Key</h3>
+
+<ol>
+  <li>Visit <a href="https://makersuite.google.com/app/apikey">Google AI Studio</a></li>
+  <li>Sign in with your Google account</li>
+  <li>Click “Create API Key”</li>
+  <li>Copy the generated key</li>
+</ol>
+
+<h3 id="configure-environment">Configure Environment</h3>
+
+<p>Create a <code class="language-plaintext highlighter-rouge">.env</code> file in the project root:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># .env</span>
+<span class="nv">API_KEY</span><span class="o">=</span>your_gemini_api_key_here
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Security tip:</strong> Never commit <code class="language-plaintext highlighter-rouge">.env</code> to version control!</p>
+</blockquote>
+
+<hr />
+
+<h2 id="️-initialize-filesense">🏗️ Initialize FileSense</h2>
+
+<h3 id="create-the-initial-index">Create the Initial Index</h3>
+
+<p>Even with no labels, you need to create the FAISS index:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/create_index.py
+</code></pre></div></div>
+
+<p><strong>Expected output:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[!] No folder labels found in the JSON file. Cannot create index.
+</code></pre></div></div>
+
+<p>This is normal for first-time setup. The index will be created automatically when you process your first file.</p>
+
+<hr />
+
+<h2 id="-verify-installation">✅ Verify Installation</h2>
+
+<p>Test that everything is working:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check if all imports work</span>
+python <span class="nt">-c</span> <span class="s2">"import sentence_transformers, faiss, google.genai; print('✓ All dependencies installed')"</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="-first-run">🎯 First Run</h2>
+
+<h3 id="option-a-windows-launcher-recommended">Option A: Windows Launcher (Recommended)</h3>
+
+<p>Double-click the <strong><code class="language-plaintext highlighter-rouge">FileSense_Launcher.bat</code></strong> file in the project folder.</p>
+
+<p>Alternatively, run it from command line:</p>
+<pre><code class="language-cmd">FileSense_Launcher.bat
+</code></pre>
+
+<p><strong>Features:</strong></p>
+<ul>
+  <li>One-click startup (No manual environment activation needed)</li>
+  <li>Clean visual dashboard</li>
+  <li>Real-time logs</li>
+  <li>System tray integration</li>
+</ul>
+
+<h3 id="option-b-command-line">Option B: Command Line</h3>
+
+<p>Process files from the command line:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Basic usage</span>
+python scripts/script.py <span class="nt">--dir</span> ./files
+
+<span class="c"># With custom settings</span>
+python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">--threads</span> 8 <span class="nt">--no-generation</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>CLI Options:</strong></p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--dir</code></td>
+      <td>Directory to organize</td>
+      <td><code class="language-plaintext highlighter-rouge">./files</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--threads</code></td>
+      <td>Number of concurrent threads</td>
+      <td><code class="language-plaintext highlighter-rouge">6</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--single-thread</code></td>
+      <td>Disable multithreading</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--no-generation</code></td>
+      <td>Don’t generate new labels</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--train</code></td>
+      <td>Enable training mode</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--auto-save-logs</code></td>
+      <td>Auto-save logs</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">--no-logs</code></td>
+      <td>Disable logging</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="option-c-file-watcher">Option C: File Watcher</h3>
+
+<p>Monitor a directory and auto-sort new files:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/watcher_script.py <span class="nt">--dir</span> ./Downloads
+</code></pre></div></div>
+
+<p>Perfect for organizing downloads in real-time!</p>
+
+<hr />
+
+<h2 id="-directory-structure">📁 Directory Structure</h2>
+
+<p>After installation, your project should look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FileSense/
+├── .env                          # API key
+├── folder_labels.json            # Label database (auto-created)
+├── folder_embeddings.faiss       # Vector index (auto-created)
+├── scripts/
+│   ├── RL/                       # Reinforcement Learning Module
+│   │   ├── rl_policy.py          # RL Agent Logic
+│   │   ├── rl_feedback.py        # Reward Mechanism
+│   │   ├── rl_config.py          # Configuration
+│   │   ├── rl_supabase.py        # Cloud Logging
+│   │   └── rl_audit_safe.py      # Safety Checks
+│   ├── logger/                   # System Logging
+│   │   ├── logger.py             # Main Logger
+│   │   └── rl_logger.py          # RL Logger
+│   ├── classify_process_file.py  # Classification Logic
+│   ├── generate_label.py         # Gemini Integration
+│   ├── create_index.py           # Index Builder
+│   ├── extract_text.py           # Text Extraction (OCR)
+│   ├── multhread.py              # Parallel Processing
+│   ├── launcher.py               # GUI App
+│   ├── script.py                 # CLI Runner
+│   └── watcher_script.py         # Folder Watcher
+├── evaluation/                   # Metrics, Logs &amp; JSONs
+├── files/                        # Input directory
+├── sorted/                       # Output directory
+└── logs/                         # Execution Logs
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="-test-with-sample-files">🧪 Test with Sample Files</h2>
+
+<h3 id="create-test-files">Create Test Files</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> files
+<span class="nb">cd </span>files
+
+<span class="c"># Create sample files</span>
+<span class="nb">echo</span> <span class="s2">"Newton's laws of motion describe force and acceleration"</span> <span class="o">&gt;</span> physics_test.txt
+<span class="nb">echo</span> <span class="s2">"The mitochondria is the powerhouse of the cell"</span> <span class="o">&gt;</span> biology_test.txt
+<span class="nb">echo</span> <span class="s2">"Calculate the derivative of x^2 using the power rule"</span> <span class="o">&gt;</span> math_test.txt
+</code></pre></div></div>
+
+<h3 id="run-classification">Run Classification</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ..
+python scripts/script.py <span class="nt">--dir</span> ./files
+</code></pre></div></div>
+
+<p><strong>What happens:</strong></p>
+<ol>
+  <li>FileSense extracts text from each file</li>
+  <li>Generates embeddings using SBERT</li>
+  <li>Asks Gemini to create labels (first run)</li>
+  <li>Builds FAISS index</li>
+  <li>Classifies and moves files to <code class="language-plaintext highlighter-rouge">sorted/</code></li>
+</ol>
+
+<hr />
+
+<h2 id="-next-steps">🎓 Next Steps</h2>
+
+<blockquote>
+  <p><strong>Congratulations! FileSense is now installed.</strong> 🎉</p>
+</blockquote>
+
+<h3 id="learn-more">Learn More:</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/faq/">FAQ</a></strong> - Common questions and troubleshooting</li>
+</ul>
+
+<h3 id="advanced-topics">Advanced Topics:</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - How FileSense works internally</li>
+  <li><strong><a href="/FileSense/wiki/api-reference/">API Reference</a></strong> - Function documentation</li>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks and optimization</li>
+</ul>
+
+<hr />
+
+<h2 id="-troubleshooting">🐛 Troubleshooting</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<p><strong>Import Error: No module named ‘sentence_transformers’</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>sentence-transformers
+</code></pre></div></div>
+
+<p><strong>FAISS installation fails</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Try CPU version</span>
+pip <span class="nb">install </span>faiss-cpu
+
+<span class="c"># Or GPU version (if you have CUDA)</span>
+pip <span class="nb">install </span>faiss-gpu
+</code></pre></div></div>
+
+<p><strong>Tesseract not found (Windows)</strong></p>
+<ul>
+  <li>Install Tesseract from <a href="https://github.com/UB-Mannheim/tesseract/wiki">GitHub</a></li>
+  <li>Add to PATH: <code class="language-plaintext highlighter-rouge">C:\Program Files\Tesseract-OCR</code></li>
+</ul>
+
+<p><strong>API Key not working</strong></p>
+<ul>
+  <li>Check <code class="language-plaintext highlighter-rouge">.env</code> file exists in project root</li>
+  <li>Verify API key is valid at <a href="https://makersuite.google.com/">Google AI Studio</a></li>
+  <li>Ensure no extra spaces in <code class="language-plaintext highlighter-rouge">.env</code> file</li>
+</ul>
+
+<hr />
+
+<h2 id="-additional-resources">📚 Additional Resources</h2>
+
+<ul>
+  <li><strong>GitHub Repository:</strong> <a href="https://github.com/ahhyoushh/FileSense">ahhyoushh/FileSense</a></li>
+  <li><strong>Demo Video:</strong> <a href="https://youtu.be/f27I2L7uoC8">YouTube</a></li>
+  <li><strong>Project Website:</strong> <a href="https://ahhyoushh.github.io/FileSense">ahhyoushh.github.io/FileSense</a></li>
+</ul>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="/FileSense/wiki/">← Back to Home</a></td>
+      <td><a href="/FileSense/wiki/faq/">Next: FAQ →</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
