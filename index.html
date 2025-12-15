@@ -398,7 +398,7 @@
 
         <p>Essentially a python script that generates vector embeddings using <strong>BAAI/bge-base-en-v1.5</strong>. It
             combines local vector search with Google Gemini to classify and organize files.
-            <a href="wiki/metrics.md#25-reference-model-comparison"
+            <a href="wiki/metrics#25-reference-model-comparison"
                 style="color: var(--accent-light); text-decoration: underline;">See Model Comparison</a>.
         </p>
     </header>
@@ -407,6 +407,7 @@
         <h3>📑 Contents</h3>
         <ul class="sidebar-tree">
             <li><a href="#overview">Quick Overview</a></li>
+            <li><a href="#demo-video">Demo Video</a></li>
             <li><a href="#how-it-works">The Logic</a></li>
             <li class="level-2"><a href="#genai-integration">Generative AI</a></li>
             <li class="level-2"><a href="#process-flow">The Pipeline</a></li>
@@ -452,11 +453,43 @@
             </div>
 
             <div class="btn-group">
-                <a href="wiki/" class="btn btn-primary">Make sense of this? Read the Wiki</a>
-                <a href="https://youtu.be/VixLF9syeCg" class="btn btn-secondary">📽️ Demo Video</a>
+                <a href="wiki/" class="btn btn-primary">Make sense of this? Read the Wiki 📖</a>
+                <a href="https://www.youtube.com/watch?v=f27I2L7uoC8&t" class="btn btn-secondary">📽️ Video</a>
             </div>
         </section>
-
+        <section id="demo-video">
+            <h2>Demo Video</h2>
+            <p>
+                A short walkthrough demo.
+            </p>
+        
+            <div style="
+                position: relative;
+                padding-bottom: 56.25%;
+                height: 0;
+                overflow: hidden;
+                border-radius: 6px;
+                border: 1px solid var(--border);
+                background: var(--bg-secondary);
+                margin-top: 16px;
+            ">
+                <iframe
+                    src="https://www.youtube.com/embed/VixLF9syeCg"
+                    title="FileSense Demo"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    ">
+                </iframe>
+            </div>
+        </section>
+        
         <section id="how-it-works">
             <h2>How It Works</h2>
             <p>The system follows a decision pipeline: <strong>Identify → RL Agent Decisions → Search OR Generate →
