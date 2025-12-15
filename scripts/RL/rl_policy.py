@@ -4,7 +4,7 @@ import time
 from pathlib import Path
 from typing import Dict
 
-from .rl_config import POLICIES, EPSILON, RL_POLICY_STATS_FILE
+from scripts.RL.rl_config import POLICIES, EPSILON, RL_POLICY_STATS_FILE
 
 RL_POLICY_STATS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
