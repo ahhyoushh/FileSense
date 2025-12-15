@@ -126,30 +126,63 @@
   <p><code class="language-plaintext highlighter-rouge">Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s</code></p>
 </blockquote>
 
-<p>When the RL agent attempted to “Explore” (use GenAI) or when valid files needed labeling, the API would block the request for 40-60 seconds. This destroyed the reward signal:</p>
+<p>When the RL agent attempted to “Explore” (use GenAI) or when valid files needed labeling, the API would block the request for 40–60 seconds. This destroyed the reward signal:</p>
 <ul>
   <li>The Agent successfully prioritized <strong>Policy C</strong> (No API) because it was the only one that didn’t crash.</li>
-  <li>However, I <em>need</em> GenAI for that 10% of unknown files. Can’t simply turn it off.</li>
+  <li>However, GenAI is still required for unknown files and cannot be disabled entirely.</li>
 </ul>
 
 <h3 id="conclusion-the-architecture-works-the-infrastructure-failed">Conclusion: The Architecture works, the Infrastructure failed.</h3>
-<p>The RL implementation works perfectly: it correctly identified that API calls were “expensive” (in time). The problem is that the “cost” (60s wait) was too high for a production application.</p>
+<p>The RL implementation correctly identified API calls as expensive. The issue was infrastructure-level latency, not algorithmic design.</p>
 
 <hr />
 
-<h2 id="-strategic-shift-local-sft">🛑 Strategic Shift: Local SFT</h2>
+<h2 id="-architectural-refinement-event-only-logging">🔄 Architectural Refinement: Event-Only Logging</h2>
 
-<p>To unblock the RL capabilities, I’m removing the bottleneck.</p>
+<p>The system now follows a <strong>strict event-first design</strong>:</p>
+<ul>
+  <li>File processing only emits immutable <code class="language-plaintext highlighter-rouge">served</code> events</li>
+  <li>Rewards are not computed inline</li>
+  <li>Policy updates are deferred to an explicit rebuild phase</li>
+</ul>
 
-<p><strong>The Solution: Supervised Fine-Tuning (SFT)</strong>
-Moving the intelligence from the Cloud (Gemini) to the Edge (Local LLM).</p>
+<p>This ensures determinism, thread safety, and auditability.</p>
+
+<hr />
+
+<h2 id="-offline-policy-rebuild">🧮 Offline Policy Rebuild</h2>
+
+<p>Policy learning is performed via:
+<code class="language-plaintext highlighter-rouge">scripts/RL/rebuild_policy_stats.py</code></p>
+
+<p>This script:</p>
 <ol>
-  <li><strong>Fine-Tune a Local Model (Llama-3-8B):</strong> Using the data collected by the RL agent.</li>
-  <li><strong>Remove API Dependency:</strong> Local models have no rate limits.</li>
-  <li><strong>Re-Activate RL:</strong> Once the “cost” of generation drops from 60s to 2s, the RL Agent will be fully re-enabled to manage local compute resources instead of API quotas.</li>
+  <li>Reads historical events</li>
+  <li>Computes rewards</li>
+  <li>Rebuilds policy statistics from scratch</li>
 </ol>
 
-<p><strong>The RL module remains a permanent, core part of FileSense’s codebase, awaiting the local model integration.</strong></p>
+<p>This batch-oriented approach avoids inconsistent partial updates and enables reproducible learning.</p>
+
+<hr />
+
+<h2 id="-manual-feedback-control">👤 Manual Feedback Control</h2>
+
+<p>Feedback and learning are intentionally <strong>manual</strong>:</p>
+<ul>
+  <li>Prevents silent policy poisoning</li>
+  <li>Ensures user intent</li>
+  <li>Supports multi-user environments</li>
+</ul>
+
+<p>A single command can now:</p>
+<ul>
+  <li>Apply feedback</li>
+  <li>Rebuild policy stats</li>
+  <li>Update future policy selection</li>
+</ul>
+
+<p>This design mirrors production ML telemetry systems.</p>
 
 </article>
 </html>
