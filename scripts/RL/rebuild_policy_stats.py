@@ -8,8 +8,11 @@ HEADERS = {
     "apikey": SUPABASE_KEY,
     "Authorization": f"Bearer {SUPABASE_KEY}",
     "Content-Type": "application/json",
-    "Prefer": "return=minimal",
+    "Prefer": "return=representation",
 }
+
+EVENTS_TABLE = "rl_events"
+STATS_TABLE = "rl_policy_stats"
 
 
 def fetch_events():
@@ -18,10 +21,11 @@ def fetch_events():
 
     while True:
         r = requests.get(
-            f"{SUPABASE_URL}/rest/v1/rl_events",
+            f"{SUPABASE_URL}/rest/v1/{EVENTS_TABLE}",
             headers=HEADERS,
             params={
                 "select": "payload",
+                "payload->>tfeedback": "not.is.null",
                 "limit": 1000,
                 "offset": offset,
             },
@@ -43,25 +47,29 @@ def rebuild_policy_stats():
     print("[RL] rebuilding policy stats")
 
     rows = fetch_events()
+    print("[DEBUG] rewarded events fetched:", len(rows))
+
+    if not rows:
+        print("[ERROR] no rewarded events found")
+        return
+
     stats = defaultdict(lambda: {"count": 0, "total": 0.0})
 
     for r in rows:
-        payload = r.get("payload") or {}
+        payload = r["payload"]
 
-        reward = payload.get("tfeedback")
-        if reward is None:
-            continue
-
+        reward = float(payload["tfeedback"])
         policy_id = payload.get("policy_id", "unknown")
-        stats[policy_id]["count"] += 1
-        stats[policy_id]["total"] += float(reward)
 
-    # 🔥 REST-safe table wipe (PostgREST requires a filter)
+        stats[policy_id]["count"] += 1
+        stats[policy_id]["total"] += reward
+
+    # wipe old stats
     requests.delete(
-        f"{SUPABASE_URL}/rest/v1/rl_policy_stats",
+        f"{SUPABASE_URL}/rest/v1/{STATS_TABLE}",
         headers=HEADERS,
-        params={"id": "not.is.null"},
-        timeout=30,
+        params={"policy_id": "not.is.null"},
+        timeout=10,
     ).raise_for_status()
 
     payload_rows = [
@@ -73,15 +81,15 @@ def rebuild_policy_stats():
         for pid, s in stats.items()
     ]
 
-    if payload_rows:
-        requests.post(
-            f"{SUPABASE_URL}/rest/v1/rl_policy_stats",
-            headers=HEADERS,
-            json=payload_rows,
-            timeout=30,
-        ).raise_for_status()
+    r = requests.post(
+        f"{SUPABASE_URL}/rest/v1/{STATS_TABLE}",
+        headers=HEADERS,
+        json=payload_rows,
+        timeout=10,
+    )
+    r.raise_for_status()
 
-    print("[RL] rebuild complete")
+    print("[RL] policy stats rebuilt:", payload_rows)
 
 
 if __name__ == "__main__":

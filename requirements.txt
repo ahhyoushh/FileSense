@@ -1,10 +1,22 @@
+# Core ML / Vector Search
 faiss-cpu
 sentence-transformers
 numpy
+
+# File parsing
 pdfplumber
 pytesseract
 Pillow
 python-docx
+
+# File system monitoring
 watchdog
+
+# UI / Tray
 pystray
-tk
+
+# Networking / APIs
+requests
+
+# Environment management
+python-dotenv
