@@ -1,0 +1,81 @@
+MARKDOWN CHEAT SHEET (Quick Reference)
+
+COde TABs
+=== "JavaScript"
+    ```js
+    console.log("Hello");
+    ```
+
+=== "Python"
+    ```python
+    print("Hello")
+    ```
+
+WARNING BOXES
+!!! warning "Important"
+    Do not forget to set your API key before running the server!
+
+
+HEADINGS
+# H1
+## H2
+### H3
+
+TEXT STYLES
+**bold**
+*italic*
+~~strikethrough~~
+
+LISTS
+- item
+  - nested
+1. item
+2. item
+
+CODE
+Inline: `code`
+Block:
+```python
+print("hello")
+```
+
+TABLES
+| Column | Value |
+|--------|------:|
+| A      | 123   |
+
+IMAGES
+![alt text](./assets/image.png)
+
+LINKS
+[Link Text](./page.md)
+
+BLOCKQUOTE
+> This is a quote.
+
+HORIZONTAL LINE
+---
+
+MERMAID DIAGRAM
+```mermaid
+flowchart LR
+  A --> B
+```
+
+TASK LISTS
+- [x] done
+- [ ] todo
+
+ASIDE NOTES (HTML allowed)
+<div>custom HTML blocks</div>
+
+CHARTS (Matplotlib Basics)
+Python example:
+import matplotlib.pyplot as plt
+plt.plot([1,2,3],[3,2,1])
+plt.savefig("chart.png")
+
+METRIC TABLE TEMPLATE
+| Metric | Value | Notes |
+|--------|-------|-------|
+| name   | 0     | desc  |
