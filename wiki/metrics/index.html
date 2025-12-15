@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
   <head>
-    <meta charset="UTF-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/FileSense/assets/css/style.css?v=5c749830056c37fd7e6a68be92527fcecee27562">
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Performance Metrics &amp; Evaluation | FileSense Documentation</title>
@@ -23,7 +25,6 @@
 {"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT + Gemini","headline":"Performance Metrics &amp; Evaluation","url":"https://ahhyoushh.github.io/FileSense/wiki/metrics/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/FileSense/assets/css/style.css?v=828f7f21b5f23068f78e7e99a50f96387731c775">
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 <!-- Setup Google Analytics -->
@@ -36,13 +37,27 @@
 <!-- end custom head snippets -->
 
   </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="https://ahhyoushh.github.io/FileSense/">FileSense Documentation</a></h1>
-      
 
-      <h1 id="comprehensive-performance-evaluation">Comprehensive Performance Evaluation</h1>
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          
+            <a id="forkme_banner" href="https://github.com/ahhyoushh/FileSense">View on GitHub</a>
+          
+
+          <h1 id="project_title">FileSense Documentation</h1>
+          <h2 id="project_tagline">Intelligent semantic file organizer powered by SBERT + Gemini</h2>
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1 id="comprehensive-performance-evaluation">Comprehensive Performance Evaluation</h1>
 
 <h2 id="abstract">Abstract</h2>
 
@@ -54,9 +69,9 @@
 
 <h3 id="11-system-configuration">1.1 System Configuration</h3>
 
-<p><strong>Embedding Model:</strong> all-mpnet-base-v2 (768 dimensions)<br />
+<p><strong>Embedding Model:</strong> BAAI/bge-base-en-v1.5 (768 dimensions) — <em>Previously all-mpnet-base-v2</em>
 <strong>Vector Index:</strong> FAISS IndexFlatIP (Inner Product)<br />
-<strong>Similarity Metric:</strong> Cosine similarity (L2-normalized embeddings)<br />
+<strong>Similarity Metric:</strong> Cosine similarity (L2-normalized embeddings) — <em>Compares semantic direction to avoid length/magnitude bias</em>
 <strong>Classification Threshold:</strong> 0.40 (primary), 0.35 (fallback)<br />
 <strong>Hardware:</strong> CPU-based inference</p>
 
@@ -305,6 +320,65 @@ The RL agent has demonstrated that <strong>Policy C</strong> (Generation Disable
 To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to <strong>Supervised Fine-Tuning (SFT)</strong> of local models. This will allow the RL agent to explore generative policies with zero marginal cost.</p>
 </blockquote>
 
+<h3 id="25-reference-model-comparison">2.5 Reference Model Comparison</h3>
+
+<p>We conducted a head-to-head comparison of three embedding models to determine the optimal balance between speed and accuracy for the FileSense pipeline.</p>
+
+<p><strong>Models Tested:</strong></p>
+<ol>
+  <li><strong>all-mpnet-base-v2</strong> (110M params) - <em>The previous gold standard</em></li>
+  <li><strong>all-MiniLM-L12-v2</strong> (33M params) - <em>A lightweight, high-speed alternative</em></li>
+  <li><strong>BAAI/bge-base-en-v1.5</strong> (110M params) - <em>A modern retrieval-optimized model</em></li>
+</ol>
+
+<p><strong>Benchmark Results:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Feature</th>
+      <th style="text-align: left"><code class="language-plaintext highlighter-rouge">mpnet-base</code> (Legacy)</th>
+      <th style="text-align: left"><code class="language-plaintext highlighter-rouge">MiniLM-L12</code> (Speed)</th>
+      <th style="text-align: left"><code class="language-plaintext highlighter-rouge">bge-base</code> (New Standard)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Speed (23 files)</strong></td>
+      <td style="text-align: left">16.05s</td>
+      <td style="text-align: left"><strong>8.30s</strong> ⚡</td>
+      <td style="text-align: left"><strong>8.39s</strong> ⚡</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Accuracy</strong></td>
+      <td style="text-align: left">High</td>
+      <td style="text-align: left">Medium</td>
+      <td style="text-align: left"><strong>Perfect (100%)</strong> 🏆</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Avg Confidence</strong></td>
+      <td style="text-align: left">0.35 - 0.52</td>
+      <td style="text-align: left">0.30 - 0.45</td>
+      <td style="text-align: left"><strong>0.55 - 0.79</strong> 🚀</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Failed Files</strong></td>
+      <td style="text-align: left">1 (PDF Noise)</td>
+      <td style="text-align: left">4 (Extraction Fail)</td>
+      <td style="text-align: left"><strong>0</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Key Findings:</strong></p>
+<ul>
+  <li><strong>Speed:</strong> <code class="language-plaintext highlighter-rouge">bge-base</code> is surprisingly as fast as the lightweight <code class="language-plaintext highlighter-rouge">MiniLM</code> model in our pipeline, effectively halving the processing time compared to <code class="language-plaintext highlighter-rouge">mpnet-base</code>.</li>
+  <li><strong>Robustness:</strong> <code class="language-plaintext highlighter-rouge">bge-base</code> solved all edge cases where the other models failed (e.g., noisy PDF text extraction in <code class="language-plaintext highlighter-rouge">Ray optics.pdf</code> and <code class="language-plaintext highlighter-rouge">chem work.pdf</code>).</li>
+  <li><strong>Confidence:</strong> The similarity distribution shifted significantly higher (0.60+), reducing the system’s reliance on fallback mechanisms.</li>
+</ul>
+
+<p><strong>Conclusion:</strong> We have officially switched the default model to <strong>BAAI/bge-base-en-v1.5</strong> as of Dec 2025.</p>
+
 <hr />
 
 <h2 id="3-analysis">3. Analysis</h2>
@@ -456,10 +530,17 @@ Natural:     "Documents contain experimental procedures"
 <strong>System Version:</strong> FileSense v2.0<br />
 <strong>Evaluator:</strong> Ayush Bhalerao</p>
 
-
-      
+      </section>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">FileSense Documentation maintained by <a href="https://github.com/ahhyoushh">ahhyoushh</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
   </body>
 </html>

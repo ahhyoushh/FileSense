@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
   <head>
-    <meta charset="UTF-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/FileSense/assets/css/style.css?v=5c749830056c37fd7e6a68be92527fcecee27562">
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>System Architecture &amp; Pipeline | FileSense Documentation</title>
@@ -23,7 +25,6 @@
 {"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT + Gemini","headline":"System Architecture &amp; Pipeline","url":"https://ahhyoushh.github.io/FileSense/wiki/pipeline/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/FileSense/assets/css/style.css?v=828f7f21b5f23068f78e7e99a50f96387731c775">
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 <!-- Setup Google Analytics -->
@@ -36,13 +37,27 @@
 <!-- end custom head snippets -->
 
   </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="https://ahhyoushh.github.io/FileSense/">FileSense Documentation</a></h1>
-      
 
-      <h1 id="️-system-architecture">🏗️ System Architecture</h1>
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          
+            <a id="forkme_banner" href="https://github.com/ahhyoushh/FileSense">View on GitHub</a>
+          
+
+          <h1 id="project_title">FileSense Documentation</h1>
+          <h2 id="project_tagline">Intelligent semantic file organizer powered by SBERT + Gemini</h2>
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1 id="️-system-architecture">🏗️ System Architecture</h1>
 
 <p>Understanding how FileSense processes and classifies files.</p>
 
@@ -65,7 +80,7 @@
     end
     
     subgraph Embedding
-        E[🔢 SBERT Encoding&lt;br/&gt;all-mpnet-base-v2&lt;br/&gt;768 dimensions]
+        E[🔢 SBERT Encoding&lt;br/&gt;BGE-Base v1.5&lt;br/&gt;768 dimensions]
     end
     
     subgraph Search
@@ -172,23 +187,25 @@
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/classify_process_file.py</code></p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s">"all-mpnet-base-v2"</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s">"cpu"</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"BAAI/bge-base-en-v1.5"</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s">"cpu"</span><span class="p">)</span>
 <span class="n">text_emb</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">encode</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="n">normalize_embeddings</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><strong>Model Details:</strong></p>
+<p><strong>Model Details:</strong>
+<strong>Model Details:</strong></p>
 <ul>
-  <li><strong>Name:</strong> all-mpnet-base-v2</li>
+  <li><strong>Name:</strong> BAAI/bge-base-en-v1.5</li>
   <li><strong>Dimensions:</strong> 768</li>
   <li><strong>Normalization:</strong> L2 normalized for cosine similarity</li>
-  <li><strong>Performance:</strong> ~0.1s per encoding</li>
-  <li><strong>Size:</strong> 420MB (cached after first download)</li>
+  <li><strong>Performance:</strong> ~0.1s per encoding (Batch optimized)</li>
+  <li><strong>Size:</strong> 440MB (cached after first download)</li>
 </ul>
 
 <blockquote>
   <p><strong>Why this model?</strong></p>
 
-  <p>Testing showed lighter models performed <strong>significantly worse</strong>. This model provides the best balance of speed and accuracy for document classification.</p>
+  <p>Benchmark testing confirmed <code class="language-plaintext highlighter-rouge">bge-base-en-v1.5</code> is <strong>2x faster</strong> than MPNet and significantly more accurate than MiniLM. See <a href="/FileSense/wiki/metrics/#25-reference-model-comparison">Model Comparison</a>.</p>
 </blockquote>
 
 <h3 id="step-4-vector-similarity-search">Step 4: Vector Similarity Search</h3>
@@ -211,6 +228,12 @@
   <li><strong>Top-K:</strong> Retrieves top 10 matches</li>
   <li><strong>Boosting:</strong> Filename and keyword matching add bonus scores</li>
 </ul>
+
+<blockquote>
+  <p><strong>Why Cosine Similarity?</strong></p>
+
+  <p>We use cosine similarity because it compares <strong>semantic direction</strong> instead of vector magnitude. This avoids bias from unequal text lengths and keyword-heavy folder descriptions. It aligns better with how sentence-embedding models are trained (on angular distance), ensuring more accurate matching of file content to topic labels.</p>
+</blockquote>
 
 <p><strong>Keyword Boosting:</strong></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FILENAME_BOOST</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># If label appears in filename
@@ -555,7 +578,7 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
 <h3 id="embedding-model">Embedding Model</h3>
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/create_index.py</code></p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"all-mpnet-base-v2"</span>  <span class="c1"># Change model here
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"BAAI/bge-base-en-v1.5"</span>  <span class="c1"># Change model here
 </span></code></pre></div></div>
 
 <h3 id="gemini-settings">Gemini Settings</h3>
@@ -628,10 +651,17 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
 
 <p><a href="/FileSense/wiki/">← Back to Home</a></p>
 
-
-      
+      </section>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">FileSense Documentation maintained by <a href="https://github.com/ahhyoushh">ahhyoushh</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
   </body>
 </html>
