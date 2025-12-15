@@ -118,7 +118,7 @@ The RL agent has demonstrated that **Policy C** (Generation Disabled) provides o
 
 ### 2.5 Reference Model Comparison
 
-We conducted a head-to-head comparison of three embedding models to determine the optimal balance between speed and accuracy for the FileSense pipeline.
+I conducted a head-to-head comparison of three embedding models to determine the optimal balance between speed and accuracy for the FileSense pipeline.
 
 **Models Tested:**
 1.  **all-mpnet-base-v2** (110M params) - *The previous gold standard*
@@ -139,7 +139,7 @@ We conducted a head-to-head comparison of three embedding models to determine th
 *   **Robustness:** `bge-base` solved all edge cases where the other models failed (e.g., noisy PDF text extraction in `Ray optics.pdf` and `chem work.pdf`).
 *   **Confidence:** The similarity distribution shifted significantly higher (0.60+), reducing the system's reliance on fallback mechanisms.
 
-**Conclusion:** We have officially switched the default model to **BAAI/bge-base-en-v1.5** as of Dec 2025.
+**Conclusion:** switched the default model to **BAAI/bge-base-en-v1.5** as of Dec 2025.
 
 ---
 
