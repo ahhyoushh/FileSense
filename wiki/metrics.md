@@ -238,7 +238,7 @@ The consistency of keyword superiority across NCERT and STEM datasets (academic 
 1. **Dataset Size:** Evaluation limited to <100 files per dataset
 2. **Domain Coverage:** Primarily academic content
 3. **Language:** English-only evaluation
-4. **Model:** Single embedding model tested (all-mpnet-base-v2)
+
 
 ---
 
