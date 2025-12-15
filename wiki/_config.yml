@@ -3,8 +3,7 @@ description: "Intelligent semantic file organizer powered by SBERT + Gemini"
 author: "Ayush Bhalerao"
 
 # Theme Configuration
-# Updated to Primer for the GitHub look
-remote_theme: "pages-themes/slate"
+remote_theme: "niklasbuschmann/contrast"
 
 # Site Settings
 url: "https://ahhyoushh.github.io"
@@ -60,4 +59,4 @@ defaults:
   - scope:
       path: ""
     values:
-      layout: default
+      layout: page
