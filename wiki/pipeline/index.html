@@ -1,62 +1,48 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>System Architecture &amp; Pipeline | FileSense Documentation</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="author" content="Ayush Bhalerao">
-<meta name="generator" content="Jekyll v3.10.0">
-<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/pipeline/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
-<aside style="display: none">
-  <nav>
-  
-  <a href="/FileSense/wiki/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Home</span>
-    </a><a href="/FileSense/wiki/getting-started/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Getting Started</span>
-    </a><a href="/FileSense/wiki/faq/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>FAQ</span>
-    </a><a href="/FileSense/wiki/pipeline/" class="selected">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Architecture</span>
-    </a><a href="/FileSense/wiki/rl/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Reinforcement Learning</span>
-    </a><a href="/FileSense/wiki/metrics/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Metrics</span>
-    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>NL vs Keywords</span>
-    </a><a href="/FileSense/wiki/lessons-learned/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Lessons Learned</span>
-    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
-      <span>GitHub</span>
-    </a></nav>
-  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
-</aside>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="System Architecture &amp; Pipeline" />
+<meta name="author" content="Ayush Bhalerao" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
+<meta property="og:description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/pipeline/" />
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/pipeline/" />
+<meta property="og:site_name" content="FileSense Documentation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="System Architecture &amp; Pipeline" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT + Gemini","headline":"System Architecture &amp; Pipeline","url":"https://ahhyoushh.github.io/FileSense/wiki/pipeline/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/FileSense/assets/css/style.css?v=828f7f21b5f23068f78e7e99a50f96387731c775">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
 
 
-<header class="hover smooth">
-  
-    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
-  
-  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
-  
-</header>
 
-<article>
-  <header>
-  <h1><a href="/FileSense/wiki/pipeline/">System Architecture & Pipeline</a></h1>
-</header>
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/FileSense/favicon.ico" -->
 
-  <h1 id="️-system-architecture">🏗️ System Architecture</h1>
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://ahhyoushh.github.io/FileSense/">FileSense Documentation</a></h1>
+      
+
+      <h1 id="️-system-architecture">🏗️ System Architecture</h1>
 
 <p>Understanding how FileSense processes and classifies files.</p>
 
@@ -74,42 +60,47 @@
         C[🔍 Fallback Extraction&lt;br/&gt;Middle pages, OCR]
     end
     
+    subgraph RLAgent [🧠 RL Agent]
+        D[🤖 Epsilon-Greedy Policy&lt;br/&gt;Exploit vs Explore]
+    end
+    
     subgraph Embedding
-        D[🔢 SBERT Encoding&lt;br/&gt;all-mpnet-base-v2&lt;br/&gt;768 dimensions]
+        E[🔢 SBERT Encoding&lt;br/&gt;all-mpnet-base-v2&lt;br/&gt;768 dimensions]
     end
     
     subgraph Search
-        E[🎯 FAISS Vector Search&lt;br/&gt;IndexFlatIP&lt;br/&gt;Cosine Similarity]
-        F{Similarity ≥ 0.40?}
+        F[🎯 FAISS Vector Search&lt;br/&gt;IndexFlatIP&lt;br/&gt;Cosine Similarity]
+        G{Similarity ≥ 0.40?}
     end
     
     subgraph Classification
-        G[✅ High Confidence&lt;br/&gt;Assign to Folder]
-        H[🤖 Low Confidence&lt;br/&gt;Ask Gemini]
+        H[✅ High Confidence&lt;br/&gt;Assign to Folder]
+        I[✨ Generative Fallback&lt;br/&gt;Ask Gemini]
     end
     
     subgraph Update
-        I[💾 Update Labels&lt;br/&gt;folder_labels.json]
-        J[🔄 Rebuild Index&lt;br/&gt;FAISS re-indexing]
-        K[🔁 Re-classify]
+        J[💾 Update Labels&lt;br/&gt;folder_labels.json]
+        K[🔄 Rebuild Index&lt;br/&gt;FAISS re-indexing]
+        L[🔁 Re-classify]
     end
     
     subgraph Output
-        L[📁 Move to Sorted Folder]
+        M[📁 Move to Sorted Folder]
     end
     
     A --&gt; B
     B --&gt; C
     C --&gt; D
-    D --&gt; E
+    D --&gt;|Get State| E
     E --&gt; F
-    F --&gt;|Yes| G
-    F --&gt;|No| H
-    H --&gt; I
+    F --&gt; G
+    G --&gt;|Yes| H
+    G --&gt;|No| I
     I --&gt; J
     J --&gt; K
-    K --&gt; E
-    G --&gt; L
+    K --&gt; L
+    L --&gt; F
+    H --&gt; M
 </code></pre>
 
 <hr />
@@ -153,7 +144,31 @@
 </span><span class="p">}</span>
 </code></pre></div></div>
 
-<h3 id="step-2-embedding-generation">Step 2: Embedding Generation</h3>
+<h3 id="step-2-the-rl-agent-decision-maker">Step 2: The RL Agent (Decision Maker)</h3>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/RL/rl_policy.py</code></p>
+
+<p>Before any expensive operations, the <strong>Reinforcement Learning Agent</strong> decides the optimal strategy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">EpsilonGreedyBandit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="s">"""
+        Decide whether to EXPLOIT (use existing knowledge) or EXPLORE (try new generation).
+        
+        Policy A: High Accuracy (Liberal use of API)
+        Policy B: Balanced
+        Policy C: Efficient (Vector Search only)
+        """</span>
+</code></pre></div></div>
+
+<p><strong>Why RL?</strong></p>
+<ul>
+  <li><strong>Cost Optimization:</strong> Prevents unnecessary API calls for simple files.</li>
+  <li><strong>Latency Reduction:</strong> Skips generation if vector confidence is high.</li>
+  <li><strong>Adaptability:</strong> Learns from user feedback (folder moves/renames).</li>
+</ul>
+
+<h3 id="step-3-embedding-generation">Step 3: Embedding Generation</h3>
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/classify_process_file.py</code></p>
 
@@ -176,7 +191,7 @@
   <p>Testing showed lighter models performed <strong>significantly worse</strong>. This model provides the best balance of speed and accuracy for document classification.</p>
 </blockquote>
 
-<h3 id="step-3-vector-similarity-search">Step 3: Vector Similarity Search</h3>
+<h3 id="step-4-vector-similarity-search">Step 4: Vector Similarity Search</h3>
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/classify_process_file.py</code></p>
 
@@ -202,7 +217,7 @@
 </span><span class="n">TEXT_BOOST</span> <span class="o">=</span> <span class="mf">0.1</span>      <span class="c1"># If keyword appears in filename
 </span></code></pre></div></div>
 
-<h3 id="step-4-classification-decision">Step 4: Classification Decision</h3>
+<h3 id="step-5-classification-decision">Step 5: Classification Decision</h3>
 
 <p><strong>Thresholds:</strong></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">THRESHOLD</span> <span class="o">=</span> <span class="mf">0.4</span>                    <span class="c1"># Main threshold
@@ -227,7 +242,7 @@
         <span class="k">return</span> <span class="s">"Uncategorized"</span><span class="p">,</span> <span class="mf">0.0</span>
 </code></pre></div></div>
 
-<h3 id="step-5-label-generation-gemini">Step 5: Label Generation (Gemini)</h3>
+<h3 id="step-6-label-generation-gemini">Step 6: Label Generation (Gemini)</h3>
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/generate_label.py</code></p>
 
@@ -267,7 +282,7 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
     """</span>
 </code></pre></div></div>
 
-<h3 id="step-6-index-rebuild">Step 6: Index Rebuild</h3>
+<h3 id="step-7-index-rebuild">Step 7: Index Rebuild</h3>
 
 <p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/create_index.py</code></p>
 
@@ -433,6 +448,11 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
       <td>n = file size</td>
     </tr>
     <tr>
+      <td>RL Policy Decision</td>
+      <td>O(1)</td>
+      <td>Table lookup / State check</td>
+    </tr>
+    <tr>
       <td>Embedding Generation</td>
       <td>O(1)</td>
       <td>Fixed for 2000 chars</td>
@@ -545,6 +565,13 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
 </span><span class="n">temperature</span> <span class="o">=</span> <span class="mf">0.5</span>                  <span class="c1"># Creativity (0.0-1.0)
 </span></code></pre></div></div>
 
+<h3 id="rl-settings">RL Settings</h3>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">scripts/RL/rl_config.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.2</span>          <span class="c1"># Exploration rate
+</span><span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.1</span>    <span class="c1"># Q-Learning rate
+</span></code></pre></div></div>
+
 <hr />
 
 <h2 id="-design-decisions">🎓 Design Decisions</h2>
@@ -601,5 +628,10 @@ When a label already exists, FileSense <strong>merges</strong> new terminology w
 
 <p><a href="/FileSense/wiki/">← Back to Home</a></p>
 
-</article>
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
 </html>

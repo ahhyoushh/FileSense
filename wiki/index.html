@@ -1,93 +1,63 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>FileSense Documentation | FileSense Documentation</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="author" content="Ayush Bhalerao">
-<meta name="generator" content="Jekyll v3.10.0">
-<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
-<aside style="display: none">
-  <nav>
-  
-  <a href="/FileSense/wiki/" class="selected">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Home</span>
-    </a><a href="/FileSense/wiki/getting-started/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Getting Started</span>
-    </a><a href="/FileSense/wiki/faq/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>FAQ</span>
-    </a><a href="/FileSense/wiki/pipeline/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Architecture</span>
-    </a><a href="/FileSense/wiki/rl/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Reinforcement Learning</span>
-    </a><a href="/FileSense/wiki/metrics/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Metrics</span>
-    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>NL vs Keywords</span>
-    </a><a href="/FileSense/wiki/lessons-learned/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Lessons Learned</span>
-    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
-      <span>GitHub</span>
-    </a></nav>
-  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
-</aside>
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FileSense Documentation | Intelligent semantic file organizer powered by SBERT + Gemini</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="FileSense Documentation" />
+<meta name="author" content="Ayush Bhalerao" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI" />
+<meta property="og:description" content="Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI" />
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/" />
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/" />
+<meta property="og:site_name" content="FileSense Documentation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FileSense Documentation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT embeddings and Gemini AI","headline":"FileSense Documentation","url":"https://ahhyoushh.github.io/FileSense/wiki/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/FileSense/assets/css/style.css?v=828f7f21b5f23068f78e7e99a50f96387731c775">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
 
 
-<header class="hover smooth">
-  
-    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
-  
-  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
-  
-</header>
 
-<article>
-  <header>
-  <h1><a href="/FileSense/wiki/">FileSense Documentation</a></h1>
-</header>
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/FileSense/favicon.ico" -->
 
-  <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
+<!-- end custom head snippets -->
 
-<p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> to generate new categories automatically.</p>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+
+      <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
+
+<p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> (or Local LLMs) to generate new categories automatically.</p>
 
 <hr />
 
-<h2 id="️-major-update-the-shift-to-sft">⚠️ MAJOR UPDATE: The Shift to SFT</h2>
+<h2 id="️-update-infrastructure-shift-to-sft">⚠️ UPDATE: Infrastructure Shift to SFT</h2>
 
-<p><strong>TL;DR: API Rate limits have broken the real-time workflow. I am pivoting to Supervised Fine-Tuning (SFT).</strong></p>
+<p><strong>Integrated a Reinforcement Learning architecture.</strong> However, due to Google Gemini’s Free Tier Rate Limits, Temporarily pivoting the <em>generation</em> backend to Local SFT.</p>
 
-<h3 id="the-rate-limit-bottleneck">The Rate Limit Bottleneck</h3>
-<p>As documented in recent logs (<code class="language-plaintext highlighter-rouge">RL_RATE_LIMIT_RAGEBAIT.log</code>), relying on the free/standard tier of the Gemini API has become untenable for a high-volume file organizer.</p>
+<h3 id="the-challenge">The Challenge</h3>
+<p>The <strong>RL Agent</strong> works as intended, optimizing for speed. However, effectively “training” the agent requires frequent API calls, which triggers Google’s <strong>429 Rate Limit</strong>, forcing 60-second delays.</p>
 
-<ul>
-  <li><strong>Massive Delays:</strong> The API is enforcing severe backoff times.
-    <blockquote>
-      <p><code class="language-plaintext highlighter-rouge">[!] Rate Limit Hit on attempt 2/5 ... Google requested wait: 59.55s</code></p>
-    </blockquote>
-  </li>
-  <li><strong>Pipeline Freezes:</strong> When organizing batches of files (e.g., 8-10 files), the script spends more time sleeping than processing.</li>
-  <li><strong>Fallback Failures:</strong> Even with retries, many requests eventually degrade to non-interactive mode or fail completely, requiring manual intervention.</li>
-</ul>
+<h3 id="the-solution">The Solution</h3>
+<p>Not removing RL, just <strong>removing the latency</strong>.
+By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, I eliminate the API bottleneck. This will allow the RL Agent to function at full speed without external throttling.</p>
 
-<h3 id="the-resolution-local-sft">The Resolution: Local SFT</h3>
-<p>Instead of optimizing prompt engineering or RL agents to <em>minimize</em> calls, the only robust solution is to <strong>remove the dependency entirely</strong>.</p>
-
-<p>I am now collecting the high-quality labeled data generated so far to <strong>Supervised Fine-Tune (SFT)</strong> a truncated, local model (Small Language Model). This will allow FileSense to:</p>
-<ol>
-  <li><strong>Run Offline:</strong> Zero internet dependency.</li>
-  <li><strong>Zero Latency:</strong> No HTTP requests or 60s wait times.</li>
-  <li><strong>Privacy:</strong> No file content leaves your machine.</li>
-</ol>
+<p>See the full analysis: <strong><a href="/FileSense/wiki/rl/">Reinforcement Learning Architecture</a></strong></p>
 
 <hr />
 
@@ -96,6 +66,7 @@
 <ul>
   <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong>: Install and run FileSense in 5 minutes</li>
   <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong>: See benchmarks and optimization studies</li>
+  <li><strong><a href="/FileSense/wiki/rl/">RL Architecture</a></strong>: Deep dive into the Adaptive Agent</li>
 </ul>
 
 <hr />
@@ -115,8 +86,12 @@
       <td>Classifies by meaning (e.g., “Newton’s Laws” → Physics)</td>
     </tr>
     <tr>
+      <td>🟣 <strong>Reinforcement Learning</strong></td>
+      <td>Adaptive agent that optimizes sorting policies over time</td>
+    </tr>
+    <tr>
       <td>🤖 <strong>AI-Powered Labeling</strong></td>
-      <td>Uses Gemini to generate new categories automatically</td>
+      <td>Uses GenAI to create new categories automatically</td>
     </tr>
     <tr>
       <td>⚡ <strong>FAISS Vector Search</strong></td>
@@ -138,10 +113,6 @@
       <td>🖥️ <strong>GUI &amp; CLI</strong></td>
       <td>Desktop app with system tray + command-line interface</td>
     </tr>
-    <tr>
-      <td>🧵 <strong>Multithreading</strong></td>
-      <td>Process hundreds of files in parallel</td>
-    </tr>
   </tbody>
 </table>
 
@@ -154,12 +125,11 @@
     B --&gt; C[🔢 Generate Embedding&lt;br/&gt;SBERT all-mpnet-base-v2]
     C --&gt; D{🎯 Similarity ≥ 0.40?}
     D --&gt;|Yes| E[✅ Classify to Existing Folder]
-    D --&gt;|No| F[🤖 Ask Gemini for Label]
-    F --&gt; G[💾 Update folder_labels.json]
-    G --&gt; H[🔄 Rebuild FAISS Index]
-    H --&gt; I[🔁 Re-classify File]
-    I --&gt; E
-    E --&gt; J[📁 Move to Sorted Folder]
+    D --&gt;|No| F[🤖 Ask Agent (RL)]
+    F --&gt; G{Polciy A/B/C?}
+    G --&gt; H[💾 Update folder_labels.json]
+    H --&gt; I[🔄 Rebuild FAISS Index]
+    I --&gt; J[📁 Move to Sorted Folder]
 </code></pre>
 
 <hr />
@@ -197,6 +167,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 <h3 id="-research--analysis">📊 Research &amp; Analysis</h3>
 <ul>
   <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
+  <li><strong><a href="/FileSense/wiki/rl/">Reinforcement Learning</a></strong> - Architecture &amp; SFT Pivot</li>
   <li><strong><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a></strong> - Comprehensive comparison</li>
   <li><strong><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a></strong> - Key insights from development</li>
 </ul>
@@ -275,5 +246,10 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <p><strong>Ready to get started?</strong> → <a href="/FileSense/wiki/getting-started/">Installation Guide</a></p>
 
-</article>
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
 </html>

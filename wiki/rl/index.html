@@ -1,149 +1,146 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Reinforcement Learning Architecture | FileSense Documentation</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="author" content="Ayush Bhalerao">
-<meta name="generator" content="Jekyll v3.10.0">
-<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/rl/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
-<aside style="display: none">
-  <nav>
-  
-  <a href="/FileSense/wiki/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Home</span>
-    </a><a href="/FileSense/wiki/getting-started/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Getting Started</span>
-    </a><a href="/FileSense/wiki/faq/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>FAQ</span>
-    </a><a href="/FileSense/wiki/pipeline/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Architecture</span>
-    </a><a href="/FileSense/wiki/rl/" class="selected">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Reinforcement Learning</span>
-    </a><a href="/FileSense/wiki/metrics/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Metrics</span>
-    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>NL vs Keywords</span>
-    </a><a href="/FileSense/wiki/lessons-learned/" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
-      <span>Lessons Learned</span>
-    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
-      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
-      <span>GitHub</span>
-    </a></nav>
-  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
-</aside>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Reinforcement Learning Architecture" />
+<meta name="author" content="Ayush Bhalerao" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
+<meta property="og:description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/rl/" />
+<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/rl/" />
+<meta property="og:site_name" content="FileSense Documentation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Reinforcement Learning Architecture" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT + Gemini","headline":"Reinforcement Learning Architecture","url":"https://ahhyoushh.github.io/FileSense/wiki/rl/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/FileSense/assets/css/style.css?v=828f7f21b5f23068f78e7e99a50f96387731c775">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
 
 
-<header class="hover smooth">
-  
-    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
-  
-  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
-  
-</header>
 
-<article>
-  <header>
-  <h1><a href="/FileSense/wiki/rl/">Reinforcement Learning Architecture</a></h1>
-</header>
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/FileSense/favicon.ico" -->
 
-  <h1 id="reinforcement-learning--the-rate-limit-bottleneck">Reinforcement Learning &amp; The Rate Limit Bottleneck</h1>
+<!-- end custom head snippets -->
 
-<p>## 🚨 Critical Analysis: Why the API Approach Failed</p>
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://ahhyoushh.github.io/FileSense/">FileSense Documentation</a></h1>
+      
 
-<p>### 1. The Bottleneck: API Quotas &amp; Latency
- Despite implementing an intelligent RL agent (Epsilon-Greedy Bandit) to minimize API calls (Policy C), the dependency on Google Gemini’s API proved fatal for the project’s scalability.</p>
+      <h1 id="reinforcement-learning-integration">Reinforcement Learning Integration</h1>
 
-<p><strong>Evidence from Logs (<code class="language-plaintext highlighter-rouge">RL_init.log</code>, <code class="language-plaintext highlighter-rouge">RL_RATE_LIMIT_RAGEBAIT.log</code>):</strong></p>
-<ul>
-  <li><strong>Severe Rate Limiting (429 RESOURCE_EXHAUSTED):</strong>
-    <blockquote>
-      <p><code class="language-plaintext highlighter-rouge">Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s</code>
-The free/standard tier limits are far too low for a file organizer that might process hundreds of files. A limit of ~20 requests forces the system to sleep more than it works.</p>
-    </blockquote>
-  </li>
-  <li><strong>Service Unavailability (503 UNAVAILABLE):</strong>
-    <blockquote>
-      <p><code class="language-plaintext highlighter-rouge">Error: 503 UNAVAILABLE ... The model is overloaded.</code>
-Even within the quota, the model frequently failed to respond, triggering retry loops that added 10-20 seconds of delay per file.</p>
-    </blockquote>
-  </li>
-  <li><strong>Unacceptable Latency:</strong>
-The retry logic and backoff strategies blew up processing times:
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">file_005.txt</code>: <strong>57.45s</strong></li>
-      <li><code class="language-plaintext highlighter-rouge">file_003.txt</code>: <strong>70.12s</strong></li>
-      <li><code class="language-plaintext highlighter-rouge">file_004.txt</code>: <strong>96.77s</strong></li>
-      <li><code class="language-plaintext highlighter-rouge">file_007.txt</code>: <strong>123.44s</strong></li>
-    </ul>
+<h2 id="-the-epsilon-greedy-bandit-agent">🧠 The Epsilon-Greedy Bandit Agent</h2>
+<p>FileSense has permanently evolved from a static script to an <strong>adaptive intelligent system</strong>. Integrated a <strong>Reinforcement Learning (RL)</strong> agent based on the <strong>Epsilon-Greedy Bandit</strong> algorithm.</p>
 
-    <p><em>Compare this to Vector Search (Policy C):</em> <code class="language-plaintext highlighter-rouge">~0.50s</code> per file.</p>
-  </li>
-</ul>
+<h3 id="core-logic">Core Logic</h3>
+<p>The agent’s goal is to maximize <strong>Accuracy</strong> while minimizing <strong>Latency</strong> and <strong>API Costs</strong>. It achieves this by dynamically choosing between three operating policies for every file it encounters:</p>
 
-<p>### 2. Failure of the RL “Fix”
- The RL agent correctly identified <strong>Policy C (No GenAI)</strong> as the optimal policy because it had the highest reward (speed + no errors). However, when the system <em>did</em> need to generate a new label (Exploration or Low Confidence), the API failure broke the entire loop.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Policy</th>
+      <th style="text-align: center">Threshold</th>
+      <th style="text-align: center">Allow GenAI?</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong>A</strong></td>
+      <td style="text-align: center">0.45</td>
+      <td style="text-align: center"><strong>Yes</strong></td>
+      <td><strong>Conservative.</strong> Requires high similarity to exist. Uses API frequently for new concepts.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>B</strong></td>
+      <td style="text-align: center">0.40</td>
+      <td style="text-align: center"><strong>Yes</strong></td>
+      <td><strong>Balanced.</strong> A middle ground between strictness and autonomy.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong>C</strong></td>
+      <td style="text-align: center">0.35</td>
+      <td style="text-align: center"><strong>No</strong></td>
+      <td><strong>Efficient.</strong> Aggressive vector matching. Strictly forbids API calls to ensure speed.</td>
+    </tr>
+  </tbody>
+</table>
 
-<ul>
-  <li><strong>The “Gap”:</strong> We cannot rely on the API even for the 10% “Explore” cases without risking a 60-second freeze.</li>
-  <li><strong>Manual Fallback:</strong> The logs show the system constantly asking the user for manual input (<code class="language-plaintext highlighter-rouge">Please manually input the folder label</code>), essentially defeating the purpose of an <em>automatic</em> organizer.</li>
-</ul>
-
-<hr />
-
-<p>## 🛑 Strategic Shift: Supervised Fine-Tuning (SFT)</p>
-
-<p><strong>Problem:</strong> We need the intelligence of an LLM to generate labels for unknown files, but we cannot afford the latency or rate limits of an API.
- <strong>Solution:</strong> <strong>Supervised Fine-Tuning (SFT)</strong> a local Small Language Model (SLM).</p>
-
-<p>### Why SFT?</p>
+<h3 id="the-learning-loop">The Learning Loop</h3>
 <ol>
-  <li><strong>Zero Latency:</strong> A local model (e.g., Llama-3-8B-Quantized or TinyLlama) running on the GPU/CPU has no network overhead.</li>
-  <li><strong>No Rate Limits:</strong> We can classify 10,000 files in a row without asking permission or waiting for quotas.</li>
-  <li><strong>Privacy:</strong> File contents never leave the user’s machine.</li>
-</ol>
-
-<p>### The Plan</p>
-<ol>
-  <li><strong>Data Collection:</strong> We have collected high-quality “Event” data in <code class="language-plaintext highlighter-rouge">rl_events.jsonl</code> (Input Text -&gt; Predicted Label).</li>
-  <li><strong>Dataset Creation:</strong> Format these events into an SFT dataset (Instruction Tuning format).
+  <li><strong>State:</strong> The system observes a new file.</li>
+  <li><strong>Action:</strong> The Agent selects a policy (A, B, or C).
     <ul>
-      <li><em>Input:</em> “Classify this text: {content_summary}”</li>
-      <li><em>Output:</em> “{label}”</li>
+      <li><em>Exploration:</em> Tries random policies to discover new efficiencies (Epsilon = 10%).</li>
+      <li><em>Exploitation:</em> Chooses the best-known policy for reliability (90%).</li>
     </ul>
   </li>
-  <li><strong>Fine-Tuning:</strong> Train a small, efficient model to replicate the decision-making of the larger Gemini model.</li>
-  <li><strong>Deployment:</strong> Replace the <code class="language-plaintext highlighter-rouge">generate_label.py</code> API calls with a local inference function.</li>
+  <li><strong>Reward:</strong>
+    <ul>
+      <li><strong>+1 (Success):</strong> File was sorted correctly without manual intervention.</li>
+      <li><strong>0 (Failure):</strong> File required manual sorting or API failed.</li>
+    </ul>
+  </li>
 </ol>
 
 <hr />
 
-<p>## 📜 Original Architecture (Reference)</p>
+<h2 id="-the-rate-limit-bottleneck-why-paused">🚧 The Rate Limit Bottleneck (Why paused)</h2>
 
-<p>### Strategy: Epsilon-Greedy Bandit</p>
+<p>While the RL architecture is sound and fully implemented, I hit a <strong>hard external constraint</strong> during real-world testing.</p>
+
+<h3 id="the-conflict-rl-speed-vs-api-limits">The Conflict: RL Speed vs. API Limits</h3>
+<p>Reinforcement Learning requires rapid feedback loops (trial and error) to converge on an optimal policy. However, the <strong>free tier of Google Gemini API</strong> imposes severe rate limits (~15 RPM or fewer depending on load).</p>
+
+<p><strong>Evidence from Logs:</strong></p>
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Error: 429 RESOURCE_EXHAUSTED ... limit: 20 requests/day ... Please retry in 43.82s</code></p>
+</blockquote>
+
+<p>When the RL agent attempted to “Explore” (use GenAI) or when valid files needed labeling, the API would block the request for 40-60 seconds. This destroyed the reward signal:</p>
 <ul>
-  <li><strong>Action:</strong> Choose a Policy (A, B, or C).</li>
-  <li><strong>Reward:</strong> 1 (Success/Correct Sort) or 0 (Failure/Manual Fix).</li>
-  <li><strong>Goal:</strong> Maximize cumulative reward over time.</li>
+  <li>The Agent successfully prioritized <strong>Policy C</strong> (No API) because it was the only one that didn’t crash.</li>
+  <li>However, I <em>need</em> GenAI for that 10% of unknown files. Can’t simply turn it off.</li>
 </ul>
 
-<p>### Policies
- | Policy | Threshold | Allow GenAI? | Description |
- |:—:|:—:|:—:|—|
- | <strong>A</strong> | 0.45 | <strong>Yes</strong> | Conservative. High overlap required. |
- | <strong>B</strong> | 0.40 | <strong>Yes</strong> | Balanced. |
- | <strong>C</strong> | 0.35 | <strong>No</strong>  | <strong>Efficient.</strong> Aggressive matching. Pure Vector Search. |</p>
+<h3 id="conclusion-the-architecture-works-the-infrastructure-failed">Conclusion: The Architecture works, the Infrastructure failed.</h3>
+<p>The RL implementation works perfectly: it correctly identified that API calls were “expensive” (in time). The problem is that the “cost” (60s wait) was too high for a production application.</p>
 
-<p><em>(Note: While logical, this architecture is currently paused in favor of the SFT migration.)</em></p>
+<hr />
 
-</article>
+<h2 id="-strategic-shift-local-sft">🛑 Strategic Shift: Local SFT</h2>
+
+<p>To unblock the RL capabilities, I’m removing the bottleneck.</p>
+
+<p><strong>The Solution: Supervised Fine-Tuning (SFT)</strong>
+Moving the intelligence from the Cloud (Gemini) to the Edge (Local LLM).</p>
+<ol>
+  <li><strong>Fine-Tune a Local Model (Llama-3-8B):</strong> Using the data collected by the RL agent.</li>
+  <li><strong>Remove API Dependency:</strong> Local models have no rate limits.</li>
+  <li><strong>Re-Activate RL:</strong> Once the “cost” of generation drops from 60s to 2s, the RL Agent will be fully re-enabled to manage local compute resources instead of API quotas.</li>
+</ol>
+
+<p><strong>The RL module remains a permanent, core part of FileSense’s codebase, awaiting the local model integration.</strong></p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
 </html>
