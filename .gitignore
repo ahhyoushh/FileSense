@@ -1,89 +1,81 @@
-﻿# Python
+﻿# ======================
+# Python / Environment
+# ======================
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
 .Python
 env/
 venv/
+.venv/
 ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Environment
-.env
-.venv
-
-# IDE
+# ======================
+# IDE / OS
+# ======================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
 Thumbs.db
 
-# Project Specific - Logs
+# ======================
+# Logs (ABSOLUTE IGNORE)
+# ======================
+logs/
 logs/**
-folder_labels.json
-folder_embeddings.faiss
-evaluation/logs/**
-scripts/logs/**
 scripts/logs/
-scripts/logs/rl_events.jsonl
-# Datasets (large files)
-evaluation/datasets/NCERT/ncert-all/
+scripts/logs/**
+evaluation/logs/
+evaluation/logs/**
+
+# Explicit safety
+*.log
+*.jsonl
+
+# ======================
+# Generated / Large Files
+# ======================
+folder_embeddings.faiss
+folder_labels.json
+
+evaluation/datasets/
+evaluation/datasets/**
 evaluation/datasets/**/*.pdf
 evaluation/datasets/**/*.txt
 evaluation/datasets/**/*.md
-evaluation/datasets/NCERT_DATA/**
-evaluation/datasets/NCERT_DATA/
-# Generated files
-folder_embeddings.faiss
-comparison_results.json
-comparison_metrics.json
 
-# Temporary files
+# ======================
+# Temp / Runtime
+# ======================
 files/
 sorted/
-test_files/
 temp/
+test_files/
 
-# Old/backup files
-*_backup.json
+# ======================
+# Backups
+# ======================
+*_backup.*
 *_old.*
-folder_labels_backup.json
 
-# Wiki build artifacts (Jekyll)
+# ======================
+# Wiki build artifacts
+# ======================
 wiki/_site/
 wiki/.jekyll-cache/
 wiki/.jekyll-metadata
-wiki/Gemfile.lock
 wiki/.sass-cache/
 
-# Documentation artifacts (keep source, ignore old reports)
-NCERT_COMPARISON_REPORT.md
-FINAL_VERDICT.md
-OPTIMIZATION_SUMMARY.md
-OPTIMIZATION_REPORT.md
+# ======================
+# Environment secrets
+# ======================
+.env
 
-# Keep important files
+# ======================
+# Keep explicitly
+# ======================
 !README.md
 !wiki/**/*.md
 !evaluation/comprehensive_metrics.json
-scripts/logs/rl_events.jsonl
