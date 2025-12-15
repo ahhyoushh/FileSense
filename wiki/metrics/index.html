@@ -1,63 +1,62 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="">
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/FileSense/assets/css/style.css?v=5c749830056c37fd7e6a68be92527fcecee27562">
-
-<!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Performance Metrics &amp; Evaluation | FileSense Documentation</title>
-<meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Performance Metrics &amp; Evaluation" />
-<meta name="author" content="Ayush Bhalerao" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
-<meta property="og:description" content="Intelligent semantic file organizer powered by SBERT + Gemini" />
-<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/metrics/" />
-<meta property="og:url" content="https://ahhyoushh.github.io/FileSense/wiki/metrics/" />
-<meta property="og:site_name" content="FileSense Documentation" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Performance Metrics &amp; Evaluation" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ayush Bhalerao"},"description":"Intelligent semantic file organizer powered by SBERT + Gemini","headline":"Performance Metrics &amp; Evaluation","url":"https://ahhyoushh.github.io/FileSense/wiki/metrics/"}</script>
-<!-- End Jekyll SEO tag -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="Ayush Bhalerao">
+<meta name="generator" content="Jekyll v3.10.0">
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/metrics/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
+<aside style="display: none">
+  <nav>
+  
+  <a href="/FileSense/wiki/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Home</span>
+    </a><a href="/FileSense/wiki/getting-started/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Getting Started</span>
+    </a><a href="/FileSense/wiki/faq/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>FAQ</span>
+    </a><a href="/FileSense/wiki/pipeline/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Architecture</span>
+    </a><a href="/FileSense/wiki/rl/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Reinforcement Learning</span>
+    </a><a href="/FileSense/wiki/metrics/" class="selected">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Metrics</span>
+    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>NL vs Keywords</span>
+    </a><a href="/FileSense/wiki/lessons-learned/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Lessons Learned</span>
+    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
+      <span>GitHub</span>
+    </a></nav>
+  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
+</aside>
 
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
-<!-- Setup Google Analytics -->
+<header class="hover smooth">
+  
+    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
+  
+  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
+  
+</header>
 
+<article>
+  <header>
+  <h1><a href="/FileSense/wiki/metrics/">Performance Metrics & Evaluation</a></h1>
+</header>
 
-
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/FileSense/favicon.ico" -->
-
-<!-- end custom head snippets -->
-
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          
-            <a id="forkme_banner" href="https://github.com/ahhyoushh/FileSense">View on GitHub</a>
-          
-
-          <h1 id="project_title">FileSense Documentation</h1>
-          <h2 id="project_tagline">Intelligent semantic file organizer powered by SBERT + Gemini</h2>
-
-          
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1 id="comprehensive-performance-evaluation">Comprehensive Performance Evaluation</h1>
+  <h1 id="comprehensive-performance-evaluation">Comprehensive Performance Evaluation</h1>
 
 <h2 id="abstract">Abstract</h2>
 
@@ -530,17 +529,5 @@ Natural:     "Documents contain experimental procedures"
 <strong>System Version:</strong> FileSense v2.0<br />
 <strong>Evaluator:</strong> Ayush Bhalerao</p>
 
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        
-        <p class="copyright">FileSense Documentation maintained by <a href="https://github.com/ahhyoushh">ahhyoushh</a></p>
-        
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-  </body>
+</article>
 </html>
