@@ -1,23 +1,41 @@
-import json
-import sys
-from pathlib import Path
+import requests
 
-ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+SUPABASE_URL = "https://qesgmphseahmbeglltls.supabase.co"
+SUPABASE_KEY = "sb_publishable_Gb4ZaeOsZZOvxsctFaFrjA_q0CXpaQV"
 
-from rl_config import RL_POLICY_STATS_FILE as STATS_FILE
+HEADERS = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": f"Bearer {SUPABASE_KEY}",
+}
 
-def print_stats():
-    if not Path(STATS_FILE).exists():
-        print("No stats file found.")
+def inspect_policy_stats():
+    r = requests.get(
+        f"{SUPABASE_URL}/rest/v1/rl_policy_stats",
+        headers=HEADERS,
+        params={
+            "select": "policy_id,count,avg_reward,created_at",
+            "order": "created_at.desc",
+        },
+        timeout=10,
+    )
+    r.raise_for_status()
+
+    rows = r.json()
+    if not rows:
+        print("No policy stats.")
         return
-    stats = json.loads(Path(STATS_FILE).read_text())
-    for pid, s in stats.items():
-        cnt = s.get("count", 0)
-        total = s.get("total_reward", 0.0)
-        avg = 0.0 if cnt == 0 else total / cnt
-        print(f"{pid}: count={cnt}, total_reward={total}, avg={avg:.3f}")
+
+    latest_ts = rows[0]["created_at"]
+    latest = [r for r in rows if r["created_at"] == latest_ts]
+
+    print(f"\nPolicy snapshot @ {latest_ts}\n")
+    for r in latest:
+        print(
+            f"{r['policy_id']:10s} | "
+            f"count={r['count']:4d} | "
+            f"avg_reward={r['avg_reward']:.4f}"
+        )
+
 
 if __name__ == "__main__":
-    print_stats()
+    inspect_policy_stats()

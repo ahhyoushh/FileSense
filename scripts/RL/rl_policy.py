@@ -1,48 +1,49 @@
-import json
-import random
 import time
-from pathlib import Path
-from typing import Dict
+import random
+import requests
 
-from scripts.RL.rl_config import POLICIES, EPSILON, RL_POLICY_STATS_FILE
+SUPABASE_URL = "https://qesgmphseahmbeglltls.supabase.co"
+SUPABASE_KEY = "sb_publishable_Gb4ZaeOsZZOvxsctFaFrjA_q0CXpaQV"
 
-RL_POLICY_STATS_FILE.parent.mkdir(parents=True, exist_ok=True)
+HEADERS = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": f"Bearer {SUPABASE_KEY}",
+}
 
-def _init_stats() -> Dict[str, Dict]:
-    stats = {pid: {"count": 0, "total_reward": 0.0, "last_updated": None} for pid in POLICIES}
-    RL_POLICY_STATS_FILE.write_text(json.dumps(stats))
-    return stats
+_CACHE = {"data": None, "ts": 0}
+_TTL = 60
+EPSILON = 0.1
 
-def _load_stats() -> Dict[str, Dict]:
+
+def _load_policy_stats():
+    now = time.time()
+    if _CACHE["data"] and now - _CACHE["ts"] < _TTL:
+        return _CACHE["data"]
+
     try:
-        if not RL_POLICY_STATS_FILE.exists():
-            return _init_stats()
-        return json.loads(RL_POLICY_STATS_FILE.read_text())
-    except Exception:
-        return _init_stats()
+        r = requests.get(
+            f"{SUPABASE_URL}/rest/v1/rl_policy_stats",
+            headers=HEADERS,
+            params={"select": "policy_id,avg_reward"},
+            timeout=10,
+        )
+        r.raise_for_status()
+        data = r.json()
+    except Exception as e:
+        print("[RL] WARN: policy stats unavailable:", e)
+        return []
 
-def _save_stats(stats: Dict[str, Dict]) -> None:
-    RL_POLICY_STATS_FILE.write_text(json.dumps(stats, indent=2))
+    _CACHE["data"] = data
+    _CACHE["ts"] = now
+    return data
 
-def choose_policy() -> str:
-    stats = _load_stats()
+
+def choose_policy():
+    stats = _load_policy_stats()
+    if not stats:
+        return "policy_A"
+
     if random.random() < EPSILON:
-        return random.choice(list(POLICIES.keys()))
-    best = None
-    best_avg = -1.0
-    for pid, s in stats.items():
-        cnt = s.get("count", 0)
-        avg = 0.0 if cnt == 0 else s.get("total_reward", 0.0) / cnt
-        if avg > best_avg:
-            best_avg = avg
-            best = pid
-    return best or list(POLICIES.keys())[0]
+        return random.choice([s["policy_id"] for s in stats])
 
-def update_policy(policy_id: str, reward: float) -> None:
-    stats = _load_stats()
-    if policy_id not in stats:
-        stats[policy_id] = {"count": 0, "total_reward": 0.0, "last_updated": None}
-    stats[policy_id]["count"] += 1
-    stats[policy_id]["total_reward"] += float(reward)
-    stats[policy_id]["last_updated"] = int(time.time())
-    _save_stats(stats)
+    return max(stats, key=lambda s: s["avg_reward"])["policy_id"]

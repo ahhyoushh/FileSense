@@ -40,9 +40,12 @@ Thumbs.db
 
 # Project Specific - Logs
 logs/**
-
+folder_labels.json
+folder_embeddings.faiss
 evaluation/logs/**
-
+scripts/logs/**
+scripts/logs/
+scripts/logs/rl_events.jsonl
 # Datasets (large files)
 evaluation/datasets/NCERT/ncert-all/
 evaluation/datasets/**/*.pdf
@@ -83,3 +86,4 @@ OPTIMIZATION_REPORT.md
 !README.md
 !wiki/**/*.md
 !evaluation/comprehensive_metrics.json
+scripts/logs/rl_events.jsonl
