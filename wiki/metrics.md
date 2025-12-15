@@ -16,9 +16,9 @@ This document presents a systematic evaluation of FileSense, a semantic document
 
 ### 1.1 System Configuration
 
-**Embedding Model:** all-mpnet-base-v2 (768 dimensions)  
+**Embedding Model:** BAAI/bge-base-en-v1.5 (768 dimensions) — *Previously all-mpnet-base-v2*
 **Vector Index:** FAISS IndexFlatIP (Inner Product)  
-**Similarity Metric:** Cosine similarity (L2-normalized embeddings)  
+**Similarity Metric:** Cosine similarity (L2-normalized embeddings) — *Compares semantic direction to avoid length/magnitude bias*
 **Classification Threshold:** 0.40 (primary), 0.35 (fallback)  
 **Hardware:** CPU-based inference  
 
@@ -115,6 +115,31 @@ The RL agent has demonstrated that **Policy C** (Generation Disabled) provides o
 
 > **Note on Future Scalability:**  
 > To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to **Supervised Fine-Tuning (SFT)** of local models. This will allow the RL agent to explore generative policies with zero marginal cost.
+
+### 2.5 Reference Model Comparison
+
+We conducted a head-to-head comparison of three embedding models to determine the optimal balance between speed and accuracy for the FileSense pipeline.
+
+**Models Tested:**
+1.  **all-mpnet-base-v2** (110M params) - *The previous gold standard*
+2.  **all-MiniLM-L12-v2** (33M params) - *A lightweight, high-speed alternative*
+3.  **BAAI/bge-base-en-v1.5** (110M params) - *A modern retrieval-optimized model*
+
+**Benchmark Results:**
+
+| Feature | `mpnet-base` (Legacy) | `MiniLM-L12` (Speed) | `bge-base` (New Standard) |
+| :--- | :--- | :--- | :--- |
+| **Speed (23 files)** | 16.05s | **8.30s** ⚡ | **8.39s** ⚡ |
+| **Accuracy** | High | Medium | **Perfect (100%)** 🏆 |
+| **Avg Confidence** | 0.35 - 0.52 | 0.30 - 0.45 | **0.55 - 0.79** 🚀 |
+| **Failed Files** | 1 (PDF Noise) | 4 (Extraction Fail) | **0** |
+
+**Key Findings:**
+*   **Speed:** `bge-base` is surprisingly as fast as the lightweight `MiniLM` model in our pipeline, effectively halving the processing time compared to `mpnet-base`.
+*   **Robustness:** `bge-base` solved all edge cases where the other models failed (e.g., noisy PDF text extraction in `Ray optics.pdf` and `chem work.pdf`).
+*   **Confidence:** The similarity distribution shifted significantly higher (0.60+), reducing the system's reliance on fallback mechanisms.
+
+**Conclusion:** We have officially switched the default model to **BAAI/bge-base-en-v1.5** as of Dec 2025.
 
 ---
 

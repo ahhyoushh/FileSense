@@ -1,0 +1,57 @@
+[*] Logging enabled. Output is being captured.
+
+[*] Initialising model...
+[rl] Synced local events to Supabase: 273 uploaded, 0 failed.
+[*] Model Loaded.
+Processing with 6 threads.
+Found 23 files to process.
+
+[+] Queued: biotech__biotech_12_10.md
+[+] Queued: biotech__biotech_12_7.md
+[+] Queued: bio__bio_12_2.md
+[+] Queued: bio__bio_12_7.md
+[+] Queued: chem work.pdf
+[+] Queued: chemistry project work.docx
+[+] Queued: chem__chem_11_2.md
+[+] Queued: chem__chem_11_3.md
+[+] Queued: comp__comp_11_2.md
+[+] Queued: comp__comp_12_11.md
+[+] Queued: English file.pdf
+[+] Queued: English project.docx
+[+] Queued: english2__english2_12_pr5.md
+[+] Queued: english2__english2_8_1.md
+[+] Queued: english3__english3_10_3.md
+[+] Queued: english__english_12_p8.md
+[+] Queued: english__english_8_1.md
+[+] Queued: IP file.pdf
+[+] Queued: IP synopsis(5 &7).docx
+[+] Queued: phy file.pdf
+[+] Queued: Ray optics projec.pdf
+[+] Queued: sci__sci_10_8.md
+[+] Queued: sci__sci_8_13.md
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+[!] Error in thread: 
+
+ All files processed in 4.19s
+

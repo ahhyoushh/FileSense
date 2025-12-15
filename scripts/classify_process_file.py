@@ -15,7 +15,8 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from generate_label import generate_folder_label
-from create_index import create_faiss_index, MODEL_NAME
+from create_index import create_faiss_index, set_model_config
+import scripts.create_index as ci # Access global var directly via module
 from extract_text import extract_text
 import concurrent
 from dotenv import load_dotenv
@@ -32,7 +33,6 @@ def _startup_sync():
     except Exception as e:
         print("[rl] startup sync error:", e)
 
-# Run startup sync in background to avoid blocking import/startup
 # Run startup sync in background to avoid blocking import/startup
 def _bg_startup():
     # sleep briefly to let main thread initialization proceed
@@ -68,7 +68,7 @@ def load_index_and_labels():
     try:
         if model is None:
             print("[*] Initialising model...")
-            model = SentenceTransformer(MODEL_NAME, device="cpu")
+            model = SentenceTransformer(ci.MODEL_NAME, device="cpu")
             print("[*] Model Loaded.")
 
         if not FAISS_INDEX_FILE.exists() or not LABELS_FILE.exists():

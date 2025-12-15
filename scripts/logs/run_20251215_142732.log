@@ -1,0 +1,7 @@
+[*] Logging enabled. Output is being captured.
+
+[*] Configuration updated: Model set to BAAI/bge-base-en-v1.5
+[*] Initialising model...
+[!] An error occurred while loading index or labels: name 'MODEL_NAME' is not defined
+
+[!] Initialization failed. Cannot start processing.

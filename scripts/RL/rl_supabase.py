@@ -9,10 +9,13 @@ load_dotenv()
 
 import requests
 
-SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
-SUPABASE_KEY = os.getenv("SUPABASE_SECRET", "")
-SUPABASE_TABLE = os.getenv("SUPABASE_TABLE", "rl_events")
-SUPABASE_POLICY_STATS_TABLE = os.getenv("SUPABASE_POLICY_STATS_TABLE", "rl_policy_stats")
+
+# REPLACED ENV VARS WITH CONFIG CONSTANTS
+SUPABASE_URL = "https://qesgmphseahmbeglltls.supabase.co"
+SUPABASE_KEY = "sb_publishable_Gb4ZaeOsZZOvxsctFaFrjA_q0CXpaQV"
+SUPABASE_TABLE = "rl_events"
+SUPABASE_POLICY_STATS_TABLE = "rl_policy_stats"
+
 
 BASE = Path(__file__).resolve().parent.parent
 LOCAL_JSONL = BASE / "logs" / "rl_events.jsonl"

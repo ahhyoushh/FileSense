@@ -30,6 +30,7 @@ parser.add_argument("--test", action="store_true", help="Run in testing mode (no
 parser.add_argument("--sorted-dir", type=str, default=None, help="Directory to move sorted files into.")
 parser.add_argument("--auto-save-logs", action="store_true", help="Automatically save logs without prompting.")
 parser.add_argument("--no-logs", action="store_true", help="Disable logging for this run.")
+parser.add_argument("--model", type=str, default="BAAI/bge-base-en-v1.5", help="Embedding model to use.")
 args = parser.parse_args()
 
 def prompt_save_logs(logger):
@@ -59,6 +60,10 @@ if __name__ == "__main__":
         print("[*] Logging enabled. Output is being captured.\n")
     
     try:
+        # Set Model Config first
+        from scripts.create_index import set_model_config
+        set_model_config(args.model)
+
         if not load_index_and_labels():
             print("\n[!] Initialization failed. Cannot start processing.")
             sys.exit(1)

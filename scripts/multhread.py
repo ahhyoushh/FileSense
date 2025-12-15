@@ -29,7 +29,9 @@ def process_multiple(files_dir, MAX_THREADS, testing=False, allow_generation=Tru
             try:
                 future.result()  # raise exceptions if any occurred in the thread
             except Exception as e:
-                print(f"[!] Error in thread: {e}")
+                print(f"[!] Error in thread: {type(e).__name__}: {e}")
+                import traceback
+                traceback.print_exc()
 
     print(f"\n All files processed in {time.time() - start_time:.2f}s\n")
 

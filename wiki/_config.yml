@@ -4,7 +4,7 @@ author: "Ayush Bhalerao"
 
 # Theme Configuration
 # Updated to Primer for the GitHub look
-remote_theme: "pages-themes/primer"
+remote_theme: "pages-themes/slate"
 
 # Site Settings
 url: "https://ahhyoushh.github.io"

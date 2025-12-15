@@ -9,7 +9,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent 
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
-MODEL_NAME = "all-mpnet-base-v2"
+MODEL_NAME = "BAAI/bge-base-en-v1.5"
+
+def set_model_config(model_name):
+    global MODEL_NAME
+    MODEL_NAME = model_name
+    print(f"[*] Configuration updated: Model set to {MODEL_NAME}")
 
 def create_faiss_index():
     try:

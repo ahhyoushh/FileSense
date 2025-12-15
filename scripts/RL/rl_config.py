@@ -8,16 +8,16 @@ POLICIES = {
 }
 
 # runtime settings
-EPSILON = float(os.getenv("RL_EPSILON", 0.10))
-MIN_SAMPLES_PER_ARM = int(os.getenv("RL_MIN_SAMPLES", 5))
-GRACE_SECONDS = int(os.getenv("RL_GRACE_SECONDS", 3600))
+EPSILON = 0.10
+MIN_SAMPLES_PER_ARM = 5
+GRACE_SECONDS = 0
 
 # Logging paths
 BASE = Path(__file__).resolve().parent.parent  
 LOGS_DIR = BASE / "logs"
 LOGS_DIR.mkdir(exist_ok=True)
 
-SUPABASE_POLICY_STATS_TABLE = os.getenv("SUPABASE_POLICY_STATS_TABLE", "rl_policy_stats") #Later pushing stats to supabase
+SUPABASE_POLICY_STATS_TABLE = "rl_policy_stats" #Later pushing stats to supabase
 
 RL_EVENTS_JSONL = LOGS_DIR / "rl_events.jsonl"
 RL_POLICY_STATS_FILE = LOGS_DIR / "rl_policy_stats.json"

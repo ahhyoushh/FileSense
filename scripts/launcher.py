@@ -112,6 +112,10 @@ class ScriptLauncher(tk.Tk):
         style.configure("TCheckbutton", background=COLOR_BG, foreground=COLOR_TEXT)
         style.map("TCheckbutton", background=[("active", COLOR_BG)])
         style.configure("TEntry", fieldbackground="#3c4043", foreground="#ffffff", borderwidth=1, relief="solid")
+        style.configure("TSpinbox", fieldbackground="#3c4043", foreground="#ffffff", arrowcolor="#ffffff", borderwidth=1, relief="solid")
+        style.map("TSpinbox", fieldbackground=[("readonly", "#3c4043")], foreground=[("readonly", "#ffffff")])
+        style.configure("TCombobox", fieldbackground="#3c4043", foreground="#ffffff", arrowcolor="#ffffff", borderwidth=1, relief="solid")
+        style.map("TCombobox", fieldbackground=[("readonly", "#3c4043")], foreground=[("readonly", "#ffffff")], selectbackground=[("readonly", "#4a4d51")], selectforeground=[("readonly", "#ffffff")])
 
     def _build_ui(self):
         main = ttk.Frame(self, padding=20)
@@ -146,6 +150,21 @@ class ScriptLauncher(tk.Tk):
         ttk.Label(f_th, text="Threads: ").pack(side=tk.LEFT)
         self.spin_threads = ttk.Spinbox(f_th, from_=1, to=32, textvariable=self.opt_threads, width=3)
         self.spin_threads.pack(side=tk.LEFT)
+        
+        # Model Selection
+        f_model = ttk.Frame(main)
+        f_model.pack(fill=tk.X, pady=(0, 15))
+        ttk.Label(f_model, text="Model:", foreground="#9aa0a6").pack(side=tk.LEFT, padx=(0,5))
+        
+        self.model_var = tk.StringVar(value="BAAI/bge-base-en-v1.5")
+        models = ["BAAI/bge-base-en-v1.5", "all-MiniLM-L12-v2", "all-mpnet-base-v2"]
+        self.combo_model = ttk.Combobox(f_model, textvariable=self.model_var, values=models, width=25, state="readonly")
+        self.combo_model.pack(side=tk.LEFT, padx=5)
+        
+        # Recommendation Link
+        lbl_rec = tk.Label(f_model, text="(Recommended)", bg=COLOR_BG, fg=COLOR_SUCCESS, cursor="hand2", font=("Segoe UI", 8, "underline"))
+        lbl_rec.pack(side=tk.LEFT, padx=5)
+        lbl_rec.bind("<Button-1>", lambda e: self.open_model_link())
 
         # 3. Actions Bar
         f_actions = ttk.Frame(main)
@@ -172,6 +191,10 @@ class ScriptLauncher(tk.Tk):
         
         self.status_var = tk.StringVar(value="Ready")
         ttk.Label(f_tools, textvariable=self.status_var, foreground="#808080", font=("Segoe UI", 8)).pack(side=tk.LEFT, anchor="s")
+
+    def open_model_link(self):
+        import webbrowser
+        webbrowser.open("https://ahhyoushh.github.io/FileSense/wiki/metrics/")
 
     def _path_row(self, parent, label, var, is_dir):
         f = ttk.Frame(parent)
@@ -202,6 +225,11 @@ class ScriptLauncher(tk.Tk):
             if self.opt_no_logs.get(): cmd_list.append("--no-logs")
             if self.opt_auto_save_logs.get(): cmd_list.append("--auto-save-logs")
             if self.opt_test_mode.get(): cmd_list.append("--test")
+            
+            # Pass Model
+            model_val = self.model_var.get()
+            if model_val:
+                cmd_list.extend(["--model", model_val])
 
             if self.proc_script and self.proc_script.poll() is None: return
 

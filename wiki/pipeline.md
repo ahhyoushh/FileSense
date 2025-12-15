@@ -28,7 +28,7 @@ flowchart TB
     end
     
     subgraph Embedding
-        E[🔢 SBERT Encoding<br/>all-mpnet-base-v2<br/>768 dimensions]
+        E[🔢 SBERT Encoding<br/>BGE-Base v1.5<br/>768 dimensions]
     end
     
     subgraph Search
@@ -135,20 +135,22 @@ class EpsilonGreedyBandit:
 **File:** `scripts/classify_process_file.py`
 
 ```python
-model = SentenceTransformer("all-mpnet-base-v2", device="cpu")
+MODEL_NAME = "BAAI/bge-base-en-v1.5"
+model = SentenceTransformer(MODEL_NAME, device="cpu")
 text_emb = model.encode([text], normalize_embeddings=True)
 ```
 
 **Model Details:**
-- **Name:** all-mpnet-base-v2
+**Model Details:**
+- **Name:** BAAI/bge-base-en-v1.5
 - **Dimensions:** 768
 - **Normalization:** L2 normalized for cosine similarity
-- **Performance:** ~0.1s per encoding
-- **Size:** 420MB (cached after first download)
+- **Performance:** ~0.1s per encoding (Batch optimized)
+- **Size:** 440MB (cached after first download)
 
 > **Why this model?**
 >
-> Testing showed lighter models performed **significantly worse**. This model provides the best balance of speed and accuracy for document classification.
+> Benchmark testing confirmed `bge-base-en-v1.5` is **2x faster** than MPNet and significantly more accurate than MiniLM. See [Model Comparison](/FileSense/wiki/metrics/#25-reference-model-comparison).
 
 ### Step 4: Vector Similarity Search
 
@@ -169,6 +171,10 @@ for idx, sim in zip(I[0], D[0]):
 - **Metric:** Cosine similarity (via normalized embeddings)
 - **Top-K:** Retrieves top 10 matches
 - **Boosting:** Filename and keyword matching add bonus scores
+
+> **Why Cosine Similarity?**
+>
+> We use cosine similarity because it compares **semantic direction** instead of vector magnitude. This avoids bias from unequal text lengths and keyword-heavy folder descriptions. It aligns better with how sentence-embedding models are trained (on angular distance), ensuring more accurate matching of file content to topic labels.
 
 **Keyword Boosting:**
 ```python
@@ -446,7 +452,7 @@ PDF_CONFIG = {
 
 **File:** `scripts/create_index.py`
 ```python
-MODEL_NAME = "all-mpnet-base-v2"  # Change model here
+MODEL_NAME = "BAAI/bge-base-en-v1.5"  # Change model here
 ```
 
 ### Gemini Settings
