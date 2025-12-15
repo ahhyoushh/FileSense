@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="">
+
+<title>FileSense Documentation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="Ayush Bhalerao">
+<meta name="generator" content="Jekyll v3.10.0">
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/assets/katex/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
+<aside style="display: none">
+  <nav>
+  
+  <a href="/FileSense/wiki/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Home</span>
+    </a><a href="/FileSense/wiki/getting-started/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Getting Started</span>
+    </a><a href="/FileSense/wiki/faq/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>FAQ</span>
+    </a><a href="/FileSense/wiki/pipeline/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Architecture</span>
+    </a><a href="/FileSense/wiki/rl/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Reinforcement Learning</span>
+    </a><a href="/FileSense/wiki/metrics/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Metrics</span>
+    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>NL vs Keywords</span>
+    </a><a href="/FileSense/wiki/lessons-learned/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Lessons Learned</span>
+    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
+      <span>GitHub</span>
+    </a></nav>
+  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
+</aside>
+
+
+<header class="hover smooth">
+  
+    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
+  
+  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
+  
+</header>
+
+<article>
+  <header>
+  <h1><a href="/FileSense/assets/katex/"></a></h1>
+</header>
+
+  <h1><a href="https://katex.org/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://katex.org/img/katex-logo.svg" />
+    <img alt="KaTeX" width="130" src="https://katex.org/img/katex-logo-black.svg" />
+  </picture>
+</a></h1>
+
+<p><a href="https://www.npmjs.com/package/katex"><img src="https://img.shields.io/npm/v/katex.svg" alt="npm" /></a>
+<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release" /></a>
+<a href="https://github.com/KaTeX/KaTeX/actions?query=workflow%3ACI"><img src="https://github.com/KaTeX/KaTeX/workflows/CI/badge.svg?branch=main&amp;event=push" alt="CI" /></a>
+<a href="https://codecov.io/gh/KaTeX/KaTeX"><img src="https://codecov.io/gh/KaTeX/KaTeX/branch/main/graph/badge.svg" alt="codecov" /></a>
+<a href="https://github.com/KaTeX/KaTeX/discussions"><img src="https://img.shields.io/badge/Discussions-join-brightgreen" alt="Discussions" /></a>
+<a href="https://www.jsdelivr.com/package/npm/katex"><img src="https://data.jsdelivr.com/v1/package/npm/katex/badge?style=rounded" alt="jsDelivr" /></a>
+<img src="https://img.badgesize.io/https://unpkg.com/katex/dist/katex.min.js?compression=gzip" alt="katex.min.js size" />
+<a href="https://gitpod.io/#https://github.com/KaTeX/KaTeX"><img src="https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod" alt="Gitpod ready-to-code" /></a>
+<a href="https://opencollective.com/katex"><img src="https://opencollective.com/katex/all/badge.svg?label=financial+contributors" alt="Financial Contributors on Open Collective" /></a></p>
+
+<p>KaTeX is a fast, easy-to-use JavaScript library for TeX math rendering on the web.</p>
+
+<ul>
+  <li><strong>Fast:</strong> KaTeX renders its math synchronously and doesn’t need to reflow the page. See how it compares to a competitor in <a href="https://www.intmath.com/cg5/katex-mathjax-comparison.php">this speed test</a>.</li>
+  <li><strong>Print quality:</strong> KaTeX’s layout is based on Donald Knuth’s TeX, the gold standard for math typesetting.</li>
+  <li><strong>Self contained:</strong> KaTeX has no dependencies and can easily be bundled with your website resources.</li>
+  <li><strong>Server side rendering:</strong> KaTeX produces the same output regardless of browser or environment, so you can pre-render expressions using Node.js and send them as plain HTML.</li>
+</ul>
+
+<p>KaTeX is compatible with all major browsers, including Chrome, Safari, Firefox, Opera, Edge, and IE 11.</p>
+
+<p>KaTeX supports much (but not all) of LaTeX and many LaTeX packages. See the <a href="https://katex.org/docs/supported.html">list of supported functions</a>.</p>
+
+<p>Try out KaTeX <a href="https://katex.org/#demo">on the demo page</a>!</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<h3 id="starter-template">Starter template</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="c">&lt;!-- KaTeX requires the use of the HTML5 doctype. Without it, KaTeX may not render properly --&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"</span> <span class="na">integrity=</span><span class="s">"sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!-- The loading of KaTeX is deferred to speed up page rendering --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">defer</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+    <span class="c">&lt;!-- To automatically render math in text elements, include the auto-render extension: --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">defer</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span>
+        <span class="na">onload=</span><span class="s">"renderMathInElement(document.body);"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  ...
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>You can also <a href="https://github.com/KaTeX/KaTeX/releases">download KaTeX</a> and host it yourself.</p>
+
+<p>For details on how to configure auto-render extension, refer to <a href="https://katex.org/docs/autorender.html">the documentation</a>.</p>
+
+<h3 id="api">API</h3>
+
+<p>Call <code class="language-plaintext highlighter-rouge">katex.render</code> to render a TeX expression directly into a DOM element.
+For example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">katex</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="dl">"</span><span class="s2">c = </span><span class="se">\\</span><span class="s2">pm</span><span class="se">\\</span><span class="s2">sqrt{a^2 + b^2}</span><span class="dl">"</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">throwOnError</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Call <code class="language-plaintext highlighter-rouge">katex.renderToString</code> to generate an HTML string of the rendered math,
+e.g., for server-side rendering.  For example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">katex</span><span class="p">.</span><span class="nx">renderToString</span><span class="p">(</span><span class="dl">"</span><span class="s2">c = </span><span class="se">\\</span><span class="s2">pm</span><span class="se">\\</span><span class="s2">sqrt{a^2 + b^2}</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">throwOnError</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+<span class="c1">// '&lt;span class="katex"&gt;...&lt;/span&gt;'</span>
+</code></pre></div></div>
+
+<p>Make sure to include the CSS and font files in both cases.
+If you are doing all rendering on the server, there is no need to include the
+JavaScript on the client.</p>
+
+<p>The examples above use the <code class="language-plaintext highlighter-rouge">throwOnError: false</code> option, which renders invalid
+inputs as the TeX source code in red (by default), with the error message as
+hover text.  For other available options, see the
+<a href="https://katex.org/docs/api.html">API documentation</a>,
+<a href="https://katex.org/docs/options.html">options documentation</a>, and
+<a href="https://katex.org/docs/error.html">handling errors documentation</a>.</p>
+
+<h2 id="demo-and-documentation">Demo and Documentation</h2>
+
+<p>Learn more about using KaTeX <a href="https://katex.org">on the website</a>!</p>
+
+<h2 id="contributors">Contributors</h2>
+
+<h3 id="code-contributors">Code Contributors</h3>
+
+<p>This project exists thanks to all the people who contribute code. If you’d like to help, see <a href="CONTRIBUTING.md">our guide to contributing code</a>.
+<a href="https://github.com/KaTeX/KaTeX/graphs/contributors"><img src="https://contributors-svg.opencollective.com/katex/contributors.svg?width=890&amp;button=false" alt="Code contributors" /></a></p>
+
+<h3 id="financial-contributors">Financial Contributors</h3>
+
+<p>Become a financial contributor and help us sustain our community.</p>
+
+<h4 id="individuals">Individuals</h4>
+
+<p><a href="https://opencollective.com/katex"><img src="https://opencollective.com/katex/individuals.svg?width=890" alt="Contribute on Open Collective" /></a></p>
+
+<h4 id="organizations">Organizations</h4>
+
+<p>Support this project with your organization. Your logo will show up here with a link to your website.</p>
+
+<p><a href="https://opencollective.com/katex/organization/0/website"><img src="https://opencollective.com/katex/organization/0/avatar.svg" alt="Organization 1" /></a>
+<a href="https://opencollective.com/katex/organization/1/website"><img src="https://opencollective.com/katex/organization/1/avatar.svg" alt="Organization 2" /></a>
+<a href="https://opencollective.com/katex/organization/2/website"><img src="https://opencollective.com/katex/organization/2/avatar.svg" alt="Organization 3" /></a>
+<a href="https://opencollective.com/katex/organization/3/website"><img src="https://opencollective.com/katex/organization/3/avatar.svg" alt="Organization 4" /></a>
+<a href="https://opencollective.com/katex/organization/4/website"><img src="https://opencollective.com/katex/organization/4/avatar.svg" alt="Organization 5" /></a>
+<a href="https://opencollective.com/katex/organization/5/website"><img src="https://opencollective.com/katex/organization/5/avatar.svg" alt="Organization 6" /></a>
+<a href="https://opencollective.com/katex/organization/6/website"><img src="https://opencollective.com/katex/organization/6/avatar.svg" alt="Organization 7" /></a>
+<a href="https://opencollective.com/katex/organization/7/website"><img src="https://opencollective.com/katex/organization/7/avatar.svg" alt="Organization 8" /></a>
+<a href="https://opencollective.com/katex/organization/8/website"><img src="https://opencollective.com/katex/organization/8/avatar.svg" alt="Organization 9" /></a>
+<a href="https://opencollective.com/katex/organization/9/website"><img src="https://opencollective.com/katex/organization/9/avatar.svg" alt="Organization 10" /></a></p>
+
+<h2 id="license">License</h2>
+
+<p>KaTeX is licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+
+</article>
+</html>

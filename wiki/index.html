@@ -1,61 +1,93 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="">
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>🗂️ FileSense - File Sorter | FileSense</title>
-<meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="🗂️ FileSense - File Sorter" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:site_name" content="FileSense" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="🗂️ FileSense - File Sorter" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","headline":"🗂️ FileSense - File Sorter","name":"FileSense","url":"/"}</script>
-<!-- End Jekyll SEO tag -->
+<title>FileSense Documentation | FileSense Documentation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="Ayush Bhalerao">
+<meta name="generator" content="Jekyll v3.10.0">
+<link rel="canonical" href="https://ahhyoushh.github.io/FileSense/wiki/"><link rel="stylesheet" href="/FileSense/assets/css/index.css"><link rel="stylesheet" href="/FileSense/assets/PT-Sans/index.css"><link rel="alternate" href="/FileSense/feed.xml" type="application/atom+xml" title="FileSense Documentation"><link rel="stylesheet" href="/FileSense/assets/css/sidebar.css" media="screen and (min-width: 58em)">
+<aside style="display: none">
+  <nav>
+  
+  <a href="/FileSense/wiki/" class="selected">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Home</span>
+    </a><a href="/FileSense/wiki/getting-started/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Getting Started</span>
+    </a><a href="/FileSense/wiki/faq/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>FAQ</span>
+    </a><a href="/FileSense/wiki/pipeline/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Architecture</span>
+    </a><a href="/FileSense/wiki/rl/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Reinforcement Learning</span>
+    </a><a href="/FileSense/wiki/metrics/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Metrics</span>
+    </a><a href="/FileSense/wiki/NL_VS_OG/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>NL vs Keywords</span>
+    </a><a href="/FileSense/wiki/lessons-learned/" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#"></use></svg>
+      <span>Lessons Learned</span>
+    </a><a href="https://github.com/ahhyoushh/FileSense" class="">
+      <svg aria-hidden="true" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg>
+      <span>GitHub</span>
+    </a></nav>
+  <footer>Intelligent semantic file organizer powered by SBERT + Gemini</footer>
+</aside>
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=ff113580487d33068b3216f649af5514f0da9c75">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
-<!-- Setup Google Analytics -->
+<header class="hover smooth">
+  
+    <h1 ><a href="/FileSense/">FileSense Documentation</a></h1>
+  
+  <nav><a href="/FileSense/wiki/">Home</a><a href="/FileSense/wiki/getting-started/">Getting Started</a><a href="/FileSense/wiki/faq/">FAQ</a><a href="/FileSense/wiki/pipeline/">Architecture</a><a href="/FileSense/wiki/rl/">Reinforcement Learning</a><a href="/FileSense/wiki/metrics/">Metrics</a><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords</a><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a><a href="https://github.com/ahhyoushh/FileSense"><svg aria-label="GitHub" width="1em" height="1em"><use xlink:href="/FileSense/assets/fontawesome/icons.svg#github"></use></svg></a></nav>
+  
+</header>
 
+<article>
+  <header>
+  <h1><a href="/FileSense/wiki/">FileSense Documentation</a></h1>
+</header>
 
+  <p><strong>Semantic document classifier that understands meaning, not just filenames.</strong></p>
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
-
-<!-- end custom head snippets -->
-
-  </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="/">FileSense</a></h1>
-      
-
-      <h1 id="️-filesense---file-sorter">🗂️ FileSense - File Sorter</h1>
-
-<h2 id="-overview">🔍 Overview</h2>
-
-<p><strong>FileSense</strong> is an intelligent, local file organizer that sorts documents by <strong>meaning</strong>, not just by name or extension.</p>
-
-<p>Unlike standard organizers that rely on hardcoded rules, FileSense uses <strong>SentenceTransformers</strong> and <strong>FAISS</strong> to understand the semantic context of your files.</p>
-
-<p><strong>✨ New :</strong> It is now <strong>Self-Organizing</strong>. If FileSense encounters a document that doesn’t fit any existing folder, it uses <strong>Google Gemini (GenAI)</strong> to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.</p>
-
-<blockquote>
-  <p>📺 <strong>Overview Video</strong>: <a href="https://youtu.be/f27I2L7uoC8">FileSense Demo</a></p>
-
-  <p>🎥 <strong>Webpage:</strong> <a href="https://ahhyoushh.github.io/FileSense">ahhyoushh.github.io/FileSense</a></p>
-</blockquote>
+<p>FileSense uses <strong>SentenceTransformers (SBERT)</strong> and <strong>FAISS vector search</strong> to organize files by their actual content. When it encounters unknown file types, it leverages <strong>Google Gemini</strong> (or Local LLMs) to generate new categories automatically.</p>
 
 <hr />
 
-<h2 id="️-core-features">⚙️ Core Features</h2>
+<h2 id="️-update-infrastructure-shift-to-sft">⚠️ UPDATE: Infrastructure Shift to SFT</h2>
+
+<p><strong>Integrated a Reinforcement Learning architecture.</strong> However, due to Google Gemini’s Free Tier Rate Limits, Temporarily pivoting the <em>generation</em> backend to Local SFT.</p>
+
+<h3 id="the-challenge">The Challenge</h3>
+<p>The <strong>RL Agent</strong> works as intended, optimizing for speed. However, effectively “training” the agent requires frequent API calls, which triggers Google’s <strong>429 Rate Limit</strong>, forcing 60-second delays.</p>
+
+<h3 id="the-solution">The Solution</h3>
+<p>Not removing RL, just <strong>removing the latency</strong>.
+By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, I eliminate the API bottleneck. This will allow the RL Agent to function at full speed without external throttling.</p>
+
+<p>See the full analysis: <strong><a href="/FileSense/wiki/rl/">Reinforcement Learning Architecture</a></strong></p>
+
+<hr />
+
+<h2 id="-quick-links">⚡ Quick Links</h2>
+
+<ul>
+  <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong>: Install and run FileSense in 5 minutes</li>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong>: See benchmarks and optimization studies</li>
+  <li><strong><a href="/FileSense/wiki/rl/">RL Architecture</a></strong>: Deep dive into the Adaptive Agent</li>
+</ul>
+
+<hr />
+
+<h2 id="-core-features">🎯 Core Features</h2>
 
 <table>
   <thead>
@@ -67,155 +99,168 @@
   <tbody>
     <tr>
       <td>🧠 <strong>Semantic Sorting</strong></td>
-      <td>Sorts by meaning (e.g., “Newton’s Laws” → “Physics”), not just keywords.</td>
+      <td>Classifies by meaning (e.g., “Newton’s Laws” → Physics)</td>
     </tr>
     <tr>
-      <td>🤖 <strong>Generative Labeling</strong></td>
-      <td><strong>(New)</strong> Uses Google Gemini to auto-generate new categories/folders for unknown file types.</td>
+      <td>🟣 <strong>Reinforcement Learning</strong></td>
+      <td>Adaptive agent that optimizes sorting policies over time</td>
     </tr>
     <tr>
-      <td>⚡ <strong>FAISS Indexing</strong></td>
-      <td>Uses vector databases for lightning-fast similarity searches.</td>
+      <td>🤖 <strong>AI-Powered Labeling</strong></td>
+      <td>Uses GenAI to create new categories automatically</td>
+    </tr>
+    <tr>
+      <td>⚡ <strong>FAISS Vector Search</strong></td>
+      <td>Lightning-fast similarity matching with embeddings</td>
     </tr>
     <tr>
       <td>🔄 <strong>Self-Updating</strong></td>
-      <td>When a new label is generated, the AI creates the folder and rebuilds the index automatically.</td>
+      <td>Automatically rebuilds index when new labels are created</td>
     </tr>
     <tr>
       <td>👀 <strong>OCR Support</strong></td>
-      <td>Extracts text from scanned PDFs and images using <code class="language-plaintext highlighter-rouge">pdfplumber</code> and <code class="language-plaintext highlighter-rouge">pytesseract</code>.</td>
+      <td>Extracts text from scanned PDFs and images</td>
     </tr>
     <tr>
       <td>🧩 <strong>Keyword Boosting</strong></td>
-      <td>Hybrid search approach: Vector Similarity + Keyword weighting for maximum accuracy.</td>
+      <td>Hybrid approach: Vector similarity + keyword matching</td>
     </tr>
     <tr>
-      <td>🖥️ <strong>GUI Launcher</strong></td>
-      <td>Desktop interface with real-time logs, system tray support, and process management.</td>
-    </tr>
-    <tr>
-      <td>🧵 <strong>Multithreading</strong></td>
-      <td>Sorts massive directories in parallel for high performance.</td>
+      <td>🖥️ <strong>GUI &amp; CLI</strong></td>
+      <td>Desktop app with system tray + command-line interface</td>
     </tr>
   </tbody>
 </table>
 
 <hr />
 
-<h2 id="-folder-structure">📁 Folder Structure</h2>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FileSense/
-│
-├── scripts/
-│   ├── RL/                       # Reinforcement Learning Module
-│   ├── RL/                       # Reinforcement Learning &amp; SFT
-│   │   ├── rl_policy.py          # Epsilon-Greedy Agent
-│   │   ├── rl_feedback.py        # Feedback &amp; Rewards
-│   │   ├── rl_config.py          # Hyperparameters
-│   │   ├── rl_supabase.py        # Cloud Logging
-│   │   └── rl_audit_safe.py      # Safety Audits
-│   ├── logger/                   # Logging System
-│   │   ├── logger.py             # Main Logger
-│   │   └── rl_logger.py          # RL-Specific Logger
-│   ├── classify_process_file.py  # Core Logic: Embedding &amp; Classification
-│   ├── generate_label.py         # GenAI Interface (Gemini)
-│   ├── create_index.py           # FAISS Index Manager
-│   ├── extract_text.py           # OCR &amp; Text Extraction
-│   ├── multhread.py              # Multithreading Manager
-│   ├── launcher.py               # System Tray GUI
-│   ├── script.py                 # CLI Entry Point
-│   └── watcher_script.py         # Real-time Monitor
-│
-├── folder_labels.json            # Semantic Knowledge Base
-├── folder_embeddings.faiss       # Vector Index
-├── evaluation/                   # Metrics &amp; Logs
-└── files/                        # Default Input Directory
+<h2 id="-how-it-works">📊 How It Works</h2>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[📄 Input File] --&gt; B[📝 Extract Text]
+    B --&gt; C[🔢 Generate Embedding&lt;br/&gt;SBERT all-mpnet-base-v2]
+    C --&gt; D{🎯 Similarity ≥ 0.40?}
+    D --&gt;|Yes| E[✅ Classify to Existing Folder]
+    D --&gt;|No| F[🤖 Ask Agent (RL)]
+    F --&gt; G{Polciy A/B/C?}
+    G --&gt; H[💾 Update folder_labels.json]
+    H --&gt; I[🔄 Rebuild FAISS Index]
+    I --&gt; J[📁 Move to Sorted Folder]
+</code></pre>
+
+<hr />
+
+<h2 id="-quick-start">🚀 Quick Start</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Install dependencies</span>
+pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># 2. Set up API key</span>
+<span class="nb">echo</span> <span class="s2">"API_KEY=your_gemini_key"</span> <span class="o">&gt;</span> .env
+
+<span class="c"># 3. Create initial index</span>
+python scripts/create_index.py
+
+<span class="c"># 4. Run FileSense</span>
+python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">--threads</span> 6
 </code></pre></div></div>
 
 <hr />
 
-<h2 id="-how-it-works">🔬 How It Works</h2>
+<h2 id="-documentation-sections">📚 Documentation Sections</h2>
 
-<h3 id="1️⃣-text-extraction">1️⃣ Text Extraction</h3>
-<p>FileSense reads the file. If it’s a text-based PDF/DOCX, it extracts raw text. If it’s a scanned document, it applies OCR/Image processing to read the content.</p>
-
-<h3 id="2️⃣-semantic-search">2️⃣ Semantic Search</h3>
-<p>It converts the document text into a vector embedding and searches the local <code class="language-plaintext highlighter-rouge">folder_embeddings.faiss</code> index.</p>
+<h3 id="-for-users">🎓 For Users</h3>
 <ul>
-  <li><strong>High Confidence (≥ 0.5):</strong> The file is moved to the matching folder.</li>
-  <li><strong>Low Confidence:</strong> The system assumes no suitable folder exists.</li>
+  <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong> - Installation and setup</li>
+  <li><strong><a href="/FileSense/wiki/faq/">FAQ</a></strong> - Common questions and troubleshooting</li>
 </ul>
 
-<h3 id="3️⃣-generative-classification-the-ai-step">3️⃣ Generative Classification (The “AI” Step)</h3>
-<p>If confidence is low:</p>
-<ol>
-  <li>The text is sent to <strong>Google Gemini</strong>.(Optional)</li>
-  <li>Gemini analyzes the content and determines a broad category (e.g., “Quantum Mechanics”) and specific keywords.</li>
-  <li>It updates <code class="language-plaintext highlighter-rouge">folder_labels.json</code> (merging with existing data if needed).</li>
-  <li>FileSense <strong>rebuilds the FAISS index</strong> on the fly and classifies the file again with the new knowledge.</li>
-</ol>
-
-<hr />
-
-<h2 id="️-installation--setup">🛠️ Installation &amp; Setup</h2>
-
-<h3 id="1-prerequisites">1. Prerequisites</h3>
+<h3 id="-for-developers">🔧 For Developers</h3>
 <ul>
-  <li>Python 3.8+</li>
-  <li>A Google Cloud API Key (for Gemini)</li>
+  <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - System design and data flow</li>
 </ul>
 
-<h3 id="2-install-dependencies">2. Install Dependencies</h3>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv
-</code></pre></div></div>
-<h2 id="linux-users">Linux Users</h2>
-<p>Install Tesseract OCR:</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>tesseract-ocr
-</code></pre></div></div>
+<h3 id="-research--analysis">📊 Research &amp; Analysis</h3>
+<ul>
+  <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
+  <li><strong><a href="/FileSense/wiki/rl/">Reinforcement Learning</a></strong> - Architecture &amp; SFT Pivot</li>
+  <li><strong><a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a></strong> - Comprehensive comparison</li>
+  <li><strong><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a></strong> - Key insights from development</li>
+</ul>
+
 <hr />
 
-<h2 id="3-environment-setup">3. Environment Setup</h2>
-<p>Create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root directory and add your Google API key:</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">API_KEY</span><span class="o">=</span>your_google_gemini_api_key_here
-</code></pre></div></div>
+<h2 id="-key-insights">🎓 Key Insights</h2>
+
+<blockquote>
+  <p><strong>Important discoveries from testing:</strong></p>
+
+  <ol>
+    <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
+    <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
+    <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
+    <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
+  </ol>
+</blockquote>
+
+<p>See the <a href="/FileSense/wiki/NL_VS_OG/">NL vs Keywords Study</a> for detailed analysis.</p>
+
 <hr />
 
-<h2 id="4-initialization">4. Initialization</h2>
-<p>Create the initial index (even if empty):</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/create_index.py
-</code></pre></div></div>
+<h2 id="-performance-highlights">📈 Performance Highlights</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Accuracy (NCERT Test)</strong></td>
+      <td>56% with keywords</td>
+    </tr>
+    <tr>
+      <td><strong>Avg Similarity Score</strong></td>
+      <td>0.355</td>
+    </tr>
+    <tr>
+      <td><strong>Categorization Rate</strong></td>
+      <td>89% (11% uncategorized)</td>
+    </tr>
+    <tr>
+      <td><strong>Processing Speed</strong></td>
+      <td>~0.27s per file</td>
+    </tr>
+    <tr>
+      <td><strong>Embedding Model</strong></td>
+      <td>all-mpnet-base-v2 (768 dims)</td>
+    </tr>
+  </tbody>
+</table>
+
 <hr />
 
-<h1 id="-usage">🚀 Usage</h1>
+<h2 id="-contributing">🤝 Contributing</h2>
 
-<h2 id="option-a-gui-launcher-recommended">Option A: GUI Launcher (Recommended)</h2>
-<p>Run the desktop app to manage everything visually.</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/launcher.py
-</code></pre></div></div>
-<h2 id="option-b-real-time-watcher">Option B: Real-Time Watcher</h2>
-<p>Keep it running in the background to sort files as you download them.</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/watcher_script.py <span class="nt">--dir</span> ./Downloads
-</code></pre></div></div>
-<h2 id="option-c-bulk-sort">Option C: Bulk Sort</h2>
-<p>Sort an existing mess of files once.</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python scripts/script.py <span class="nt">--dir</span> ./Downloads <span class="nt">--threads</span> 8
-</code></pre></div></div>
+<p>FileSense is an open-source project. Contributions are welcome!</p>
+
+<ul>
+  <li><strong>GitHub:</strong> <a href="https://github.com/ahhyoushh/FileSense">ahhyoushh/FileSense</a></li>
+  <li><strong>Issues:</strong> Report bugs or request features</li>
+  <li><strong>Pull Requests:</strong> Submit improvements</li>
+</ul>
+
 <hr />
 
-<h2 id="-license">🧾 License</h2>
+<h2 id="-license">📝 License</h2>
+
 <p>MIT License © 2025 Ayush Bhalerao</p>
 
-<h1 id="ideas-to-implement">IDEAS TO IMPLEMENT</h1>
-<ol>
-  <li>Use the dateset with category labels for the data, make a script to general folder labels until the similarity crosses a certain threshold for all files in the train dataset. In this way the description and folders_labels.json would be most optimised.</li>
-  <li>After the last update with gemini, make the model return the revised prompt and use the revised prompt so that the prompt self optimises.</li>
-  <li>Setup RL: let the user upload logs that include text from the file and folder label given.</li>
-  <li>explain why i used Sentence transformers rather than just using a tezt classifier</li>
-</ol>
+<hr />
 
+<p><strong>Ready to get started?</strong> → <a href="/FileSense/wiki/getting-started/">Installation Guide</a></p>
 
-      
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-  </body>
+</article>
 </html>
