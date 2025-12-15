@@ -2,964 +2,535 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🗂️ FileSense</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #0a0a0a;
-      --bg-secondary: #111111;
-      --text: #e5e7eb;
-      --text-secondary: #9ca3af;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-      --accent-dark: #1e40af;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --border: rgba(255, 255, 255, 0.08);
-      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Back Button */
-    .back-button {
-      position: fixed;
-      top: 24px;
-      left: 24px;
-      z-index: 1000;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--accent-light);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      backdrop-filter: blur(10px);
-    }
-
-    .back-button:hover {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(16, 185, 129, 0.15) 100%);
-      border-color: var(--accent);
-      transform: translateX(-4px);
-      box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
-    }
-
-    /* Sidebar Navigation */
-    .sidebar {
-      position: fixed;
-      right: 24px;
-      top: 120px;
-      width: 250px;
-      max-height: calc(100vh - 150px);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      overflow-y: auto;
-      z-index: 500;
-    }
-
-    .sidebar::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .sidebar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 3px;
-    }
-
-    .sidebar h3 {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-      letter-spacing: 1px;
-    }
-
-    .sidebar-tree {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .sidebar-tree li {
-      margin: 0;
-      padding: 0;
-    }
-
-    .sidebar-tree a {
-      display: block;
-      padding: 10px 12px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-      border-radius: 6px;
-      border-left: 2px solid transparent;
-      margin: 4px 0;
-    }
-
-    .sidebar-tree a:hover {
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-light);
-      border-left-color: var(--accent);
-      padding-left: 16px;
-    }
-
-    .sidebar-tree a.active {
-      background: rgba(59, 130, 246, 0.15);
-      color: var(--accent-light);
-      border-left-color: var(--accent);
-      font-weight: 600;
-    }
-
-    .sidebar-tree .level-2 {
-      margin-left: 16px;
-      font-size: 0.85rem;
-    }
-
-    /* Header */
-    header {
-      position: relative;
-      overflow: hidden;
-      padding: 100px 24px 80px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
-      animation: float 20s ease-in-out infinite;
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translate(0, 0);
-      }
-
-      50% {
-        transform: translate(30px, -30px);
-      }
-    }
-
-    header h1 {
-      position: relative;
-      z-index: 2;
-      font-size: 3.5rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-      letter-spacing: -2px;
-      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1e40af 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    header p {
-      position: relative;
-      z-index: 2;
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      max-width: 680px;
-      margin: 0 auto;
-      animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
-    }
-
-    .header-date {
-      position: absolute;
-      left: 24px;
-      top: 80px;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--text-secondary);
-      backdrop-filter: none;
-      letter-spacing: 0;
-      text-transform: capitalize;
-      animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Main Container */
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 60px 24px;
-      margin-right: 300px;
-    }
-
-    /* Sections */
-    section {
-      margin-bottom: 60px;
-      animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    section:nth-child(1) {
-      animation-delay: 0.2s;
-    }
-
-    section:nth-child(2) {
-      animation-delay: 0.3s;
-    }
-
-    section:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    section:nth-child(4) {
-      animation-delay: 0.5s;
-    }
-
-    section:nth-child(5) {
-      animation-delay: 0.6s;
-    }
-
-    h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 24px;
-      color: var(--text);
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      scroll-margin-top: 80px;
-    }
-
-    h2::before {
-      content: '';
-      width: 4px;
-      height: 32px;
-      background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
-      border-radius: 2px;
-    }
-
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 24px 0 12px 0;
-      color: var(--accent-light);
-      scroll-margin-top: 80px;
-    }
-
-    p {
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 12px;
-    }
-
-    /* Feature Grid */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 32px 0;
-    }
-
-    .feature-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-    }
-
-    .feature-card:hover {
-      border-color: var(--accent);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
-      transform: translateY(-8px);
-      box-shadow: 0 16px 32px rgba(59, 130, 246, 0.15);
-    }
-
-    .feature-card h4 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--accent-light);
-    }
-
-    .feature-card p {
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    /* Special AI Card Style */
-    .feature-card.ai-card {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
-      border-color: rgba(16, 185, 129, 0.2);
-    }
-
-    .feature-card.ai-card:hover {
-      border-color: var(--success);
-      box-shadow: 0 16px 32px rgba(16, 185, 129, 0.15);
-    }
-
-    .feature-card.ai-card h4 {
-      color: var(--success);
-    }
-
-    /* Code Block */
-    .code-block {
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 24px 0;
-      overflow-x: auto;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #a1e5ff;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .code-block::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .code-block::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .code-block::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 3px;
-    }
-
-    /* Demo Video */
-    .demo-container {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 12px;
-      margin: 32px 0;
-      box-shadow: var(--card-shadow);
-    }
-
-    .demo-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Structure Box */
-    .structure-box {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      margin: 24px 0;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      line-height: 1.8;
-      color: var(--text-secondary);
-      overflow-x: auto;
-    }
-
-    /* Lists */
-    ul,
-    ol {
-      margin-left: 24px;
-      margin-bottom: 16px;
-    }
-
-    li {
-      margin-bottom: 10px;
-      color: var(--text-secondary);
-    }
-
-    li strong {
-      color: var(--accent-light);
-      font-weight: 600;
-    }
-
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 0.95rem;
-    }
-
-    th {
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid var(--border);
-      padding: 12px;
-      text-align: left;
-      font-weight: 600;
-      color: var(--accent-light);
-    }
-
-    td {
-      border: 1px solid var(--border);
-      padding: 12px;
-      color: var(--text-secondary);
-    }
-
-    tr:hover {
-      background: rgba(59, 130, 246, 0.05);
-    }
-
-    /* Buttons */
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 24px 0;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      border: none;
-      font-size: 0.95rem;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-    .btn-secondary {
-      background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-light);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--accent);
-    }
-
-    /* Highlight Box */
-    .highlight {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-      border-left: 4px solid var(--success);
-      border-radius: 8px;
-      padding: 20px;
-      margin: 24px 0;
-      border: 1px solid var(--border);
-    }
-
-    /* Learned Section */
-    .learned-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin: 32px 0;
-    }
-
-    .learned-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      backdrop-filter: blur(10px);
-    }
-
-    .learned-card h4 {
-      color: var(--accent-light);
-      font-size: 1.1rem;
-      margin-bottom: 16px;
-    }
-
-    .learned-card ul {
-      list-style: none;
-      margin-left: 0;
-    }
-
-    .learned-card li {
-      margin-bottom: 12px;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .learned-card li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 40px 24px;
-      border-top: 1px solid var(--border);
-      color: var(--text-secondary);
-      margin-top: 80px;
-      margin-right: 300px;
-    }
-
-    footer p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 1200px) {
-      main {
-        margin-right: 0;
-      }
-
-      footer {
-        margin-right: 0;
-      }
-
-      .sidebar {
-        position: relative;
-        right: auto;
-        top: auto;
-        width: 100%;
-        max-height: 400px;
-        margin: 40px 0;
-      }
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2.5rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
-
-      header {
-        padding: 60px 24px 50px;
-      }
-
-      main {
-        padding: 40px 16px;
-        margin-right: 0;
-      }
-
-      footer {
-        margin-right: 0;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .learned-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .code-block {
-        font-size: 0.85rem;
-      }
-
-      .btn-group {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-        text-align: center;
-      }
-
-      .back-button {
-        font-size: 0.9rem;
-        top: 16px;
-        left: 16px;
-        padding: 10px 14px;
-      }
-
-      .header-date {
-        top: 24px;
-        left: 24px;
-        font-size: 0.75rem;
-      }
-
-      .sidebar {
-        position: relative;
-        right: auto;
-        top: auto;
-        width: 100%;
-        max-height: 300px;
-        margin: 40px 0;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🗂️ FileSense</title>
+    <style>
+        /* GitHub System Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* GitHub Dark Dimmed Backgrounds */
+            --bg: #0d1117;
+            --bg-secondary: #161b22;
+
+            /* FileSense Blue Theme + GitHub Text Colors */
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+
+            /* Reverting to Blue Accents */
+            --accent: #3b82f6;
+            /* Primary Blue */
+            --accent-hover: #2563eb;
+            /* Darker Blue for Hover */
+            --accent-light: #60a5fa;
+            /* Lighter Blue for Text */
+
+            --success: #2ea043;
+            /* GitHub Green for Success */
+            --warning: #db6d28;
+            /* GitHub Orange */
+            --danger: #f85149;
+            /* GitHub Red */
+            --purple: #bc8cff;
+            /* GitHub Purple */
+
+            --border: #30363d;
+            --card-shadow: 0 8px 24px rgba(1, 4, 9, 0.5);
+            --btn-text: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 1000;
+            transition: all 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+            cursor: pointer;
+            background: #21262d;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-light);
+            /* Blue text */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #30363d;
+            border-color: var(--accent);
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            right: 24px;
+            top: 120px;
+            width: 250px;
+            max-height: calc(100vh - 150px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            overflow-y: auto;
+            z-index: 500;
+            box-shadow: var(--card-shadow);
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-tree {
+            list-style: none;
+        }
+
+        .sidebar-tree a {
+            display: block;
+            padding: 6px 8px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-tree a:hover {
+            background: rgba(59, 130, 246, 0.15);
+            /* Blue tint hover */
+            color: var(--accent-light);
+        }
+
+        .sidebar-tree .level-2 {
+            margin-left: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            overflow: hidden;
+            padding: 80px 24px 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            /* Blue radial gradient */
+            background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+            /* Blue Gradient Text */
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .header-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: inline-block;
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: var(--bg-secondary);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            margin-right: 320px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Blue Pill next to H2 */
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            color: var(--accent-light);
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        /* GitHub-style Cards with Blue Accents */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent-light);
+        }
+
+        /* Color Accents for Special Cards */
+        .feature-card.ai-card {
+            border-left: 4px solid var(--warning);
+        }
+
+        .feature-card.ai-card h4 {
+            color: var(--warning);
+        }
+
+        .feature-card.rl-card {
+            border-left: 4px solid var(--purple);
+        }
+
+        .feature-card.rl-card h4 {
+            color: var(--purple);
+        }
+
+
+        /* Code Block */
+        .code-block {
+            background: #161b22;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        /* Buttons - Blue Theme */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid rgba(27, 31, 36, 0.15);
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            /* Blue */
+            color: white;
+            border-color: rgba(27, 31, 36, 0.15);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #21262d;
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #30363d;
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        /* Alert Boxes */
+        .alert-box {
+            border: 1px solid;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        /* Purple for RL */
+        .alert-purple {
+            background: rgba(188, 140, 255, 0.1);
+            border-color: var(--purple);
+            color: var(--text);
+        }
+
+        /* Structure tree */
+        .structure-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            margin-right: 300px;
+        }
+
+        @media (max-width: 1200px) {
+
+            main,
+            footer {
+                margin-right: 0;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                top: 0;
+                right: 0;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <a href="https://ahhyoushh.github.io" class="back-button" title="Back to Portfolio">← Back</a>
+    <a href="https://ahhyoushh.github.io" class="back-button">← Back</a>
 
-  <header>
-    <div class="header-date">Updated: 2025</div>
-    <h1>🗂️ FileSense</h1>
+    <header>
+        <div class="header-date">Updated: 2025</div>
+        <h1>🗂️ FileSense</h1>
 
-    <div
-      style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--warning); border-radius: 8px; padding: 16px; margin: 24px auto; max-width: 680px; text-align: left;">
-      <strong style="color: var(--warning); display: block; margin-bottom: 8px;">⚠️ Strategic Shift: From API to
-        SFT</strong>
-      <p style="margin: 0; font-size: 0.9rem; color: var(--text);">
-        Google Gemini's increased rate limits :( Even switching to an RL agent does not benifit much. Now shifting on SFT <strong>unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit.</strong>
-
-      </p>
-    </div>
-
-    <p>Essentially a python script that generates generates vector embeddings using SentenceTransformers
-      all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less
-      than threshold) to classify, create folder label , and organize your files automatically by moving them in
-      respective folders.</p>
-  </header>
-
-  <nav class="sidebar">
-    <h3>📑 Contents</h3>
-    <ul class="sidebar-tree">
-      <li><a href="#overview">Quick Overview</a></li>
-      <li><a href="#how-it-works">The Logic</a></li>
-      <li class="level-2"><a href="#genai-integration">Generative AI</a></li>
-      <li class="level-2"><a href="#process-flow">The Pipeline</a></li>
-      <li><a href="#structure">Project Structure</a></li>
-      <li><a href="#features">Core Features</a></li>
-      <li><a href="#installation">Installation & Setup</a></li>
-      <li><a href="#learned">What I Learned</a></li>
-    </ul>
-  </nav>
-
-  <main>
-    <section id="overview">
-      <h2>Quick Overview</h2>
-      <p>FileSense is a <strong>Self-Organizing</strong> file organizer that sorts
-        documents by <strong>meaning</strong>, not just filenames. Unlike standard organizers, it uses
-        <strong>SentenceTransformers</strong> and <strong>FAISS</strong> to understand context.
-      </p>
-      <p style="margin-top: 10px;">If it encounters a file that doesn't fit any existing folder, it uses <strong>Google
-          Gemini (GenAI)</strong> to analyze the content, generate a new specific category, create the folder, and
-        update its own sorting logic automatically.</p>
-
-      <div class="feature-grid">
-        <div class="feature-card ai-card">
-          <h4>🤖 Generative Labeling</h4>
-          <p>Uses Google Gemini to analyze unknown files and auto-create specific folder categories.</p>
+        <div class="alert-box alert-purple" style="max-width: 680px; margin: 24px auto; text-align: left;">
+            <strong style="color: var(--purple);">✨ Reinforcement Learning (RL) Check</strong>
+            <p style="margin: 4px 0 0 0;">
+                Integrated an <strong>Epsilon-Greedy Bandit</strong> agent to optimize decision making.<br>
+                <span style="opacity: 0.8; font-size: 12px; display: block; margin-top: 4px;">
+                    <em>Note: Currently pivoting to Local SFT models to bypass Gemini Free Tier limits.</em>
+                </span>
+            </p>
         </div>
-        <div class="feature-card">
-          <h4>🧠 Semantic Search</h4>
-          <p>Vector embeddings understand "Newton" belongs in "Physics" without explicit rules.</p>
-        </div>
-        <div class="feature-card">
-          <h4>⚡ Live Indexing</h4>
-          <p>FAISS index rebuilds dynamically when new labels are generated.</p>
-        </div>
-        <div class="feature-card">
-          <h4>👁️ OCR Vision</h4>
-          <p>Reads text from scanned PDFs and images using pdfplumber + pytesseract.</p>
-        </div>
-        <div class="feature-card">
-          <h4>🔄 Self-Correction</h4>
-          <p>Merges similar concepts automatically to prevent duplicate folders.</p>
-        </div>
-        <div class="feature-card">
-          <h4>🖥️ GUI & Tray</h4>
-          <p>Desktop app with background watching and system tray integration.</p>
-        </div>
-      </div>
 
-      <div class="demo-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/f27I2L7uoC8" title="FileSense Demo Video"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen style="border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        </iframe>
-      </div>
+        <p>Essentially a python script that generates vector embeddings using SentenceTransformers
+            all-mpnet-base-v2 model. It combines local vector search with Google Gemini to classify and organize files.
+        </p>
+    </header>
 
-      <div class="btn-group" style="justify-content: center; margin-top: 24px;">
-        <a href="wiki/" class="btn btn-primary">📃 Wiki</a>
-        <a href="https://youtu.be/VixLF9syeCg" class="btn btn-secondary">📽️ Demo Video</a>
-        <a href="https://deepwiki.com/ahhyoushh/FileSense" class="btn btn-secondary">📖 Deep Wiki</a>
-      </div>
-    </section>
+    <nav class="sidebar">
+        <h3>📑 Contents</h3>
+        <ul class="sidebar-tree">
+            <li><a href="#overview">Quick Overview</a></li>
+            <li><a href="#how-it-works">The Logic</a></li>
+            <li class="level-2"><a href="#genai-integration">Generative AI</a></li>
+            <li class="level-2"><a href="#process-flow">The Pipeline</a></li>
+            <li><a href="#structure">Project Structure</a></li>
+            <li><a href="#features">Core Features</a></li>
+            <li><a href="#rl-integration">RL Integration</a></li>
+            <li><a href="#installation">Installation & Setup</a></li>
+            <li><a href="#deep-dive">Technical Deep Dive</a></li>
+        </ul>
+    </nav>
 
-    <section id="how-it-works">
-      <h2>How It Works</h2>
-      <p>The system follows a decision pipeline: <strong>Identify → Search → Generate (if needed) → Move</strong>.</p>
+    <main>
+        <section id="overview">
+            <h2>Quick Overview</h2>
+            <p>FileSense is a <strong>Self-Organizing</strong> file organizer that sorts
+                documents by <strong>meaning</strong>, not just filenames. Unlike standard organizers, it uses
+                <strong>SentenceTransformers</strong> and <strong>FAISS</strong> to understand context.
+            </p>
 
-      <h3 id="process-flow">1️⃣ Semantic Classification</h3>
-      <p>Files are read (via text or OCR), encoded into vectors, and compared against the
-        <code>folder_embeddings.faiss</code> index. If similarity is high (>0.5), it moves to the existing folder.
-      </p>
+            <div class="feature-grid">
+                <div class="feature-card ai-card">
+                    <h4>🤖 Generative Labeling</h4>
+                    <p>Uses Google Gemini to analyze unknown files and auto-create specific folder categories.</p>
+                </div>
+                <div class="feature-card rl-card">
+                    <h4>🟣 Reinforcement Learning</h4>
+                    <p>Epsilon-Greedy Bandit agent learns the optimal policy to balance speed vs accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 Semantic Search</h4>
+                    <p>Vector embeddings understand "Newton" belongs in "Physics" without explicit rules.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Live Indexing</h4>
+                    <p>FAISS index rebuilds dynamically when new labels are generated.</p>
+                </div>
+            </div>
 
-      <h3 id="genai-integration">2️⃣ Generative Fallback (The AI Layer)</h3>
-      <p>If confidence is low, the file content is sent to <strong>Google Gemini</strong> via the API. The LLM:</p>
-      <ul>
-        <li>Analyzes the text summary.</li>
-        <li>Generates a broad Category Label (e.g., "Medical Records").</li>
-        <li>Creates a dense list of description keywords.</li>
-        <li>Updates <code>folder_labels.json</code> and triggers a FAISS index rebuild.</li>
-      </ul>
+            <div class="alert-box" style="border-color: var(--accent); background: rgba(59, 130, 246, 0.1);">
+                <strong>🚀 Quick Start:</strong>
+                <p style="margin: 8px 0 0 0;">Double-click <code>FileSense_Launcher.bat</code> to start the app instantly without command line!</p>
+            </div>
 
-      <h3 id="watch-folder">3️⃣ Real-time Watcher</h3>
-      <p>The system monitors directories for <code>Created</code> or <code>Moved</code> events, ignoring temporary
-        download files (.crdownload) until they are fully written.</p>
-    </section>
+            <div class="btn-group">
+                <a href="wiki/" class="btn btn-primary">Make sense of this? Read the Wiki</a>
+                <a href="https://youtu.be/VixLF9syeCg" class="btn btn-secondary">📽️ Demo Video</a>
+            </div>
+        </section>
 
-    <section id="structure">
-      <h2>Project Structure</h2>
-      <div class="structure-box">
-        <pre>FileSense/
+        <section id="how-it-works">
+            <h2>How It Works</h2>
+            <p>The system follows a decision pipeline: <strong>Identify → RL Agent Decisions → Search OR Generate →
+                    Move</strong>.</p>
+
+            <h3 id="process-flow">1️⃣ Semantic Classification</h3>
+            <p>Files are read (via text or OCR), encoded into vectors, and compared against the
+                <code>folder_embeddings.faiss</code> index. High similarity matches are instantly sorted.
+            </p>
+
+            <h3 id="rl-decision">2️⃣ The RL Agent (Epsilon-Greedy)</h3>
+            <p>Before calling any API, the <strong>Epsilon-Greedy Agent</strong> evaluates the state. It decides whether
+                to:</p>
+            <ul>
+                <li><strong>Exploit:</strong> Use the safest/cheapest known method (Vector Search).</li>
+                <li><strong>Explore:</strong> Attempt to find a better label using GenAI (if permitted by policy).</li>
+            </ul>
+
+            <h3 id="genai-integration">3️⃣ Generative Fallback</h3>
+            <p>If the Agent permits, low-confidence files are sent to <strong>Google Gemini</strong> to:</p>
+            <ul>
+                <li>Generate a broad Category Label.</li>
+                <li>Create description keywords.</li>
+                <li>Update <code>folder_labels.json</code> and rebuild the index.</li>
+            </ul>
+        </section>
+
+        <section id="structure">
+            <h2>Project Structure</h2>
+            <div class="structure-box">
+                <pre>FileSense/
 ├── scripts/
-│   ├── process_file.py      # Core logic
-│   ├── generate_label.py    # Interfaces with Google Gemini
-│   ├── create_index.py      # Rebuilds FAISS index
-│   ├── extract_text.py      # Handles PDF, DOCX, TXT, OCR
-│   ├── script.py            # CLI runner
-│   ├── watcher_script.py    # Real-time monitoring
-│   └── launcher.py          # GUI Application
-├── folder_labels.json       # JSON database of labels & descriptions
-├── folder_embeddings.faiss  # Vector Index
-└── files/                   # Input zone</pre>
-      </div>
-    </section>
+│   ├── RL/                       # Reinforcement Learning
+│   │   ├── rl_policy.py          # Epsilon-Greedy Agent
+│   │   ├── rl_feedback.py        # Reward System
+│   │   ├── rl_config.py          # Hyperparameters
+│   │   └── rl_supabase.py        # Cloud Logs
+│   ├── logger/                   # Logging System
+│   │   ├── logger.py             # Main Logger
+│   │   └── rl_logger.py          # RL Logger
+│   ├── classify_process_file.py  # Core Logic
+│   ├── generate_label.py         # Gemini Interface
+│   ├── create_index.py           # FAISS Indexer
+│   ├── extract_text.py           # OCR Engine
+│   └── launcher.py               # GUI App
+├── evaluation/                   # Metrics
+├── landing/                      # Website
+└── wiki/                         # Documentation</pre>
+            </div>
+        </section>
 
-    <section id="features">
-      <h2>Core Features</h2>
-      <table>
-        <tr>
-          <th>Feature</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><strong>🤖 Generative AI</strong></td>
-          <td>Auto-generates labels for unknown file types via Gemini.</td>
-        </tr>
-        <tr>
-          <td><strong>🧠 Semantic Search</strong></td>
-          <td>Sorts by meaning (Vector Embeddings) vs Keywords.</td>
-        </tr>
-        <tr>
-          <td><strong>⚡ Dynamic Indexing</strong></td>
-          <td>Updates sorting logic in real-time as new folders are created.</td>
-        </tr>
-        <tr>
-          <td><strong>👁️ OCR Fallback</strong></td>
-          <td>Extracts text from scanned/image PDFs.</td>
-        </tr>
-        <tr>
-          <td><strong>🧩 Keyword Boosting</strong></td>
-          <td>Hybrid search (Vectors + Keyword weights) for accuracy.</td>
-        </tr>
-        <tr>
-          <td><strong>🧵 Multithreading</strong></td>
-          <td>Parallel processing for bulk organization.</td>
-        </tr>
-        <tr>
-          <td><strong>🖥️ GUI Launcher</strong></td>
-          <td>Desktop interface with logs and tray icon.</td>
-        </tr>
-      </table>
-    </section>
+        <section id="features">
+            <h2>Core Features</h2>
+            <ul style="margin-left: 20px;">
+                <li><strong>Semantic Sorting:</strong> Classifies documents by meaning using SentenceTransformers.</li>
+                <li><strong>RL-Optimized:</strong> Adapts to user files over time to minimize expensive API calls.</li>
+                <li><strong>AI-Powered Labeling:</strong> Creates new categories for unknown files automatically.</li>
+            </ul>
+        </section>
 
-    <section id="installation">
-      <h2>Installation & Setup</h2>
-      <h3>1. Prerequisites</h3>
-      <p>Python 3.8+ and a Google Cloud API Key.</p>
+        <section id="deep-dive">
+            <div class="alert-box"
+                style="background: var(--bg-secondary); text-align: center; border-color: var(--border);">
+                <h3 style="margin-top: 0; border: none;">Want to see the data?</h3>
+                <p style="color: var(--text-secondary);">
+                    I've documented every benchmark, failure, and architecture decision in the Wiki.
+                    Check out the <strong>Metrics</strong>, <strong>RL Analysis</strong>, and <strong>NL vs
+                        Keywords</strong> study.
+                </p>
+                <a href="wiki/" class="btn btn-primary">📚 Explore the Wiki</a>
+            </div>
+        </section>
 
-      <h3>2. Install Dependencies</h3>
-      <div class="code-block">pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow
-        python-docx watchdog pystray google-genai python-dotenv</div>
-
-      <p><strong>Linux Users:</strong> Install Tesseract OCR: <code>sudo apt install tesseract-ocr</code></p>
-
-      <h3>3. Environment Setup</h3>
-      <p>Create a <code>.env</code> file in the root:</p>
-      <div class="code-block">API_KEY=your_google_gemini_api_key_here</div>
-
-      <h3>4. Initialization</h3>
-      <div class="code-block">python scripts/create_index.py</div>
-
-      <h2 style="margin-top: 40px;">🚀 Usage</h2>
-
-      <h3>Option A: GUI Launcher (Recommended)</h3>
-      <div class="code-block">python scripts/launcher.py</div>
-
-      <h3>Option B: Real-Time Watcher</h3>
-      <div class="code-block">python scripts/watcher_script.py --dir ./Downloads</div>
-
-      <h3>Option C: Bulk Sort</h3>
-      <div class="code-block">python scripts/script.py --dir ./Downloads --threads 8</div>
-    </section>
-
-    <section id="learned">
-      <h2>What I Learned</h2>
-      <div class="learned-grid">
-        <div class="learned-card">
-          <h4>🤖 LLM Integration</h4>
-          <ul>
-            <li>Prompt engineering to force strict JSON output from Gemini.</li>
-            <li>Merging existing metadata with new AI-generated insights.</li>
-            <li>Handling API latency vs local processing speed trade-offs.</li>
-          </ul>
-        </div>
-
-        <div class="learned-card">
-          <h4>🧠 Vector Databases</h4>
-          <ul>
-            <li>Using FAISS for high-speed local similarity search.</li>
-            <li>The challenge of "Cold Start" (empty index) vs pre-filled categories.</li>
-            <li>Balancing Embedding dimensionality with search performance.</li>
-          </ul>
-        </div>
-
-        <div class="learned-card">
-          <h4>⚙️ System Design</h4>
-          <ul>
-            <li>Building self-healing systems (Index rebuilds on anomaly detection).</li>
-            <li>Concurrency: Managing thread locks when writing to shared JSON/Index files.</li>
-            <li>Designing fail-safes (OCR -> Text -> Vector -> LLM).</li>
-          </ul>
-        </div>
-
-        <div class="learned-card">
-          <h4>🎨 UX & Product</h4>
-          <ul>
-            <li>Users trust local processing but love cloud-intelligence fallback.</li>
-            <li>Visualizing background AI processes (logs) builds user confidence.</li>
-            <li>Seamless fallback from "Smart" to "GenAI" logic.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section style="text-align: center; margin-top: 80px;">
-      <h2 style="justify-content: center;">Ready to Get Started?</h2>
-      <p style="margin-bottom: 32px;">Bring order to your digital chaos with FileSense.</p>
-      <div class="btn-group" style="justify-content: center;">
-        <a href="https://github.com/ahhyoushh/filesense" class="btn btn-primary">View on GitHub</a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 Ayush Bhalerao</p>
-  </footer>
-
-  <script>
-    // Sidebar active link tracking
-    const sidebarLinks = document.querySelectorAll('.sidebar-tree a');
-
-    function updateActiveLink() {
-      sidebarLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute('href'));
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-          }
-        }
-      });
-    }
-
-    window.addEventListener('scroll', updateActiveLink);
-
-    // Smooth scroll for sidebar links
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
+        <footer>
+            <p>© 2025 Ayush Bhalerao</p>
+        </footer>
+    </main>
 </body>
 
 </html>

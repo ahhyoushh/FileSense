@@ -6,7 +6,7 @@ permalink: /wiki/faq/
 
 # ❓ Frequently Asked Questions
 
-Common questions and answers about FileSense.
+No one asked 🥀
 
 ---
 
@@ -17,7 +17,8 @@ Common questions and answers about FileSense.
 FileSense is an intelligent file organizer that classifies documents by their **semantic meaning** rather than just filenames or extensions. It uses:
 - **SBERT** (Sentence-BERT) for text embeddings
 - **FAISS** for fast vector similarity search
-- **Google Gemini** for generating new categories automatically
+- **Google Gemini** for generating new categories 
+- **RL agent** for managing lesser api calls
 
 ### How is this different from traditional file organizers?
 
@@ -34,7 +35,7 @@ FileSense is an intelligent file organizer that classifies documents by their **
 - ✅ **Local:** Text extraction, embedding generation, vector search
 - ☁️ **Cloud:** Only when generating new labels (Gemini API)
 - 🔒 **Privacy:** File content is sent to Gemini only for classification, not stored
-
+- 🪵 **logs:** all rl logs are sent to supabase storage
 > **Info:** **You can disable cloud features** with `--no-generation` flag.
 
 ---

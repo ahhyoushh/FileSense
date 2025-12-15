@@ -113,6 +113,9 @@ The system's Reinforcement Learning (RL) agent evaluates runtime strategies to o
 **Efficiency Finding:**
 The RL agent has demonstrated that **Policy C** (Generation Disabled) provides optimal efficiency for this dataset. By leveraging optimized similarity thresholds (0.35) instead of fallback text generation, the system achieves high classification accuracy while eliminating the latency associated with Generative AI calls. This confirms that for standard academic documents, vector-based retrieval is sufficient.
 
+> **Note on Future Scalability:**  
+> To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to **Supervised Fine-Tuning (SFT)** of local models. This will allow the RL agent to explore generative policies with zero marginal cost.
+
 ---
 
 ## 3. Analysis

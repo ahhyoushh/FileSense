@@ -5,258 +5,275 @@ import threading
 import os
 import sys
 from pathlib import Path
-project_root = str(Path(__file__).resolve().parent.parent)
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
 import time
-from pathlib import Path
-import signal
 import pystray
 from PIL import Image, ImageDraw
 
-PY_EXE = sys.executable  # current Python interpreter
+# Ensure project root is in path
+project_root = str(Path(__file__).resolve().parent.parent)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+PY_EXE = sys.executable
+
+# --- THEME ---
+COLOR_BG = "#202124"
+COLOR_PANEL = "#2d2e31"
+COLOR_TEXT = "#e8eaed"
+COLOR_ACCENT = "#8ab4f8"
+COLOR_SUCCESS = "#81c995"
+COLOR_ERROR = "#f28b82"
+FONT_MAIN = ("Segoe UI", 9)
+FONT_BOLD = ("Segoe UI", 9, "bold")
+
+class RLAuditWindow(tk.Toplevel):
+    def __init__(self, parent, audit_script_path):
+        super().__init__(parent)
+        self.title("RL Diagnostics")
+        self.geometry("600x400")
+        self.configure(bg=COLOR_BG)
+        self.audit_script = audit_script_path
+        
+        # Styles handling (inherits from parent usually, but explicit here for safety)
+        container = ttk.Frame(self, padding=15, style="Panel.TFrame")
+        container.pack(fill=tk.BOTH, expand=True)
+
+        lbl = ttk.Label(container, text="Reinforcement Learning Audit", font=("Segoe UI", 12, "bold"), style="Panel.TLabel")
+        lbl.pack(anchor="w", pady=(0, 10))
+
+        self.btn_run = ttk.Button(container, text="▶ Run Audit", command=self.run_audit, style="Accent.TButton", width=15)
+        self.btn_run.pack(anchor="w", pady=(0, 10))
+
+        # Output Log
+        self.log = scrolledtext.ScrolledText(container, height=15, bg="#1e1e1e", fg="#d4d4d4", font=("Consolas", 9), relief="flat")
+        self.log.pack(fill=tk.BOTH, expand=True)
+    
+    def run_audit(self):
+        self.log.delete(1.0, tk.END)
+        self.log.insert(tk.END, f"Running: {self.audit_script}\n\n")
+        
+        def _run():
+            try:
+                p = subprocess.Popen([PY_EXE, self.audit_script], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                out, _ = p.communicate()
+                self.log.insert(tk.END, out)
+            except Exception as e:
+                self.log.insert(tk.END, f"Error: {e}")
+        
+        threading.Thread(target=_run, daemon=True).start()
 
 
 class ScriptLauncher(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("FileSense Launcher")
-        self.geometry("740x480")
-        self.resizable(False, False)
-
-        # state vars
+        self.title("FileSense")
+        self.geometry("600x480")  # Compact Size
+        self.configure(bg=COLOR_BG)
+        
+        # State
         self.proc_script = None
         self.proc_watcher = None
 
-        # file paths and dirs
-        self.script_path = tk.StringVar(value="script.py")
-        self.script_dir = tk.StringVar(value="")
-        self.watcher_path = tk.StringVar(value="watcher.py")
-        self.watcher_dir = tk.StringVar(value="")
+        # Paths
+        self.script_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "script.py"))
+        self.script_dir = tk.StringVar(value=str(Path(project_root) / "files"))
+        self.sorted_dir = tk.StringVar(value=str(Path(project_root) / "sorted"))
+        self.watcher_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "watcher_script.py"))
+        self.rl_audit_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "RL" / "rl_audit_safe.py"))
 
+        # Options
+        self.opt_single_thread = tk.BooleanVar(value=False)
+        self.opt_no_gen = tk.BooleanVar(value=False)
+        self.opt_no_logs = tk.BooleanVar(value=False)
+        self.opt_auto_save_logs = tk.BooleanVar(value=True)
+        self.opt_test_mode = tk.BooleanVar(value=False)
+        self.opt_threads = tk.IntVar(value=6)
+
+        self._setup_styles()
         self._build_ui()
-
-        # tray
+        
+        # Tray
         self.tray_icon = None
         self.protocol("WM_DELETE_WINDOW", self.hide_window)
 
-    # =============== UI ===============
+    def _setup_styles(self):
+        style = ttk.Style(self)
+        try: style.theme_use('clam') 
+        except: pass
+        
+        style.configure(".", background=COLOR_BG, foreground=COLOR_TEXT, font=FONT_MAIN, borderwidth=0)
+        style.configure("TFrame", background=COLOR_BG)
+        style.configure("Panel.TFrame", background=COLOR_PANEL)
+        style.configure("Panel.TLabel", background=COLOR_PANEL, foreground=COLOR_TEXT)
+        style.configure("TButton", background="#3c4043", foreground="#ffffff", borderwidth=0, focuscolor=COLOR_ACCENT, padding=5)
+        style.map("TButton", background=[("active", "#4a4d51")], foreground=[("active", "#ffffff")])
+        style.configure("Accent.TButton", background=COLOR_ACCENT, foreground="#202124", font=FONT_BOLD)
+        style.map("Accent.TButton", background=[("active", "#82b1ff")])
+        style.configure("TCheckbutton", background=COLOR_BG, foreground=COLOR_TEXT)
+        style.map("TCheckbutton", background=[("active", COLOR_BG)])
+        style.configure("TEntry", fieldbackground="#3c4043", foreground="#ffffff", borderwidth=1, relief="solid")
+
     def _build_ui(self):
-        pad = 8
-        frm = ttk.Frame(self, padding=pad)
-        frm.pack(fill=tk.BOTH, expand=True)
+        main = ttk.Frame(self, padding=20)
+        main.pack(fill=tk.BOTH, expand=True)
 
-        # -------- script section --------
-        box1 = ttk.LabelFrame(frm, text="Script Runner (--dir)", padding=pad)
-        box1.pack(fill=tk.X, padx=pad, pady=(pad, 0))
+        # 1. Config Section (Minimal)
+        lbl = ttk.Label(main, text="Configuration", font=FONT_BOLD, foreground=COLOR_ACCENT)
+        lbl.pack(anchor="w", pady=(0,5))
 
-        row1 = ttk.Frame(box1)
-        row1.pack(fill=tk.X, pady=4)
-        ttk.Label(row1, text="Script file:").pack(side=tk.LEFT)
-        ttk.Entry(row1, textvariable=self.script_path, width=50).pack(side=tk.LEFT, padx=6)
-        ttk.Button(row1, text="Browse", command=self.browse_script).pack(side=tk.LEFT)
+        f_paths = ttk.Frame(main)
+        f_paths.pack(fill=tk.X, pady=(0,10))
+        
+        self._path_row(f_paths, "Target Dir:", self.script_dir, is_dir=True)
+        self._path_row(f_paths, "Sorted Dir:", self.sorted_dir, is_dir=True)
+        # Hidden power user paths? No, user asked for "all options displayed".
+        self._path_row(f_paths, "Script File:", self.script_path, is_dir=False)
+        self._path_row(f_paths, "Watcher File:", self.watcher_path, is_dir=False)
 
-        row2 = ttk.Frame(box1)
-        row2.pack(fill=tk.X, pady=4)
-        ttk.Label(row2, text="--dir folder:").pack(side=tk.LEFT)
-        ttk.Entry(row2, textvariable=self.script_dir, width=45).pack(side=tk.LEFT, padx=6)
-        ttk.Button(row2, text="Browse Dir", command=self.browse_script_dir).pack(side=tk.LEFT)
+        # 2. Options Grid
+        f_opts = ttk.Frame(main)
+        f_opts.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Checkbutton(f_opts, text="Auto-Log", variable=self.opt_auto_save_logs).grid(row=0, column=0, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="No Logs", variable=self.opt_no_logs).grid(row=0, column=1, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="No Gen", variable=self.opt_no_gen).grid(row=0, column=2, sticky="w", padx=5)
+        
+        ttk.Checkbutton(f_opts, text="Test Mode", variable=self.opt_test_mode).grid(row=1, column=0, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="Single Thread", variable=self.opt_single_thread, command=self._toggle_threads).grid(row=1, column=1, sticky="w", padx=5)
+        
+        f_th = ttk.Frame(f_opts)
+        f_th.grid(row=1, column=2, sticky="w", padx=5)
+        ttk.Label(f_th, text="Threads: ").pack(side=tk.LEFT)
+        self.spin_threads = ttk.Spinbox(f_th, from_=1, to=32, textvariable=self.opt_threads, width=3)
+        self.spin_threads.pack(side=tk.LEFT)
 
-        btns1 = ttk.Frame(box1)
-        btns1.pack(fill=tk.X, pady=6)
-        ttk.Button(btns1, text="Start Script", command=self.start_script).pack(side=tk.LEFT, padx=6)
-        ttk.Button(btns1, text="Stop Script", command=self.stop_script).pack(side=tk.LEFT, padx=6)
+        # 3. Actions Bar
+        f_actions = ttk.Frame(main)
+        f_actions.pack(fill=tk.X, pady=(0, 15))
 
-        # -------- watcher section --------
-        box2 = ttk.LabelFrame(frm, text="Watcher (-d / --dir, stop.flag)", padding=pad)
-        box2.pack(fill=tk.X, padx=pad, pady=(pad, 0))
+        # Script Controls
+        ttk.Button(f_actions, text="▶ Run", style="Accent.TButton", command=self.start_script, width=8).pack(side=tk.LEFT, padx=(0,5))
+        ttk.Button(f_actions, text="■ Stop", command=self.stop_script, width=8).pack(side=tk.LEFT, padx=(0,15))
+        
+        # Watcher Controls
+        ttk.Button(f_actions, text="Run Watcher", command=self.start_watcher).pack(side=tk.LEFT, padx=(0,5))
+        ttk.Button(f_actions, text="Kill Watcher", command=self.kill_watcher_force).pack(side=tk.LEFT, padx=(0,5))
 
-        row3 = ttk.Frame(box2)
-        row3.pack(fill=tk.X, pady=4)
-        ttk.Label(row3, text="Watcher file:").pack(side=tk.LEFT)
-        ttk.Entry(row3, textvariable=self.watcher_path, width=50).pack(side=tk.LEFT, padx=6)
-        ttk.Button(row3, text="Browse", command=self.browse_watcher).pack(side=tk.LEFT)
-
-        row4 = ttk.Frame(box2)
-        row4.pack(fill=tk.X, pady=4)
-        ttk.Label(row4, text="-d folder:").pack(side=tk.LEFT)
-        ttk.Entry(row4, textvariable=self.watcher_dir, width=45).pack(side=tk.LEFT, padx=6)
-        ttk.Button(row4, text="Browse Dir", command=self.browse_watcher_dir).pack(side=tk.LEFT)
-
-        btns2 = ttk.Frame(box2)
-        btns2.pack(fill=tk.X, pady=6)
-        ttk.Button(btns2, text="Start Watcher", command=self.start_watcher).pack(side=tk.LEFT, padx=6)
-        ttk.Button(btns2, text="Kill Watcher (force)", command=self.kill_watcher_force).pack(side=tk.LEFT, padx=6)
-
-        # -------- log section --------
-        log_box = ttk.LabelFrame(frm, text="Log Output", padding=pad)
-        log_box.pack(fill=tk.BOTH, expand=True, padx=pad, pady=(pad, 0))
-        self.log = scrolledtext.ScrolledText(log_box, height=10, wrap=tk.WORD)
+        # 4. Logs Console
+        self.log = scrolledtext.ScrolledText(main, height=8, bg="#1e1e1e", fg="#d4d4d4", font=("Consolas", 8), relief="flat")
         self.log.pack(fill=tk.BOTH, expand=True)
-        self.log.configure(state=tk.DISABLED)
 
-        # -------- status --------
+        # 5. Bottom Tools
+        f_tools = ttk.Frame(main, padding=(0,10,0,0))
+        f_tools.pack(fill=tk.X)
+        
+        ttk.Button(f_tools, text="📊 RL Audit & Stats", command=self.open_rl_window, width=20).pack(side=tk.RIGHT)
+        ttk.Button(f_tools, text="📂 Logs", command=self.open_logs_dir, width=10).pack(side=tk.RIGHT, padx=5)
+        
         self.status_var = tk.StringVar(value="Ready")
-        ttk.Label(self, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W).pack(fill=tk.X, side=tk.BOTTOM)
+        ttk.Label(f_tools, textvariable=self.status_var, foreground="#808080", font=("Segoe UI", 8)).pack(side=tk.LEFT, anchor="s")
 
-    # =============== Tray ===============
-    def create_tray_image(self, size=64, color1="black", color2="white"):
-        img = Image.new("RGB", (size, size), color1)
-        dc = ImageDraw.Draw(img)
-        dc.ellipse((size//4, size//4, size*3//4, size*3//4), fill=color2)
-        return img
+    def _path_row(self, parent, label, var, is_dir):
+        f = ttk.Frame(parent)
+        f.pack(fill=tk.X, pady=2)
+        ttk.Label(f, text=label, width=10, foreground="#9aa0a6").pack(side=tk.LEFT)
+        ttk.Entry(f, textvariable=var).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        cmd = lambda: self.browse_dir(var) if is_dir else self.browse_file(var)
+        ttk.Button(f, text="..", width=3, command=cmd).pack(side=tk.LEFT)
 
-    def hide_window(self):
-        self.withdraw()
-        image = self.create_tray_image()
-        menu = pystray.Menu(
-            pystray.MenuItem("Restore", self.show_window),
-            pystray.MenuItem("Quit", self.quit_app)
-        )
-        self.tray_icon = pystray.Icon("FileSense", image, "FileSense Launcher", menu)
-        threading.Thread(target=self.tray_icon.run, daemon=True).start()
-        self.log_msg("Window minimized to tray.")
+    def _toggle_threads(self):
+        if self.opt_single_thread.get(): self.spin_threads.state(['disabled'])
+        else: self.spin_threads.state(['!disabled'])
 
-    def show_window(self, icon=None, item=None):
-        if self.tray_icon:
-            self.tray_icon.stop()
-            self.tray_icon = None
-        self.deiconify()
-        self.log_msg("Window restored from tray.")
+    def start_script(self):
+        self._run_cmd("Script", [PY_EXE, "-u", self.script_path.get(), "--dir", self.script_dir.get(), "--sorted-dir", self.sorted_dir.get()], 
+                      script_proc=True)
 
-    def quit_app(self, icon=None, item=None):
-        if self.tray_icon:
-            self.tray_icon.stop()
-        self.destroy()
+    def start_watcher(self):
+        self._run_cmd("Watcher", [PY_EXE, "-u", self.watcher_path.get(), "-d", self.script_dir.get(), "--sorted-dir", self.sorted_dir.get()], 
+                      watcher_proc=True)
 
-    # =============== Utilities ===============
-    def log_msg(self, msg):
-        ts = time.strftime("%H:%M:%S")
+    def _run_cmd(self, label, cmd_list, script_proc=False, watcher_proc=False):
+        # Attach flags
+        if script_proc:
+            if self.opt_single_thread.get(): cmd_list.append("--single-thread")
+            else: cmd_list.extend(["--threads", str(self.opt_threads.get())])
+            if self.opt_no_gen.get(): cmd_list.append("--no-generation")
+            if self.opt_no_logs.get(): cmd_list.append("--no-logs")
+            if self.opt_auto_save_logs.get(): cmd_list.append("--auto-save-logs")
+            if self.opt_test_mode.get(): cmd_list.append("--test")
+
+            if self.proc_script and self.proc_script.poll() is None: return
+
+        if watcher_proc:
+            if self.proc_watcher and self.proc_watcher.poll() is None: return
+
+        self.log_msg(f"Starting {label}...", "info")
+        try:
+            cwd = str(Path(cmd_list[2]).parent) # use script parent as cwd
+            proc = subprocess.Popen(cmd_list, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
+                                    text=True, bufsize=1, universal_newlines=True)
+            
+            if script_proc: self.proc_script = proc
+            if watcher_proc: self.proc_watcher = proc
+            
+            threading.Thread(target=self._stream, args=(proc, label), daemon=True).start()
+        except Exception as e:
+            self.log_msg(f"{label} Fail: {e}", "err")
+
+    def stop_script(self):
+        if self.proc_script: self.proc_script.terminate()
+
+    def kill_watcher_force(self):
+        if self.proc_watcher: self.proc_watcher.kill()
+
+    def open_rl_window(self):
+        RLAuditWindow(self, self.rl_audit_path.get())
+
+    def open_logs_dir(self):
+        os.startfile(Path(project_root) / "logs")
+
+    def browse_file(self, var):
+        f = filedialog.askopenfilename()
+        if f: var.set(f)
+
+    def browse_dir(self, var):
+        d = filedialog.askdirectory()
+        if d: var.set(d)
+
+    def log_msg(self, msg, tag=""):
         self.log.configure(state=tk.NORMAL)
-        self.log.insert(tk.END, f"[{ts}] {msg}\n")
+        self.log.insert(tk.END, f"{msg}\n", tag)
         self.log.see(tk.END)
         self.log.configure(state=tk.DISABLED)
         self.status_var.set(msg)
 
-    def browse_script(self):
-        p = filedialog.askopenfilename(filetypes=[("Python files", "*.py")])
-        if p: self.script_path.set(p)
-
-    def browse_watcher(self):
-        p = filedialog.askopenfilename(filetypes=[("Python files", "*.py")])
-        if p: self.watcher_path.set(p)
-
-    def browse_script_dir(self):
-        d = filedialog.askdirectory()
-        if d: self.script_dir.set(d)
-
-    def browse_watcher_dir(self):
-        d = filedialog.askdirectory()
-        if d: self.watcher_dir.set(d)
-
-    # =============== Script Control ===============
-    def start_script(self):
-        if self.proc_script and self.proc_script.poll() is None:
-            self.log_msg("Script already running.")
-            return
-        script = Path(self.script_path.get())
-        if not script.exists():
-            messagebox.showerror("Error", f"Script not found: {script}")
-            return
-        dir_arg = self.script_dir.get().strip()
-        if not dir_arg:
-            messagebox.showerror("Error", "Please select directory for --dir.")
-            return
-
-        cmd = [PY_EXE, str(script), "--dir", dir_arg]
-        self.log_msg(f"Running script: {' '.join(cmd)}")
-
-        try:
-            self.proc_script = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            threading.Thread(target=self._stream_output, args=(self.proc_script, "script"), daemon=True).start()
-        except Exception as e:
-            self.log_msg(f"Error starting script: {e}")
-
-    def stop_script(self):
-        if not self.proc_script or self.proc_script.poll() is not None:
-            self.log_msg("No running script.")
-            return
-        self.log_msg("Stopping script...")
-        self.proc_script.terminate()
-        threading.Thread(target=self._wait_and_kill, args=(self.proc_script, "script"), daemon=True).start()
-
-    # =============== Watcher Control ===============
-    def start_watcher(self):
-        if self.proc_watcher and self.proc_watcher.poll() is None:
-            self.log_msg("Watcher already running.")
-            return
-        watcher = Path(self.watcher_path.get())
-        if not watcher.exists():
-            messagebox.showerror("Error", f"Watcher not found: {watcher}")
-            return
-        dir_arg = self.watcher_dir.get().strip()
-        if not dir_arg:
-            messagebox.showerror("Error", "Please select directory for watcher -d.")
-            return
-
-        cmd = [PY_EXE, "-u", str(watcher), "-d", dir_arg]
-        self.log_msg(f"Running watcher: {' '.join(cmd)}")
-
-        try:
-            self.proc_watcher = subprocess.Popen(
-                cmd,
-                cwd=str(watcher.parent),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,  # merge stderr into stdout so all logs show up
-                text=True,
-                bufsize=1,
-                universal_newlines=True,
-            )
-            threading.Thread(
-                target=self._stream_output_unbuffered,
-                args=(self.proc_watcher, "watcher"),
-                daemon=True,
-            ).start()
-
-        except Exception as e:
-            self.log_msg(f"Error starting watcher: {e}")
-
-
-    def kill_watcher_force(self):
-        if not self.proc_watcher or self.proc_watcher.poll() is not None:
-            self.log_msg("No watcher to kill.")
-            return
-        self.log_msg("Force killing watcher...")
-        self.proc_watcher.kill()
-        self.log_msg("Watcher killed.")
-
-    # =============== Helpers ===============
-    def _stream_output(self, proc, label):
-        try:
-            for line in proc.stdout:
-                self.log_msg(f"{label}: {line.strip()}")
-            err = proc.stderr.read()
-            if err:
-                for l in err.splitlines():
-                    self.log_msg(f"{label} ERR: {l}")
-        finally:
-            self.log_msg(f"{label} exited ({proc.poll()})")
-
-    def _stream_output_unbuffered(self, proc, label):
-        # reads in real time
+    def _stream(self, proc, label):
         for line in iter(proc.stdout.readline, ''):
-            if line:
-                self.log_msg(f"{label}: {line.rstrip()}")
-        proc.stdout.close()
+            if line: self.log_msg(f"{label}: {line.strip()}")
         proc.wait()
-        self.log_msg(f"{label} exited ({proc.returncode})")
+        self.log_msg(f"{label} Stopped.")
 
-    def _wait_and_kill(self, proc, label):
-        time.sleep(3)
-        if proc.poll() is None:
-            proc.kill()
-            self.log_msg(f"{label} killed forcefully.")
+    # Tray logic (Minimal)
+    def hide_window(self):
+        self.withdraw()
+        img = Image.new('RGB', (64, 64), COLOR_BG)
+        d = ImageDraw.Draw(img)
+        d.ellipse([16,16,48,48], fill=COLOR_ACCENT)
+        self.tray_icon = pystray.Icon("FS", img, "FileSense", pystray.Menu(
+            pystray.MenuItem("Open", self.show_window), 
+            pystray.MenuItem("Exit", self.quit_app)))
+        threading.Thread(target=self.tray_icon.run, daemon=True).start()
 
+    def show_window(self, i=None, item=None):
+        if self.tray_icon: self.tray_icon.stop()
+        self.deiconify()
+
+    def quit_app(self, i=None, item=None):
+        if self.tray_icon: self.tray_icon.stop()
+        if self.proc_script: self.proc_script.terminate()
+        if self.proc_watcher: self.proc_watcher.terminate()
+        self.destroy()
 
 if __name__ == "__main__":
     app = ScriptLauncher()

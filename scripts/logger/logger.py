@@ -19,6 +19,7 @@ class Logger:
         """Write message to both terminal and buffer"""
         if self.enabled:
             self.terminal.write(message)
+            self.terminal.flush()  # Force flush for non-TTY outputs (like launcher)
             with self.lock:
                 self.log_buffer.append(message)
     

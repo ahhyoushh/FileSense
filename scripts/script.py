@@ -8,6 +8,14 @@ project_root = str(Path(__file__).resolve().parent.parent)
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+# OPTIMIZATION: Prevent thread oversubscription for AI libraries
+# This must be set BEFORE importing numpy/torch/sentence_transformers
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+
 from multhread import process_multiple
 from classify_process_file import process_file, load_index_and_labels 
 from scripts.logger.logger import setup_logger, get_logger, restore_stdout
@@ -18,6 +26,8 @@ parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to 
 parser.add_argument("--threads", "-t", type=int, default=6, help="Maximum number of concurrent threads.")
 parser.add_argument("--single-thread", action="store_true", help="Run in single-threaded mode instead of multi-threaded.")
 parser.add_argument("--no-generation", action="store_true", help="Do not allow generation if classification fails.")
+parser.add_argument("--test", action="store_true", help="Run in testing mode (no file moves).")
+parser.add_argument("--sorted-dir", type=str, default=None, help="Directory to move sorted files into.")
 parser.add_argument("--auto-save-logs", action="store_true", help="Automatically save logs without prompting.")
 parser.add_argument("--no-logs", action="store_true", help="Disable logging for this run.")
 args = parser.parse_args()
@@ -33,7 +43,7 @@ def prompt_save_logs(logger):
             if custom_name and not custom_name.endswith('.log'):
                 custom_name += '.log'
             log_path = logger.save_logs(custom_name) if custom_name else logger.save_logs()
-            print(f"✓ Logs saved to: {log_path}")
+            print(f"[OK] Logs saved to: {log_path}")
         else:
             print("Logs not saved.")
         print("="*60)
@@ -42,7 +52,7 @@ def prompt_save_logs(logger):
 
 if __name__ == "__main__":
     logger = None
-    testing = False
+    testing = args.test
 
     if not args.no_logs:
         logger = setup_logger()
@@ -71,7 +81,7 @@ if __name__ == "__main__":
                 print("No files found.")
             else:
                 for file_path in files:
-                    process_file(file_path, testing=testing, allow_generation=not args.no_generation)
+                    process_file(file_path, testing=testing, allow_generation=not args.no_generation, sorted_dir=args.sorted_dir)
 
         else:
             print(f"Processing with {MAX_THREADS} threads.")
@@ -79,7 +89,8 @@ if __name__ == "__main__":
                 files_dir,
                 MAX_THREADS,
                 testing=testing,
-                allow_generation=not args.no_generation
+                allow_generation=not args.no_generation,
+                sorted_dir=args.sorted_dir
             )
 
     finally:
@@ -87,6 +98,6 @@ if __name__ == "__main__":
             if args.auto_save_logs:
                 log_path = logger.save_logs()
                 restore_stdout()
-                print(f"\n✓ Logs auto-saved to: {log_path}")
+                print(f"\n[OK] Logs auto-saved to: {log_path}")
             else:
                 prompt_save_logs(logger)

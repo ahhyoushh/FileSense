@@ -126,19 +126,20 @@ python -c "import sentence_transformers, faiss, google.genai; print('✓ All dep
 
 ## 🎯 First Run
 
-### Option A: GUI Launcher (Recommended)
-
-The easiest way to use FileSense:
-
-```bash
-python scripts/launcher.py
+### Option A: Windows Launcher (Recommended)
+ 
+Double-click the **`FileSense_Launcher.bat`** file in the project folder.
+ 
+Alternatively, run it from command line:
+```cmd
+FileSense_Launcher.bat
 ```
-
+ 
 **Features:**
-- Visual file processing
+- One-click startup (No manual environment activation needed) 
+- Clean visual dashboard
 - Real-time logs
 - System tray integration
-- Process management
 
 ### Option B: Command Line
 
@@ -182,20 +183,31 @@ After installation, your project should look like this:
 
 ```
 FileSense/
-├── .env                          # API key (create this)
+├── .env                          # API key
 ├── folder_labels.json            # Label database (auto-created)
 ├── folder_embeddings.faiss       # Vector index (auto-created)
 ├── scripts/
-│   ├── script.py                 # Main CLI
-│   ├── launcher.py               # GUI app
-│   ├── watcher_script.py         # File watcher
-│   ├── generate_label.py         # Gemini integration
-│   ├── classify_process_file.py  # Classification logic
-│   ├── create_index.py           # Index builder
-│   └── extract_text.py           # Text extraction
+│   ├── RL/                       # Reinforcement Learning Module
+│   │   ├── rl_policy.py          # RL Agent Logic
+│   │   ├── rl_feedback.py        # Reward Mechanism
+│   │   ├── rl_config.py          # Configuration
+│   │   ├── rl_supabase.py        # Cloud Logging
+│   │   └── rl_audit_safe.py      # Safety Checks
+│   ├── logger/                   # System Logging
+│   │   ├── logger.py             # Main Logger
+│   │   └── rl_logger.py          # RL Logger
+│   ├── classify_process_file.py  # Classification Logic
+│   ├── generate_label.py         # Gemini Integration
+│   ├── create_index.py           # Index Builder
+│   ├── extract_text.py           # Text Extraction (OCR)
+│   ├── multhread.py              # Parallel Processing
+│   ├── launcher.py               # GUI App
+│   ├── script.py                 # CLI Runner
+│   └── watcher_script.py         # Folder Watcher
+├── evaluation/                   # Metrics, Logs & JSONs
 ├── files/                        # Input directory
-├── sorted/                       # Output directory (auto-created)
-└── logs/                         # Log files (auto-created)
+├── sorted/                       # Output directory
+└── logs/                         # Execution Logs
 ```
 
 ---

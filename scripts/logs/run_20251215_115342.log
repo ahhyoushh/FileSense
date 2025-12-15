@@ -1,0 +1,78 @@
+[*] Logging enabled. Output is being captured.
+
+[*] Initialising model...
+[rl] Synced local events to Supabase: 159 uploaded, 0 failed.
+[*] Model Loaded.
+Processing with 6 threads.
+Found 23 files to process.
+
+[+] Queued: biotech__biotech_12_10.md
+[+] Queued: biotech__biotech_12_7.md
+[+] Queued: bio__bio_12_2.md
+[+] Queued: bio__bio_12_7.md
+[+] Queued: chem work.pdf
+[+] Queued: chemistry project work.docx
+[+] Queued: chem__chem_11_2.md
+[+] Queued: chem__chem_11_3.md
+[+] Queued: comp__comp_11_2.md
+[+] Queued: comp__comp_12_11.md
+[+] Queued: English file.pdf
+[+] Queued: English project.docx
+[+] Queued: english2__english2_12_pr5.md
+[+] Queued: english2__english2_8_1.md
+[+] Queued: english3__english3_10_3.md
+[+] Queued: english__english_12_p8.md
+[+] Queued: english__english_8_1.md
+[+] Queued: IP file.pdf
+[+] Queued: IP synopsis(5 &7).docx
+[+] Queued: phy file.pdf
+[+] Queued: Ray optics projec.pdf
+[+] Queued: sci__sci_10_8.md
+[+] Queued: sci__sci_8_13.md
+[!] [NO GEN] Low confidence (0.44) but accepting 'Computer Science' as fallback.
+[1] Processed: bio__bio_12_7.md -> Computer Science (sim=0.44) in 0.74s
+[1] Processed: biotech__biotech_12_7.md -> Computer Science (sim=0.51) in 0.75s
+[1] Processed: biotech__biotech_12_10.md -> Computer Science (sim=0.49) in 0.75s
+[1] Processed: bio__bio_12_2.md -> Computer Science (sim=0.46) in 0.75s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: comp__comp_11_2.md -> Uncategorized (sim=0.00) in 0.30s
+[1] Processed: chem__chem_11_2.md -> Chemistry (sim=0.52) in 0.31s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: chem__chem_11_3.md -> Chemistry (sim=0.49) in 0.86s
+[1] Processed: comp__comp_12_11.md -> Uncategorized (sim=0.00) in 0.86s
+[!] [NO GEN] Low confidence (0.42) but accepting 'Physics' as fallback.
+[!] [NO GEN] Low confidence (0.39) but accepting 'Physics' as fallback.
+[1] Processed: english2__english2_12_pr5.md -> Physics (sim=0.42) in 0.39s
+[1] Processed: english2__english2_8_1.md -> Physics (sim=0.39) in 0.39s
+[1] Processed: english__english_12_p8.md -> Physics (sim=0.52) in 0.35s
+[!] [NO GEN] Low confidence (0.34) but accepting 'Physics' as fallback.
+[!] Low confidence (0.34) on first pass. Attempting Fallback Extraction...
+[1] Processed: english3__english3_10_3.md -> Physics (sim=0.34) in 0.37s
+[!] [NO GEN] Low confidence (0.38) but accepting 'Chemistry' as fallback.
+[1] Processed: chem work.pdf -> Chemistry (sim=0.38) in 4.60s
+[1] Processed: english__english_8_1.md -> Physics (sim=0.46) in 2.32s
+[1] Processed: chemistry project work.docx -> Chemistry (sim=0.47) in 4.89s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+   -> Fallback did not improve result.
+[1] Processed: English file.pdf -> Uncategorized (sim=0.00) in 10.88s
+   -> Fallback did not improve result.
+[1] Processed: English project.docx -> Uncategorized (sim=0.00) in 11.11s
+[1] Processed: sci__sci_10_8.md -> Computer Science (sim=0.46) in 1.16s
+[!] [NO GEN] Low confidence (0.45) but accepting 'Computer Science' as fallback.
+[1] Processed: sci__sci_8_13.md -> Computer Science (sim=0.45) in 0.97s
+   -> Fallback did not improve result.
+[1] Processed: IP synopsis(5 &7).docx -> Uncategorized (sim=0.00) in 9.34s
+   -> Fallback did not improve result.
+[1] Processed: IP file.pdf -> Uncategorized (sim=0.00) in 12.71s
+   -> Fallback did not improve result.
+[1] Processed: Ray optics projec.pdf -> Uncategorized (sim=0.00) in 10.23s
+   -> Fallback did not improve result.
+[1] Processed: phy file.pdf -> Uncategorized (sim=0.00) in 10.46s
+
+ All files processed in 15.16s
+

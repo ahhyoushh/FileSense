@@ -23,42 +23,47 @@ flowchart TB
         C[🔍 Fallback Extraction<br/>Middle pages, OCR]
     end
     
+    subgraph RLAgent [🧠 RL Agent]
+        D[🤖 Epsilon-Greedy Policy<br/>Exploit vs Explore]
+    end
+    
     subgraph Embedding
-        D[🔢 SBERT Encoding<br/>all-mpnet-base-v2<br/>768 dimensions]
+        E[🔢 SBERT Encoding<br/>all-mpnet-base-v2<br/>768 dimensions]
     end
     
     subgraph Search
-        E[🎯 FAISS Vector Search<br/>IndexFlatIP<br/>Cosine Similarity]
-        F{Similarity ≥ 0.40?}
+        F[🎯 FAISS Vector Search<br/>IndexFlatIP<br/>Cosine Similarity]
+        G{Similarity ≥ 0.40?}
     end
     
     subgraph Classification
-        G[✅ High Confidence<br/>Assign to Folder]
-        H[🤖 Low Confidence<br/>Ask Gemini]
+        H[✅ High Confidence<br/>Assign to Folder]
+        I[✨ Generative Fallback<br/>Ask Gemini]
     end
     
     subgraph Update
-        I[💾 Update Labels<br/>folder_labels.json]
-        J[🔄 Rebuild Index<br/>FAISS re-indexing]
-        K[🔁 Re-classify]
+        J[💾 Update Labels<br/>folder_labels.json]
+        K[🔄 Rebuild Index<br/>FAISS re-indexing]
+        L[🔁 Re-classify]
     end
     
     subgraph Output
-        L[📁 Move to Sorted Folder]
+        M[📁 Move to Sorted Folder]
     end
     
     A --> B
     B --> C
     C --> D
-    D --> E
+    D -->|Get State| E
     E --> F
-    F -->|Yes| G
-    F -->|No| H
-    H --> I
+    F --> G
+    G -->|Yes| H
+    G -->|No| I
     I --> J
     J --> K
-    K --> E
-    G --> L
+    K --> L
+    L --> F
+    H --> M
 ```
 
 ---
@@ -102,7 +107,30 @@ PDF_CONFIG = {
 }
 ```
 
-### Step 2: Embedding Generation
+### Step 2: The RL Agent (Decision Maker)
+
+**File:** `scripts/RL/rl_policy.py`
+
+Before any expensive operations, the **Reinforcement Learning Agent** decides the optimal strategy.
+
+```python
+class EpsilonGreedyBandit:
+    def select_action(self, state):
+        """
+        Decide whether to EXPLOIT (use existing knowledge) or EXPLORE (try new generation).
+        
+        Policy A: High Accuracy (Liberal use of API)
+        Policy B: Balanced
+        Policy C: Efficient (Vector Search only)
+        """
+```
+
+**Why RL?**
+- **Cost Optimization:** Prevents unnecessary API calls for simple files.
+- **Latency Reduction:** Skips generation if vector confidence is high.
+- **Adaptability:** Learns from user feedback (folder moves/renames).
+
+### Step 3: Embedding Generation
 
 **File:** `scripts/classify_process_file.py`
 
@@ -122,7 +150,7 @@ text_emb = model.encode([text], normalize_embeddings=True)
 >
 > Testing showed lighter models performed **significantly worse**. This model provides the best balance of speed and accuracy for document classification.
 
-### Step 3: Vector Similarity Search
+### Step 4: Vector Similarity Search
 
 **File:** `scripts/classify_process_file.py`
 
@@ -148,7 +176,7 @@ FILENAME_BOOST = 0.2  # If label appears in filename
 TEXT_BOOST = 0.1      # If keyword appears in filename
 ```
 
-### Step 4: Classification Decision
+### Step 5: Classification Decision
 
 **Thresholds:**
 ```python
@@ -175,7 +203,7 @@ else:
         return "Uncategorized", 0.0
 ```
 
-### Step 5: Label Generation (Gemini)
+### Step 6: Label Generation (Gemini)
 
 **File:** `scripts/generate_label.py`
 
@@ -215,7 +243,7 @@ def merge_folder_metadata(folder_label, old_desc, old_kw, new_desc, new_kw):
     """
 ```
 
-### Step 6: Index Rebuild
+### Step 7: Index Rebuild
 
 **File:** `scripts/create_index.py`
 
@@ -363,6 +391,7 @@ if retries >= MAX_RETRIES:
 | Operation | Complexity | Notes |
 |-----------|-----------|-------|
 | Text Extraction | O(n) | n = file size |
+| RL Policy Decision | O(1) | Table lookup / State check |
 | Embedding Generation | O(1) | Fixed for 2000 chars |
 | FAISS Search | O(k) | k = number of labels |
 | Label Generation | O(1) | API call latency |
@@ -426,6 +455,14 @@ MODEL_NAME = "all-mpnet-base-v2"  # Change model here
 ```python
 MODEL = "gemini-2.5-flash"         # Gemini model version
 temperature = 0.5                  # Creativity (0.0-1.0)
+```
+
+### RL Settings
+
+**File:** `scripts/RL/rl_config.py`
+```python
+EPSILON = 0.2          # Exploration rate
+LEARNING_RATE = 0.1    # Q-Learning rate
 ```
 
 ---

@@ -4,7 +4,7 @@ from classify_process_file import process_file
 import time
 
 
-def process_multiple(files_dir, MAX_THREADS, testing=False, allow_generation=True):
+def process_multiple(files_dir, MAX_THREADS, testing=False, allow_generation=True, sorted_dir=None):
     files = [
         os.path.join(files_dir, f)
         for f in os.listdir(files_dir)
@@ -20,7 +20,7 @@ def process_multiple(files_dir, MAX_THREADS, testing=False, allow_generation=Tru
         for file_path in files:
             # Submit tasks to the pool
             futures.append(
-                executor.submit(process_file, file_path, testing, allow_generation)
+                executor.submit(process_file, file_path, testing, allow_generation, sorted_dir)
             )
             print(f"[+] Queued: {os.path.basename(file_path)}")
 

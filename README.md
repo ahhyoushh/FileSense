@@ -34,17 +34,29 @@ Unlike standard organizers that rely on hardcoded rules, FileSense uses **Senten
 FileSense/
 │
 ├── scripts/
-│ ├── process_file.py # Core logic: Extract -> Classify -> (GenAI Fallback) -> Move
-│ ├── generate_label.py # Interfaces with Google Gemini to create new labels
-│ ├── create_index.py # Builds/Rebuilds FAISS vector index
-│ ├── extract_text.py # Handles PDF, DOCX, TXT, and OCR extraction
-│ ├── script.py # CLI runner for bulk processing
-│ ├── watcher_script.py # Real-time folder monitoring
-│ └── launcher.py # GUI Application
+│   ├── RL/                       # Reinforcement Learning Module
+│   ├── RL/                       # Reinforcement Learning & SFT
+│   │   ├── rl_policy.py          # Epsilon-Greedy Agent
+│   │   ├── rl_feedback.py        # Feedback & Rewards
+│   │   ├── rl_config.py          # Hyperparameters
+│   │   ├── rl_supabase.py        # Cloud Logging
+│   │   └── rl_audit_safe.py      # Safety Audits
+│   ├── logger/                   # Logging System
+│   │   ├── logger.py             # Main Logger
+│   │   └── rl_logger.py          # RL-Specific Logger
+│   ├── classify_process_file.py  # Core Logic: Embedding & Classification
+│   ├── generate_label.py         # GenAI Interface (Gemini)
+│   ├── create_index.py           # FAISS Index Manager
+│   ├── extract_text.py           # OCR & Text Extraction
+│   ├── multhread.py              # Multithreading Manager
+│   ├── launcher.py               # System Tray GUI
+│   ├── script.py                 # CLI Entry Point
+│   └── watcher_script.py         # Real-time Monitor
 │
-├── folder_labels.json # The "Brain": Maps categories to semantic descriptions
-├── folder_embeddings.faiss # Vector store for fast lookup
-└── files/ # Input directory
+├── folder_labels.json            # Semantic Knowledge Base
+├── folder_embeddings.faiss       # Vector Index
+├── evaluation/                   # Metrics & Logs
+└── files/                        # Default Input Directory
 ```
 
 ---

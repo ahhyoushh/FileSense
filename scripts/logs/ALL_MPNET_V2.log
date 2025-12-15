@@ -1,0 +1,80 @@
+[*] Logging enabled. Output is being captured.
+
+[*] Initialising model...
+[rl] Synced local events to Supabase: 249 uploaded, 0 failed.
+[*] Model Loaded.
+Processing with 6 threads.
+Found 24 files to process.
+
+[+] Queued: biotech__biotech_12_10.md
+[+] Queued: biotech__biotech_12_7.md
+[+] Queued: bio__bio_12_2.md
+[+] Queued: bio__bio_12_7.md
+[+] Queued: chem work.pdf
+[+] Queued: chemistry project work.docx
+[+] Queued: chem__chem_11_2.md
+[+] Queued: chem__chem_11_3.md
+[+] Queued: comp__comp_11_2.md
+[+] Queued: comp__comp_12_11.md
+[+] Queued: desktop.ini
+[+] Queued: English file.pdf
+[+] Queued: English project.docx
+[+] Queued: english2__english2_12_pr5.md
+[+] Queued: english2__english2_8_1.md
+[+] Queued: english3__english3_10_3.md
+[+] Queued: english__english_12_p8.md
+[+] Queued: english__english_8_1.md
+[+] Queued: IP file.pdf
+[+] Queued: IP synopsis(5 &7).docx
+[+] Queued: phy file.pdf
+[+] Queued: Ray optics projec.pdf
+[+] Queued: sci__sci_10_8.md
+[+] Queued: sci__sci_8_13.md
+[!] [NO GEN] Low confidence (0.44) but accepting 'Biology' as fallback.[!] [NO GEN] Low confidence (0.44) but accepting 'Biology' as fallback.
+
+[1] Processed: bio__bio_12_7.md -> Biology (sim=0.44) in 1.36s
+[1] Processed: biotech__biotech_12_7.md -> Biotechnology (sim=0.48) in 1.37s
+[1] Processed: bio__bio_12_2.md -> Biology (sim=0.44) in 1.36s
+[1] Processed: biotech__biotech_12_10.md -> Biotechnology (sim=0.47) in 1.37s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: comp__comp_12_11.md -> Uncategorized (sim=0.00) in 0.42s
+[1] Processed: chem__chem_11_2.md -> Chemistry (sim=0.52) in 0.46s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: comp__comp_11_2.md -> Uncategorized (sim=0.00) in 1.21s
+[1] Processed: chem__chem_11_3.md -> Chemistry (sim=0.49) in 1.23s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[1] Processed: desktop.ini -> Uncategorized (sim=0.00) in 1.09s
+[!] [NO GEN] Low confidence (0.41) but accepting 'English' as fallback.
+[1] Processed: english2__english2_8_1.md -> English (sim=0.41) in 0.38s
+[!] [NO GEN] Low confidence (0.44) but accepting 'English' as fallback.
+[1] Processed: english2__english2_12_pr5.md -> English (sim=0.44) in 0.75s
+[!] [NO GEN] Low confidence (0.34) but accepting 'English' as fallback.
+[!] Low confidence (0.34) on first pass. Attempting Fallback Extraction...
+[1] Processed: english3__english3_10_3.md -> English (sim=0.34) in 0.35s
+[1] Processed: english__english_8_1.md -> English (sim=0.47) in 0.44s
+[1] Processed: english__english_12_p8.md -> English (sim=0.52) in 1.74s
+[!] [NO GEN] Low confidence (0.41) but accepting 'Chemistry' as fallback.
+[1] Processed: chem work.pdf -> Chemistry (sim=0.41) in 5.76s
+[1] Processed: chemistry project work.docx -> Chemistry (sim=0.49) in 7.87s
+[!] [NO GEN] Low confidence (0.37) but accepting 'Physics' as fallback.
+[1] Processed: English file.pdf -> Physics (sim=0.37) in 7.37s
+[!] [NO GEN] Low confidence (0.44) but accepting 'Biology' as fallback.
+[1] Processed: sci__sci_10_8.md -> Biology (sim=0.44) in 0.31s
+[!] [NO GEN] Low confidence (0.41) but accepting 'Biology' as fallback.
+[1] Processed: sci__sci_8_13.md -> Biology (sim=0.41) in 0.31s
+[1] Processed: English project.docx -> Physics (sim=0.46) in 7.30s
+[1] Processed: IP file.pdf -> Computer Science (sim=0.49) in 7.37s
+[!] Low confidence (0.00) on first pass. Attempting Fallback Extraction...
+[!] [NO GEN] Low confidence (0.34) but accepting 'Physics' as fallback.
+[!] Low confidence (0.34) on first pass. Attempting Fallback Extraction...
+[!] [NO GEN] Low confidence (0.33) but accepting 'Physics' as fallback.
+[!] Low confidence (0.33) on first pass. Attempting Fallback Extraction...
+   -> Fallback did not improve result.
+[1] Processed: IP synopsis(5 &7).docx -> Uncategorized (sim=0.00) in 10.40s
+   -> Fallback did not improve result.
+[1] Processed: phy file.pdf -> Physics (sim=0.34) in 10.18s
+   -> Fallback did not improve result.
+[1] Processed: Ray optics projec.pdf -> Physics (sim=0.33) in 8.12s
+
+ All files processed in 16.05s
+

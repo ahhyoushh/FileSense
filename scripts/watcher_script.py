@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser(description="Process files in a directory.")
 parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to organise.")
 parser.add_argument("--wait-interval", type=float, default=0.5, help="Seconds between size checks.")
 parser.add_argument("--max-checks", type=int, default=20, help="Max checks to wait for stable size.")
+parser.add_argument("--sorted-dir", type=str, default=None, help="Directory to move sorted files into.")
 args = parser.parse_args()
 files_dir = args.dir
 WAIT_INTERVAL = args.wait_interval
@@ -64,7 +65,7 @@ class Watcher(FileSystemEventHandler):
 
         try:
             print(f"[+] Processing: {name}")
-            process_file(path)
+            process_file(path, sorted_dir=args.sorted_dir)
         except Exception as e:
             print(f"[!] Error processing {path}: {e}")
 

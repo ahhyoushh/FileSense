@@ -7,29 +7,22 @@ excerpt: "Intelligent semantic file organizer powered by SBERT embeddings and Ge
 
 **Semantic document classifier that understands meaning, not just filenames.**
 
-FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to organize files by their actual content. When it encounters unknown file types, it leverages **Google Gemini** to generate new categories automatically.
+FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to organize files by their actual content. When it encounters unknown file types, it leverages **Google Gemini** (or Local LLMs) to generate new categories automatically.
 
 ---
 
-## ⚠️ MAJOR UPDATE: The Shift to SFT
+## ⚠️ UPDATE: Infrastructure Shift to SFT
 
-**TL;DR: API Rate limits have broken the real-time workflow. I am pivoting to Supervised Fine-Tuning (SFT).**
+**Integrated a Reinforcement Learning architecture.** However, due to Google Gemini's Free Tier Rate Limits, Temporarily pivoting the *generation* backend to Local SFT.
 
-### The Rate Limit Bottleneck
-As documented in recent logs (`RL_RATE_LIMIT_RAGEBAIT.log`), relying on the free/standard tier of the Gemini API has become untenable for a high-volume file organizer.
+### The Challenge
+The **RL Agent** works as intended, optimizing for speed. However, effectively "training" the agent requires frequent API calls, which triggers Google's **429 Rate Limit**, forcing 60-second delays.
 
-*   **Massive Delays:** The API is enforcing severe backoff times.
-    > `[!] Rate Limit Hit on attempt 2/5 ... Google requested wait: 59.55s`
-*   **Pipeline Freezes:** When organizing batches of files (e.g., 8-10 files), the script spends more time sleeping than processing.
-*   **Fallback Failures:** Even with retries, many requests eventually degrade to non-interactive mode or fail completely, requiring manual intervention.
+### The Solution
+Not removing RL, just **removing the latency**.
+By switching to **Supervised Fine-Tuning (SFT)** of a local model, I eliminate the API bottleneck. This will allow the RL Agent to function at full speed without external throttling.
 
-### The Resolution: Local SFT
-Instead of optimizing prompt engineering or RL agents to *minimize* calls, the only robust solution is to **remove the dependency entirely**.
-
-I am now collecting the high-quality labeled data generated so far to **Supervised Fine-Tune (SFT)** a truncated, local model (Small Language Model). This will allow FileSense to:
-1.  **Run Offline:** Zero internet dependency.
-2.  **Zero Latency:** No HTTP requests or 60s wait times.
-3.  **Privacy:** No file content leaves your machine.
+See the full analysis: **[Reinforcement Learning Architecture](/FileSense/wiki/rl/)**
 
 ---
 
@@ -37,6 +30,7 @@ I am now collecting the high-quality labeled data generated so far to **Supervis
 
 *   **[Getting Started](/FileSense/wiki/getting-started/)**: Install and run FileSense in 5 minutes
 *   **[Performance Metrics](/FileSense/wiki/metrics/)**: See benchmarks and optimization studies
+*   **[RL Architecture](/FileSense/wiki/rl/)**: Deep dive into the Adaptive Agent
 
 ---
 
@@ -45,13 +39,13 @@ I am now collecting the high-quality labeled data generated so far to **Supervis
 | Feature | Description |
 |---------|-------------|
 | 🧠 **Semantic Sorting** | Classifies by meaning (e.g., "Newton's Laws" → Physics) |
-| 🤖 **AI-Powered Labeling** | Uses Gemini to generate new categories automatically |
+| 🟣 **Reinforcement Learning** | Adaptive agent that optimizes sorting policies over time |
+| 🤖 **AI-Powered Labeling** | Uses GenAI to create new categories automatically |
 | ⚡ **FAISS Vector Search** | Lightning-fast similarity matching with embeddings |
 | 🔄 **Self-Updating** | Automatically rebuilds index when new labels are created |
 | 👀 **OCR Support** | Extracts text from scanned PDFs and images |
 | 🧩 **Keyword Boosting** | Hybrid approach: Vector similarity + keyword matching |
 | 🖥️ **GUI & CLI** | Desktop app with system tray + command-line interface |
-| 🧵 **Multithreading** | Process hundreds of files in parallel |
 
 ---
 
@@ -63,12 +57,11 @@ flowchart TD
     B --> C[🔢 Generate Embedding<br/>SBERT all-mpnet-base-v2]
     C --> D{🎯 Similarity ≥ 0.40?}
     D -->|Yes| E[✅ Classify to Existing Folder]
-    D -->|No| F[🤖 Ask Gemini for Label]
-    F --> G[💾 Update folder_labels.json]
-    G --> H[🔄 Rebuild FAISS Index]
-    H --> I[🔁 Re-classify File]
-    I --> E
-    E --> J[📁 Move to Sorted Folder]
+    D -->|No| F[🤖 Ask Agent (RL)]
+    F --> G{Polciy A/B/C?}
+    G --> H[💾 Update folder_labels.json]
+    H --> I[🔄 Rebuild FAISS Index]
+    I --> J[📁 Move to Sorted Folder]
 ```
 
 ---
@@ -103,6 +96,7 @@ python scripts/script.py --dir ./files --threads 6
 
 ### 📊 Research & Analysis
 - **[Performance Metrics](/FileSense/wiki/metrics/)** - Benchmarks and accuracy
+- **[Reinforcement Learning](/FileSense/wiki/rl/)** - Architecture & SFT Pivot
 - **[NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/)** - Comprehensive comparison
 - **[Lessons Learned](/FileSense/wiki/lessons-learned/)** - Key insights from development
 

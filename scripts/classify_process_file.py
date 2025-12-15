@@ -33,7 +33,13 @@ def _startup_sync():
         print("[rl] startup sync error:", e)
 
 # Run startup sync in background to avoid blocking import/startup
-threading.Thread(target=_startup_sync, daemon=True).start()
+# Run startup sync in background to avoid blocking import/startup
+def _bg_startup():
+    # sleep briefly to let main thread initialization proceed
+    time.sleep(1)
+    _startup_sync()
+
+threading.Thread(target=_bg_startup, daemon=True).start()
 
 
 from scripts.logger.rl_logger import get_rl_logger
@@ -61,7 +67,9 @@ def load_index_and_labels():
     global index, folder_data, FOLDER_LABELS, model
     try:
         if model is None:
+            print("[*] Initialising model...")
             model = SentenceTransformer(MODEL_NAME, device="cpu")
+            print("[*] Model Loaded.")
 
         if not FAISS_INDEX_FILE.exists() or not LABELS_FILE.exists():
             print(f"[!] Warning: Index or Labels file missing. Starting with empty knowledge.")
@@ -208,9 +216,10 @@ def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
 
     else:
         # determine whether generation is allowed for this cfg
-        allow_generation_local = allow_generation
-        if cfg is not None and "ALLOW_GENERATION" in cfg:
-            allow_generation_local = cfg["ALLOW_GENERATION"]
+        # CRITICAL FIX: If allow_generation argument corresponds to user flag (False), policy cannot override it.
+        # We only apply policy restriction if user allowed it initially.
+        policy_allows = cfg.get("ALLOW_GENERATION", True) if cfg else True
+        allow_generation_local = allow_generation and policy_allows
 
         if not allow_generation_local:
             decrease_amount = 0.07
@@ -281,7 +290,7 @@ def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
                 )
 
 
-def process_file(file_path, testing=False, allow_generation=True):
+def process_file(file_path, testing=False, allow_generation=True, sorted_dir=None):
     start_time = time.time()
     filename = os.path.basename(file_path)
 
@@ -296,9 +305,9 @@ def process_file(file_path, testing=False, allow_generation=True):
         text = filename.replace("_", " ").replace("-", " ")
 
     # determine allow_generation from cfg or function arg
-    allow_generation_for_call = allow_generation
-    if cfg is not None and "ALLOW_GENERATION" in cfg:
-        allow_generation_for_call = cfg.get("ALLOW_GENERATION", allow_generation)
+    # CRITICAL FIX: User preference (allow_generation arg) overrides policy if False.
+    policy_allows = cfg.get("ALLOW_GENERATION", True) if cfg else True
+    allow_generation_for_call = allow_generation and policy_allows
 
     # initial classification pass using policy cfg
     predicted_folder, similarity, retries_used, top3, manual_labeled = classify_file(
@@ -380,7 +389,10 @@ def process_file(file_path, testing=False, allow_generation=True):
     UPLOAD_EXECUTOR.submit(_bg_upload, event)
 
     # move file to predicted folder
-    destination_folder = BASE_DIR / "sorted" / predicted_folder
+    if sorted_dir:
+        destination_folder = Path(sorted_dir) / predicted_folder
+    else:
+        destination_folder = BASE_DIR / "sorted" / predicted_folder
     os.makedirs(destination_folder, exist_ok=True)
 
     if not testing:
