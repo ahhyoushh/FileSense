@@ -386,6 +386,7 @@
         <div class="header-date">Updated: 2025</div>
         <h1>🗂️ FileSense</h1>
 
+<<<<<<< HEAD
         <div class="alert-box alert-purple" style="max-width: 680px; margin: 24px auto; text-align: left;">
             <strong style="color: var(--purple);">✨ Reinforcement Learning (RL) Check</strong>
             <p style="margin: 4px 0 0 0;">
@@ -394,6 +395,53 @@
                     <em>Note: Currently pivoting to Local SFT models to bypass Gemini Free Tier limits.</em>
                 </span>
             </p>
+=======
+    <div
+      style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--warning); border-radius: 8px; padding: 16px; margin: 24px auto; max-width: 680px; text-align: left;">
+      <strong style="color: var(--warning); display: block; margin-bottom: 8px;">⚠️ Strategic Shift: From API to
+        SFT</strong>
+      <p style="margin: 0; font-size: 0.9rem; color: var(--text);">
+        Google Gemini's increased rate limits :( Even switching to an RL agent does not benefit much. Now shifting to SFT <strong>unsloth/Meta-Llama-3.1-8B-Instruct-bnb-4bit.</strong>
+
+      </p>
+    </div>
+
+    <p>Essentially a python script that generates generates vector embeddings using SentenceTransformers
+      all-mpnet-base-v2 model, an SBERT model. It combines local vector search with Google Gemini if needed (when less
+      than threshold) to classify, create folder label , and organize your files automatically by moving them in
+      respective folders.</p>
+  </header>
+
+  <nav class="sidebar">
+    <h3>📑 Contents</h3>
+    <ul class="sidebar-tree">
+      <li><a href="#overview">Quick Overview</a></li>
+      <li><a href="#how-it-works">The Logic</a></li>
+      <li class="level-2"><a href="#genai-integration">Generative AI</a></li>
+      <li class="level-2"><a href="#process-flow">The Pipeline</a></li>
+      <li><a href="#structure">Project Structure</a></li>
+      <li><a href="#features">Core Features</a></li>
+      <li><a href="#installation">Installation & Setup</a></li>
+      <li><a href="#learned">What I Learned</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h2>Quick Overview</h2>
+      <p>FileSense is a <strong>Self-Organizing</strong> file organizer that sorts
+        documents by <strong>meaning</strong>, not just filenames. Unlike standard organizers, it uses
+        <strong>SentenceTransformers</strong> and <strong>FAISS</strong> to understand context.
+      </p>
+      <p style="margin-top: 10px;">If it encounters a file that doesn't fit any existing folder, it uses <strong>Google
+          Gemini (GenAI)</strong> to analyze the content, generate a new specific category, create the folder, and
+        update its own sorting logic automatically.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card ai-card">
+          <h4>🤖 Generative Labeling</h4>
+          <p>Uses Google Gemini to analyze unknown files and auto-create specific folder categories.</p>
+>>>>>>> 1e6349a204bcf1816e7a50103ac355d3478adf3f
         </div>
 
         <p>Essentially a python script that generates vector embeddings using SentenceTransformers
