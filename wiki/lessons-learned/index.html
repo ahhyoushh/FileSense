@@ -56,19 +56,19 @@
   <h1><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a></h1>
 </header>
 
-  <h1 id="-lessons-learned">🎓 Lessons Learned</h1>
+  <h1 id="lessons-learned">Lessons Learned</h1>
 
 <p>Key insights and discoveries from developing FileSense.</p>
 
 <hr />
 
-<h2 id="-major-discoveries">🔬 Major Discoveries</h2>
+<h2 id="major-discoveries">Major Discoveries</h2>
 
 <h3 id="1-keyword-descriptions-natural-language">1. Keyword Descriptions » Natural Language</h3>
 
 <p><strong>Hypothesis:</strong> Natural language descriptions mimicking document content would match better with SBERT embeddings.</p>
 
-<p><strong>Result:</strong> ❌ <strong>Completely Wrong</strong></p>
+<p><strong>Result:</strong> <strong>Completely Wrong</strong></p>
 
 <table>
   <thead>
@@ -140,17 +140,17 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <p><strong>Hypothesis:</strong> Smaller embedding models would provide acceptable accuracy with better speed.</p>
 
-<p><strong>Result:</strong> ❌ <strong>Significantly Worse</strong></p>
+<p><strong>Result:</strong> <strong>Significantly Worse</strong></p>
 
 <p><strong>Tested Models:</strong></p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">all-MiniLM-L6-v2</code> (384 dims, 80MB) - ❌ Poor accuracy</li>
-  <li><code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> (768 dims, 420MB) - ✅ Best performance</li>
-  <li><code class="language-plaintext highlighter-rouge">multi-qa-mpnet-base-dot-v1</code> (768 dims) - ⚠️ Moderate</li>
+  <li><code class="language-plaintext highlighter-rouge">all-MiniLM-L6-v2</code> (384 dims, 80MB) - Poor accuracy</li>
+  <li><code class="language-plaintext highlighter-rouge">BAAI/bge-base-en-v1.5</code> (768 dims, 440MB) - Best performance</li>
+  <li><code class="language-plaintext highlighter-rouge">multi-qa-mpnet-base-dot-v1</code> (768 dims) - Moderate</li>
 </ul>
 
 <blockquote>
-  <p><strong>Lesson:</strong> The performance drop from lighter models is <strong>not worth</strong> the size/speed gains. Stick with <code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code>.</p>
+  <p><strong>Lesson:</strong> The performance drop from lighter models is <strong>not worth</strong> the size/speed gains. Now using <code class="language-plaintext highlighter-rouge">BAAI/bge-base-en-v1.5</code>.</p>
 </blockquote>
 
 <hr />
@@ -159,13 +159,13 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <p><strong>Hypothesis:</strong> FileSense would work well across different document types.</p>
 
-<p><strong>Result:</strong> ⚠️ <strong>Domain-Specific Performance</strong></p>
+<p><strong>Result:</strong> <strong>Domain-Specific Performance</strong></p>
 
 <p><strong>Findings:</strong></p>
 <ul>
-  <li><strong>Academic documents:</strong> ✅ Good (56% accuracy)</li>
-  <li><strong>News articles:</strong> ❌ Poor (see evaluation logs)</li>
-  <li><strong>Professional documents:</strong> ✅ Acceptable</li>
+  <li><strong>Academic documents:</strong> Good (56% accuracy)</li>
+  <li><strong>News articles:</strong> Poor (see evaluation logs)</li>
+  <li><strong>Professional documents:</strong> Acceptable</li>
 </ul>
 
 <p><strong>Why News Failed:</strong></p>
@@ -205,7 +205,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-technical-insights">💡 Technical Insights</h2>
+<h2 id="technical-insights">Technical Insights</h2>
 
 <h3 id="sbert-behavior">SBERT Behavior</h3>
 
@@ -296,7 +296,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-development-challenges">🚧 Development Challenges</h2>
+<h2 id="development-challenges">Development Challenges</h2>
 
 <h3 id="challenge-1-merging-metadata">Challenge 1: Merging Metadata</h3>
 
@@ -354,7 +354,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-unexpected-findings">📊 Unexpected Findings</h2>
+<h2 id="unexpected-findings">Unexpected Findings</h2>
 
 <h3 id="1-filename-boosting-is-effective">1. Filename Boosting is Effective</h3>
 
@@ -427,7 +427,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-what-would-i-do-differently">🎯 What Would I Do Differently?</h2>
+<h2 id="what-would-i-do-differently">What Would I Do Differently?</h2>
 
 <h3 id="1-start-with-keywords">1. Start with Keywords</h3>
 
@@ -469,7 +469,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-future-improvements">🚀 Future Improvements</h2>
+<h2 id="future-improvements">Future Improvements</h2>
 
 <h3 id="based-on-lessons-learned">Based on Lessons Learned</h3>
 
@@ -506,20 +506,20 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-key-takeaways">📚 Key Takeaways</h2>
+<h2 id="key-takeaways">Key Takeaways</h2>
 
-<h3 id="-do-this">✅ Do This</h3>
+<h3 id="do-this">Do This</h3>
 
 <ol>
   <li><strong>Use keyword-based descriptions</strong> for SBERT</li>
-  <li><strong>Stick with proven models</strong> (all-mpnet-base-v2)</li>
+  <li><strong>Stick with proven models</strong> (BAAI/bge-base-en-v1.5)</li>
   <li><strong>Test early and often</strong> with real data</li>
   <li><strong>Focus on specific use cases</strong> (academic docs)</li>
   <li><strong>Implement fallback strategies</strong> (extraction, thresholds)</li>
   <li><strong>Never lose user data</strong> (append, don’t replace)</li>
 </ol>
 
-<h3 id="-dont-do-this">❌ Don’t Do This</h3>
+<h3 id="dont-do-this">Don’t Do This</h3>
 
 <ol>
   <li><strong>Assume natural language is better</strong> - Test first!</li>
@@ -532,7 +532,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-meta-lessons">🎓 Meta-Lessons</h2>
+<h2 id="meta-lessons">Meta-Lessons</h2>
 
 <h3 id="on-machine-learning">On Machine Learning</h3>
 
@@ -562,16 +562,16 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <p>This wiki includes:</p>
 <ul>
-  <li>❌ Failed approaches (NL descriptions)</li>
-  <li>⚠️ Limitations (news articles)</li>
-  <li>🎓 Lessons learned (model selection)</li>
+  <li>Failed approaches (NL descriptions)</li>
+  <li>Limitations (news articles)</li>
+  <li>Lessons learned (model selection)</li>
 </ul>
 
 <p><strong>Honest documentation helps future developers avoid the same mistakes.</strong></p>
 
 <hr />
 
-<h2 id="-recommended-reading">📖 Recommended Reading</h2>
+<h2 id="recommended-reading">Recommended Reading</h2>
 
 <h3 id="for-understanding-sbert">For Understanding SBERT</h3>
 <ul>
@@ -593,7 +593,7 @@ Natural Language: "Documents contain experimental procedures investigating..."
 
 <hr />
 
-<h2 id="-contributing-your-lessons">🤝 Contributing Your Lessons</h2>
+<h2 id="contributing-your-lessons">Contributing Your Lessons</h2>
 
 <p>Have you learned something new while using FileSense?</p>
 

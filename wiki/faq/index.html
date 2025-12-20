@@ -56,13 +56,13 @@
   <h1><a href="/FileSense/wiki/faq/">Frequently Asked Questions</a></h1>
 </header>
 
-  <h1 id="-frequently-asked-questions">❓ Frequently Asked Questions</h1>
+  <h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
 
-<p>No one asked 🥀</p>
+<p>No one asked 🥀.</p>
 
 <hr />
 
-<h2 id="-general-questions">🎯 General Questions</h2>
+<h2 id="general-questions">General Questions</h2>
 
 <h3 id="what-is-filesense">What is FileSense?</h3>
 
@@ -107,10 +107,10 @@
 
 <p><strong>Partially.</strong> Here’s what happens:</p>
 <ul>
-  <li>✅ <strong>Local:</strong> Text extraction, embedding generation, vector search</li>
-  <li>☁️ <strong>Cloud:</strong> Only when generating new labels (Gemini API)</li>
-  <li>🔒 <strong>Privacy:</strong> File content is sent to Gemini only for classification, not stored</li>
-  <li>🪵 <strong>logs:</strong> all rl logs are sent to supabase storage
+  <li><strong>Local:</strong> Text extraction, embedding generation, vector search</li>
+  <li><strong>Cloud:</strong> Only when generating new labels (Gemini API)</li>
+  <li><strong>Privacy:</strong> File content is sent to Gemini only for classification, not stored</li>
+  <li><strong>Logs:</strong> all rl logs are sent to supabase storage
     <blockquote>
       <p><strong>Info:</strong> <strong>You can disable cloud features</strong> with <code class="language-plaintext highlighter-rouge">--no-generation</code> flag.</p>
     </blockquote>
@@ -134,32 +134,32 @@
   <tbody>
     <tr>
       <td><strong>PDF</strong></td>
-      <td>✅ Full</td>
+      <td>Full</td>
       <td>Text-based and scanned (OCR)</td>
     </tr>
     <tr>
       <td><strong>DOCX</strong></td>
-      <td>✅ Full</td>
+      <td>Full</td>
       <td>Microsoft Word documents</td>
     </tr>
     <tr>
       <td><strong>TXT</strong></td>
-      <td>✅ Full</td>
+      <td>Full</td>
       <td>Plain text files</td>
     </tr>
     <tr>
       <td><strong>MD</strong></td>
-      <td>✅ Full</td>
+      <td>Full</td>
       <td>Markdown files</td>
     </tr>
     <tr>
       <td><strong>Images</strong></td>
-      <td>⚠️ Partial</td>
+      <td>Partial</td>
       <td>OCR only (requires Tesseract)</td>
     </tr>
     <tr>
       <td><strong>Others</strong></td>
-      <td>❌ No</td>
+      <td>No</td>
       <td>Filename-based classification only</td>
     </tr>
   </tbody>
@@ -184,7 +184,7 @@
 
 <h3 id="what-embedding-model-is-used">What embedding model is used?</h3>
 
-<p><strong>Model:</strong> <code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> (SentenceTransformers)</p>
+<p><strong>Model:</strong> <code class="language-plaintext highlighter-rouge">BAAI/bge-base-en-v1.5</code> (SentenceTransformers)</p>
 <ul>
   <li><strong>Dimensions:</strong> 768</li>
   <li><strong>Performance:</strong> Best balance of speed and accuracy</li>
@@ -194,26 +194,24 @@
 <blockquote>
   <p><strong>Warning:</strong></p>
 
-  <p>Testing showed that lighter models performed <strong>significantly worse</strong>. The all-mpnet-base-v2 model is optimal for this use case.</p>
+  <p>Testing showed that lighter models performed <strong>significantly worse</strong>. The BAAI/bge-base-en-v1.5 model is optimal for this use case.</p>
 </blockquote>
 
 <h3 id="can-i-use-a-different-embedding-model">Can I use a different embedding model?</h3>
 
 <p>Yes! Edit <code class="language-plaintext highlighter-rouge">scripts/create_index.py</code>:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"all-mpnet-base-v2"</span>  <span class="c1"># Change this
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s">"BAAI/bge-base-en-v1.5"</span>  <span class="c1"># Change this
 </span></code></pre></div></div>
 
 <p><strong>Recommended alternatives:</strong></p>
 <ul>
   <li><code class="language-plaintext highlighter-rouge">all-MiniLM-L6-v2</code> - Faster, less accurate</li>
-  <li><code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> - <strong>Best balance</strong> (recommended)</li>
+  <li><code class="language-plaintext highlighter-rouge">all-mpnet-base-v2</code> - Competitive with current model</li>
   <li><code class="language-plaintext highlighter-rouge">multi-qa-mpnet-base-dot-v1</code> - Better for Q&amp;A documents</li>
 </ul>
 
 <hr />
-
-<h2 id="-usage-questions">🚀 Usage Questions</h2>
 
 <h3 id="how-do-i-organize-my-downloads-folder">How do I organize my Downloads folder?</h3>
 
@@ -268,7 +266,7 @@
 
 <hr />
 
-<h2 id="-troubleshooting">🐛 Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 <h3 id="files-are-not-being-classified-correctly">Files are not being classified correctly</h3>
 
@@ -403,7 +401,7 @@
 
 <p><strong>Minimal:</strong></p>
 <ul>
-  <li><strong>Embedding model:</strong> ~420MB (one-time download)</li>
+  <li><strong>Embedding model:</strong> ~440MB (one-time download)</li>
   <li><strong>FAISS index:</strong> &lt;1MB per 100 labels</li>
   <li><strong>Dependencies:</strong> ~500MB total</li>
   <li><strong>Logs:</strong> Varies (can be disabled)</li>
@@ -411,7 +409,7 @@
 
 <hr />
 
-<h2 id="-privacy--security">🔒 Privacy &amp; Security</h2>
+<h2 id="privacy--security">Privacy &amp; Security</h2>
 
 <h3 id="is-my-data-safe">Is my data safe?</h3>
 
@@ -440,8 +438,8 @@
 
 <p><strong>Partially:</strong></p>
 <ul>
-  <li>✅ Classification works offline (after initial setup)</li>
-  <li>❌ New label generation requires internet (Gemini API)</li>
+  <li>Classification works offline (after initial setup)</li>
+  <li>New label generation requires internet (Gemini API)</li>
 </ul>
 
 <p><strong>Offline workflow:</strong></p>
@@ -453,7 +451,7 @@
 
 <hr />
 
-<h2 id="-known-limitations">🚧 Known Limitations</h2>
+<h2 id="known-limitations">Known Limitations</h2>
 
 <h3 id="current-limitations">Current Limitations</h3>
 
@@ -466,7 +464,7 @@
   </li>
   <li><strong>Lighter models reduce accuracy significantly</strong>
     <ul>
-      <li>Stick with all-mpnet-base-v2</li>
+      <li>Now using BAAI/bge-base-en-v1.5 as optimal</li>
       <li>Don’t use smaller models for production</li>
     </ul>
   </li>
@@ -490,7 +488,7 @@
 
 <hr />
 
-<h2 id="-contributing">🤝 Contributing</h2>
+<h2 id="contributing">Contributing</h2>
 
 <h3 id="how-can-i-contribute">How can I contribute?</h3>
 
@@ -511,7 +509,7 @@
 
 <hr />
 
-<h2 id="-additional-resources">📚 Additional Resources</h2>
+<h2 id="additional-resources">Additional Resources</h2>
 
 <ul>
   <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong> - Installation guide</li>

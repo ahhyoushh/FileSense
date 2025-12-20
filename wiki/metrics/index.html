@@ -60,7 +60,7 @@
 
 <h2 id="abstract">Abstract</h2>
 
-<p>This document presents a systematic evaluation of FileSense, a semantic document classification system utilizing Sentence-BERT embeddings and FAISS vector search. We evaluate performance across multiple datasets and description strategies, providing empirical evidence for optimal configuration choices.</p>
+<p>This document presents a systematic evaluation of FileSense, a semantic document classification system utilizing Sentence-BERT embeddings and FAISS vector search. I evaluate performance across multiple datasets and description strategies, providing empirical evidence for optimal configuration choices.</p>
 
 <hr />
 
@@ -316,7 +316,7 @@ The RL agent has demonstrated that <strong>Policy C</strong> (Generation Disable
 
 <blockquote>
   <p><strong>Note on Future Scalability:</strong><br />
-To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to <strong>Supervised Fine-Tuning (SFT)</strong> of local models. This will allow the RL agent to explore generative policies with zero marginal cost.</p>
+To re-enable Policy A/B (Generation) without API rate limits, I am pivoting to <strong>Supervised Fine-Tuning (SFT)</strong> of local models. This will allow the RL agent to explore generative policies with zero marginal cost.</p>
 </blockquote>
 
 <h3 id="25-reference-model-comparison">2.5 Reference Model Comparison</h3>
@@ -345,20 +345,20 @@ To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to
     <tr>
       <td style="text-align: left"><strong>Speed (23 files)</strong></td>
       <td style="text-align: left">16.05s</td>
-      <td style="text-align: left"><strong>8.30s</strong> ⚡</td>
-      <td style="text-align: left"><strong>8.39s</strong> ⚡</td>
+      <td style="text-align: left"><strong>8.30s</strong></td>
+      <td style="text-align: left"><strong>8.39s</strong></td>
     </tr>
     <tr>
       <td style="text-align: left"><strong>Accuracy</strong></td>
       <td style="text-align: left">High</td>
       <td style="text-align: left">Medium</td>
-      <td style="text-align: left"><strong>Perfect (100%)</strong> 🏆</td>
+      <td style="text-align: left"><strong>Perfect (100%)</strong></td>
     </tr>
     <tr>
       <td style="text-align: left"><strong>Avg Confidence</strong></td>
       <td style="text-align: left">0.35 - 0.52</td>
       <td style="text-align: left">0.30 - 0.45</td>
-      <td style="text-align: left"><strong>0.55 - 0.79</strong> 🚀</td>
+      <td style="text-align: left"><strong>0.55 - 0.79</strong></td>
     </tr>
     <tr>
       <td style="text-align: left"><strong>Failed Files</strong></td>
@@ -384,7 +384,7 @@ To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to
 
 <h3 id="31-keyword-superiority">3.1 Keyword Superiority</h3>
 
-<p>The empirical results demonstrate that keyword-based descriptions consistently outperform natural language across all tested datasets. We attribute this to three primary factors:</p>
+<p>The empirical results demonstrate that keyword-based descriptions consistently outperform natural language across all tested datasets. I attribute this to three primary factors:</p>
 
 <p><strong>3.1.1 Semantic Density</strong></p>
 
@@ -468,17 +468,17 @@ Natural:     "Documents contain experimental procedures"
 
 <p><strong>For Academic/Professional Documents:</strong></p>
 <ul>
-  <li>✅ Use keyword-based descriptions</li>
-  <li>✅ Maintain 20-40 terms per category</li>
-  <li>✅ Include synonyms and related concepts</li>
-  <li>✅ Avoid grammatical connectors</li>
+  <li>Use keyword-based descriptions</li>
+  <li>Maintain 20-40 terms per category</li>
+  <li>Include synonyms and related concepts</li>
+  <li>Avoid grammatical connectors</li>
 </ul>
 
 <p><strong>For News/Informal Content:</strong></p>
 <ul>
-  <li>⚠️ Consider alternative approaches</li>
-  <li>⚠️ May require domain-specific tuning</li>
-  <li>⚠️ Hybrid methods recommended</li>
+  <li>Consider alternative approaches</li>
+  <li>May require domain-specific tuning</li>
+  <li>Hybrid methods recommended</li>
 </ul>
 
 <hr />

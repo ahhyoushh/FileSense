@@ -58,8 +58,8 @@
 
   <h1 id="reinforcement-learning-integration">Reinforcement Learning Integration</h1>
 
-<h2 id="-the-epsilon-greedy-bandit-agent">🧠 The Epsilon-Greedy Bandit Agent</h2>
-<p>FileSense has permanently evolved from a static script to an <strong>adaptive intelligent system</strong>. Integrated a <strong>Reinforcement Learning (RL)</strong> agent based on the <strong>Epsilon-Greedy Bandit</strong> algorithm.</p>
+<h2 id="the-epsilon-greedy-bandit-agent">The Epsilon-Greedy Bandit Agent</h2>
+<p>FileSense has permanently evolved from a static script to an <strong>adaptive intelligent system</strong>. I integrated a <strong>Reinforcement Learning (RL)</strong> agent based on the <strong>Epsilon-Greedy Bandit</strong> algorithm.</p>
 
 <h3 id="core-logic">Core Logic</h3>
 <p>The agent’s goal is to maximize <strong>Accuracy</strong> while minimizing <strong>Latency</strong> and <strong>API Costs</strong>. It achieves this by dynamically choosing between three operating policies for every file it encounters:</p>
@@ -114,7 +114,7 @@
 
 <hr />
 
-<h2 id="-the-rate-limit-bottleneck-why-paused">🚧 The Rate Limit Bottleneck (Why paused)</h2>
+<h2 id="the-rate-limit-bottleneck-why-paused">The Rate Limit Bottleneck (Why paused)</h2>
 
 <p>While the RL architecture is sound and fully implemented, I hit a <strong>hard external constraint</strong> during real-world testing.</p>
 
@@ -137,7 +137,7 @@
 
 <hr />
 
-<h2 id="-architectural-refinement-event-only-logging">🔄 Architectural Refinement: Event-Only Logging</h2>
+<h2 id="architectural-refinement-event-only-logging">Architectural Refinement: Event-Only Logging</h2>
 
 <p>The system now follows a <strong>strict event-first design</strong>:</p>
 <ul>
@@ -150,7 +150,7 @@
 
 <hr />
 
-<h2 id="-offline-policy-rebuild">🧮 Offline Policy Rebuild</h2>
+<h2 id="offline-policy-rebuild">Offline Policy Rebuild</h2>
 
 <p>Policy learning is performed via:
 <code class="language-plaintext highlighter-rouge">scripts/RL/rebuild_policy_stats.py</code></p>

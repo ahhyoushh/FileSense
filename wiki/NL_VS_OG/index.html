@@ -61,13 +61,14 @@
 <p><strong>Test Date:</strong> 2025-12-05<br />
 <strong>commit id:</strong> 99d03e579a9fd413d7938f01559ebb0172a260e3
 <strong>Test Files:</strong> 75 NCERT textbook markdown files<br />
-<strong>Model:</strong> all-mpnet-base-v2 (SentenceTransformer)</p>
+<strong>Model used for study:</strong> all-mpnet-base-v2 (SentenceTransformer)
+<strong>Current Default Model:</strong> BAAI/bge-base-en-v1.5</p>
 
 <hr />
 
 <h2 id="executive-summary">Executive Summary</h2>
 
-<h3 id="winner-original-keywords-approach"><strong>WINNER: Original Keywords Approach</strong></h3>
+<h3 id="winner-original-keywords-approach">WINNER: Original Keywords Approach</h3>
 
 <p>The comprehensive testing revealed that <strong>comma-separated keyword terms dramatically outperform natural language descriptions</strong> for SBERT-based semantic matching with academic documents.</p>
 
@@ -126,7 +127,7 @@
   <li><strong>Natural Language Test:</strong> NCERT_NL_TEST.log (Content-style descriptions)</li>
   <li><strong>Original Keyword Test:</strong> NCERT_OG_TEST.log (Comma-separated terms)</li>
   <li><strong>Total Files:</strong> 75 documents</li>
-  <li><strong>Embedding Model:</strong> all-mpnet-base-v2</li>
+  <li><strong>Embedding Model during test:</strong> all-mpnet-base-v2</li>
   <li><strong>Vector Search:</strong> FAISS IndexFlatIP</li>
 </ul>
 
@@ -278,17 +279,17 @@ formulas, physical laws"
 <h3 id="visual-distribution">Visual Distribution</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Natural Language:
-0.00 (Failed):     ████████████████████████████████████████████████████ 53
-0.31-0.40:         ██████████ 14
-0.41-0.50:         ██ 3
-0.51+:             █ 1
+0.00 (Failed):     |||||||||||||||||||||||||||||||||||||||||||||||||| 53
+0.31-0.40:         |||||||||| 14
+0.41-0.50:         || 3
+0.51+:             | 1
 
 Original Keywords:
-0.00 (Failed):     ████████ 8
-0.21-0.30:         ████████ 8
-0.31-0.40:         ██████████████████████████████████ 34
-0.41-0.50:         ████████████████ 16
-0.51+:             █████████ 9
+0.00 (Failed):     |||||||| 8
+0.21-0.30:         |||||||| 8
+0.31-0.40:         |||||||||||||||||||||||||||||||||| 34
+0.41-0.50:         |||||||||||||||| 16
+0.51+:             ||||||||| 9
 </code></pre></div></div>
 
 <h3 id="label-distribution">Label Distribution</h3>
@@ -314,9 +315,9 @@ Original Keywords:
 
 <hr />
 
-<h2 id="-analysis-why-natural-language-failed">🔍 Analysis: Why Natural Language Failed</h2>
+<h2 id="analysis-why-natural-language-failed">Analysis: Why Natural Language Failed</h2>
 
-<h3 id="1-too-specific--overfitted">1. <strong>Too Specific / Overfitted</strong></h3>
+<h3 id="1-too-specific--overfitted">1. Too Specific / Overfitted</h3>
 <p>Natural language descriptions were too specific to the training examples:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BAD: "Integration by parts where u equals x squared, dv equals e to the x dx. 
@@ -325,14 +326,14 @@ Series convergence testing using ratio test, comparison test."
 
 <p>This doesn’t match NCERT files which have different phrasing and structure.</p>
 
-<h3 id="2-sbert-embedding-mismatch">2. <strong>SBERT Embedding Mismatch</strong></h3>
+<h3 id="2-sbert-embedding-mismatch">2. SBERT Embedding Mismatch</h3>
 <ul>
   <li>SBERT models work better with <strong>keyword density</strong> than natural sentences for this use case</li>
   <li>Academic documents have consistent terminology that keywords capture better</li>
   <li>Natural sentences introduce grammatical noise</li>
 </ul>
 
-<h3 id="3-semantic-noise">3. <strong>Semantic Noise</strong></h3>
+<h3 id="3-semantic-noise">3. Semantic Noise</h3>
 <p>Natural sentences introduced grammatical structure that added noise:</p>
 <ul>
   <li><strong>Articles:</strong> “the”, “a”, “an”</li>
@@ -343,7 +344,7 @@ Series convergence testing using ratio test, comparison test."
 
 <p>These dilute the semantic signal for academic content.</p>
 
-<h3 id="4-reduced-keyword-density">4. <strong>Reduced Keyword Density</strong></h3>
+<h3 id="4-reduced-keyword-density">4. Reduced Keyword Density</h3>
 <p>Natural language spreads keywords across more tokens:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Natural Language (100 words):
@@ -356,9 +357,9 @@ Keywords (40 terms):
 → 40 meaningful keywords in 40 words (100% density)
 </code></pre></div></div>
 
-<h3 id="5-embedding-space-geometry">5. <strong>Embedding Space Geometry</strong></h3>
+<h3 id="5-embedding-space-geometry">5. Embedding Space Geometry</h3>
 <ul>
-  <li>The all-mpnet-base-v2 model clusters keyword lists more effectively</li>
+  <li>The embedding models cluster keyword lists more effectively</li>
   <li>Natural sentences might introduce variance in the embedding space</li>
   <li>Keywords create denser, more consistent semantic clusters</li>
 </ul>
@@ -367,7 +368,7 @@ Keywords (40 terms):
 
 <h2 id="analysis-why-keywords-succeeded">Analysis: Why Keywords Succeeded</h2>
 
-<h3 id="1-broader-semantic-coverage">1. <strong>Broader Semantic Coverage</strong></h3>
+<h3 id="1-broader-semantic-coverage">1. Broader Semantic Coverage</h3>
 <p>Keyword lists cover MORE semantic space with FEWER tokens:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> GOOD: "mechanics, thermodynamics, optics, electromagnetism, quantum physics, 
@@ -376,7 +377,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <p>Each term is a direct semantic signal without noise.</p>
 
-<h3 id="2-better-alignment-with-ncert-structure">2. <strong>Better Alignment with NCERT Structure</strong></h3>
+<h3 id="2-better-alignment-with-ncert-structure">2. Better Alignment with NCERT Structure</h3>
 <p>NCERT files use consistent academic terminology:</p>
 <ul>
   <li>Technical terms appear frequently</li>
@@ -384,21 +385,21 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
   <li>Domain-specific vocabulary is strong signal</li>
 </ul>
 
-<h3 id="3-synonym-coverage">3. <strong>Synonym Coverage</strong></h3>
+<h3 id="3-synonym-coverage">3. Synonym Coverage</h3>
 <p>Keywords naturally include synonyms and related terms:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"electricity, electrical, electromagnetism, electromagnetic"
 "optics, optical, light, vision"
 "mechanics, mechanical, motion, kinematics, dynamics"
 </code></pre></div></div>
 
-<h3 id="4-sbert-model-characteristics">4. <strong>SBERT Model Characteristics</strong></h3>
+<h3 id="4-sbert-model-characteristics">4. SBERT Model Characteristics</h3>
 <ul>
   <li>Trained on diverse text, but keyword matching is robust</li>
   <li>Academic terminology clusters well in embedding space</li>
   <li>Synonym proximity enhances matching</li>
 </ul>
 
-<h3 id="5-efficient-token-usage">5. <strong>Efficient Token Usage</strong></h3>
+<h3 id="5-efficient-token-usage">5. Efficient Token Usage</h3>
 <p>Every token in keyword descriptions carries semantic weight:</p>
 <ul>
   <li>No grammatical filler</li>
@@ -444,12 +445,12 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <h2 id="best-practices--recommendations">Best Practices &amp; Recommendations</h2>
 
-<h3 id="do-use-keyword-based-descriptions"><strong>DO: Use Keyword-Based Descriptions</strong></h3>
+<h3 id="do-use-keyword-based-descriptions">DO: Use Keyword-Based Descriptions</h3>
 
 <h4 id="optimal-format">Optimal Format</h4>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"folder_label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Physics"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics, particle physics, kinematics, dynamics, forces, energy, motion, matter, waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity, laboratory experiments, scientific formulas, physical laws, conservation laws, measurement, vectors, scalars, work, power, momentum, impulse"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics, particle physics, kinematics, dynamics, statics, forces, energy, motion, matter, waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity, laboratory experiments, scientific formulas, physical laws, conservation laws, measurement, vectors, scalars, work, power, momentum, impulse"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="s2">"physics, mechanics, thermodynamics, optics, quantum, relativity, energy, force, motion, waves"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
@@ -470,7 +471,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
   <li><strong>Dense terminology</strong> without filler words</li>
 </ol>
 
-<h3 id="dont-use-natural-language-descriptions"><strong>DON’T: Use Natural Language Descriptions</strong></h3>
+<h3 id="dont-use-natural-language-descriptions">DON’T: Use Natural Language Descriptions</h3>
 
 <h4 id="avoid-this-format">Avoid This Format</h4>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
@@ -495,7 +496,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <h3 id="for-sbert-based-semantic-matching">For SBERT-Based Semantic Matching</h3>
 
-<h4 id="what-works"><strong>What Works:</strong></h4>
+<h4 id="what-works">What Works:</h4>
 <ol>
   <li><strong>Dense keyword lists</strong> (20-40 terms)</li>
   <li><strong>Domain-specific vocabulary</strong> (technical terms)</li>
@@ -504,7 +505,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
   <li><strong>No grammatical structure</strong> (pure semantic content)</li>
 </ol>
 
-<h4 id="what-doesnt-work"><strong>What Doesn’t Work:</strong></h4>
+<h4 id="what-doesnt-work">What Doesn’t Work:</h4>
 <ol>
   <li><strong>Natural language sentences</strong> (too much noise)</li>
   <li><strong>Explanatory text</strong> (“Documents contain…”)</li>
@@ -515,7 +516,7 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <h3 id="why-this-matters">Why This Matters</h3>
 
-<p><strong>SBERT Embedding Characteristics:</strong></p>
+<p><strong>Embedding Characteristics:</strong></p>
 <ul>
   <li>Trained on natural text BUT keyword matching is robust</li>
   <li>Academic terminology clusters well in embedding space</li>
@@ -535,12 +536,12 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 <h2 id="actionable-next-steps">Actionable Next Steps</h2>
 
-<h3 id="1-keep-using-keywords-confirmed-best-practice">1. <strong>Keep Using Keywords</strong> (Confirmed Best Practice)</h3>
-<p>✅ Continue with comma-separated keyword terms in descriptions<br />
-✅ Maintain 20-40 terms per description<br />
-✅ Focus on domain-specific vocabulary</p>
+<h3 id="1-keep-using-keywords-confirmed-best-practice">1. Keep Using Keywords (Confirmed Best Practice)</h3>
+<p>Continue with comma-separated keyword terms in descriptions<br />
+Maintain 20-40 terms per description<br />
+Focus on domain-specific vocabulary</p>
 
-<h3 id="2-expand-keyword-coverage-high-priority">2. <strong>Expand Keyword Coverage</strong> (High Priority)</h3>
+<h3 id="2-expand-keyword-coverage-high-priority">2. Expand Keyword Coverage (High Priority)</h3>
 <p>Add more synonyms and related terms to existing labels:</p>
 
 <p><strong>Example: Expand Physics</strong></p>
@@ -555,13 +556,13 @@ measurement, vectors, scalars, work, power, momentum, impulse, friction, tension
 pressure, density, velocity, acceleration, displacement, torque, angular momentum"
 </code></pre></div></div>
 
-<h3 id="3-optimize-prompts-medium-priority">3. <strong>Optimize Prompts</strong> (Medium Priority)</h3>
+<h3 id="3-optimize-prompts-medium-priority">3. Optimize Prompts (Medium Priority)</h3>
 <p>Current prompt optimizations completed:</p>
 <ul>
-  <li>✅ Removed verbose explanations</li>
-  <li>✅ Consolidated examples (15 focused examples)</li>
-  <li>✅ Streamlined merge logic</li>
-  <li>✅ Better error messages</li>
+  <li>Removed verbose explanations</li>
+  <li>Consolidated examples (15 focused examples)</li>
+  <li>Streamlined merge logic</li>
+  <li>Better error messages</li>
 </ul>
 
 <p>Further optimizations:</p>
@@ -571,7 +572,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
   <li>Add more edge case examples</li>
 </ul>
 
-<h3 id="4-test-with-diverse-documents-medium-priority">4. <strong>Test with Diverse Documents</strong> (Medium Priority)</h3>
+<h3 id="4-test-with-diverse-documents-medium-priority">4. Test with Diverse Documents (Medium Priority)</h3>
 <p>Validate approach with:</p>
 <ul>
   <li>PDFs with different structures</li>
@@ -581,7 +582,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
   <li>Non-academic content (news, legal, medical)</li>
 </ul>
 
-<h3 id="5-implement-training-dataset-optimization-low-priority">5. <strong>Implement Training Dataset Optimization</strong> (Low Priority)</h3>
+<h3 id="5-implement-training-dataset-optimization-low-priority">5. Implement Training Dataset Optimization (Low Priority)</h3>
 <p>From README ideas:</p>
 <blockquote>
   <p>“Use the dataset with category labels, generate folder labels until similarity crosses threshold for all training files”</p>
@@ -589,7 +590,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
 
 <p>This could further optimize descriptions through iterative refinement.</p>
 
-<h3 id="6-add-more-academic-labels-low-priority">6. <strong>Add More Academic Labels</strong> (Low Priority)</h3>
+<h3 id="6-add-more-academic-labels-low-priority">6. Add More Academic Labels (Low Priority)</h3>
 <p>Consider expanding to:</p>
 <ul>
   <li>Economics</li>
@@ -604,7 +605,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
 
 <hr />
 
-<h2 id="-files--documentation">📋 Files &amp; Documentation</h2>
+<h2 id="files--documentation">Files &amp; Documentation</h2>
 
 <h3 id="created-documents">Created Documents</h3>
 <ol>
@@ -632,22 +633,22 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
 
 <hr />
 
-<h2 id="-success-metrics">🎯 Success Metrics</h2>
+<h2 id="success-metrics">Success Metrics</h2>
 
 <h3 id="current-performance-keywords">Current Performance (Keywords)</h3>
 <ul>
-  <li>✅ <strong>56% accuracy</strong> on NCERT test files</li>
-  <li>✅ <strong>89% categorization rate</strong> (only 11% uncategorized)</li>
-  <li>✅ <strong>0.355 average similarity</strong> (acceptable range)</li>
-  <li>✅ <strong>33% of files with &gt;0.40 similarity</strong> (good matches)</li>
+  <li><strong>56% accuracy</strong> on NCERT test files</li>
+  <li><strong>89% categorization rate</strong> (only 11% uncategorized)</li>
+  <li><strong>0.355 average similarity</strong> (acceptable range)</li>
+  <li><strong>33% of files with &gt;0.40 similarity</strong> (good matches)</li>
 </ul>
 
 <h3 id="target-performance">Target Performance</h3>
 <ul>
-  <li>🎯 <strong>70%+ accuracy</strong></li>
-  <li>🎯 <strong>95%+ categorization rate</strong></li>
-  <li>🎯 <strong>0.45+ average similarity</strong></li>
-  <li>🎯 <strong>50%+ files with &gt;0.40 similarity</strong></li>
+  <li><strong>70%+ accuracy</strong></li>
+  <li><strong>95%+ categorization rate</strong></li>
+  <li><strong>0.45+ average similarity</strong></li>
+  <li><strong>50%+ files with &gt;0.40 similarity</strong></li>
 </ul>
 
 <h3 id="how-to-achieve-targets">How to Achieve Targets</h3>
@@ -664,7 +665,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
 
 <h3 id="embedding-model">Embedding Model</h3>
 <ul>
-  <li><strong>Model:</strong> all-mpnet-base-v2</li>
+  <li><strong>Current Model:</strong> BAAI/bge-base-en-v1.5</li>
   <li><strong>Dimensions:</strong> 768</li>
   <li><strong>Normalization:</strong> L2 normalized embeddings</li>
   <li><strong>Similarity:</strong> Cosine similarity (via FAISS IndexFlatIP)</li>
@@ -682,7 +683,7 @@ pressure, density, velocity, acceleration, displacement, torque, angular momentu
     ↓
 Text Extraction (extract_text.py)
     ↓
-SBERT Encoding (all-mpnet-base-v2)
+SBERT Encoding (BAAI/bge-base-en-v1.5)
     ↓
 FAISS Similarity Search
     ↓
@@ -702,66 +703,66 @@ Re-classify
 
 <h2 id="lessons-learned">Lessons Learned</h2>
 
-<h3 id="1-simpler-is-better">1. <strong>Simpler is Better</strong></h3>
+<h3 id="1-simpler-is-better">1. Simpler is Better</h3>
 <p>For SBERT embeddings with academic content, simple keyword lists outperform complex natural language descriptions.</p>
 
-<h3 id="2-keyword-density-matters">2. <strong>Keyword Density Matters</strong></h3>
+<h3 id="2-keyword-density-matters">2. Keyword Density Matters</h3>
 <p>Maximum information density (100% keywords vs 15% keywords in sentences) creates stronger semantic signals.</p>
 
-<h3 id="3-sbert-prefers-keywords">3. <strong>SBERT Prefers Keywords</strong></h3>
+<h3 id="3-sbert-prefers-keywords">3. SBERT Prefers Keywords</h3>
 <p>Despite being trained on natural text, SBERT embeddings cluster keyword lists more effectively for classification tasks.</p>
 
-<h3 id="4-avoid-overfitting">4. <strong>Avoid Overfitting</strong></h3>
+<h3 id="4-avoid-overfitting">4. Avoid Overfitting</h3>
 <p>Natural language descriptions that mimic specific examples fail to generalize to new documents.</p>
 
-<h3 id="5-grammatical-noise-is-real">5. <strong>Grammatical Noise is Real</strong></h3>
+<h3 id="5-grammatical-noise-is-real">5. Grammatical Noise is Real</h3>
 <p>Articles, verbs, and prepositions dilute semantic signals without adding classification value.</p>
 
-<h3 id="6-test-before-assuming">6. <strong>Test Before Assuming</strong></h3>
+<h3 id="6-test-before-assuming">6. Test Before Assuming</h3>
 <p>The hypothesis that “content-style descriptions would match better” was proven wrong through rigorous testing.</p>
 
-<h3 id="7-original-intuition-was-correct">7. <strong>Original Intuition Was Correct</strong></h3>
+<h3 id="7-original-intuition-was-correct">7. Original Intuition Was Correct</h3>
 <p>The initial keyword-based approach was optimal all along - sometimes the simplest solution is the best.</p>
 
 <hr />
 
 <h2 id="final-recommendations">Final Recommendations</h2>
 
-<h3 id="do"><strong>DO:</strong></h3>
+<h3 id="do">DO:</h3>
 <ol>
-  <li>✅ Continue using <strong>comma-separated keyword terms</strong></li>
-  <li>✅ Maintain <strong>20-40 terms per description</strong></li>
-  <li>✅ Include <strong>synonyms and related vocabulary</strong></li>
-  <li>✅ Focus on <strong>domain-specific terminology</strong></li>
-  <li>✅ Keep descriptions <strong>dense</strong> without filler words</li>
-  <li>✅ Avoid <strong>generic words</strong> (document, file, report)</li>
-  <li>✅ Test with <strong>diverse document types</strong></li>
-  <li>✅ Monitor <strong>accuracy metrics</strong> over time</li>
-  <li>✅ Expand <strong>keyword coverage</strong> iteratively</li>
-  <li>✅ Keep <strong>prompts concise and clear</strong></li>
+  <li>Continue using <strong>comma-separated keyword terms</strong></li>
+  <li>Maintain <strong>20-40 terms per description</strong></li>
+  <li>Include <strong>synonyms and related vocabulary</strong></li>
+  <li>Focus on <strong>domain-specific terminology</strong></li>
+  <li>Keep descriptions <strong>dense</strong> without filler words</li>
+  <li>Avoid <strong>generic words</strong> (document, file, report)</li>
+  <li>Test with <strong>diverse document types</strong></li>
+  <li>Monitor <strong>accuracy metrics</strong> over time</li>
+  <li>Expand <strong>keyword coverage</strong> iteratively</li>
+  <li>Keep <strong>prompts concise and clear</strong></li>
 </ol>
 
-<h3 id="dont"><strong>DON’T:</strong></h3>
+<h3 id="dont">DON’T:</h3>
 <ol>
-  <li>❌ Switch to <strong>natural language descriptions</strong></li>
-  <li>❌ Add <strong>explanatory text</strong> (“Documents contain…”)</li>
-  <li>❌ Include <strong>grammatical structure</strong></li>
-  <li>❌ Use <strong>overly specific examples</strong></li>
-  <li>❌ Reduce <strong>keyword density</strong></li>
-  <li>❌ Ignore <strong>similarity metrics</strong></li>
-  <li>❌ Overfit to <strong>training examples</strong></li>
-  <li>❌ Add <strong>filler words</strong> or <strong>connectors</strong></li>
-  <li>❌ Assume <strong>without testing</strong></li>
-  <li>❌ Complicate what <strong>works simply</strong></li>
+  <li>Switch to <strong>natural language descriptions</strong></li>
+  <li>Add <strong>explanatory text</strong> (“Documents contain…”)</li>
+  <li>Include <strong>grammatical structure</strong></li>
+  <li>Use <strong>overly specific examples</strong></li>
+  <li>Reduce <strong>keyword density</strong></li>
+  <li>Ignore <strong>similarity metrics</strong></li>
+  <li>Overfit to <strong>training examples</strong></li>
+  <li>Add <strong>filler words</strong> or <strong>connectors</strong></li>
+  <li>Assume <strong>without testing</strong></li>
+  <li>Complicate what <strong>works simply</strong></li>
 </ol>
 
 <hr />
 
-<h2 id="-conclusion">🏆 Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>The comprehensive testing with 75 NCERT files definitively proved that:</p>
 
-<h3 id="keyword-terms-natural-language"><strong>Keyword Terms » Natural Language</strong></h3>
+<h3 id="keyword-terms-natural-language">Keyword Terms » Natural Language</h3>
 
 <p><strong>Results:</strong></p>
 <ul>
@@ -781,14 +782,14 @@ Re-classify
 </ol>
 
 <p><strong>Recommendation:</strong>
-✅ <strong>Keep using the original keyword-based approach</strong> - it’s proven superior for SBERT semantic matching with academic documents.</p>
+Keep using the original keyword-based approach - it’s proven superior for SBERT semantic matching with academic documents.</p>
 
 <hr />
 
-<p><strong>Status:</strong> ✅ <strong>Analysis Complete - Keyword Approach Validated</strong><br />
+<p><strong>Status:</strong> Analysis Complete - Keyword Approach Validated<br />
 <strong>Date:</strong> 2025-12-05<br />
 <strong>Test Files:</strong> 75 NCERT documents<br />
-<strong>Verdict:</strong> <strong>Original Keywords Win by a Landslide!</strong> 🏆</p>
+<strong>Verdict:</strong> <strong>Original Keywords Win by a Landslide!</strong></p>
 
 <hr />
 

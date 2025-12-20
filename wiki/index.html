@@ -62,9 +62,9 @@
 
 <hr />
 
-<h2 id="️-update-infrastructure-shift-to-sft">⚠️ UPDATE: Infrastructure Shift to SFT</h2>
+<h2 id="update-infrastructure-shift-to-sft">UPDATE: Infrastructure Shift to SFT</h2>
 
-<p><strong>Integrated a Reinforcement Learning architecture.</strong> However, due to Google Gemini’s Free Tier Rate Limits, Temporarily pivoting the <em>generation</em> backend to Local SFT.</p>
+<p><strong>Integrated a Reinforcement Learning architecture.</strong> However, due to Google Gemini’s Free Tier Rate Limits, I am temporarily pivoting the <em>generation</em> backend to Local SFT.</p>
 
 <h3 id="the-challenge">The Challenge</h3>
 <p>The <strong>RL Agent</strong> works as intended, optimizing for speed. However, effectively “training” the agent requires frequent API calls, which triggers Google’s <strong>429 Rate Limit</strong>, forcing 60-second delays.</p>
@@ -77,7 +77,7 @@ By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, 
 
 <hr />
 
-<h2 id="-quick-links">⚡ Quick Links</h2>
+<h2 id="quick-links">Quick Links</h2>
 
 <ul>
   <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong>: Install and run FileSense in 5 minutes</li>
@@ -87,7 +87,7 @@ By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, 
 
 <hr />
 
-<h2 id="-core-features">🎯 Core Features</h2>
+<h2 id="core-features">Core Features</h2>
 
 <table>
   <thead>
@@ -98,35 +98,35 @@ By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, 
   </thead>
   <tbody>
     <tr>
-      <td>🧠 <strong>Semantic Sorting</strong></td>
+      <td>Semantic Sorting</td>
       <td>Classifies by meaning (e.g., “Newton’s Laws” → Physics)</td>
     </tr>
     <tr>
-      <td>🟣 <strong>Reinforcement Learning</strong></td>
+      <td>Reinforcement Learning</td>
       <td>Adaptive agent that optimizes sorting policies over time</td>
     </tr>
     <tr>
-      <td>🤖 <strong>AI-Powered Labeling</strong></td>
+      <td>AI-Powered Labeling</td>
       <td>Uses GenAI to create new categories automatically</td>
     </tr>
     <tr>
-      <td>⚡ <strong>FAISS Vector Search</strong></td>
+      <td>FAISS Vector Search</td>
       <td>Lightning-fast similarity matching with embeddings</td>
     </tr>
     <tr>
-      <td>🔄 <strong>Self-Updating</strong></td>
+      <td>Self-Updating</td>
       <td>Automatically rebuilds index when new labels are created</td>
     </tr>
     <tr>
-      <td>👀 <strong>OCR Support</strong></td>
+      <td>OCR Support</td>
       <td>Extracts text from scanned PDFs and images</td>
     </tr>
     <tr>
-      <td>🧩 <strong>Keyword Boosting</strong></td>
+      <td>Keyword Boosting</td>
       <td>Hybrid approach: Vector similarity + keyword matching</td>
     </tr>
     <tr>
-      <td>🖥️ <strong>GUI &amp; CLI</strong></td>
+      <td>GUI &amp; CLI</td>
       <td>Desktop app with system tray + command-line interface</td>
     </tr>
   </tbody>
@@ -134,23 +134,23 @@ By switching to <strong>Supervised Fine-Tuning (SFT)</strong> of a local model, 
 
 <hr />
 
-<h2 id="-how-it-works">📊 How It Works</h2>
+<h2 id="how-it-works">How It Works</h2>
 
 <pre><code class="language-mermaid">flowchart TD
-    A[📄 Input File] --&gt; B[📝 Extract Text]
-    B --&gt; C[🔢 Generate Embedding&lt;br/&gt;SBERT all-mpnet-base-v2]
-    C --&gt; D{🎯 Similarity ≥ 0.40?}
-    D --&gt;|Yes| E[✅ Classify to Existing Folder]
-    D --&gt;|No| F[🤖 Ask Agent (RL)]
-    F --&gt; G{Polciy A/B/C?}
-    G --&gt; H[💾 Update folder_labels.json]
-    H --&gt; I[🔄 Rebuild FAISS Index]
-    I --&gt; J[📁 Move to Sorted Folder]
+    A[Input File] --&gt; B[Extract Text]
+    B --&gt; C[Generate Embedding&lt;br/&gt;SBERT BAAI/bge-base-en-v1.5]
+    C --&gt; D{Similarity &gt;= 0.40?}
+    D --&gt;|Yes| E[Classify to Existing Folder]
+    D --&gt;|No| F[Ask Agent (RL)]
+    F --&gt; G{Policy A/B/C?}
+    G --&gt; H[Update folder_labels.json]
+    H --&gt; I[Rebuild FAISS Index]
+    I --&gt; J[Move to Sorted Folder]
 </code></pre>
 
 <hr />
 
-<h2 id="-quick-start">🚀 Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Install dependencies</span>
 pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
@@ -167,20 +167,20 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <hr />
 
-<h2 id="-documentation-sections">📚 Documentation Sections</h2>
+<h2 id="documentation-sections">Documentation Sections</h2>
 
-<h3 id="-for-users">🎓 For Users</h3>
+<h3 id="for-users">For Users</h3>
 <ul>
   <li><strong><a href="/FileSense/wiki/getting-started/">Getting Started</a></strong> - Installation and setup</li>
   <li><strong><a href="/FileSense/wiki/faq/">FAQ</a></strong> - Common questions and troubleshooting</li>
 </ul>
 
-<h3 id="-for-developers">🔧 For Developers</h3>
+<h3 id="for-developers">For Developers</h3>
 <ul>
   <li><strong><a href="/FileSense/wiki/pipeline/">Architecture</a></strong> - System design and data flow</li>
 </ul>
 
-<h3 id="-research--analysis">📊 Research &amp; Analysis</h3>
+<h3 id="research--analysis">Research &amp; Analysis</h3>
 <ul>
   <li><strong><a href="/FileSense/wiki/metrics/">Performance Metrics</a></strong> - Benchmarks and accuracy</li>
   <li><strong><a href="/FileSense/wiki/rl/">Reinforcement Learning</a></strong> - Architecture &amp; SFT Pivot</li>
@@ -190,7 +190,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <hr />
 
-<h2 id="-key-insights">🎓 Key Insights</h2>
+<h2 id="key-insights">Key Insights</h2>
 
 <blockquote>
   <p><strong>Important discoveries from testing:</strong></p>
@@ -198,7 +198,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
   <ol>
     <li><strong>Keyword-based descriptions outperform natural language</strong> for SBERT embeddings (+32% accuracy)</li>
     <li><strong>Semantic descriptions performed worse</strong> than expected (24% vs 56% accuracy)</li>
-    <li><strong>Lighter models significantly reduced performance</strong> - stick with all-mpnet-base-v2</li>
+    <li><strong>Lighter models significantly reduced performance</strong> - I recommend sticking with BAAI/bge-base-en-v1.5</li>
     <li><strong>AG News dataset showed poor results</strong> - academic documents work best</li>
   </ol>
 </blockquote>
@@ -207,7 +207,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <hr />
 
-<h2 id="-performance-highlights">📈 Performance Highlights</h2>
+<h2 id="performance-highlights">Performance Highlights</h2>
 
 <table>
   <thead>
@@ -235,14 +235,14 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
     </tr>
     <tr>
       <td><strong>Embedding Model</strong></td>
-      <td>all-mpnet-base-v2 (768 dims)</td>
+      <td>BAAI/bge-base-en-v1.5 (768 dims)</td>
     </tr>
   </tbody>
 </table>
 
 <hr />
 
-<h2 id="-contributing">🤝 Contributing</h2>
+<h2 id="contributing">Contributing</h2>
 
 <p>FileSense is an open-source project. Contributions are welcome!</p>
 
@@ -254,7 +254,7 @@ python scripts/script.py <span class="nt">--dir</span> ./files <span class="nt">
 
 <hr />
 
-<h2 id="-license">📝 License</h2>
+<h2 id="license">License</h2>
 
 <p>MIT License © 2025 Ayush Bhalerao</p>
 

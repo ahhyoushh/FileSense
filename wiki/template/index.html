@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="">
 
-<title>Documentation Template | FileSense Documentation</title>
+<title>Wiki Page Template | FileSense Documentation</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
@@ -53,363 +53,233 @@
 
 <article>
   <header>
-  <h1><a href="/FileSense/wiki/template/">Documentation Template</a></h1>
+  <h1><a href="/FileSense/wiki/template/">Wiki Page Template</a></h1>
 </header>
 
-  <h1 id="-filesense-documentation-template">📝 FileSense Documentation Template</h1>
+  <h1 id="wiki-page-template">Wiki Page Template</h1>
 
-<p>Use this template when creating new wiki pages.</p>
+<p>Use this template to create new pages for the FileSense wiki.</p>
 
 <hr />
 
-<h2 id="basic-page-structure">Basic Page Structure</h2>
+<h2 id="1-page-header">1. Page Header</h2>
 
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
-<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Page</span><span class="nv"> </span><span class="s">Title"</span>
-<span class="na">permalink</span><span class="pi">:</span> <span class="s">/wiki/page-slug/</span>
+<p>Every page MUST include a YAML frontmatter block at the very top.</p>
 
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Your</span><span class="nv"> </span><span class="s">Page</span><span class="nv"> </span><span class="s">Title"</span>
+<span class="na">permalink</span><span class="pi">:</span> <span class="s">/wiki/your-page-url/</span>
 <span class="nn">---</span>
-
-<span class="gh"># 🎯 Page Title</span>
-
-Brief introduction explaining what this page covers.
-<span class="p">
----
-</span>
-<span class="gu">## Section Heading</span>
-
-Content goes here.
-
-<span class="gu">### Subsection</span>
-
-More detailed content.
-<span class="p">
----
-</span>
-<span class="gu">## Code Examples</span>
-
-<span class="se">\`\`\`</span>python
-<span class="gh"># Python code</span>
-def example():
-    return "Hello World"
-<span class="se">\`\`\`</span>
-
-<span class="se">\`\`\`</span>bash
-<span class="gh"># Bash commands</span>
-python scripts/script.py --dir ./files
-<span class="se">\`\`\`</span>
-<span class="p">
----
-</span>
-<span class="gu">## Tables</span>
-
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| Data 1   | Data 2   | Data 3   |
-| Data 4   | Data 5   | Data 6   |
-<span class="p">
----
-</span>
-<span class="gu">## Notice Blocks</span>
-<span class="gt">
-&gt; **Info Block**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **Success Block**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **Warning Block**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **Danger Block**</span>
-<span class="p">
----
-</span>
-<span class="gu">## Mermaid Diagrams</span>
-
-<span class="se">\`\`\`</span>mermaid
-flowchart LR
-    A[Start] --&gt; B[Process]
-    B --&gt; C[End]
-<span class="se">\`\`\`</span>
-<span class="p">
----
-</span>
-<span class="gu">## Links</span>
-<span class="p">
--</span> Internal: <span class="p">[</span><span class="nv">Getting Started</span><span class="p">](</span><span class="sx">/FileSense/wiki/getting-started/</span><span class="p">)</span>
-<span class="p">-</span> External: <span class="p">[</span><span class="nv">GitHub</span><span class="p">](</span><span class="sx">https://github.com/ahhyoushh/FileSense</span><span class="p">)</span>
-<span class="p">
----
-</span>
-<span class="p">[</span><span class="nv">← Back to Home</span><span class="p">](</span><span class="sx">/FileSense/wiki/</span><span class="p">)</span>
-<span class="se">\`\`\`</span>
-<span class="p">
----
-</span>
-<span class="gu">## Styling Guidelines</span>
-
-<span class="gu">### Emojis for Visual Hierarchy</span>
-
-Use emojis to make sections visually distinct:
-<span class="p">
--</span> 🎯 Goals/Objectives
-<span class="p">-</span> 📊 Data/Metrics
-<span class="p">-</span> 🔧 Technical Details
-<span class="p">-</span> 💡 Tips/Insights
-<span class="p">-</span> ⚠️ Warnings
-<span class="p">-</span> ✅ Success/Best Practices
-<span class="p">-</span> ❌ Failures/Don'ts
-<span class="p">-</span> 🚀 Quick Start/Actions
-<span class="p">-</span> 📚 Resources/References
-<span class="p">-</span> 🎓 Learning/Education
-
-<span class="gu">### Notice Blocks</span>
-
-<span class="p">```</span><span class="nl">markdown
-</span><span class="gt">&gt; **This is important information**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **This worked well**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **Be careful about this**</span>
-<span class="gt">&gt;</span>
-<span class="gt">&gt; **This is critical - don't ignore**</span>
 </code></pre></div></div>
 
-<h3 id="code-blocks-with-language">Code Blocks with Language</h3>
+<hr />
 
-<p>Always specify the language for syntax highlighting:</p>
+<h2 id="2-basic-structure">2. Basic Structure</h2>
 
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="se">\`\`\`</span>python
-<span class="gh"># Python code</span>
-<span class="se">\`\`\`</span>
+<h3 id="page-title-h1">Page Title (H1)</h3>
+<p>Use a single H1 for the page title.</p>
 
-<span class="se">\`\`\`</span>bash
-<span class="gh"># Bash commands</span>
-<span class="se">\`\`\`</span>
+<h3 id="introduction">Introduction</h3>
+<p>Provide a brief 1-2 sentence overview of what this page covers.</p>
 
-<span class="se">\`\`\`</span>json
-{
-  "key": "value"
-}
-<span class="se">\`\`\`</span>
+<h3 id="horizontal-rule">Horizontal Rule</h3>
+<p>Use <code class="language-plaintext highlighter-rouge">---</code> to separate the header from the content.</p>
 
-<span class="se">\`\`\`</span>yaml
-key: value
-<span class="se">\`\`\`</span>
+<h3 id="sections-h2">Sections (H2)</h3>
+<p>Organize your content using H2 headers.</p>
+
+<hr />
+
+<h2 id="3-styling-guidelines">3. Styling Guidelines</h2>
+
+<h3 id="perspective">Perspective</h3>
+<p>Use <strong>first-person singular</strong> (“I”, “my”) throughout the documentation. FileSense is a one-person project, and the voice should reflect that personal, developer-focused perspective.</p>
+
+<h3 id="emojis">Emojis</h3>
+<p>Do <strong>not</strong> use decorative emojis in headings or body text. Keep the documentation clean, professional, and minimal. Emojis should only be used if they convey specific technical meaning (which is rare).</p>
+
+<h3 id="notice-blocks">Notice Blocks</h3>
+<p>Use blockquotes for important notes.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> This is an important piece of information.
+<strong>Warning:</strong> This is a critical warning.
+<strong>Tip:</strong> This is a helpful tip.</p>
+</blockquote>
+
+<h3 id="code-blocks">Code Blocks</h3>
+<p>Always specify the language for syntax highlighting.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">example_function</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"FileSense is awesome"</span>
 </code></pre></div></div>
 
 <h3 id="tables">Tables</h3>
+<p>Use tables for comparisons or structured data.</p>
 
-<p>Use tables for structured data:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Feature A</td>
+      <td>Description A</td>
+      <td>Done</td>
+    </tr>
+    <tr>
+      <td>Feature B</td>
+      <td>Description B</td>
+      <td>WIP</td>
+    </tr>
+  </tbody>
+</table>
 
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| Header 1 | Header 2 | Header 3 |
-|----------|----------|----------|
-| Cell 1   | Cell 2   | Cell 3   |
-</code></pre></div></div>
+<h3 id="diagrams-mermaid">Diagrams (Mermaid)</h3>
+<p>I support Mermaid diagrams for architecture and flowcharts.</p>
 
-<h3 id="mermaid-diagrams">Mermaid Diagrams</h3>
-
-<p>For flowcharts and diagrams:</p>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="se">\`\`\`</span>mermaid
-flowchart TD
-    A[Input] --&gt; B[Process]
+<pre><code class="language-mermaid">graph LR
+    A[Start] --&gt; B(Process)
     B --&gt; C{Decision}
-    C --&gt;|Yes| D[Output A]
-    C --&gt;|No| E[Output B]
-<span class="se">\`\`\`</span>
-</code></pre></div></div>
+    C --&gt;|Yes| D[Success]
+    C --&gt;|No| E[Fail]
+</code></pre>
 
 <hr />
 
-<h2 id="page-types">Page Types</h2>
+<h2 id="4-page-types">4. Page Types</h2>
 
-<h3 id="tutorial-pages">Tutorial Pages</h3>
-
-<p>Structure:</p>
-<ol>
-  <li>Introduction</li>
-  <li>Prerequisites</li>
-  <li>Step-by-step instructions</li>
-  <li>Expected output</li>
-  <li>Troubleshooting</li>
-  <li>Next steps</li>
-</ol>
-
-<h3 id="reference-pages">Reference Pages</h3>
-
-<p>Structure:</p>
-<ol>
-  <li>Overview</li>
-  <li>API/Function list</li>
-  <li>Parameters</li>
-  <li>Return values</li>
-  <li>Examples</li>
-  <li>Related functions</li>
-</ol>
-
-<h3 id="concept-pages">Concept Pages</h3>
-
-<p>Structure:</p>
-<ol>
-  <li>What is it?</li>
-  <li>Why does it matter?</li>
-  <li>How does it work?</li>
-  <li>When to use it?</li>
-  <li>Examples</li>
-  <li>Further reading</li>
-</ol>
-
-<hr />
-
-<h2 id="checklist-for-new-pages">Checklist for New Pages</h2>
-
-<ul class="task-list">
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Title and permalink set</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />TOC enabled</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Introduction paragraph</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Sections with clear headings</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Code examples (if applicable)</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Tables for structured data</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Notice blocks for important info</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Links to related pages</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Back to home link at bottom</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Spell-checked</li>
-  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Tested locally</li>
-</ul>
-
-<hr />
-
-<h2 id="example-pages">Example Pages</h2>
-
-<p><strong>Good Examples:</strong></p>
+<h3 id="tutorial--how-to">Tutorial / How-To</h3>
 <ul>
-  <li><a href="/FileSense/wiki/getting-started/">Getting Started</a> - Tutorial style</li>
-  <li><a href="/FileSense/wiki/pipeline/">Architecture</a> - Technical reference</li>
-  <li><a href="/FileSense/wiki/lessons-learned/">Lessons Learned</a> - Concept/insight page</li>
+  <li>Focus on actionable steps</li>
+  <li>Use numbered lists</li>
+  <li>Include sample commands</li>
+  <li>Add a “Troubleshooting” section at the end</li>
 </ul>
 
-<hr />
-
-<h2 id="tips-for-writing">Tips for Writing</h2>
-
-<h3 id="be-concise">Be Concise</h3>
-
-<p>❌ Bad:</p>
-<blockquote>
-  <p>“In this section, we will discuss the various different ways in which you can potentially configure the system settings to optimize performance.”</p>
-</blockquote>
-
-<p>✅ Good:</p>
-<blockquote>
-  <p>“Configure these settings to optimize performance:”</p>
-</blockquote>
-
-<h3 id="use-active-voice">Use Active Voice</h3>
-
-<p>❌ Bad:</p>
-<blockquote>
-  <p>“The file is processed by the system.”</p>
-</blockquote>
-
-<p>✅ Good:</p>
-<blockquote>
-  <p>“FileSense processes the file.”</p>
-</blockquote>
-
-<h3 id="show-dont-just-tell">Show, Don’t Just Tell</h3>
-
-<p>❌ Bad:</p>
-<blockquote>
-  <p>“FileSense is fast.”</p>
-</blockquote>
-
-<p>✅ Good:</p>
-<blockquote>
-  <p>“FileSense processes 75 files in 5 seconds (0.27s per file).”</p>
-</blockquote>
-
-<h3 id="use-examples">Use Examples</h3>
-
-<p>Always include:</p>
+<h3 id="reference">Reference</h3>
 <ul>
-  <li>Code examples</li>
-  <li>Command examples</li>
-  <li>Expected output</li>
-  <li>Common use cases</li>
+  <li>Technical details, API documentation</li>
+  <li>Use tables for parameters/return values</li>
+  <li>Keep descriptions concise</li>
+  <li>Links to source code</li>
+</ul>
+
+<h3 id="concept--research">Concept / Research</h3>
+<ul>
+  <li>Explain theoretical background</li>
+  <li>Include diagrams</li>
+  <li>Reference testing data (e.g., NCERT benchmarks)</li>
+  <li>Links to related research papers</li>
 </ul>
 
 <hr />
 
-<h2 id="markdown-cheatsheet">Markdown Cheatsheet</h2>
+<h2 id="5-checklist-for-new-pages">5. Checklist for New Pages</h2>
 
-<h3 id="headers">Headers</h3>
+<p>Before publishing, ensure:</p>
+<ol class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />YAML frontmatter is present and correct</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Perspective is “I” (first-person singular)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />No decorative emojis are used</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />All links are working (use relative paths for wiki links)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Images have descriptive alt text</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Tables are centered (template handles this via CSS)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Mermaid diagrams render correctly</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Page is added to the sidebar (if applicable)</li>
+</ol>
 
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># H1</span>
-<span class="gu">## H2</span>
-<span class="gu">### H3</span>
-<span class="gu">#### H4</span>
-</code></pre></div></div>
+<hr />
 
-<h3 id="emphasis">Emphasis</h3>
+<h2 id="6-example-good-page-structure">6. Example: Good Page Structure</h2>
 
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ge">*italic*</span>
-<span class="gs">**bold**</span>
-<span class="gs">***bold italic**</span><span class="err">*</span>
-~~strikethrough~~
-</code></pre></div></div>
+<h1 id="example-page">Example Page</h1>
+
+<p>This is an example of what a good wiki page looks like.</p>
+
+<hr />
+
+<h2 id="overview">Overview</h2>
+<p>I designed FileSense to handle high volumes of academic documents. This page explains the methodology.</p>
+
+<h2 id="methodology">Methodology</h2>
+<p>I used a dual-extraction approach to ensure high-quality text for the embedding model.</p>
+
+<ol>
+  <li><strong>Primary Extraction:</strong> Uses <code class="language-plaintext highlighter-rouge">pdfplumber</code> to extract text from the core pages.</li>
+  <li><strong>Fallback Extraction:</strong> Triggered if confidence is below 0.35.</li>
+</ol>
+
+<h2 id="results">Results</h2>
+<p>Testing on the NCERT dataset showed a 56% accuracy rate.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>Files</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NCERT</td>
+      <td>75</td>
+      <td>56%</td>
+    </tr>
+    <tr>
+      <td>STEM</td>
+      <td>50</td>
+      <td>48%</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="7-markdown-cheatsheet">7. Markdown Cheatsheet</h2>
 
 <h3 id="lists">Lists</h3>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">-</span> Unordered item
-<span class="p">-</span> Another item
-<span class="p">  -</span> Nested item
-<span class="p">
-1.</span> Ordered item
-<span class="p">2.</span> Another item
-<span class="p">   1.</span> Nested item
-</code></pre></div></div>
-
-<h3 id="links">Links</h3>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nv">Link text</span><span class="p">](</span><span class="sx">URL</span><span class="p">)</span>
-<span class="p">[</span><span class="nv">Internal link</span><span class="p">](</span><span class="sx">/FileSense/wiki/page/</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="images">Images</h3>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">![</span><span class="nv">Alt text</span><span class="p">](</span><span class="sx">/path/to/image.png</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="blockquotes">Blockquotes</h3>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gt">&gt; This is a quote</span>
-</code></pre></div></div>
-
-<h3 id="horizontal-rule">Horizontal Rule</h3>
-
-<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">---
-</span></code></pre></div></div>
-
-<hr />
-
-<h2 id="publishing-workflow">Publishing Workflow</h2>
+<ul>
+  <li>Item 1</li>
+  <li>Item 2
+    <ul>
+      <li>Sub-item 2.1</li>
+    </ul>
+  </li>
+</ul>
 
 <ol>
-  <li><strong>Create</strong> the markdown file in <code class="language-plaintext highlighter-rouge">wiki/</code></li>
-  <li><strong>Add</strong> to navigation in <code class="language-plaintext highlighter-rouge">_data/navigation.yml</code></li>
-  <li><strong>Test</strong> locally (if possible)</li>
-  <li><strong>Commit</strong> and push to GitHub</li>
-  <li><strong>Verify</strong> on GitHub Pages</li>
+  <li>Step 1</li>
+  <li>Step 2</li>
 </ol>
+
+<h3 id="formatting">Formatting</h3>
+<ul>
+  <li><strong>Bold text</strong></li>
+  <li><em>Italic text</em></li>
+  <li><code class="language-plaintext highlighter-rouge">Inline code</code></li>
+  <li><a href="URL">Link Text</a></li>
+</ul>
+
+<h3 id="images">Images</h3>
+<p><code class="language-plaintext highlighter-rouge">![Alt Text](/path/to/image.png)</code></p>
 
 <hr />
 
-<h2 id="questions">Questions?</h2>
+<h2 id="8-publishing-workflow">8. Publishing Workflow</h2>
 
-<ul>
-  <li>Check existing pages for examples</li>
-  <li>Review <a href="https://github.com/niklasbuschmann/contrast">Contrast Theme documentation</a></li>
-  <li>Ask in GitHub discussions</li>
-</ul>
+<ol>
+  <li>Create a new <code class="language-plaintext highlighter-rouge">.md</code> file in the <code class="language-plaintext highlighter-rouge">wiki/</code> directory.</li>
+  <li>Use the template structure.</li>
+  <li>Verify rendering locally (if using a local Jekyll server).</li>
+  <li>Commit and push to GitHub.</li>
+  <li>GH Actions will automatically rebuild the site.</li>
+</ol>
 
 <hr />
 
