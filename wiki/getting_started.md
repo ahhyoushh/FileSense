@@ -4,13 +4,13 @@ permalink: /wiki/getting-started/
 
 ---
 
-# 🚀 Getting Started with FileSense
+# Getting Started with FileSense
 
 Get FileSense up and running in **5 minutes**.
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before installing FileSense, ensure you have:
 
@@ -28,7 +28,7 @@ python --version
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Step 1: Clone the Repository
 
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ```
 
 **Required packages:**
-- `sentence-transformers` - SBERT embeddings
+- `sentence-transformers` - SBERT embeddings (BGE-Base v1.5)
 - `faiss-cpu` - Vector similarity search
 - `google-genai` - Gemini API client
 - `pdfplumber` - PDF text extraction
@@ -72,7 +72,7 @@ Download from [GitHub Releases](https://github.com/UB-Mannheim/tesseract/wiki)
 
 ---
 
-## 🔑 API Key Setup
+## API Key Setup
 
 ### Get Your Gemini API Key
 
@@ -94,7 +94,7 @@ API_KEY=your_gemini_api_key_here
 
 ---
 
-## 🏗️ Initialize FileSense
+## Initialize FileSense
 
 ### Create the Initial Index
 
@@ -113,18 +113,18 @@ This is normal for first-time setup. The index will be created automatically whe
 
 ---
 
-## ✅ Verify Installation
+## Verify Installation
 
 Test that everything is working:
 
 ```bash
 # Check if all imports work
-python -c "import sentence_transformers, faiss, google.genai; print('✓ All dependencies installed')"
+python -c "import sentence_transformers, faiss, google.genai; print('Success: All dependencies installed')"
 ```
 
 ---
 
-## 🎯 First Run
+## First Run
 
 ### Option A: Windows Launcher (Recommended)
  
@@ -177,7 +177,7 @@ Perfect for organizing downloads in real-time!
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 After installation, your project should look like this:
 
@@ -212,7 +212,7 @@ FileSense/
 
 ---
 
-## 🧪 Test with Sample Files
+## Test with Sample Files
 
 ### Create Test Files
 
@@ -242,9 +242,9 @@ python scripts/script.py --dir ./files
 
 ---
 
-## 🎓 Next Steps
+## Next Steps
 
-> **Congratulations! FileSense is now installed.** 🎉
+> **Congratulations! FileSense is now installed.**
 
 ### Learn More:
 - **[FAQ](/FileSense/wiki/faq/)** - Common questions and troubleshooting
@@ -256,7 +256,7 @@ python scripts/script.py --dir ./files
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -285,7 +285,7 @@ pip install faiss-gpu
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - **GitHub Repository:** [ahhyoushh/FileSense](https://github.com/ahhyoushh/FileSense)
 - **Demo Video:** [YouTube](https://youtu.be/f27I2L7uoC8)

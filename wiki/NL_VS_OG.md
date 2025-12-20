@@ -9,13 +9,14 @@ permalink: /wiki/NL_VS_OG/
 **Test Date:** 2025-12-05  
 **commit id:** 99d03e579a9fd413d7938f01559ebb0172a260e3
 **Test Files:** 75 NCERT textbook markdown files  
-**Model:** all-mpnet-base-v2 (SentenceTransformer)  
+**Model used for study:** all-mpnet-base-v2 (SentenceTransformer)
+**Current Default Model:** BAAI/bge-base-en-v1.5
 
 ---
 
 ## Executive Summary
 
-### **WINNER: Original Keywords Approach** 
+### WINNER: Original Keywords Approach 
 
 The comprehensive testing revealed that **comma-separated keyword terms dramatically outperform natural language descriptions** for SBERT-based semantic matching with academic documents.
 
@@ -31,14 +32,14 @@ The comprehensive testing revealed that **comma-separated keyword terms dramatic
 
 ---
 
-##  Test Configuration
+## Test Configuration
 
 ### Test Setup
 - **Test Files:** NCERT textbook markdown files (various subjects: Physics, Chemistry, Maths, Geography, Biology, civics)
 - **Natural Language Test:** NCERT_NL_TEST.log (Content-style descriptions)
 - **Original Keyword Test:** NCERT_OG_TEST.log (Comma-separated terms)
 - **Total Files:** 75 documents
-- **Embedding Model:** all-mpnet-base-v2
+- **Embedding Model during test:** all-mpnet-base-v2
 - **Vector Search:** FAISS IndexFlatIP
 
 ### Approaches Tested
@@ -80,18 +81,18 @@ formulas, physical laws"
 
 ---
 
-##  Detailed Results
+## Detailed Results
 
 ### Overall Performance
 
 | Metric | Natural Language | Original Keywords | Winner |
 |--------|-----------------|-------------------|--------|
 | **Total Files** | 75 | 75 | - |
-| **Accuracy** | 24.0% | **56.0%** |  OG |
-| **Avg Similarity** | 0.104 | **0.355** |  OG |
-| **Uncategorized** | 53 | 8 |  OG |
-| **Low Confidence (<0.40)** | 17 | 40 |  NL |
-| **Avg Time/File** | 0.30s | **0.27s** |  OG |
+| **Accuracy** | 24.0% | **56.0%** | OG |
+| **Avg Similarity** | 0.104 | **0.355** | OG |
+| **Uncategorized** | 53 | 8 | OG |
+| **Low Confidence (<0.40)** | 17 | 40 | NL |
+| **Avg Time/File** | 0.30s | **0.27s** | OG |
 
 ### Similarity Score Distribution
 
@@ -108,17 +109,17 @@ formulas, physical laws"
 
 ```
 Natural Language:
-0.00 (Failed):     ████████████████████████████████████████████████████ 53
-0.31-0.40:         ██████████ 14
-0.41-0.50:         ██ 3
-0.51+:             █ 1
+0.00 (Failed):     |||||||||||||||||||||||||||||||||||||||||||||||||| 53
+0.31-0.40:         |||||||||| 14
+0.41-0.50:         || 3
+0.51+:             | 1
 
 Original Keywords:
-0.00 (Failed):     ████████ 8
-0.21-0.30:         ████████ 8
-0.31-0.40:         ██████████████████████████████████ 34
-0.41-0.50:         ████████████████ 16
-0.51+:             █████████ 9
+0.00 (Failed):     |||||||| 8
+0.21-0.30:         |||||||| 8
+0.31-0.40:         |||||||||||||||||||||||||||||||||| 34
+0.41-0.50:         |||||||||||||||| 16
+0.51+:             ||||||||| 9
 ```
 
 ### Label Distribution
@@ -140,9 +141,9 @@ Original Keywords:
 
 ---
 
-## 🔍 Analysis: Why Natural Language Failed
+## Analysis: Why Natural Language Failed
 
-### 1. **Too Specific / Overfitted**
+### 1. Too Specific / Overfitted
 Natural language descriptions were too specific to the training examples:
 
 ```
@@ -152,12 +153,12 @@ Series convergence testing using ratio test, comparison test."
 
 This doesn't match NCERT files which have different phrasing and structure.
 
-### 2. **SBERT Embedding Mismatch**
+### 2. SBERT Embedding Mismatch
 - SBERT models work better with **keyword density** than natural sentences for this use case
 - Academic documents have consistent terminology that keywords capture better
 - Natural sentences introduce grammatical noise
 
-### 3. **Semantic Noise**
+### 3. Semantic Noise
 Natural sentences introduced grammatical structure that added noise:
 - **Articles:** "the", "a", "an"
 - **Verbs:** "contains", "includes", "discusses"
@@ -166,7 +167,7 @@ Natural sentences introduced grammatical structure that added noise:
 
 These dilute the semantic signal for academic content.
 
-### 4. **Reduced Keyword Density**
+### 4. Reduced Keyword Density
 Natural language spreads keywords across more tokens:
 
 ```
@@ -180,8 +181,8 @@ Keywords (40 terms):
 → 40 meaningful keywords in 40 words (100% density)
 ```
 
-### 5. **Embedding Space Geometry**
-- The all-mpnet-base-v2 model clusters keyword lists more effectively
+### 5. Embedding Space Geometry
+- The embedding models cluster keyword lists more effectively
 - Natural sentences might introduce variance in the embedding space
 - Keywords create denser, more consistent semantic clusters
 
@@ -189,7 +190,7 @@ Keywords (40 terms):
 
 ## Analysis: Why Keywords Succeeded
 
-### 1. **Broader Semantic Coverage**
+### 1. Broader Semantic Coverage
 Keyword lists cover MORE semantic space with FEWER tokens:
 
 ```
@@ -199,13 +200,13 @@ relativity, fluid dynamics, kinematics, forces, energy, motion, waves"
 
 Each term is a direct semantic signal without noise.
 
-### 2. **Better Alignment with NCERT Structure**
+### 2. Better Alignment with NCERT Structure
 NCERT files use consistent academic terminology:
 - Technical terms appear frequently
 - Keyword matching aligns with document structure
 - Domain-specific vocabulary is strong signal
 
-### 3. **Synonym Coverage**
+### 3. Synonym Coverage
 Keywords naturally include synonyms and related terms:
 ```
 "electricity, electrical, electromagnetism, electromagnetic"
@@ -213,12 +214,12 @@ Keywords naturally include synonyms and related terms:
 "mechanics, mechanical, motion, kinematics, dynamics"
 ```
 
-### 4. **SBERT Model Characteristics**
+### 4. SBERT Model Characteristics
 - Trained on diverse text, but keyword matching is robust
 - Academic terminology clusters well in embedding space
 - Synonym proximity enhances matching
 
-### 5. **Efficient Token Usage**
+### 5. Efficient Token Usage
 Every token in keyword descriptions carries semantic weight:
 - No grammatical filler
 - No redundant phrases
@@ -256,13 +257,13 @@ Every token in keyword descriptions carries semantic weight:
 
 ## Best Practices & Recommendations
 
-### **DO: Use Keyword-Based Descriptions**
+### DO: Use Keyword-Based Descriptions
 
 #### Optimal Format
 ```json
 {
   "folder_label": "Physics",
-  "description": "mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics, particle physics, kinematics, dynamics, forces, energy, motion, matter, waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity, laboratory experiments, scientific formulas, physical laws, conservation laws, measurement, vectors, scalars, work, power, momentum, impulse",
+  "description": "mechanics, thermodynamics, electromagnetism, optics, quantum mechanics, nuclear physics, relativity, astrophysics, fluid dynamics, solid state physics, particle physics, kinematics, dynamics, statics, forces, energy, motion, matter, waves, fields, radiation, heat, light, sound, electricity, magnetism, gravity, laboratory experiments, scientific formulas, physical laws, conservation laws, measurement, vectors, scalars, work, power, momentum, impulse",
   "keywords": "physics, mechanics, thermodynamics, optics, quantum, relativity, energy, force, motion, waves"
 }
 ```
@@ -278,7 +279,7 @@ Every token in keyword descriptions carries semantic weight:
 4. **No articles, verbs, or grammatical structure**
 5. **Dense terminology** without filler words
 
-### **DON'T: Use Natural Language Descriptions**
+### DON'T: Use Natural Language Descriptions
 
 #### Avoid This Format
 ```json
@@ -302,14 +303,14 @@ Every token in keyword descriptions carries semantic weight:
 
 ### For SBERT-Based Semantic Matching
 
-####  **What Works:**
+#### What Works:
 1. **Dense keyword lists** (20-40 terms)
 2. **Domain-specific vocabulary** (technical terms)
 3. **Synonym inclusion** (multiple ways to express concepts)
 4. **Broad coverage** (core + sub-topics + related terms)
 5. **No grammatical structure** (pure semantic content)
 
-#### **What Doesn't Work:**
+#### What Doesn't Work:
 1. **Natural language sentences** (too much noise)
 2. **Explanatory text** ("Documents contain...")
 3. **Specific examples** (overfitting to training data)
@@ -318,7 +319,7 @@ Every token in keyword descriptions carries semantic weight:
 
 ### Why This Matters
 
-**SBERT Embedding Characteristics:**
+**Embedding Characteristics:**
 - Trained on natural text BUT keyword matching is robust
 - Academic terminology clusters well in embedding space
 - Keyword density creates stronger semantic signals
@@ -334,12 +335,12 @@ Every token in keyword descriptions carries semantic weight:
 
 ## Actionable Next Steps
 
-### 1. **Keep Using Keywords** (Confirmed Best Practice)
-✅ Continue with comma-separated keyword terms in descriptions  
-✅ Maintain 20-40 terms per description  
-✅ Focus on domain-specific vocabulary  
+### 1. Keep Using Keywords (Confirmed Best Practice)
+Continue with comma-separated keyword terms in descriptions  
+Maintain 20-40 terms per description  
+Focus on domain-specific vocabulary  
 
-### 2. **Expand Keyword Coverage** (High Priority)
+### 2. Expand Keyword Coverage (High Priority)
 Add more synonyms and related terms to existing labels:
 
 **Example: Expand Physics**
@@ -355,19 +356,19 @@ measurement, vectors, scalars, work, power, momentum, impulse, friction, tension
 pressure, density, velocity, acceleration, displacement, torque, angular momentum"
 ```
 
-### 3. **Optimize Prompts** (Medium Priority)
+### 3. Optimize Prompts (Medium Priority)
 Current prompt optimizations completed:
-- ✅ Removed verbose explanations
-- ✅ Consolidated examples (15 focused examples)
-- ✅ Streamlined merge logic
-- ✅ Better error messages
+- Removed verbose explanations
+- Consolidated examples (15 focused examples)
+- Streamlined merge logic
+- Better error messages
 
 Further optimizations:
 - Fine-tune temperature settings
 - Adjust similarity thresholds based on performance
 - Add more edge case examples
 
-### 4. **Test with Diverse Documents** (Medium Priority)
+### 4. Test with Diverse Documents (Medium Priority)
 Validate approach with:
 - PDFs with different structures
 - Scanned documents (OCR text)
@@ -375,13 +376,13 @@ Validate approach with:
 - Multi-topic documents
 - Non-academic content (news, legal, medical)
 
-### 5. **Implement Training Dataset Optimization** (Low Priority)
+### 5. Implement Training Dataset Optimization (Low Priority)
 From README ideas:
 > "Use the dataset with category labels, generate folder labels until similarity crosses threshold for all training files"
 
 This could further optimize descriptions through iterative refinement.
 
-### 6. **Add More Academic Labels** (Low Priority)
+### 6. Add More Academic Labels (Low Priority)
 Consider expanding to:
 - Economics
 - Psychology
@@ -394,7 +395,7 @@ Consider expanding to:
 
 ---
 
-## 📋 Files & Documentation
+## Files & Documentation
 
 ### Created Documents
 1. **`NCERT_COMPARISON_REPORT.md`** - Detailed metrics and analysis
@@ -416,19 +417,19 @@ Consider expanding to:
 
 ---
 
-## 🎯 Success Metrics
+## Success Metrics
 
 ### Current Performance (Keywords)
-- ✅ **56% accuracy** on NCERT test files
-- ✅ **89% categorization rate** (only 11% uncategorized)
-- ✅ **0.355 average similarity** (acceptable range)
-- ✅ **33% of files with >0.40 similarity** (good matches)
+- **56% accuracy** on NCERT test files
+- **89% categorization rate** (only 11% uncategorized)
+- **0.355 average similarity** (acceptable range)
+- **33% of files with >0.40 similarity** (good matches)
 
 ### Target Performance
-- 🎯 **70%+ accuracy**
-- 🎯 **95%+ categorization rate**
-- 🎯 **0.45+ average similarity**
-- 🎯 **50%+ files with >0.40 similarity**
+- **70%+ accuracy**
+- **95%+ categorization rate**
+- **0.45+ average similarity**
+- **50%+ files with >0.40 similarity**
 
 ### How to Achieve Targets
 1. **Expand keyword coverage** in descriptions (+10-15% accuracy)
@@ -438,10 +439,10 @@ Consider expanding to:
 
 ---
 
-##  Technical Details
+## Technical Details
 
 ### Embedding Model
-- **Model:** all-mpnet-base-v2
+- **Current Model:** BAAI/bge-base-en-v1.5
 - **Dimensions:** 768
 - **Normalization:** L2 normalized embeddings
 - **Similarity:** Cosine similarity (via FAISS IndexFlatIP)
@@ -457,7 +458,7 @@ File Input
     ↓
 Text Extraction (extract_text.py)
     ↓
-SBERT Encoding (all-mpnet-base-v2)
+SBERT Encoding (BAAI/bge-base-en-v1.5)
     ↓
 FAISS Similarity Search
     ↓
@@ -477,62 +478,62 @@ Re-classify
 
 ## Lessons Learned
 
-### 1. **Simpler is Better**
+### 1. Simpler is Better
 For SBERT embeddings with academic content, simple keyword lists outperform complex natural language descriptions.
 
-### 2. **Keyword Density Matters**
+### 2. Keyword Density Matters
 Maximum information density (100% keywords vs 15% keywords in sentences) creates stronger semantic signals.
 
-### 3. **SBERT Prefers Keywords**
+### 3. SBERT Prefers Keywords
 Despite being trained on natural text, SBERT embeddings cluster keyword lists more effectively for classification tasks.
 
-### 4. **Avoid Overfitting**
+### 4. Avoid Overfitting
 Natural language descriptions that mimic specific examples fail to generalize to new documents.
 
-### 5. **Grammatical Noise is Real**
+### 5. Grammatical Noise is Real
 Articles, verbs, and prepositions dilute semantic signals without adding classification value.
 
-### 6. **Test Before Assuming**
+### 6. Test Before Assuming
 The hypothesis that "content-style descriptions would match better" was proven wrong through rigorous testing.
 
-### 7. **Original Intuition Was Correct**
+### 7. Original Intuition Was Correct
 The initial keyword-based approach was optimal all along - sometimes the simplest solution is the best.
 
 ---
 
 ## Final Recommendations
 
-### **DO:**
-1. ✅ Continue using **comma-separated keyword terms**
-2. ✅ Maintain **20-40 terms per description**
-3. ✅ Include **synonyms and related vocabulary**
-4. ✅ Focus on **domain-specific terminology**
-5. ✅ Keep descriptions **dense** without filler words
-6. ✅ Avoid **generic words** (document, file, report)
-7. ✅ Test with **diverse document types**
-8. ✅ Monitor **accuracy metrics** over time
-9. ✅ Expand **keyword coverage** iteratively
-10. ✅ Keep **prompts concise and clear**
+### DO:
+1. Continue using **comma-separated keyword terms**
+2. Maintain **20-40 terms per description**
+3. Include **synonyms and related vocabulary**
+4. Focus on **domain-specific terminology**
+5. Keep descriptions **dense** without filler words
+6. Avoid **generic words** (document, file, report)
+7. Test with **diverse document types**
+8. Monitor **accuracy metrics** over time
+9. Expand **keyword coverage** iteratively
+10. Keep **prompts concise and clear**
 
-### **DON'T:**
-1. ❌ Switch to **natural language descriptions**
-2. ❌ Add **explanatory text** ("Documents contain...")
-3. ❌ Include **grammatical structure**
-4. ❌ Use **overly specific examples**
-5. ❌ Reduce **keyword density**
-6. ❌ Ignore **similarity metrics**
-7. ❌ Overfit to **training examples**
-8. ❌ Add **filler words** or **connectors**
-9. ❌ Assume **without testing**
-10. ❌ Complicate what **works simply**
+### DON'T:
+1. Switch to **natural language descriptions**
+2. Add **explanatory text** ("Documents contain...")
+3. Include **grammatical structure**
+4. Use **overly specific examples**
+5. Reduce **keyword density**
+6. Ignore **similarity metrics**
+7. Overfit to **training examples**
+8. Add **filler words** or **connectors**
+9. Assume **without testing**
+10. Complicate what **works simply**
 
 ---
 
-## 🏆 Conclusion
+## Conclusion
 
 The comprehensive testing with 75 NCERT files definitively proved that:
 
-### **Keyword Terms >> Natural Language**
+### Keyword Terms >> Natural Language
 
 **Results:**
 - **+32% accuracy improvement** (24% → 56%)
@@ -548,14 +549,14 @@ The comprehensive testing with 75 NCERT files definitively proved that:
 5. Stronger classification signals
 
 **Recommendation:**
-✅ **Keep using the original keyword-based approach** - it's proven superior for SBERT semantic matching with academic documents.
+Keep using the original keyword-based approach - it's proven superior for SBERT semantic matching with academic documents.
 
 ---
 
-**Status:** ✅ **Analysis Complete - Keyword Approach Validated**  
+**Status:** Analysis Complete - Keyword Approach Validated  
 **Date:** 2025-12-05  
 **Test Files:** 75 NCERT documents  
-**Verdict:** **Original Keywords Win by a Landslide!** 🏆
+**Verdict:** **Original Keywords Win by a Landslide!**
 
 ---
 

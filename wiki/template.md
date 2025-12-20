@@ -1,345 +1,178 @@
 ---
-title: "Documentation Template"
+title: "Wiki Page Template"
 permalink: /wiki/template/
 ---
 
-# 📝 FileSense Documentation Template
+# Wiki Page Template
 
-Use this template when creating new wiki pages.
-
----
-
-## Basic Page Structure
-
-```markdown
----
-title: "Page Title"
-permalink: /wiki/page-slug/
+Use this template to create new pages for the FileSense wiki.
 
 ---
 
-# 🎯 Page Title
+## 1. Page Header
 
-Brief introduction explaining what this page covers.
+Every page MUST include a YAML frontmatter block at the very top.
 
+```yaml
 ---
-
-## Section Heading
-
-Content goes here.
-
-### Subsection
-
-More detailed content.
-
+title: "Your Page Title"
+permalink: /wiki/your-page-url/
 ---
-
-## Code Examples
-
-\`\`\`python
-# Python code
-def example():
-    return "Hello World"
-\`\`\`
-
-\`\`\`bash
-# Bash commands
-python scripts/script.py --dir ./files
-\`\`\`
-
----
-
-## Tables
-
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| Data 1   | Data 2   | Data 3   |
-| Data 4   | Data 5   | Data 6   |
-
----
-
-## Notice Blocks
-
-> **Info Block**
->
-> **Success Block**
->
-> **Warning Block**
->
-> **Danger Block**
-
----
-
-## Mermaid Diagrams
-
-\`\`\`mermaid
-flowchart LR
-    A[Start] --> B[Process]
-    B --> C[End]
-\`\`\`
-
----
-
-## Links
-
-- Internal: [Getting Started](/FileSense/wiki/getting-started/)
-- External: [GitHub](https://github.com/ahhyoushh/FileSense)
-
----
-
-[← Back to Home](/FileSense/wiki/)
-\`\`\`
-
----
-
-## Styling Guidelines
-
-### Emojis for Visual Hierarchy
-
-Use emojis to make sections visually distinct:
-
-- 🎯 Goals/Objectives
-- 📊 Data/Metrics
-- 🔧 Technical Details
-- 💡 Tips/Insights
-- ⚠️ Warnings
-- ✅ Success/Best Practices
-- ❌ Failures/Don'ts
-- 🚀 Quick Start/Actions
-- 📚 Resources/References
-- 🎓 Learning/Education
-
-### Notice Blocks
-
-```markdown
-> **This is important information**
->
-> **This worked well**
->
-> **Be careful about this**
->
-> **This is critical - don't ignore**
 ```
 
-### Code Blocks with Language
+---
 
-Always specify the language for syntax highlighting:
+## 2. Basic Structure
 
-```markdown
-\`\`\`python
-# Python code
-\`\`\`
+### Page Title (H1)
+Use a single H1 for the page title.
 
-\`\`\`bash
-# Bash commands
-\`\`\`
+### Introduction
+Provide a brief 1-2 sentence overview of what this page covers.
 
-\`\`\`json
-{
-  "key": "value"
-}
-\`\`\`
+### Horizontal Rule
+Use `---` to separate the header from the content.
 
-\`\`\`yaml
-key: value
-\`\`\`
+### Sections (H2)
+Organize your content using H2 headers.
+
+---
+
+## 3. Styling Guidelines
+
+### Perspective
+Use **first-person singular** ("I", "my") throughout the documentation. FileSense is a one-person project, and the voice should reflect that personal, developer-focused perspective.
+
+### Emojis
+Do **not** use decorative emojis in headings or body text. Keep the documentation clean, professional, and minimal. Emojis should only be used if they convey specific technical meaning (which is rare).
+
+### Notice Blocks
+Use blockquotes for important notes.
+
+> **Note:** This is an important piece of information.
+> **Warning:** This is a critical warning.
+> **Tip:** This is a helpful tip.
+
+### Code Blocks
+Always specify the language for syntax highlighting.
+
+```python
+def example_function():
+    return "FileSense is awesome"
 ```
 
 ### Tables
+Use tables for comparisons or structured data.
 
-Use tables for structured data:
+| Feature | Description | Status |
+|---------|-------------|--------|
+| Feature A | Description A | Done |
+| Feature B | Description B | WIP  |
 
-```markdown
-| Header 1 | Header 2 | Header 3 |
-|----------|----------|----------|
-| Cell 1   | Cell 2   | Cell 3   |
-```
+### Diagrams (Mermaid)
+I support Mermaid diagrams for architecture and flowcharts.
 
-### Mermaid Diagrams
-
-For flowcharts and diagrams:
-
-```markdown
-\`\`\`mermaid
-flowchart TD
-    A[Input] --> B[Process]
+```mermaid
+graph LR
+    A[Start] --> B(Process)
     B --> C{Decision}
-    C -->|Yes| D[Output A]
-    C -->|No| E[Output B]
-\`\`\`
+    C -->|Yes| D[Success]
+    C -->|No| E[Fail]
 ```
 
 ---
 
-## Page Types
+## 4. Page Types
 
-### Tutorial Pages
+### Tutorial / How-To
+- Focus on actionable steps
+- Use numbered lists
+- Include sample commands
+- Add a "Troubleshooting" section at the end
 
-Structure:
-1. Introduction
-2. Prerequisites
-3. Step-by-step instructions
-4. Expected output
-5. Troubleshooting
-6. Next steps
+### Reference
+- Technical details, API documentation
+- Use tables for parameters/return values
+- Keep descriptions concise
+- Links to source code
 
-### Reference Pages
-
-Structure:
-1. Overview
-2. API/Function list
-3. Parameters
-4. Return values
-5. Examples
-6. Related functions
-
-### Concept Pages
-
-Structure:
-1. What is it?
-2. Why does it matter?
-3. How does it work?
-4. When to use it?
-5. Examples
-6. Further reading
+### Concept / Research
+- Explain theoretical background
+- Include diagrams
+- Reference testing data (e.g., NCERT benchmarks)
+- Links to related research papers
 
 ---
 
-## Checklist for New Pages
+## 5. Checklist for New Pages
 
-- [ ] Title and permalink set
-- [ ] TOC enabled
-- [ ] Introduction paragraph
-- [ ] Sections with clear headings
-- [ ] Code examples (if applicable)
-- [ ] Tables for structured data
-- [ ] Notice blocks for important info
-- [ ] Links to related pages
-- [ ] Back to home link at bottom
-- [ ] Spell-checked
-- [ ] Tested locally
+Before publishing, ensure:
+1. [ ] YAML frontmatter is present and correct
+2. [ ] Perspective is "I" (first-person singular)
+3. [ ] No decorative emojis are used
+4. [ ] All links are working (use relative paths for wiki links)
+5. [ ] Images have descriptive alt text
+6. [ ] Tables are centered (template handles this via CSS)
+7. [ ] Mermaid diagrams render correctly
+8. [ ] Page is added to the sidebar (if applicable)
 
 ---
 
-## Example Pages
+## 6. Example: Good Page Structure
 
-**Good Examples:**
-- [Getting Started](/FileSense/wiki/getting-started/) - Tutorial style
-- [Architecture](/FileSense/wiki/pipeline/) - Technical reference
-- [Lessons Learned](/FileSense/wiki/lessons-learned/) - Concept/insight page
+# Example Page
 
----
-
-## Tips for Writing
-
-### Be Concise
-
-❌ Bad:
-> "In this section, we will discuss the various different ways in which you can potentially configure the system settings to optimize performance."
-
-✅ Good:
-> "Configure these settings to optimize performance:"
-
-### Use Active Voice
-
-❌ Bad:
-> "The file is processed by the system."
-
-✅ Good:
-> "FileSense processes the file."
-
-### Show, Don't Just Tell
-
-❌ Bad:
-> "FileSense is fast."
-
-✅ Good:
-> "FileSense processes 75 files in 5 seconds (0.27s per file)."
-
-### Use Examples
-
-Always include:
-- Code examples
-- Command examples
-- Expected output
-- Common use cases
+This is an example of what a good wiki page looks like.
 
 ---
 
-## Markdown Cheatsheet
+## Overview
+I designed FileSense to handle high volumes of academic documents. This page explains the methodology.
 
-### Headers
+## Methodology
+I used a dual-extraction approach to ensure high-quality text for the embedding model.
 
-```markdown
-# H1
-## H2
-### H3
-#### H4
-```
+1. **Primary Extraction:** Uses `pdfplumber` to extract text from the core pages.
+2. **Fallback Extraction:** Triggered if confidence is below 0.35.
 
-### Emphasis
+## Results
+Testing on the NCERT dataset showed a 56% accuracy rate.
 
-```markdown
-*italic*
-**bold**
-***bold italic***
-~~strikethrough~~
-```
+| Dataset | Files | Accuracy |
+|---------|-------|----------|
+| NCERT   | 75    | 56%      |
+| STEM    | 50    | 48%      |
+
+---
+
+## 7. Markdown Cheatsheet
 
 ### Lists
+- Item 1
+- Item 2
+  - Sub-item 2.1
 
-```markdown
-- Unordered item
-- Another item
-  - Nested item
+1. Step 1
+2. Step 2
 
-1. Ordered item
-2. Another item
-   1. Nested item
-```
-
-### Links
-
-```markdown
-[Link text](URL)
-[Internal link](/FileSense/wiki/page/)
-```
+### Formatting
+- **Bold text**
+- *Italic text*
+- `Inline code`
+- [Link Text](URL)
 
 ### Images
-
-```markdown
-![Alt text](/path/to/image.png)
-```
-
-### Blockquotes
-
-```markdown
-> This is a quote
-```
-
-### Horizontal Rule
-
-```markdown
----
-```
+`![Alt Text](/path/to/image.png)`
 
 ---
 
-## Publishing Workflow
+## 8. Publishing Workflow
 
-1. **Create** the markdown file in `wiki/`
-2. **Add** to navigation in `_data/navigation.yml`
-3. **Test** locally (if possible)
-4. **Commit** and push to GitHub
-5. **Verify** on GitHub Pages
-
----
-
-## Questions?
-
-- Check existing pages for examples
-- Review [Contrast Theme documentation](https://github.com/niklasbuschmann/contrast)
-- Ask in GitHub discussions
+1. Create a new `.md` file in the `wiki/` directory.
+2. Use the template structure.
+3. Verify rendering locally (if using a local Jekyll server).
+4. Commit and push to GitHub.
+5. GH Actions will automatically rebuild the site.
 
 ---
 

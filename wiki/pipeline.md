@@ -4,51 +4,51 @@ permalink: /wiki/pipeline/
 
 ---
 
-# 🏗️ System Architecture
+# System Architecture
 
 Understanding how FileSense processes and classifies files.
 
 ---
 
-## 📊 High-Level Overview
+## High-Level Overview
 
 ```mermaid
 flowchart TB
     subgraph Input
-        A[📄 Input Files<br/>PDF, DOCX, TXT, MD]
+        A[Input Files<br/>PDF, DOCX, TXT, MD]
     end
     
     subgraph Extraction
-        B[📝 Text Extraction<br/>pdfplumber, python-docx]
-        C[🔍 Fallback Extraction<br/>Middle pages, OCR]
+        B[Text Extraction<br/>pdfplumber, python-docx]
+        C[Fallback Extraction<br/>Middle pages, OCR]
     end
     
-    subgraph RLAgent [🧠 RL Agent]
-        D[🤖 Epsilon-Greedy Policy<br/>Exploit vs Explore]
+    subgraph RLAgent [RL Agent]
+        D[Epsilon-Greedy Policy<br/>Exploit vs Explore]
     end
     
     subgraph Embedding
-        E[🔢 SBERT Encoding<br/>BGE-Base v1.5<br/>768 dimensions]
+        E[SBERT Encoding<br/>BGE-Base v1.5<br/>768 dimensions]
     end
     
     subgraph Search
-        F[🎯 FAISS Vector Search<br/>IndexFlatIP<br/>Cosine Similarity]
-        G{Similarity ≥ 0.40?}
+        F[FAISS Vector Search<br/>IndexFlatIP<br/>Cosine Similarity]
+        G{Similarity >= 0.40?}
     end
     
     subgraph Classification
-        H[✅ High Confidence<br/>Assign to Folder]
-        I[✨ Generative Fallback<br/>Ask Gemini]
+        H[High Confidence<br/>Assign to Folder]
+        I[Generative Fallback<br/>Ask Gemini]
     end
     
     subgraph Update
-        J[💾 Update Labels<br/>folder_labels.json]
-        K[🔄 Rebuild Index<br/>FAISS re-indexing]
-        L[🔁 Re-classify]
+        J[Update Labels<br/>folder_labels.json]
+        K[Rebuild Index<br/>FAISS re-indexing]
+        L[Re-classify]
     end
     
     subgraph Output
-        M[📁 Move to Sorted Folder]
+        M[Move to Sorted Folder]
     end
     
     A --> B
@@ -68,7 +68,7 @@ flowchart TB
 
 ---
 
-## 🔄 Processing Pipeline
+## Processing Pipeline
 
 ### Step 1: Text Extraction
 
@@ -141,7 +141,6 @@ text_emb = model.encode([text], normalize_embeddings=True)
 ```
 
 **Model Details:**
-**Model Details:**
 - **Name:** BAAI/bge-base-en-v1.5
 - **Dimensions:** 768
 - **Normalization:** L2 normalized for cosine similarity
@@ -174,7 +173,7 @@ for idx, sim in zip(I[0], D[0]):
 
 > **Why Cosine Similarity?**
 >
-> We use cosine similarity because it compares **semantic direction** instead of vector magnitude. This avoids bias from unequal text lengths and keyword-heavy folder descriptions. It aligns better with how sentence-embedding models are trained (on angular distance), ensuring more accurate matching of file content to topic labels.
+> I use cosine similarity because it compares **semantic direction** instead of vector magnitude. This avoids bias from unequal text lengths and keyword-heavy folder descriptions. It aligns better with how sentence-embedding models are trained (on angular distance), ensuring more accurate matching of file content to topic labels.
 
 **Keyword Boosting:**
 ```python
@@ -277,7 +276,7 @@ def create_faiss_index():
 
 ---
 
-## 🗂️ Data Structures
+## Data Structures
 
 ### folder_labels.json
 
@@ -311,7 +310,7 @@ def create_faiss_index():
 
 ---
 
-## 🧵 Multithreading Architecture
+## Multithreading Architecture
 
 **File:** `scripts/multhread.py`
 
@@ -340,7 +339,7 @@ def process_multiple(files_dir, max_threads, testing=False, allow_generation=Tru
 
 ---
 
-## 🔍 Fallback Mechanisms
+## Fallback Mechanisms
 
 ### 1. Fallback Text Extraction
 
@@ -390,7 +389,7 @@ if retries >= MAX_RETRIES:
 
 ---
 
-## 📊 Performance Characteristics
+## Performance Characteristics
 
 ### Time Complexity
 
@@ -427,7 +426,7 @@ if retries >= MAX_RETRIES:
 
 ---
 
-## 🔧 Configuration Points
+## Configuration Points
 
 ### Similarity Thresholds
 
@@ -473,7 +472,7 @@ LEARNING_RATE = 0.1    # Q-Learning rate
 
 ---
 
-## 🎓 Design Decisions
+## Design Decisions
 
 ### Why FAISS over other vector DBs?
 
@@ -507,7 +506,7 @@ See [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for details.
 
 ---
 
-## 📚 Related Documentation
+## Related Documentation
 
 - **[API Reference](/FileSense/wiki/api-reference/)** - Function documentation
 - **[Performance Metrics](/FileSense/wiki/metrics/)** - Benchmarks

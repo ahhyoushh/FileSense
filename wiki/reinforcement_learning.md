@@ -5,8 +5,8 @@ permalink: /wiki/rl/
 
 # Reinforcement Learning Integration
 
-## 🧠 The Epsilon-Greedy Bandit Agent
-FileSense has permanently evolved from a static script to an **adaptive intelligent system**. Integrated a **Reinforcement Learning (RL)** agent based on the **Epsilon-Greedy Bandit** algorithm.
+## The Epsilon-Greedy Bandit Agent
+FileSense has permanently evolved from a static script to an **adaptive intelligent system**. I integrated a **Reinforcement Learning (RL)** agent based on the **Epsilon-Greedy Bandit** algorithm.
 
 ### Core Logic
 The agent's goal is to maximize **Accuracy** while minimizing **Latency** and **API Costs**. It achieves this by dynamically choosing between three operating policies for every file it encounters:
@@ -22,13 +22,13 @@ The agent's goal is to maximize **Accuracy** while minimizing **Latency** and **
 2. **Action:** The Agent selects a policy (A, B, or C).
    - *Exploration:* Tries random policies to discover new efficiencies (Epsilon = 10%).
    - *Exploitation:* Chooses the best-known policy for reliability (90%).
-3. **Reward:** 
+3. **Reward:**
    - **+1 (Success):** File was sorted correctly without manual intervention.
    - **0 (Failure):** File required manual sorting or API failed.
 
 ---
 
-## 🚧 The Rate Limit Bottleneck (Why paused)
+## The Rate Limit Bottleneck (Why paused)
 
 While the RL architecture is sound and fully implemented, I hit a **hard external constraint** during real-world testing.
 
@@ -47,7 +47,7 @@ The RL implementation correctly identified API calls as expensive. The issue was
 
 ---
 
-## 🔄 Architectural Refinement: Event-Only Logging
+## Architectural Refinement: Event-Only Logging
 
 The system now follows a **strict event-first design**:
 - File processing only emits immutable `served` events
@@ -58,7 +58,7 @@ This ensures determinism, thread safety, and auditability.
 
 ---
 
-## 🧮 Offline Policy Rebuild
+## Offline Policy Rebuild
 
 Policy learning is performed via:
 `scripts/RL/rebuild_policy_stats.py`

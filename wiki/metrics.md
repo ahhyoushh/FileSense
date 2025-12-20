@@ -8,7 +8,7 @@ permalink: /wiki/metrics/
 
 ## Abstract
 
-This document presents a systematic evaluation of FileSense, a semantic document classification system utilizing Sentence-BERT embeddings and FAISS vector search. We evaluate performance across multiple datasets and description strategies, providing empirical evidence for optimal configuration choices.
+This document presents a systematic evaluation of FileSense, a semantic document classification system utilizing Sentence-BERT embeddings and FAISS vector search. I evaluate performance across multiple datasets and description strategies, providing empirical evidence for optimal configuration choices.
 
 ---
 
@@ -114,7 +114,7 @@ The system's Reinforcement Learning (RL) agent evaluates runtime strategies to o
 The RL agent has demonstrated that **Policy C** (Generation Disabled) provides optimal efficiency for this dataset. By leveraging optimized similarity thresholds (0.35) instead of fallback text generation, the system achieves high classification accuracy while eliminating the latency associated with Generative AI calls. This confirms that for standard academic documents, vector-based retrieval is sufficient.
 
 > **Note on Future Scalability:**  
-> To re-enable Policy A/B (Generation) without API rate limits, we are pivoting to **Supervised Fine-Tuning (SFT)** of local models. This will allow the RL agent to explore generative policies with zero marginal cost.
+> To re-enable Policy A/B (Generation) without API rate limits, I am pivoting to **Supervised Fine-Tuning (SFT)** of local models. This will allow the RL agent to explore generative policies with zero marginal cost.
 
 ### 2.5 Reference Model Comparison
 
@@ -129,9 +129,9 @@ I conducted a head-to-head comparison of three embedding models to determine the
 
 | Feature | `mpnet-base` (Legacy) | `MiniLM-L12` (Speed) | `bge-base` (New Standard) |
 | :--- | :--- | :--- | :--- |
-| **Speed (23 files)** | 16.05s | **8.30s** ⚡ | **8.39s** ⚡ |
-| **Accuracy** | High | Medium | **Perfect (100%)** 🏆 |
-| **Avg Confidence** | 0.35 - 0.52 | 0.30 - 0.45 | **0.55 - 0.79** 🚀 |
+| **Speed (23 files)** | 16.05s | **8.30s** | **8.39s** |
+| **Accuracy** | High | Medium | **Perfect (100%)** |
+| **Avg Confidence** | 0.35 - 0.52 | 0.30 - 0.45 | **0.55 - 0.79** |
 | **Failed Files** | 1 (PDF Noise) | 4 (Extraction Fail) | **0** |
 
 **Key Findings:**
@@ -147,7 +147,7 @@ I conducted a head-to-head comparison of three embedding models to determine the
 
 ### 3.1 Keyword Superiority
 
-The empirical results demonstrate that keyword-based descriptions consistently outperform natural language across all tested datasets. We attribute this to three primary factors:
+The empirical results demonstrate that keyword-based descriptions consistently outperform natural language across all tested datasets. I attribute this to three primary factors:
 
 **3.1.1 Semantic Density**
 
@@ -221,15 +221,15 @@ The consistency of keyword superiority across NCERT and STEM datasets (academic 
 ### 4.3 Practical Recommendations
 
 **For Academic/Professional Documents:**
-- ✅ Use keyword-based descriptions
-- ✅ Maintain 20-40 terms per category
-- ✅ Include synonyms and related concepts
-- ✅ Avoid grammatical connectors
+- Use keyword-based descriptions
+- Maintain 20-40 terms per category
+- Include synonyms and related concepts
+- Avoid grammatical connectors
 
 **For News/Informal Content:**
-- ⚠️ Consider alternative approaches
-- ⚠️ May require domain-specific tuning
-- ⚠️ Hybrid methods recommended
+- Consider alternative approaches
+- May require domain-specific tuning
+- Hybrid methods recommended
 
 ---
 

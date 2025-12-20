@@ -4,13 +4,13 @@ permalink: /wiki/faq/
 
 ---
 
-# ❓ Frequently Asked Questions
+# Frequently Asked Questions
 
-No one asked 🥀
+No one asked 🥀.
 
 ---
 
-## 🎯 General Questions
+## General Questions
 
 ### What is FileSense?
 
@@ -32,10 +32,10 @@ FileSense is an intelligent file organizer that classifies documents by their **
 ### Is my data sent to the cloud?
 
 **Partially.** Here's what happens:
-- ✅ **Local:** Text extraction, embedding generation, vector search
-- ☁️ **Cloud:** Only when generating new labels (Gemini API)
-- 🔒 **Privacy:** File content is sent to Gemini only for classification, not stored
-- 🪵 **logs:** all rl logs are sent to supabase storage
+- **Local:** Text extraction, embedding generation, vector search
+- **Cloud:** Only when generating new labels (Gemini API)
+- **Privacy:** File content is sent to Gemini only for classification, not stored
+- **Logs:** all rl logs are sent to supabase storage
 > **Info:** **You can disable cloud features** with `--no-generation` flag.
 
 ---
@@ -46,12 +46,12 @@ FileSense is an intelligent file organizer that classifies documents by their **
 
 | Format | Support | Notes |
 |--------|---------|-------|
-| **PDF** | ✅ Full | Text-based and scanned (OCR) |
-| **DOCX** | ✅ Full | Microsoft Word documents |
-| **TXT** | ✅ Full | Plain text files |
-| **MD** | ✅ Full | Markdown files |
-| **Images** | ⚠️ Partial | OCR only (requires Tesseract) |
-| **Others** | ❌ No | Filename-based classification only |
+| **PDF** | Full | Text-based and scanned (OCR) |
+| **DOCX** | Full | Microsoft Word documents |
+| **TXT** | Full | Plain text files |
+| **MD** | Full | Markdown files |
+| **Images** | Partial | OCR only (requires Tesseract) |
+| **Others** | No | Filename-based classification only |
 
 ### How accurate is the classification?
 
@@ -68,31 +68,29 @@ FileSense is an intelligent file organizer that classifies documents by their **
 
 ### What embedding model is used?
 
-**Model:** `all-mpnet-base-v2` (SentenceTransformers)
+**Model:** `BAAI/bge-base-en-v1.5` (SentenceTransformers)
 - **Dimensions:** 768
 - **Performance:** Best balance of speed and accuracy
 - **Size:** ~420MB download on first run
 
 > **Warning:**
 >
-> Testing showed that lighter models performed **significantly worse**. The all-mpnet-base-v2 model is optimal for this use case.
+> Testing showed that lighter models performed **significantly worse**. The BAAI/bge-base-en-v1.5 model is optimal for this use case.
 
 ### Can I use a different embedding model?
 
 Yes! Edit `scripts/create_index.py`:
 
 ```python
-MODEL_NAME = "all-mpnet-base-v2"  # Change this
+MODEL_NAME = "BAAI/bge-base-en-v1.5"  # Change this
 ```
 
 **Recommended alternatives:**
 - `all-MiniLM-L6-v2` - Faster, less accurate
-- `all-mpnet-base-v2` - **Best balance** (recommended)
+- `all-mpnet-base-v2` - Competitive with current model
 - `multi-qa-mpnet-base-dot-v1` - Better for Q&A documents
 
 ---
-
-## 🚀 Usage Questions
 
 ### How do I organize my Downloads folder?
 
@@ -148,7 +146,7 @@ Files that don't match any category (similarity < threshold) are moved to `sorte
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Files are not being classified correctly
 
@@ -250,14 +248,14 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 ### How much disk space does it need?
 
 **Minimal:**
-- **Embedding model:** ~420MB (one-time download)
+- **Embedding model:** ~440MB (one-time download)
 - **FAISS index:** <1MB per 100 labels
 - **Dependencies:** ~500MB total
 - **Logs:** Varies (can be disabled)
 
 ---
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 ### Is my data safe?
 
@@ -279,8 +277,8 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 ### Can I use FileSense offline?
 
 **Partially:**
-- ✅ Classification works offline (after initial setup)
-- ❌ New label generation requires internet (Gemini API)
+- Classification works offline (after initial setup)
+- New label generation requires internet (Gemini API)
 
 **Offline workflow:**
 1. Pre-generate all labels online
@@ -289,38 +287,38 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 
 ---
 
-## 🚧 Known Limitations
+## Known Limitations
 
 ### Current Limitations
 
-1. **Natural language descriptions perform worse** than keywords
-   - Tested extensively, keywords are superior
-   - See [NL vs OG study](/FileSense/wiki/NL_VS_OG/)
+1.  **Natural language descriptions perform worse** than keywords
+    - Tested extensively, keywords are superior
+    - See [NL vs OG study](/FileSense/wiki/NL_VS_OG/)
 
-2. **Lighter models reduce accuracy significantly**
-   - Stick with all-mpnet-base-v2
-   - Don't use smaller models for production
+2.  **Lighter models reduce accuracy significantly**
+    - Now using BAAI/bge-base-en-v1.5 as optimal
+    - Don't use smaller models for production
 
-3. **AG News dataset showed poor results**
-   - FileSense works best with academic/professional documents
-   - News articles may need different approach
+3.  **AG News dataset showed poor results**
+    - FileSense works best with academic/professional documents
+    - News articles may need different approach
 
-4. **Text classification is inherently challenging**
-   - This might be an inefficient approach for some use cases
-   - Consider as a learning experience
+4.  **Text classification is inherently challenging**
+    - This might be an inefficient approach for some use cases
+    - Consider as a learning experience
 
 > **Warning:** **These insights are from real testing and development.**
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 ### How can I contribute?
 
-1. **Report bugs:** [GitHub Issues](https://github.com/ahhyoushh/FileSense/issues)
-2. **Suggest features:** Open a discussion
-3. **Submit PRs:** Fork, improve, and submit
-4. **Improve docs:** Help expand this wiki
+1.  **Report bugs:** [GitHub Issues](https://github.com/ahhyoushh/FileSense/issues)
+2.  **Suggest features:** Open a discussion
+3.  **Submit PRs:** Fork, improve, and submit
+4.  **Improve docs:** Help expand this wiki
 
 ### Where can I get help?
 
@@ -330,7 +328,7 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - **[Getting Started](/FileSense/wiki/getting-started/)** - Installation guide
 - **[Architecture](/FileSense/wiki/pipeline/)** - How it works

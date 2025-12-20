@@ -4,19 +4,19 @@ permalink: /wiki/lessons-learned/
 
 ---
 
-# 🎓 Lessons Learned
+# Lessons Learned
 
 Key insights and discoveries from developing FileSense.
 
 ---
 
-## 🔬 Major Discoveries
+## Major Discoveries
 
 ### 1. Keyword Descriptions >> Natural Language
 
 **Hypothesis:** Natural language descriptions mimicking document content would match better with SBERT embeddings.
 
-**Result:** ❌ **Completely Wrong**
+**Result:** **Completely Wrong**
 
 | Approach | Accuracy | Avg Similarity | Uncategorized |
 |----------|----------|----------------|---------------|
@@ -55,14 +55,14 @@ Key insights and discoveries from developing FileSense.
 
 **Hypothesis:** Smaller embedding models would provide acceptable accuracy with better speed.
 
-**Result:** ❌ **Significantly Worse**
+**Result:** **Significantly Worse**
 
 **Tested Models:**
-- `all-MiniLM-L6-v2` (384 dims, 80MB) - ❌ Poor accuracy
-- `all-mpnet-base-v2` (768 dims, 420MB) - ✅ Best performance
-- `multi-qa-mpnet-base-dot-v1` (768 dims) - ⚠️ Moderate
+- `all-MiniLM-L6-v2` (384 dims, 80MB) - Poor accuracy
+- `BAAI/bge-base-en-v1.5` (768 dims, 440MB) - Best performance
+- `multi-qa-mpnet-base-dot-v1` (768 dims) - Moderate
 
-> **Lesson:** The performance drop from lighter models is **not worth** the size/speed gains. Stick with `all-mpnet-base-v2`.
+> **Lesson:** The performance drop from lighter models is **not worth** the size/speed gains. Now using `BAAI/bge-base-en-v1.5`.
 
 ---
 
@@ -70,12 +70,12 @@ Key insights and discoveries from developing FileSense.
 
 **Hypothesis:** FileSense would work well across different document types.
 
-**Result:** ⚠️ **Domain-Specific Performance**
+**Result:** **Domain-Specific Performance**
 
 **Findings:**
-- **Academic documents:** ✅ Good (56% accuracy)
-- **News articles:** ❌ Poor (see evaluation logs)
-- **Professional documents:** ✅ Acceptable
+- **Academic documents:** Good (56% accuracy)
+- **News articles:** Poor (see evaluation logs)
+- **Professional documents:** Acceptable
 
 **Why News Failed:**
 - Different linguistic structure
@@ -104,7 +104,7 @@ Key insights and discoveries from developing FileSense.
 
 ---
 
-## 💡 Technical Insights
+## Technical Insights
 
 ### SBERT Behavior
 
@@ -176,7 +176,7 @@ Key insights and discoveries from developing FileSense.
 
 ---
 
-## 🚧 Development Challenges
+## Development Challenges
 
 ### Challenge 1: Merging Metadata
 
@@ -229,7 +229,7 @@ for term_list in (old_terms, llm_terms, new_terms):
 
 ---
 
-## 📊 Unexpected Findings
+## Unexpected Findings
 
 ### 1. Filename Boosting is Effective
 
@@ -275,7 +275,7 @@ for term_list in (old_terms, llm_terms, new_terms):
 
 ---
 
-## 🎯 What Would I Do Differently?
+## What Would I Do Differently?
 
 ### 1. Start with Keywords
 
@@ -317,7 +317,7 @@ for term_list in (old_terms, llm_terms, new_terms):
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 ### Based on Lessons Learned
 
@@ -343,18 +343,18 @@ for term_list in (old_terms, llm_terms, new_terms):
 
 ---
 
-## 📚 Key Takeaways
+## Key Takeaways
 
-### ✅ Do This
+### Do This
 
 1. **Use keyword-based descriptions** for SBERT
-2. **Stick with proven models** (all-mpnet-base-v2)
+2. **Stick with proven models** (BAAI/bge-base-en-v1.5)
 3. **Test early and often** with real data
 4. **Focus on specific use cases** (academic docs)
 5. **Implement fallback strategies** (extraction, thresholds)
 6. **Never lose user data** (append, don't replace)
 
-### ❌ Don't Do This
+### Don't Do This
 
 1. **Assume natural language is better** - Test first!
 2. **Use lighter models** - Performance drop is real
@@ -365,7 +365,7 @@ for term_list in (old_terms, llm_terms, new_terms):
 
 ---
 
-## 🎓 Meta-Lessons
+## Meta-Lessons
 
 ### On Machine Learning
 
@@ -390,15 +390,15 @@ for term_list in (old_terms, llm_terms, new_terms):
 **Lesson:** Document what doesn't work, not just what does.
 
 This wiki includes:
-- ❌ Failed approaches (NL descriptions)
-- ⚠️ Limitations (news articles)
-- 🎓 Lessons learned (model selection)
+- Failed approaches (NL descriptions)
+- Limitations (news articles)
+- Lessons learned (model selection)
 
 **Honest documentation helps future developers avoid the same mistakes.**
 
 ---
 
-## 📖 Recommended Reading
+## Recommended Reading
 
 ### For Understanding SBERT
 - [Sentence-BERT Paper](https://arxiv.org/abs/1908.10084)
@@ -414,7 +414,7 @@ This wiki includes:
 
 ---
 
-## 🤝 Contributing Your Lessons
+## Contributing Your Lessons
 
 Have you learned something new while using FileSense?
 

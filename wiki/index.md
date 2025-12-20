@@ -11,9 +11,9 @@ FileSense uses **SentenceTransformers (SBERT)** and **FAISS vector search** to o
 
 ---
 
-## ⚠️ UPDATE: Infrastructure Shift to SFT
+## UPDATE: Infrastructure Shift to SFT
 
-**Integrated a Reinforcement Learning architecture.** However, due to Google Gemini's Free Tier Rate Limits, Temporarily pivoting the *generation* backend to Local SFT.
+**Integrated a Reinforcement Learning architecture.** However, due to Google Gemini's Free Tier Rate Limits, I am temporarily pivoting the *generation* backend to Local SFT.
 
 ### The Challenge
 The **RL Agent** works as intended, optimizing for speed. However, effectively "training" the agent requires frequent API calls, which triggers Google's **429 Rate Limit**, forcing 60-second delays.
@@ -26,7 +26,7 @@ See the full analysis: **[Reinforcement Learning Architecture](/FileSense/wiki/r
 
 ---
 
-## ⚡ Quick Links
+## Quick Links
 
 *   **[Getting Started](/FileSense/wiki/getting-started/)**: Install and run FileSense in 5 minutes
 *   **[Performance Metrics](/FileSense/wiki/metrics/)**: See benchmarks and optimization studies
@@ -34,39 +34,39 @@ See the full analysis: **[Reinforcement Learning Architecture](/FileSense/wiki/r
 
 ---
 
-## 🎯 Core Features
+## Core Features
 
 | Feature | Description |
 |---------|-------------|
-| 🧠 **Semantic Sorting** | Classifies by meaning (e.g., "Newton's Laws" → Physics) |
-| 🟣 **Reinforcement Learning** | Adaptive agent that optimizes sorting policies over time |
-| 🤖 **AI-Powered Labeling** | Uses GenAI to create new categories automatically |
-| ⚡ **FAISS Vector Search** | Lightning-fast similarity matching with embeddings |
-| 🔄 **Self-Updating** | Automatically rebuilds index when new labels are created |
-| 👀 **OCR Support** | Extracts text from scanned PDFs and images |
-| 🧩 **Keyword Boosting** | Hybrid approach: Vector similarity + keyword matching |
-| 🖥️ **GUI & CLI** | Desktop app with system tray + command-line interface |
+| Semantic Sorting | Classifies by meaning (e.g., "Newton's Laws" → Physics) |
+| Reinforcement Learning | Adaptive agent that optimizes sorting policies over time |
+| AI-Powered Labeling | Uses GenAI to create new categories automatically |
+| FAISS Vector Search | Lightning-fast similarity matching with embeddings |
+| Self-Updating | Automatically rebuilds index when new labels are created |
+| OCR Support | Extracts text from scanned PDFs and images |
+| Keyword Boosting | Hybrid approach: Vector similarity + keyword matching |
+| GUI & CLI | Desktop app with system tray + command-line interface |
 
 ---
 
-## 📊 How It Works
+## How It Works
 
 ```mermaid
 flowchart TD
-    A[📄 Input File] --> B[📝 Extract Text]
-    B --> C[🔢 Generate Embedding<br/>SBERT all-mpnet-base-v2]
-    C --> D{🎯 Similarity ≥ 0.40?}
-    D -->|Yes| E[✅ Classify to Existing Folder]
-    D -->|No| F[🤖 Ask Agent (RL)]
-    F --> G{Polciy A/B/C?}
-    G --> H[💾 Update folder_labels.json]
-    H --> I[🔄 Rebuild FAISS Index]
-    I --> J[📁 Move to Sorted Folder]
+    A[Input File] --> B[Extract Text]
+    B --> C[Generate Embedding<br/>SBERT BAAI/bge-base-en-v1.5]
+    C --> D{Similarity >= 0.40?}
+    D -->|Yes| E[Classify to Existing Folder]
+    D -->|No| F[Ask Agent (RL)]
+    F --> G{Policy A/B/C?}
+    G --> H[Update folder_labels.json]
+    H --> I[Rebuild FAISS Index]
+    I --> J[Move to Sorted Folder]
 ```
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # 1. Install dependencies
@@ -84,17 +84,17 @@ python scripts/script.py --dir ./files --threads 6
 
 ---
 
-## 📚 Documentation Sections
+## Documentation Sections
 
-### 🎓 For Users
+### For Users
 - **[Getting Started](/FileSense/wiki/getting-started/)** - Installation and setup
 - **[FAQ](/FileSense/wiki/faq/)** - Common questions and troubleshooting
 
-### 🔧 For Developers
+### For Developers
 - **[Architecture](/FileSense/wiki/pipeline/)** - System design and data flow
 
 
-### 📊 Research & Analysis
+### Research & Analysis
 - **[Performance Metrics](/FileSense/wiki/metrics/)** - Benchmarks and accuracy
 - **[Reinforcement Learning](/FileSense/wiki/rl/)** - Architecture & SFT Pivot
 - **[NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/)** - Comprehensive comparison
@@ -102,20 +102,20 @@ python scripts/script.py --dir ./files --threads 6
 
 ---
 
-## 🎓 Key Insights
+## Key Insights
 
 > **Important discoveries from testing:**
 > 
 > 1. **Keyword-based descriptions outperform natural language** for SBERT embeddings (+32% accuracy)
 > 2. **Semantic descriptions performed worse** than expected (24% vs 56% accuracy)
-> 3. **Lighter models significantly reduced performance** - stick with all-mpnet-base-v2
+> 3. **Lighter models significantly reduced performance** - I recommend sticking with BAAI/bge-base-en-v1.5
 > 4. **AG News dataset showed poor results** - academic documents work best
 
 See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 
 ---
 
-## 📈 Performance Highlights
+## Performance Highlights
 
 | Metric | Value |
 |--------|-------|
@@ -123,11 +123,11 @@ See the [NL vs Keywords Study](/FileSense/wiki/NL_VS_OG/) for detailed analysis.
 | **Avg Similarity Score** | 0.355 |
 | **Categorization Rate** | 89% (11% uncategorized) |
 | **Processing Speed** | ~0.27s per file |
-| **Embedding Model** | all-mpnet-base-v2 (768 dims) |
+| **Embedding Model** | BAAI/bge-base-en-v1.5 (768 dims) |
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 FileSense is an open-source project. Contributions are welcome!
 
@@ -137,7 +137,7 @@ FileSense is an open-source project. Contributions are welcome!
 
 ---
 
-## 📝 License
+## License
 
 MIT License © 2025 Ayush Bhalerao
 
