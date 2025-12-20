@@ -52,17 +52,17 @@ def reward_event(current_label: str, predicted: str, retries: int, manual_labell
     return round(reward, 3)
 
 
-def patch_event(interaction_id: str, reward: float):
+def patch_event(interaction_id: str, reward: float, old_payload: dict):
+    # Merge existing payload with new feedback to avoid overwriting all other metadata
+    new_payload = dict(old_payload)
+    new_payload["tfeedback"] = reward
+    new_payload["tfeedback_timestamp"] = int(time.time())
+
     r = requests.patch(
         f"{SUPABASE_URL}/rest/v1/{EVENTS_TABLE}",
         headers=HEADERS,
         params={"interaction_id": f"eq.{interaction_id}"},
-        json={
-            "payload": {
-                "tfeedback": reward,
-                "tfeedback_timestamp": int(time.time()),
-            }
-        },
+        json={"payload": new_payload},
         timeout=10,
     )
     r.raise_for_status()
@@ -118,7 +118,7 @@ def run_feedback(sorted_dir_path: Optional[str] = None):
             manual_labelled=bool(payload.get("manual_labeled", False)),
         )
 
-        patch_event(interaction_id, reward)
+        patch_event(interaction_id, reward, payload)
         updated += 1
 
     print(f"[RL] rewarded events patched: {updated}")
