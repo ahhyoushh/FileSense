@@ -25,23 +25,36 @@ from create_index import create_faiss_index
 import scripts.create_index as ci
 from extract_text import extract_text
 
-from scripts.RL.rl_supabase import sync_local_to_supabase, upload_event
-from scripts.logger.rl_logger import get_rl_logger
-from scripts.RL.rl_policy import choose_policy
-from scripts.RL.rl_config import POLICIES
+DISABLE_RL = True
+
+def set_rl_disabled(disabled):
+    global DISABLE_RL
+    DISABLE_RL = disabled
+    if not DISABLE_RL:
+        print("RL management enabled.")
+    else:
+        print("RL management disabled.")
+
+# Delay imports or handle them if RL is disabled
+try:
+    from scripts.RL.rl_supabase import sync_local_to_supabase, upload_event
+    from scripts.logger.rl_logger import get_rl_logger
+    from scripts.RL.rl_policy import choose_policy
+    from scripts.RL.rl_config import POLICIES
+except ImportError:
+    if not DISABLE_RL:
+        print("[!] RL modules not found but RL is enabled.")
+    POLICIES = {}
 
 
-print("[rl] RL Supabase uploader loaded.")
-
-
-# -------------------- STARTUP SYNC --------------------
+# Startup logic
 
 def _startup_sync():
     try:
         uploaded, failed = sync_local_to_supabase()
-        print(f"[rl] Synced local events to Supabase: {uploaded} uploaded, {failed} failed.")
+        print(f"Data sync: {uploaded} uploaded, {failed} failed.")
     except Exception as e:
-        print("[rl] startup sync error:", e)
+        print("Startup sync error:", e)
 
 
 def _bg_startup():
@@ -49,10 +62,12 @@ def _bg_startup():
     _startup_sync()
 
 
-threading.Thread(target=_bg_startup, daemon=True).start()
+def start_rl_sync():
+    if not DISABLE_RL:
+        threading.Thread(target=_bg_startup, daemon=True).start()
 
 
-# -------------------- GLOBALS --------------------
+# Configuration
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
@@ -70,16 +85,16 @@ CLASSIFICATION_LOCK = threading.RLock()
 UPLOAD_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 
-# -------------------- LOAD INDEX --------------------
+# Index Management
 
 def load_index_and_labels():
     global index, folder_data, FOLDER_LABELS, model
 
     try:
         if model is None:
-            print("[*] Initialising model...")
+            print("Initializing inference model...")
             model = SentenceTransformer(ci.MODEL_NAME, device="cpu")
-            print("[*] Model Loaded.")
+            print("Model loaded.")
 
         if not FAISS_INDEX_FILE.exists() or not LABELS_FILE.exists():
             folder_data = {}
@@ -99,7 +114,7 @@ def load_index_and_labels():
         return False
 
 
-# -------------------- RETURN HELPER --------------------
+# Utilities
 
 def _ret(label, sim, retries=0, top3=None, manual=False):
     if top3 is None:
@@ -108,7 +123,7 @@ def _ret(label, sim, retries=0, top3=None, manual=False):
     return label, float(sim or 0.0), int(retries), [float(x) for x in top3], bool(manual)
 
 
-# -------------------- CLASSIFICATION --------------------
+# Core Classification
 
 def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
     MAX_RETRIES = 3
@@ -181,7 +196,7 @@ def classify_file(text, filename, allow_generation=True, retries=0, cfg=None):
     return classify_file(text, filename, False, retries + 1, cfg)
 
 
-# -------------------- PROCESS FILE --------------------
+# File Processing Pipeline
 
 def process_file(file_path, testing=False, allow_generation=True, sorted_dir=None):
     start = time.time()
@@ -191,42 +206,47 @@ def process_file(file_path, testing=False, allow_generation=True, sorted_dir=Non
     if not text:
         text = filename.replace("_", " ")
 
-    policy_id = choose_policy()
-    cfg = POLICIES.get(policy_id, {})
+    if not DISABLE_RL:
+        policy_id = choose_policy()
+        cfg = POLICIES.get(policy_id, {})
+    else:
+        policy_id = "default"
+        cfg = {}
 
     predicted, sim, retries, top3, manual = classify_file(
         text, filename, allow_generation=allow_generation and cfg.get("ALLOW_GENERATION", True), cfg=cfg
     )
 
-    interaction_id = f"{filename}|{int(time.time())}"
+    if not DISABLE_RL:
+        interaction_id = f"{filename}|{int(time.time())}"
 
-    event = {
-        "interaction_id": interaction_id,
-        "event_type": "served",
-        "timestamp": int(time.time()),
-        "filename": filename,
-        "file_path": str(file_path),
-        "policy_id": policy_id,
-        "predicted_label": predicted,
-        "similarity_top1": sim,
-        "top3_similarities": top3,
-        "manual_labeled": manual,
-        "allowed_generation": bool(cfg.get("ALLOW_GENERATION", True)),
-        "retries": retries,
-        "file_ext": Path(filename).suffix.lstrip("."),
-        "text_length": len(text),
-        "tfeedback": None
-    }
+        event = {
+            "interaction_id": interaction_id,
+            "event_type": "served",
+            "timestamp": int(time.time()),
+            "filename": filename,
+            "file_path": str(file_path),
+            "policy_id": policy_id,
+            "predicted_label": predicted,
+            "similarity_top1": sim,
+            "top3_similarities": top3,
+            "manual_labeled": manual,
+            "allowed_generation": bool(cfg.get("ALLOW_GENERATION", True)),
+            "retries": retries,
+            "file_ext": Path(filename).suffix.lstrip("."),
+            "text_length": len(text),
+            "tfeedback": None
+        }
 
-    get_rl_logger().log_event(event)
+        get_rl_logger().log_event(event)
 
-    def _bg_upload(ev):
-        try:
-            upload_event(ev)
-        except Exception as e:
-            print("[supabase] upload failed:", e)
+        def _bg_upload(ev):
+            try:
+                upload_event(ev)
+            except Exception as e:
+                print("[supabase] upload failed:", e)
 
-    UPLOAD_EXECUTOR.submit(_bg_upload, event)
+        UPLOAD_EXECUTOR.submit(_bg_upload, event)
 
     dest_root = Path(sorted_dir) if sorted_dir else BASE_DIR / "sorted"
     dest = dest_root / predicted
@@ -238,4 +258,4 @@ def process_file(file_path, testing=False, allow_generation=True, sorted_dir=Non
         except Exception as e:
             print("Move error:", e)
 
-    print(f"[1] Processed: {filename} -> {predicted} (sim={sim:.2f}) in {time.time() - start:.2f}s")
+    print(f"Processed: {filename} -> {predicted} (sim={sim:.2f})")

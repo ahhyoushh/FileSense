@@ -4,7 +4,7 @@ import csv
 import sys
 from pathlib import Path
 
-# --- Optional Imports ---
+# Optional dependencies
 try:
     import pdfplumber
     PDFPLUMBER_AVAILABLE = True
@@ -17,7 +17,7 @@ try:
 except ImportError:
     DOCX_AVAILABLE = False
 
-# --- Configuration ---
+# Processing configuration
 PDF_CONFIG = {
     'MAX_INPUT_CHARS': 2000,        
     'QUALITY_THRESHOLD': 0.4,       
@@ -104,13 +104,11 @@ def extract_text_from_pdf(file_path, filename, fallback=False):
 
             total_pages = len(pdf.pages)
             
-            # --- Fallback Logic ---
             if fallback and total_pages > 5:
-                # Start from the absolute middle of the document
+                # Start from the document midpoint
                 start_page_index = total_pages // 2
-                if PRINT_DEBUG: print(f"   -> [PDF Fallback] Starting extraction at page {start_page_index} (Middle)")
             else:
-                # Standard Logic: Start around page 3
+                # Default to page 3 (skipping cover/toc)
                 start_page_index = min(PDF_CONFIG['START_PAGE_ASSUMPTION'], total_pages - 1)
 
             # Create iterator order
@@ -164,7 +162,6 @@ def extract_text_from_docx(file_path, filename, fallback=False):
 
         if fallback and total_paras > 20:
             start_index = total_paras // 2
-            if PRINT_DEBUG: print(f"   -> [DOCX Fallback] Starting extraction at paragraph {start_index}")
         else:
             start_index = 0
         
@@ -189,7 +186,6 @@ def extract_text_from_txt(file_path, filename, fallback=False):
             if fallback and file_size > PDF_CONFIG['MAX_INPUT_CHARS']:
                 f.seek(file_size // 2)
                 f.readline()
-                if PRINT_DEBUG: print(f"   -> [TXT Fallback] Starting extraction from middle of file")
             
             raw = f.read(PDF_CONFIG['MAX_INPUT_CHARS'] * 2) 
             return clean_text_block(raw)[:PDF_CONFIG['MAX_INPUT_CHARS']] if raw.strip() else filename
@@ -197,9 +193,7 @@ def extract_text_from_txt(file_path, filename, fallback=False):
         print(f"Failed to read TXT {filename} — {e}")
         return filename
 
-# -----------------------
-# MAIN DISPATCHER
-# -----------------------
+# --- Dispatcher ---
 def extract_text(file_path, fallback=False):
     """
     Main function to dispatch file processing.
@@ -218,9 +212,7 @@ def extract_text(file_path, fallback=False):
             
     return filename
 
-# -----------------------
-# DATASET GENERATION MODE
-# -----------------------
+# --- Dataset Generation ---
 if __name__ == "__main__":
     # --- Paths Setup ---
     # Assuming script is in FileSense/scripts/

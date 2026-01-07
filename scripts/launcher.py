@@ -41,7 +41,7 @@ class RLAuditWindow(tk.Toplevel):
         lbl = ttk.Label(container, text="Reinforcement Learning Audit", font=("Segoe UI", 12, "bold"), style="Panel.TLabel")
         lbl.pack(anchor="w", pady=(0, 10))
 
-        self.btn_run = ttk.Button(container, text="▶ Run Audit", command=self.run_audit, style="Accent.TButton", width=15)
+        self.btn_run = ttk.Button(container, text="Run Audit", command=self.run_audit, style="Accent.TButton", width=15)
         self.btn_run.pack(anchor="w", pady=(0, 10))
 
         # Output Log
@@ -75,10 +75,10 @@ class ScriptLauncher(tk.Tk):
         self.proc_watcher = None
 
         # Paths
-        self.script_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "script.py"))
+        self.script_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "main.py"))
         self.script_dir = tk.StringVar(value=str(Path(project_root) / "files"))
         self.sorted_dir = tk.StringVar(value=str(Path(project_root) / "sorted"))
-        self.watcher_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "watcher_script.py"))
+        self.watcher_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "watcher.py"))
         self.rl_audit_path = tk.StringVar(value=str(Path(project_root) / "scripts" / "RL" / "rl_audit_safe.py"))
 
         # Options
@@ -88,6 +88,7 @@ class ScriptLauncher(tk.Tk):
         self.opt_auto_save_logs = tk.BooleanVar(value=True)
         self.opt_test_mode = tk.BooleanVar(value=False)
         self.opt_threads = tk.IntVar(value=6)
+        self.opt_disable_rl = tk.BooleanVar(value=True)
 
         self._setup_styles()
         self._build_ui()
@@ -140,13 +141,14 @@ class ScriptLauncher(tk.Tk):
         
         ttk.Checkbutton(f_opts, text="Auto-Log", variable=self.opt_auto_save_logs).grid(row=0, column=0, sticky="w", padx=5)
         ttk.Checkbutton(f_opts, text="No Logs", variable=self.opt_no_logs).grid(row=0, column=1, sticky="w", padx=5)
-        ttk.Checkbutton(f_opts, text="No Gen", variable=self.opt_no_gen).grid(row=0, column=2, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="Strict Mode", variable=self.opt_no_gen).grid(row=0, column=2, sticky="w", padx=5)
         
-        ttk.Checkbutton(f_opts, text="Test Mode", variable=self.opt_test_mode).grid(row=1, column=0, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="Dry Run", variable=self.opt_test_mode).grid(row=1, column=0, sticky="w", padx=5)
         ttk.Checkbutton(f_opts, text="Single Thread", variable=self.opt_single_thread, command=self._toggle_threads).grid(row=1, column=1, sticky="w", padx=5)
+        ttk.Checkbutton(f_opts, text="Privacy Mode", variable=self.opt_disable_rl).grid(row=1, column=2, sticky="w", padx=5)
         
         f_th = ttk.Frame(f_opts)
-        f_th.grid(row=1, column=2, sticky="w", padx=5)
+        f_th.grid(row=0, column=3, sticky="w", padx=5)
         ttk.Label(f_th, text="Threads: ").pack(side=tk.LEFT)
         self.spin_threads = ttk.Spinbox(f_th, from_=1, to=32, textvariable=self.opt_threads, width=3)
         self.spin_threads.pack(side=tk.LEFT)
@@ -171,8 +173,8 @@ class ScriptLauncher(tk.Tk):
         f_actions.pack(fill=tk.X, pady=(0, 15))
 
         # Script Controls
-        ttk.Button(f_actions, text="▶ Run", style="Accent.TButton", command=self.start_script, width=8).pack(side=tk.LEFT, padx=(0,5))
-        ttk.Button(f_actions, text="■ Stop", command=self.stop_script, width=8).pack(side=tk.LEFT, padx=(0,15))
+        ttk.Button(f_actions, text="Start", style="Accent.TButton", command=self.start_script, width=8).pack(side=tk.LEFT, padx=(0,5))
+        ttk.Button(f_actions, text="Stop", command=self.stop_script, width=8).pack(side=tk.LEFT, padx=(0,15))
         
         # Watcher Controls
         ttk.Button(f_actions, text="Run Watcher", command=self.start_watcher).pack(side=tk.LEFT, padx=(0,5))
@@ -186,7 +188,7 @@ class ScriptLauncher(tk.Tk):
         f_tools = ttk.Frame(main, padding=(0,10,0,0))
         f_tools.pack(fill=tk.X)
         
-        ttk.Button(f_tools, text="📊 RL Audit & Stats", command=self.open_rl_window, width=20).pack(side=tk.RIGHT)
+        ttk.Button(f_tools, text="Diagnostics", command=self.open_rl_window, width=20).pack(side=tk.RIGHT)
         ttk.Button(f_tools, text="📂 Logs", command=self.open_logs_dir, width=10).pack(side=tk.RIGHT, padx=5)
         
         self.status_var = tk.StringVar(value="Ready")
@@ -226,6 +228,11 @@ class ScriptLauncher(tk.Tk):
             if self.opt_auto_save_logs.get(): cmd_list.append("--auto-save-logs")
             if self.opt_test_mode.get(): cmd_list.append("--test")
             
+            if self.opt_disable_rl.get():
+                cmd_list.append("--disable-rl")
+            else:
+                cmd_list.append("--enable-rl")
+            
             # Pass Model
             model_val = self.model_var.get()
             if model_val:
@@ -234,6 +241,10 @@ class ScriptLauncher(tk.Tk):
             if self.proc_script and self.proc_script.poll() is None: return
 
         if watcher_proc:
+            if self.opt_disable_rl.get():
+                cmd_list.append("--disable-rl")
+            else:
+                cmd_list.append("--enable-rl")
             if self.proc_watcher and self.proc_watcher.poll() is None: return
 
         self.log_msg(f"Starting {label}...", "info")

@@ -20,3 +20,4 @@ requests
 
 # Environment management
 python-dotenv
+google-genai

@@ -11,6 +11,7 @@ FAISS_INDEX_FILE = BASE_DIR / "folder_embeddings.faiss"
 LABELS_FILE = BASE_DIR / "folder_labels.json"
 MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
+
 def set_model_config(model_name):
     global MODEL_NAME
     MODEL_NAME = model_name
@@ -60,4 +61,3 @@ def create_faiss_index():
 if __name__ == "__main__":
     print("Creating FAISS index with model:", MODEL_NAME)
     create_faiss_index()
-

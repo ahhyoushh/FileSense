@@ -19,6 +19,8 @@ parser.add_argument("--dir", "-d", type=str, default="./files", help="Folder to 
 parser.add_argument("--wait-interval", type=float, default=0.5, help="Seconds between size checks.")
 parser.add_argument("--max-checks", type=int, default=20, help="Max checks to wait for stable size.")
 parser.add_argument("--sorted-dir", type=str, default=None, help="Directory to move sorted files into.")
+parser.add_argument("--disable-rl", action="store_true", default=True, help="Disable RL features and uploads (default: True).")
+parser.add_argument("--enable-rl", action="store_false", dest="disable_rl", help="Enable RL features and uploads.")
 args = parser.parse_args()
 files_dir = args.dir
 WAIT_INTERVAL = args.wait_interval
@@ -56,37 +58,41 @@ class Watcher(FileSystemEventHandler):
             time.sleep(WAIT_INTERVAL)
 
         if not os.path.exists(path):
-            print(f"[!] Not found after wait: {name}")
+            print(f"File not found after wait: {name}")
             return
 
         if looks_temporary(name):
-            print(f"[-] Skipping temp-like file name: {name}")
+            print(f"Skipping temporary file: {name}")
             return
 
         try:
-            print(f"[+] Processing: {name}")
+            print(f"Processing: {name}")
             process_file(path, sorted_dir=args.sorted_dir)
         except Exception as e:
-            print(f"[!] Error processing {path}: {e}")
+            print(f"Error processing {path}: {e}")
 
     def on_created(self, event):
         if event.is_directory:
             return
         path = event.src_path
-        print(f"[+] Created event: {os.path.basename(path)}")
+        print(f"File created: {os.path.basename(path)}")
         self.executor.submit(self._wait_and_process, path)
 
     def on_moved(self, event):
         if event.is_directory:
             return
-        dest = getattr(event, "dest_path", None) or getattr(event, "dest_path", None)
+        dest = getattr(event, "dest_path", None)
         if dest:
-            print(f"[+] Moved event: {os.path.basename(event.src_path)} -> {os.path.basename(dest)}")
+            print(f"File moved: {os.path.basename(event.src_path)} -> {os.path.basename(dest)}")
             self.executor.submit(self._wait_and_process, dest)
 
 if __name__ == "__main__":
     BASE_DIR = Path(__file__).resolve().parent.parent
     FLAG_FILE = BASE_DIR / "stop.flag"
+
+    from classify_process_file import set_rl_disabled, start_rl_sync
+    set_rl_disabled(args.disable_rl)
+    start_rl_sync()
 
     print("Starting folder watcher (simple mode)...")
     print(f"[WATCHING] {os.path.abspath(files_dir)}")
@@ -98,7 +104,7 @@ if __name__ == "__main__":
     try:
         while True:
             if FLAG_FILE.exists():
-                print("[*] stop.flag detected — stopping watcher.")
+                print("Stop flag detected. Terminating watcher.")
                 observer.stop()
                 break
             time.sleep(1)

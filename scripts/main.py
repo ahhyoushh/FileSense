@@ -8,12 +8,13 @@ project_root = str(Path(__file__).resolve().parent.parent)
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-# OPTIMIZATION: Prevent thread oversubscription for AI libraries
-# This must be set BEFORE importing numpy/torch/sentence_transformers
-os.environ["OMP_NUM_THREADS"] = "1"
-os.environ["MKL_NUM_THREADS"] = "1"
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+# Environment configuration for thread-safe execution with ML libraries
+os.environ.update({
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "TOKENIZERS_PARALLELISM": "false"
+})
 
 
 from multhread import process_multiple
@@ -31,6 +32,8 @@ parser.add_argument("--sorted-dir", type=str, default=None, help="Directory to m
 parser.add_argument("--auto-save-logs", action="store_true", help="Automatically save logs without prompting.")
 parser.add_argument("--no-logs", action="store_true", help="Disable logging for this run.")
 parser.add_argument("--model", type=str, default="BAAI/bge-base-en-v1.5", help="Embedding model to use.")
+parser.add_argument("--disable-rl", action="store_true", default=True, help="Disable RL features and uploads (default: True).")
+parser.add_argument("--enable-rl", action="store_false", dest="disable_rl", help="Enable RL features and uploads.")
 args = parser.parse_args()
 
 def prompt_save_logs(logger):
@@ -55,9 +58,13 @@ if __name__ == "__main__":
     logger = None
     testing = args.test
 
+    from classify_process_file import set_rl_disabled, start_rl_sync
+    set_rl_disabled(args.disable_rl)
+    start_rl_sync()
+
     if not args.no_logs:
         logger = setup_logger()
-        print("[*] Logging enabled. Output is being captured.\n")
+        print("Logging initialized. Capturing stdout.\n")
     
     try:
         # Set Model Config first

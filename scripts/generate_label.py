@@ -12,17 +12,14 @@ from pydantic import BaseModel, Field
 
 load_dotenv()
 
-# --- CONFIGURATION ---
+# API Client Configuration
 client = genai.Client(api_key=os.getenv("API_KEY"))
-
-# CHANGED: Back to "gemini-2.0-flash" because 1.5 is 404 (Retired/Not Found) in late 2025.
-# 2.0 Flash is the active model, we just need to handle the Rate Limits (429) smarter.
 MODEL = "gemini-2.0-flash"
 
-MAX_RETRIES = 5  # Sufficient for 2-3 rate limit hits
+MAX_RETRIES = 5
 DEFAULT_BACKOFF = 5 
 
-# --- DATA SCHEMAS (Pydantic) ---
+# Data Schemas
 class FolderClassification(BaseModel):
     folder_label: str = Field(
         description="A concise, 1-2 word BROAD category label (e.g., Physics, Finance)."
@@ -78,9 +75,8 @@ def generate_with_retry(prompt: str, response_schema: type[BaseModel], temperatu
             return response_schema.model_validate_json(response.text)
 
         except APIError as e:
-            # 429 = Resource Exhausted (Rate Limit)
             if e.code == 429:
-                print(f"\n[!] Rate Limit Hit on attempt {attempt}/{MAX_RETRIES}")
+                print(f"Rate limit exceeded (Attempt {attempt}/{MAX_RETRIES})")
                 
                 # 1. Extract exact Google wait time
                 wait_time = extract_retry_delay(e.message)
@@ -98,22 +94,20 @@ def generate_with_retry(prompt: str, response_schema: type[BaseModel], temperatu
                 time.sleep(wait_time)
                 print("    Resuming...")
             
-            # 404 = Model Not Found (Wrong Model Name)
             elif e.code == 404:
-                print(f"[!] Critical Error: Model '{MODEL}' not found (404). Check API access or model name.")
+                print(f"Error: Model '{MODEL}' unavailable.")
                 return None
             
-            # Other API Errors (500, 503, etc.)
             else:
-                print(f"[!] API Error: {e}")
+                print(f"API Error: {e}")
                 time.sleep(current_backoff)
                 current_backoff *= 2
 
         except Exception as e:
-            print(f"[!] Unexpected error: {e}")
+            print(f"Unexpected error: {e}")
             return None
 
-    print("[!] All retry attempts failed.")
+    print("Generation failed after maximum retries.")
     return None
 
 

@@ -1,141 +1,91 @@
-# 🗂️ FileSense - File Sorter
+# FileSense
 
-## 🔍 Overview
+An intelligent file organization system that leverages semantic understanding to categorize documents.
 
-**FileSense** is an intelligent, local file organizer that sorts documents by **meaning**, not just by name or extension.
+## Introduction
 
-Unlike standard organizers that rely on hardcoded rules, FileSense uses **SentenceTransformers** and **FAISS** to understand the semantic context of your files. 
+FileSense is a local file management utility that organizes documents based on their semantic content rather than relying on filename patterns or extensions. It utilizes SentenceTransformers for vector embeddings and FAISS for efficient similarity indexing.
 
-**✨ New :** It is now **Self-Organizing**. If FileSense encounters a document that doesn't fit any existing folder, it uses **Google Gemini (GenAI)** to analyze the content, generate a new specific category, create the folder, and update its own sorting logic automatically.
+Key capabilities include:
+- **Semantic Classification**: Maps files to categories based on meaning (e.g., "thermodynamics_notes.pdf" → "Physics").
+- **Automated Labeling**: Integrates with Google Gemini to propose new categories for documents that do not match existing templates.
+- **OCR Integration**: Supports text extraction from images and scanned PDFs via `pdfplumber` and `Tesseract`.
+- **Concurrency**: Parallel processing for handling large datasets.
+- **Monitoring**: Real-time folder watching for automated sorting of new downloads.
 
-> 📺 **Overview Video**: [FileSense Demo](https://youtu.be/f27I2L7uoC8)
-> 
-> 🎥 **Webpage:** [ahhyoushh.github.io/FileSense](https://ahhyoushh.github.io/FileSense)
+## Technical Architecture
 
----
+### Component Overview
+- **Core Engine**: `classify_process_file.py` handles the main classification pipeline.
+- **Vector Database**: Uses FAISS for high-performance similarity search.
+- **Inference**: Supports various SentenceTransformer models (default: `bge-base-en-v1.5`).
+- **RL Module**: Optional Reinforcement Learning module for policy-based classification improvement.
 
-## ⚙️ Core Features
-
-| Feature | Description |
-|----------|-------------|
-| 🧠 **Semantic Sorting** | Sorts by meaning (e.g., "Newton's Laws" → "Physics"), not just keywords. |
-| 🤖 **Generative Labeling** | **(New)** Uses Google Gemini to auto-generate new categories/folders for unknown file types. |
-| ⚡ **FAISS Indexing** | Uses vector databases for lightning-fast similarity searches. |
-| 🔄 **Self-Updating** | When a new label is generated, the AI creates the folder and rebuilds the index automatically. |
-| 👀 **OCR Support** | Extracts text from scanned PDFs and images using `pdfplumber` and `pytesseract`. |
-| 🧩 **Keyword Boosting** | Hybrid search approach: Vector Similarity + Keyword weighting for maximum accuracy. |
-| 🖥️ **GUI Launcher** | Desktop interface with real-time logs, system tray support, and process management. |
-| 🧵 **Multithreading** | Sorts massive directories in parallel for high performance. |
-
----
-
-## 📁 Folder Structure
-```
+### Project Structure
+```text
 FileSense/
-│
 ├── scripts/
-│   ├── RL/                       # Reinforcement Learning Module
-│   ├── RL/                       # Reinforcement Learning & SFT
-│   │   ├── rl_policy.py          # Epsilon-Greedy Agent
-│   │   ├── rl_feedback.py        # Feedback & Rewards
-│   │   ├── rl_config.py          # Hyperparameters
-│   │   ├── rl_supabase.py        # Cloud Logging
-│   │   └── rl_audit_safe.py      # Safety Audits
-│   ├── logger/                   # Logging System
-│   │   ├── logger.py             # Main Logger
-│   │   └── rl_logger.py          # RL-Specific Logger
-│   ├── classify_process_file.py  # Core Logic: Embedding & Classification
-│   ├── generate_label.py         # GenAI Interface (Gemini)
-│   ├── create_index.py           # FAISS Index Manager
-│   ├── extract_text.py           # OCR & Text Extraction
-│   ├── multhread.py              # Multithreading Manager
-│   ├── launcher.py               # System Tray GUI
-│   ├── script.py                 # CLI Entry Point
-│   └── watcher_script.py         # Real-time Monitor
-│
-├── folder_labels.json            # Semantic Knowledge Base
-├── folder_embeddings.faiss       # Vector Index
-├── evaluation/                   # Metrics & Logs
-└── files/                        # Default Input Directory
+│   ├── RL/                 # Reinforcement Learning & SFT logic
+│   ├── logger/             # Unified logging system
+│   ├── main.py             # CLI entry point (replaces script.py)
+│   ├── watcher.py          # Filesystem monitor (replaces watcher_script.py)
+│   ├── launcher.py         # Tkinter-based GUI
+│   └── ...                 # Utility modules (OCR, Labelling, Indexing)
+├── folder_labels.json      # Category definitions and keyword mappings
+└── folder_embeddings.faiss # Pre-computed vector index
 ```
 
----
+## Setup and Installation
 
-## 🔬 How It Works
-
-### 1️⃣ Text Extraction
-FileSense reads the file. If it's a text-based PDF/DOCX, it extracts raw text. If it's a scanned document, it applies OCR/Image processing to read the content.
-
-### 2️⃣ Semantic Search
-It converts the document text into a vector embedding and searches the local `folder_embeddings.faiss` index.
-- **High Confidence (≥ 0.5):** The file is moved to the matching folder.
-- **Low Confidence:** The system assumes no suitable folder exists.
-
-### 3️⃣ Generative Classification (The "AI" Step)
-If confidence is low:
-1. The text is sent to **Google Gemini**.(Optional)
-2. Gemini analyzes the content and determines a broad category (e.g., "Quantum Mechanics") and specific keywords.
-3. It updates `folder_labels.json` (merging with existing data if needed).
-4. FileSense **rebuilds the FAISS index** on the fly and classifies the file again with the new knowledge.
-
----
-
-## 🛠️ Installation & Setup
-
-### 1. Prerequisites
+### Prerequisites
 - Python 3.8+
-- A Google Cloud API Key (for Gemini)
+- Tesseract OCR (Optional, for OCR support)
+- Google Gemini API Key (Optional, for automated category generation)
 
-### 2. Install Dependencies
+### Installation
 ```bash
-pip install sentence-transformers faiss-cpu numpy pdfplumber pytesseract pillow python-docx watchdog pystray google-genai python-dotenv
+pip install -r requirements.txt
 ```
-## Linux Users
-Install Tesseract OCR:
-```bash
-sudo apt install tesseract-ocr
+
+### Environment Configuration
+Create a `.env` file in the root directory:
+```env
+API_KEY=your_google_gemini_api_key
 ```
----
 
-## 3. Environment Setup
-Create a `.env` file in the root directory and add your Google API key:
-```bash
-API_KEY=your_google_gemini_api_key_here
-```
----
+### Initialization
+To initialize a knowledge base from preseeded data:
+1. Copy `preseeded.json` to `folder_labels.json`.
+2. Generate the vector index:
+   ```bash
+   python scripts/create_index.py
+   ```
 
-## 4. Initialization
-Create the initial index (even if empty):
-```bash
-python scripts/create_index.py
-```
----
+## Usage
 
-# 🚀 Usage
-
-## Option A: GUI Launcher (Recommended)
-Run the desktop app to manage everything visually.
+### GUI Launcher
 ```bash
 python scripts/launcher.py
 ```
-## Option B: Real-Time Watcher
-Keep it running in the background to sort files as you download them.
+
+### Command Line Interface
 ```bash
-python scripts/watcher_script.py --dir ./Downloads
+python scripts/main.py --dir ./path/to/files --threads 4
 ```
-## Option C: Bulk Sort
-Sort an existing mess of files once.
+
+### Background Monitor
 ```bash
-python scripts/script.py --dir ./Downloads --threads 8
+python scripts/watcher.py --dir ./Downloads
 ```
----
 
-## 🧾 License
-MIT License © 2025 Ayush Bhalerao
+## Privacy and RL
+FileSense operates strictly locally by default. The Reinforcement Learning (RL) features, which log classification metrics for policy optimization, are disabled by default. Use the `--enable-rl` flag to opt-in to these features.
 
+## License
+MIT License
 
-# IDEAS TO IMPLEMENT
-1. Use the dateset with category labels for the data, make a script to general folder labels until the similarity crosses a certain threshold for all files in the train dataset. In this way the description and folders_labels.json would be most optimised.
-2. After the last update with gemini, make the model return the revised prompt and use the revised prompt so that the prompt self optimises.
-3. Setup RL: let the user upload logs that include text from the file and folder label given.
-4. explain why i used Sentence transformers rather than just using a tezt classifier
+## Roadmap & Future Enhancements
+1. **Automated Knowledge Optimization**: Implement scripts to iteratively refine category descriptions until semantic similarity thresholds are met across training datasets.
+2. **Self-Optimizing Prompts**: Enable the model to return revised instructions after each classification update to improve zero-shot accuracy.
+3. **Reinforcement Learning Feedback**: Allow users to contribute manual classification corrections to optimize the underlying RL policy.
+4. **Model Comparative Analysis**: Document the specific advantages of using SentenceTransformers versus traditional text classifiers for cross-domain file sorting.
